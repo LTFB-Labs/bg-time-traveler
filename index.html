@@ -23,7 +23,6 @@ button{font-family:inherit;cursor:pointer}
 #map{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
 #grain{position:fixed;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.55;background-size:300px 300px}
 #vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 55%,rgba(90,60,20,.28) 100%)}
-.layer{transition:opacity .7s ease}
 .rlab{font-family:var(--map);font-weight:700;font-style:italic;text-anchor:middle;dominant-baseline:middle;paint-order:stroke;stroke:rgba(242,230,198,.75);stroke-linejoin:round;pointer-events:none}
 .rlab.bg{font-style:normal;letter-spacing:.18em;fill:#7a1e12}
 .sea-lab{font-family:var(--map);font-style:italic;font-weight:600;fill:#4f6d66;text-anchor:middle;letter-spacing:.12em;opacity:.85}
@@ -320,16 +319,31 @@ function showFrame(i) {
   if (!layers.has(i)) layers.set(i, buildFrame(i));
   const L = layers.get(i);
   clearTimeout(L.t);
-  L.gFill.style.transition = "none"; L.gFill.style.opacity = 0;
   realmsG.appendChild(L.gFill); frameG.appendChild(L.gLab);
-  L.gFill.getBoundingClientRect(); L.gFill.style.transition = "";
-  requestAnimationFrame(() => { if (curFrame === i) { L.gFill.style.opacity = 1; L.gLab.style.opacity = 1; } });
+  fade(L.gFill, 0, 1, 650); fade(L.gLab, 0, 1, 650);
   layers.forEach((o, k) => {
     if (k === i) return;
-    o.gLab.style.opacity = 0; clearTimeout(o.t);
+    clearTimeout(o.t);
     if (k !== prev) { o.gFill.remove(); o.gLab.remove(); return; }
-    o.t = setTimeout(() => { if (curFrame !== k) { o.gFill.remove(); o.gLab.remove(); } }, 800);
+    fade(o.gLab, null, 0, 450);
+    o.t = setTimeout(() => { if (curFrame !== k) { o.gFill.remove(); o.gLab.remove(); } }, 700);
   });
+}
+// Web Animations start on the next frame no matter how busy the page is; a CSS transition on a just-inserted
+// element can be skipped or start late while the slider tween keeps the main thread busy.
+function fade(node, from, to, ms) {
+  const cur = from == null ? +getComputedStyle(node).opacity : from;
+  if (node._fade) node._fade.cancel();
+  node.style.opacity = to;
+  node._fade = node.animate([{ opacity: cur }, { opacity: to }], { duration: ms, easing: "ease-out" });
+}
+
+// build every frame's layer ahead of time while the page is idle, so crossing a border change never stalls
+function prebuildFrames() {
+  const idle = window.requestIdleCallback || ((f) => setTimeout(() => f({ timeRemaining: () => 10 }), 60));
+  let n = 0;
+  const step = (d) => { while (n < frames.length && (d.timeRemaining() > 3 || n === 0)) { if (!layers.has(n)) layers.set(n, buildFrame(n)); n++; if (d.timeRemaining() <= 3) break; } if (n < frames.length) idle(step); };
+  idle(step);
 }
 
 /* ---------- camera ---------- */
@@ -591,6 +605,7 @@ buildTimeline();
 setYear(START);
 vb = targetVB(START); applyVB();
 requestAnimationFrame(tick);
+prebuildFrames();
 window.BGTT = { setYear: (y) => { stopPlay(); setYear(y); } };
 })();
 </script>
