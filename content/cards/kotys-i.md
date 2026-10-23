@@ -2,7 +2,7 @@
 id: kotys-i
 kind: person
 title: Котис I
-dates: упр. 383–359 г. пр.Хр.
+dates: упр. ок. 383–359 г. пр.Хр.
 at: [25.8, 41.9]
 years: [-383, -359]
 aliases: [Котис I, Котис]
