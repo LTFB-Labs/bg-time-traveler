@@ -1,11 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { commonsFileUrl, fetchMissing, isAllowedLicence, renderCredits } from '../lib/photos.mjs';
+import { commonsFileUrl, fetchMissing, imageSize, isAllowedLicence, renderCredits } from '../lib/photos.mjs';
 
 test('buildsEncodedFilePathUrl', () => {
     const url = commonsFileUrl('Свети Иван, Рила [1] (2).jpg', 900);
     assert.ok(!url.includes(' '));
-    assert.equal(url, 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent('Свети Иван, Рила [1] (2).jpg') + '?width=900');
+    assert.equal(url, 'https://commons.wikimedia.org/w/thumb.php?f=' + encodeURIComponent('Свети Иван, Рила [1] (2).jpg') + '&w=900');
 });
 
 test('rejectsNonCommercialLicence', () => {
@@ -36,25 +36,76 @@ test('fetchMissingSkipsExisting', async () => {
     assert.deepEqual(problems, []);
 });
 
-const info = (licence) => ({
-    ok: true,
-    json: async () => ({ query: { pages: { 1: { imageinfo: [{ width: 2000, height: 1000, extmetadata: { Artist: { value: '<a href="x">Ann  <b>Lee</b></a>' }, LicenseShortName: { value: licence } } }] } } } }),
-});
+const pngBytes = (w, h) => {
+    const bytes = Buffer.alloc(24);
+    bytes.write('\x89PNG', 0, 'latin1');
+    bytes.writeUInt32BE(w, 16);
+    bytes.writeUInt32BE(h, 20);
+    return bytes;
+};
+// Fake Commons: the info call answers with the original size; the thumbnail is a PNG header whose size the "server" picks (default: the requested width, never above the original).
+const commons = ({ width, height, licence = 'CC BY-SA 4.0', served, body }) => async (url) => {
+    if (!url.includes('api.php')) {
+        const asked = Number(new URL(url).searchParams.get('w'));
+        const w = served?.w ?? Math.min(asked, width);
+        const bytes = body ?? pngBytes(w, served?.h ?? Math.round(height * w / width));
+        return { ok: true, headers: new Headers({ 'content-type': 'image/png' }), arrayBuffer: async () => bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.length) };
+    }
+    const extmetadata = { Artist: { value: '<a href="x">Ann  <b>Lee</b></a>' }, LicenseShortName: { value: licence } };
+    return { ok: true, json: async () => ({ query: { pages: { 1: { imageinfo: [{ width, height, extmetadata }] } } } }) };
+};
+const run = (photos, fetch, written = []) => fetchMissing(photos, { fetch, writeFile: async (f) => written.push(f), exists: () => false });
 
 test('fetchMissingRefusesBadLicenceWithoutDownload', async () => {
     const urls = [];
-    const fetch = async (url) => (urls.push(url), info('CC BY-NC 2.0'));
-    const { problems } = await fetchMissing({ k: { src: 'K.jpg' } }, { fetch, writeFile: async () => {}, exists: () => false });
-    assert.equal(urls.length, 1);
+    const inner = commons({ width: 2000, height: 1000, licence: 'CC BY-NC 2.0' });
+    const { problems } = await run({ k: { src: 'K.jpg' } }, async (url) => (urls.push(url), inner(url)));
+    assert.ok(urls.every((u) => u.includes('api.php')));
     assert.match(problems[0].message, /CC BY-NC 2\.0/);
     assert.equal(problems[0].file, 'k');
 });
 
 test('fetchMissingFillsEntry', async () => {
     const written = [];
-    const fetch = async (url) => url.includes('api.php') ? info('CC BY-SA 4.0') : { ok: true, headers: new Headers({ 'content-type': 'image/png' }), arrayBuffer: async () => new ArrayBuffer(3) };
-    const { photos, problems } = await fetchMissing({ k: { src: 'K x.png' } }, { fetch, writeFile: async (f) => written.push(f), exists: () => false });
+    const { photos, problems } = await run({ k: { src: 'K x.png' } }, commons({ width: 2000, height: 1000 }), written);
     assert.deepEqual(problems, []);
     assert.deepEqual(photos.k, { src: 'K x.png', f: 'photos/k.png', a: 'Ann Lee', l: 'CC BY-SA 4.0', u: 'https://commons.wikimedia.org/wiki/File:K_x.png', w: 900, h: 450 });
     assert.deepEqual(written, ['photos/k.png']);
+});
+
+test('fetchMissingDoesNotUpscaleSmallOriginal', async () => {
+    const { photos } = await run({ k: { src: 'K.jpg' } }, commons({ width: 785, height: 601 }));
+    assert.deepEqual([photos.k.w, photos.k.h], [785, 601]);
+});
+
+test('fetchMissingScalesPortraitToLongSide900', async () => {
+    const { photos } = await run({ k: { src: 'K.jpg' } }, commons({ width: 2000, height: 3000 }));
+    assert.deepEqual([photos.k.w, photos.k.h], [600, 900]);
+});
+
+test('fetchMissingRecordsServedSizeNotComputedTarget', async () => {
+    const { photos } = await run({ k: { src: 'K.jpg' } }, commons({ width: 2000, height: 1000, served: { w: 960, h: 481 } }));
+    assert.deepEqual([photos.k.w, photos.k.h], [960, 481]);
+});
+
+test('fetchMissingTurnsNetworkErrorIntoProblem', async () => {
+    const { problems } = await run({ k: { src: 'K.jpg' } }, async () => { throw new Error('getaddrinfo ENOTFOUND'); });
+    assert.equal(problems[0].file, 'k');
+    assert.match(problems[0].message, /ENOTFOUND/);
+});
+
+test('fetchMissingRejectsMissingSize', async () => {
+    const { photos, problems } = await run({ k: { src: 'K.jpg' } }, commons({ width: undefined, height: undefined }));
+    assert.equal(problems[0].file, 'k');
+    assert.equal(photos.k.w, undefined);
+});
+
+test('fetchMissingRejectsUnreadableImage', async () => {
+    const { problems } = await run({ k: { src: 'K.jpg' } }, commons({ width: 2000, height: 1000, body: Buffer.from('<html>error</html>') }));
+    assert.equal(problems[0].file, 'k');
+});
+
+test('imageSizeReadsJpegFrameHeader', () => {
+    const jpeg = Buffer.from([0xff, 0xd8, 0xff, 0xe0, 0x00, 0x04, 0x00, 0x00, 0xff, 0xc0, 0x00, 0x0b, 0x08, 0x02, 0x58, 0x03, 0x20, 0x01, 0x01, 0x11, 0x00]);
+    assert.deepEqual(imageSize(jpeg), { w: 800, h: 600 });
 });
