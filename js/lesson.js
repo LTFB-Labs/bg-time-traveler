@@ -30,16 +30,20 @@ export function startLesson(map, lesson, { part = 0 } = {}) {
         current = target;
         cards.close();
         renderPart(lesson, current, cards);
-        wirePredict(lesson, current);
-        showPartOnMap(map, lesson, current, cards);
-        renderYear(lesson, current);
-        renderEra(lesson, current);
-        renderLegend(mapMeta(lesson, current).borders);
-        timeline.setPart(current);
+        showScene(isHeld(lesson, current) ? sceneBefore(lesson, current) : current);
+        wirePredict(lesson, current, () => showScene(current));
         markSteps(current);
         updateNav(lesson, current);
         setPosition(lesson.id, current);
         history.replaceState(null, '', `#lesson/${lesson.id}/${current}`);
+    };
+    // the map, year corner, era pill, legend and timeline knob of one part
+    const showScene = (n) => {
+        showPartOnMap(map, lesson, n, cards);
+        renderYear(lesson, n);
+        renderEra(lesson, n);
+        renderLegend(mapMeta(lesson, n).borders);
+        timeline.setPart(n);
     };
     const player = { goTo, next: () => goTo(current + 1), prev: () => goTo(current - 1), current: () => current };
     showPane();
@@ -230,17 +234,30 @@ function renderPart(lesson, n, cards) {
     body.querySelectorAll('b.term[data-card]').forEach((b) => b.addEventListener('click', () => cards.open(b.dataset.card)));
 }
 
-// the guess is asked once per sitting; Back and Next show the text straight away
-const guessed = new Set();
+// the guess is asked once per sitting (the chosen option is kept); until then the part's picture, heading, text and map change stay held back
+const guessed = new Map();
 
-function wirePredict(lesson, n) {
+const guessKey = (lesson, n) => `${lesson.id}:${n}`;
+
+function isHeld(lesson, n) {
+    return Boolean(lesson.parts[n].meta.predict) && !guessed.has(guessKey(lesson, n));
+}
+
+// while the guess is open the map shows the previous story part (or the summary), so nothing on screen gives the answer away
+function sceneBefore(lesson, n) {
+    const previous = lesson.parts.slice(0, n).findLastIndex((p) => p.type === 'story');
+    return Math.max(previous, 0);
+}
+
+function wirePredict(lesson, n, onReveal) {
     const { predict } = lesson.parts[n].meta;
-    const key = `${lesson.id}:${n}`;
-    if (!predict || guessed.has(key)) return;
-    renderPredict($('lsPredict'), predict, () => {
-        guessed.add(key);
-        $('lsText').classList.remove('held');
-    });
+    if (!predict) return;
+    const key = guessKey(lesson, n);
+    renderPredict($('lsPredict'), predict, (chosen) => {
+        guessed.set(key, chosen);
+        $('lsBody').querySelectorAll('.held').forEach((el) => el.classList.remove('held'));
+        onReveal();
+    }, guessed.get(key));
 }
 
 // kind: the card kind whose icon replaces a picture that fails to load
@@ -262,11 +279,12 @@ function summaryHtml(lesson) {
 
 function storyHtml(lesson, n) {
     const { heading, html, factHtml, meta } = lesson.parts[n];
-    return `${photoBlock(CONTENT.photos[meta.photo])}
+    const held = isHeld(lesson, n) ? 'held' : '';
+    return `<div class="${held}">${photoBlock(CONTENT.photos[meta.photo])}</div>
         <div class="meta"><span class="chip y">${fmtYear(meta)}</span><span class="chip">Част ${n} от ${storyCount(lesson)}</span></div>
-        <h2>${esc(heading)}</h2>
+        <h2 class="${held}">${esc(heading)}</h2>
         <div id="lsPredict"></div>
-        <div id="lsText" class="${isHeld(lesson, n) ? 'held' : ''}">
+        <div id="lsText" class="${held}">
             ${html}
             ${factHtml ? `<div class="fact"><span class="t">Знаеш ли, че…</span>${factHtml}</div>` : ''}
             ${onMapLine(meta.marks)}
@@ -274,8 +292,6 @@ function storyHtml(lesson, n) {
             ${teaser(meta.next)}
         </div>`;
 }
-
-const isHeld = (lesson, n) => Boolean(lesson.parts[n].meta.predict) && !guessed.has(`${lesson.id}:${n}`);
 
 // a placeholder until the check lands (Task 9)
 const checkHtml = () => '<h2>Проверка</h2><p>Скоро тук ще има въпроси.</p>';

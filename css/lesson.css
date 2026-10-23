@@ -294,7 +294,7 @@ body.lesson #vignette { right: var(--ls-w); }
 #lsPop .kind { display: inline-block; font-size: 11.5px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; color: #b9832a; margin-bottom: 4px; }
 
 /* ---------- prediction block ---------- */
-#lsText.held { display: none; }
+#lsBody .held { display: none; }
 .predict { margin: 4px 0 14px; padding: 14px 16px; background: #fff8e8; border: 1px solid var(--line); border-radius: 16px; }
 .predict .t { font-size: 11.5px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: #b9832a; margin-bottom: 4px; }
 #lsBody .predict .q { font-size: 18px; color: #3f230f; margin-bottom: 10px; }
