@@ -72,19 +72,34 @@ export function validateLesson(lesson, ctx) {
     if (lesson.parseError) {
         return [problem(lesson.file, `cannot read front matter: ${lesson.parseError}`)];
     }
-    const messages = [...frontMatterProblems(lesson), ...structureProblems(lesson.parts, ctx), ...lesson.parts.flatMap((part) => partProblems(part, lesson, ctx)), ...totalWordsProblems(lesson)];
+    const messages = [
+        ...frontMatterProblems(lesson),
+        ...structureProblems(lesson.parts, ctx),
+        ...lesson.parts.flatMap((part) => partProblems(part, lesson, ctx)),
+        ...totalWordsProblems(lesson),
+    ];
     return messages.map((message) => problem(lesson.file, message));
 }
 
 function frontMatterProblems(lesson) {
     const missing = REQUIRED.filter((key) => lesson[key] === undefined).map((key) => `front matter is missing ${key}`);
-    if (missing.length > 0 || !isNumberPair(lesson.span)) {
-        return [...missing, ...(missing.includes('front matter is missing span') ? [] : ['span must be [from, to]'])];
+    return [...missing, ...spanProblems(lesson), ...eraProblems(lesson)];
+}
+
+function spanProblems(lesson) {
+    if (lesson.span === undefined) {
+        return [];
     }
-    return [...(lesson.span[0] < lesson.span[1] ? [] : ['span must start before it ends']), ...eraProblems(lesson)];
+    if (!isNumberPair(lesson.span)) {
+        return ['span must be [from, to]'];
+    }
+    return lesson.span[0] < lesson.span[1] ? [] : ['span must start before it ends'];
 }
 
 function eraProblems(lesson) {
+    if (lesson.eras === undefined || !isNumberPair(lesson.span)) {
+        return [];
+    }
     if (!Array.isArray(lesson.eras)) {
         return ['eras must be a list'];
     }
@@ -102,7 +117,9 @@ function structureProblems(parts, ctx) {
 
 function partProblems(part, lesson, ctx) {
     const label = `part "${part.heading}"`;
-    const messages = part.parseError ? [`cannot read the key block: ${part.parseError}`] : [...keyProblems(part, ctx, storyCount(lesson)), ...(part.type === 'story' ? storyProblems(part) : [])];
+    const messages = part.parseError
+        ? [`cannot read the key block: ${part.parseError}`]
+        : [...keyProblems(part, ctx, storyCount(lesson)), ...(part.type === 'story' ? storyProblems(part) : [])];
     return messages.map((message) => `${label}: ${message}`);
 }
 
@@ -113,7 +130,8 @@ function keyProblems(part, ctx, count) {
     const unknown = Object.keys(part.meta).filter((key) => !known.includes(key)).map((key) => `unknown key ${key}`);
     const bad = Object.entries(part.meta).filter(([key]) => known.includes(key)).flatMap(([key, value]) => keyCheck(key, value, part, ctx, count));
     const missing = part.type === 'story' && part.meta.year === undefined && part.meta.label === undefined ? ['needs year or label'] : [];
-    return [...unknown, ...bad, ...missing];
+    const questions = part.type === 'check' && part.meta.questions === undefined ? validateQuestions(undefined, ctx, count) : [];
+    return [...unknown, ...bad, ...missing, ...questions];
 }
 
 function keyCheck(key, value, part, ctx, count) {

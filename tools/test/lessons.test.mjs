@@ -68,3 +68,17 @@ test('rendersHtmlAndLinksTerms', () => {
     assert.match(out.parts[1].factHtml, /^<p>/);
     assert.equal(lesson.parts[1].html, undefined);
 });
+
+test('requiresCheckQuestions', () => {
+    const problems = check(read('odrysae').replace(/<!-- part: check -->\nquestions:[\s\S]*$/, '<!-- part: check -->\n'));
+    assert.equal(problems.length, 1);
+    assert.match(problems[0].message, /Проверка/);
+    assert.match(problems[0].message, /5 to 7/);
+});
+
+test('checksSpanWhenAnotherKeyIsMissing', () => {
+    const noTitle = read('odrysae').replace(/^title: .*\n/m, '');
+    assert.deepEqual(check(noTitle).map((p) => p.message), ['front matter is missing title']);
+    const messages = check(noTitle.replace('span: [-1300, -250]', 'span: [5, 2]')).map((p) => p.message);
+    assert.ok(messages.includes('span must start before it ends'));
+});
