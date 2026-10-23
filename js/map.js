@@ -452,7 +452,7 @@ function drawPath(points, move) {
   let d = `M${pts[0][0]} ${pts[0][1]}`;
   for (let i = 1; i < pts.length; i++) { const [x0, y0] = pts[i - 1], [x1, y1] = pts[i]; d += `Q${x0 + (x1 - x0) * .5 + (y1 - y0) * .12} ${y0 + (y1 - y0) * .5 - (x1 - x0) * .12} ${x1} ${y1}`; }
   el("path", { id: "migPath", d, class: "mig", "stroke-width": 5, "marker-end": "url(#arrow)" }, migG);
-  if (move) drawFigure(move, pts);
+  if (Object.hasOwn(FIGURES, move)) drawFigure(move, pts);
 }
 
 /* ---------- a figure riding the route arrow ---------- */
@@ -463,7 +463,9 @@ const DEFAULT_SECONDS = 9;
 const FIGURE_PX = 40;
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 let figure = null; // { g, mirror } while the arrow has a figure
-Object.entries(CONTENT.figures).forEach(([id, { viewBox, body }]) => {
+// a stale cached content.js may have no figures: the arrows then stay plain
+const FIGURES = CONTENT.figures ?? {};
+Object.entries(FIGURES).forEach(([id, { viewBox, body }]) => {
     el('symbol', { id: `fig-${id}`, viewBox }, defs).innerHTML = body;
 });
 function drawFigure(move, pts) {
