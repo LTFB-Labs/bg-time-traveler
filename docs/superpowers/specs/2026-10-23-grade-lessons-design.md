@@ -13,7 +13,8 @@ Why a map and not a book: borders moving, armies marching and cities appearing o
 ## 2. Who it is for
 
 - One kid in 5th grade in Bulgaria, using the Булвест 2000 textbook "История и цивилизации за 5. клас" (Арнаудов, Цветански, Стойчева, Котларска, ISBN 9789541809648). Lesson order and names follow that book.
-- Martin, who reviews every lesson text before the kid sees it.
+- Martin, who reviews every lesson text before the kid sees it. The teacher does not review the texts.
+- Anyone else who wants to learn Bulgarian history this way. The tool is written for one kid first, but nothing in it is private to him, so the language stays simple and the facts stay checked as if strangers will read them.
 - Later: the same kid in 6th and 7th grade, when the existing 600–today map already covers the curriculum.
 
 ## 3. Goals, non-goals, anti-goals
@@ -347,7 +348,8 @@ The plan covers steps 1 to 4 and the Odrysian lesson in full. Each further lesso
 
 ## 14. Open questions for Martin
 
-1. The textbook's table of contents: a photo of the "Съдържание" pages, so lesson numbers, names and the split of the Thrace lessons match the book.
-2. Should lesson text be in the first round reviewed by Martin only, or also by the kid's teacher? This changes how formal the fact sourcing needs to be.
+1. The textbook's table of contents: a photo of the "Съдържание" pages, so lesson numbers, names and the split of the Thrace lessons match the book. Martin will add it under `docs/superpowers/specs/textbook/`. Needed before the lesson list screen (step 4).
+
+Answered: only Martin reviews the texts, not the teacher. Because the tool may be used by anyone, the two-source rule in section 8 stays.
 
 Settled as the author's calls after the builder check (Martin can overturn any of them): the free timeline stays at 600 to today in this round; the 15-minute limit wins over the paragraph budget; lessons 2 and 7 cover only their Balkan half for now; migrated events stay one paragraph; the prehistory lesson uses labels instead of numeric years.
