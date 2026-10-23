@@ -5,6 +5,7 @@ import {
     initialState,
     isCorrect,
     isPassed,
+    redSentence,
     retry,
     shuffle,
 } from './check-state.js';
@@ -190,7 +191,7 @@ function feedbackHtml(q, { record, lessonId }) {
     if (!record) return '';
     const see = q.part ? ` <a href="#lesson/${esc(lessonId)}/${q.part}" data-act="see" data-v="${q.part}">Виж отново</a>` : '';
     if (record.isCorrect) return `<div class="fb ok">Точно така.${see}</div>`;
-    return `<div class="fb bad">${esc(q.explain ?? 'Виж отново частта.')}${see}
+    return `<div class="fb bad">${esc(redSentence(q))}${see}
         <button type="button" class="btn" data-act="retry">Опитай пак</button></div>`;
 }
 

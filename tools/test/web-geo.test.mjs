@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { boxToViewBox, clampViewBox, clampViewInPane, haversineKm } from '../../js/geo.js';
+import { boxToViewBox, clampViewBox, clampViewInPane, haversineKm, letterSpots, pathPoints } from '../../js/geo.js';
 
 const P = (lon, lat) => [lon * 10, (50 - lat) * 10];
 
@@ -54,4 +54,15 @@ test('clampViewInPaneMeasuresWidthInThePane', () => {
     assert.ok(Math.abs(close.h / close.w - 10.8 / 5) < 1e-9);
     const far = clampViewInPane({ x: 0, y: 0, w: 2000, h: 4328 }, { ...phone, ...paneLimits });
     assert.ok(Math.abs(paneWidth(far) - 400) < 1e-9, `got ${paneWidth(far)}`);
+});
+
+test('pathPointsReadsCorners', () => {
+    assert.deepEqual(pathPoints('M1 2L3.5 4L-5 6ZM7 8L9 10Z'), [[1, 2], [3.5, 4], [-5, 6], [7, 8], [9, 10]]);
+});
+
+test('letterSpotsSitOnOwnOutlineAwayFromOthers', () => {
+    // a small square nested in the corner of a big one, sharing two of its edges
+    const outer = [[0, 0], [50, 0], [100, 0], [100, 50], [100, 100], [50, 100], [0, 100], [0, 50]];
+    const inner = [[0, 0], [20, 0], [40, 0], [40, 20], [40, 40], [20, 40], [0, 40], [0, 20]];
+    assert.deepEqual(letterSpots([outer, inner]), [[100, 100], [40, 40]]);
 });

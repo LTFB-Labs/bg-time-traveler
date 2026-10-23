@@ -3,6 +3,8 @@
 import {
     boxToViewBox,
     clampViewInPane,
+    letterSpots,
+    pathPoints,
 } from './geo.js';
 
 const NS = "http://www.w3.org/2000/svg";
@@ -108,29 +110,16 @@ function buildBorders(ids, ghostId) {
     if (ghostId) drawGhost(L, GEO.borders[ghostId]);
     return L;
 }
-const LETTER_R = 17;
-// all fills first, then all outlines, so a larger border never hides a smaller one's edge
+const CHOICE_OUTLINE = { fill: 'none', 'stroke-width': 3, 'stroke-linejoin': 'round', 'vector-effect': 'non-scaling-stroke' };
+// all fills first, then all outlines, so a larger border never hides a smaller one's edge;
+// the outlines keep 3 screen pixels at any zoom, and each letter sits on its own outline (see setLetters)
 function buildChoices(ids) {
     const L = newLayer();
     const borders = ids.map((id) => GEO.borders[id]);
     borders.forEach((b, i) => el('path', { d: b.d, fill: CHOICE_COLOURS[i], 'fill-opacity': .14 }, L.gFill));
-    borders.forEach((b, i) => el('path', { d: b.d, fill: 'none', stroke: CHOICE_COLOURS[i], 'stroke-width': 3, 'stroke-linejoin': 'round' }, L.gFill));
-    letterSpots(borders).forEach(([x, y], i) => drawLetter(L.gLab, x, y, i));
+    borders.forEach((b, i) => el('path', { d: b.d, stroke: CHOICE_COLOURS[i], ...CHOICE_OUTLINE }, L.gFill));
+    L.letters = letterSpots(borders.map((b) => pathPoints(b.d)));
     return L;
-}
-// label points of nested borders sit close together: a letter that would touch an earlier one moves down until it is clear
-function letterSpots(borders) {
-    const spots = [];
-    borders.forEach((b) => {
-        let y = b.ly;
-        while (spots.some(([x, sy]) => Math.hypot(x - b.lx, sy - y) < LETTER_R * 2.4)) y += LETTER_R;
-        spots.push([b.lx, y]);
-    });
-    return spots;
-}
-function drawLetter(gLab, x, y, i) {
-    el('circle', { cx: x, cy: y, r: LETTER_R, fill: CHOICE_COLOURS[i], stroke: PAPER, 'stroke-width': 3 }, gLab);
-    el('text', { x, y, class: 'choice-lab', 'font-size': LETTER_R * 1.25 }, gLab).textContent = CHOICE_LETTERS[i];
 }
 // a layer is opaque: it has its own paper base
 function newLayer() {
@@ -200,6 +189,7 @@ function showLayer(key, build) {
     const prev = curLayer; curLayer = key;
     if (!layers.has(key)) layers.set(key, build());
     const L = layers.get(key);
+    setLetters(L.letters ?? []);
     clearTimeout(L.t);
     realmsG.appendChild(L.gFill); frameG.appendChild(L.gLab);
     fade(L.gFill, 0, 1, 650); fade(L.gLab, 0, 1, 650);
@@ -364,6 +354,22 @@ let cityList = [], cityEls = [], cityYear = 0;
 const mkEls = new Map();
 let labEl = document.createElement("div"); labEl.className = "mk-lab"; labEl.style.opacity = 0; ov.appendChild(labEl);
 let markers = [], activeId = null, onMarkerClick = null;
+// the check's choice letters: badges in the overlay, so they keep their size at any zoom; spots are in map units
+let letters = [];
+function setLetters(spots) {
+    if (!letters.length && !spots.length) return;
+    letters.forEach((l) => l.badge.remove());
+    letters = spots.map(([x, y], i) => ({ x, y, badge: letterBadge(i) }));
+    placeOverlay();
+}
+function letterBadge(i) {
+    const badge = document.createElement('div');
+    badge.className = 'choice-mk';
+    badge.style.background = CHOICE_COLOURS[i];
+    badge.textContent = CHOICE_LETTERS[i];
+    ov.appendChild(badge);
+    return badge;
+}
 function setCities(list, year) {
     if (list !== cityList) buildCities(list);
     cityYear = year;
@@ -416,6 +422,8 @@ function paintMarker(b, m) {
     b.style.backgroundImage = m.photo ? `url("${m.photo}")` : '';
 }
 function placeOverlay() {
+  const s = innerWidth / vb.w;
+  letters.forEach(({ x, y, badge }) => { badge.style.left = (x - vb.x) * s + 'px'; badge.style.top = (y - vb.y) * s + 'px'; });
   const y = cityYear;
   cityList.forEach((c, i) => {
     const d = cityEls[i], nm = c.n.find((r) => y >= r[0] && y < r[1]);

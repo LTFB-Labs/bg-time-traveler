@@ -26,6 +26,13 @@ export const pickBorderIsCorrect = (q, idx) => idx === q.answer;
 // pairsChosen: { [card id]: description }
 export const matchIsCorrect = (q, pairsChosen) => q.pairs.every(([id, text]) => pairsChosen[id] === text);
 
+// the sentence of a red answer: the question's explain; without one, a pointer to its part,
+// or for a question tied to no part a hint by type
+const SEE_PART = 'Виж отново частта.';
+const NO_PART_HINT = { order: 'Погледни годините на линията на времето.' };
+
+export const redSentence = (q) => q.explain ?? (q.part ? SEE_PART : NO_PART_HINT[q.type] ?? SEE_PART);
+
 const IS_CORRECT = { tap: tapIsCorrect, order: orderIsCorrect, choose: chooseIsCorrect, 'pick-border': pickBorderIsCorrect, match: matchIsCorrect };
 
 export const isCorrect = (q, value) => IS_CORRECT[q.type](q, value);

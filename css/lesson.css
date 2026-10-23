@@ -308,7 +308,8 @@ body.lesson #vignette { right: var(--ls-w); }
 /* ---------- the check ---------- */
 #lesson { --ok: #3f8a3a; --ok-bg: #e4f0d8; --bad: #c8402f; --bad-bg: #f9e0d6; }
 #lsCheck { display: grid; gap: 14px; }
-.q { padding: 14px 16px; background: #fff8e8; border: 1px solid var(--line); border-radius: 16px; }
+/* the prediction block also has a .q, its question line: the card style belongs to the check's questions only */
+#lsCheck > .q { padding: 14px 16px; background: #fff8e8; border: 1px solid var(--line); border-radius: 16px; }
 #lsBody .q .qt { font-size: 17px; color: #3f230f; margin-bottom: 10px; }
 #lsBody .q .qt b { color: #7a1e12; }
 #lsBody .q .hint { font-size: 15px; color: var(--muted); margin-bottom: 8px; }
@@ -378,4 +379,21 @@ body.lesson #vignette { right: var(--ls-w); }
 .mk:is([data-tone=ok], [data-tone=bad]) { border-color: var(--tone); }
 .mk:is([data-tone=ok], [data-tone=bad])::before { border-top-color: var(--tone); }
 .mk:is([data-tone=ok], [data-tone=bad]) svg { color: var(--tone); }
-.choice-lab { font-family: var(--font); font-weight: 900; fill: #fff; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.choice-mk {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    margin: -16px 0 0 -16px;
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+    border: 3px solid var(--paper);
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(60, 40, 15, .4);
+    color: #fff;
+    font-weight: 900;
+    font-size: 20px;
+    line-height: 1;
+    pointer-events: none;
+    animation: fadein .65s ease-out;
+}

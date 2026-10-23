@@ -37,3 +37,25 @@ export function clampViewInPane(vb, { pane, screenW, ...limits }) {
     const k = seen.w / pane.w;
     return { x: seen.x - pane.x * k, y: seen.y - pane.y * k, w: screenW * k, h: vb.h * k / s };
 }
+
+// the corners of an SVG path made of M, L and Z commands, as [x, y] pairs
+export function pathPoints(d) {
+    const numbers = d.match(/-?\d+(?:\.\d+)?/g).map(Number);
+    return numbers.flatMap((n, i) => (i % 2 ? [] : [[n, numbers[i + 1]]]));
+}
+
+// one spot on each outline for its letter: the corner farthest from every other outline and from the letters placed before,
+// so a letter always sits on its own border, even where borders nest or share an edge
+export function letterSpots(outlines) {
+    const spots = [];
+    outlines.forEach((points, i) => {
+        const others = outlines.filter((_, k) => k !== i).flat().concat(spots);
+        spots.push(farthestFrom(points, others));
+    });
+    return spots;
+}
+
+function farthestFrom(points, others) {
+    const gaps = points.map((p) => Math.min(...others.map((q) => Math.hypot(p[0] - q[0], p[1] - q[1]))));
+    return points[gaps.indexOf(Math.max(...gaps))];
+}

@@ -6,6 +6,7 @@ import {
     isPassed,
     matchIsCorrect,
     orderIsCorrect,
+    redSentence,
     retry,
     shuffle,
     tapIsCorrect,
@@ -59,4 +60,12 @@ test('matchNeedsEveryPairRight', () => {
     assert.equal(matchIsCorrect(q, { teres: 'основава царството', sitalces: 'царството в разцвет' }), true);
     assert.equal(matchIsCorrect(q, { teres: 'царството в разцвет', sitalces: 'основава царството' }), false);
     assert.equal(matchIsCorrect(q, { teres: 'основава царството' }), false);
+});
+
+test('redSentenceFallsBackByType', () => {
+    assert.equal(redSentence({ type: 'tap', explain: 'Севтополис е на Тунджа.', part: 6 }), 'Севтополис е на Тунджа.');
+    assert.equal(redSentence({ type: 'order' }), 'Погледни годините на линията на времето.');
+    assert.equal(redSentence({ type: 'order', part: 2 }), 'Виж отново частта.');
+    assert.equal(redSentence({ type: 'choose', part: 1 }), 'Виж отново частта.');
+    assert.equal(redSentence({ type: 'choose' }), 'Виж отново частта.');
 });
