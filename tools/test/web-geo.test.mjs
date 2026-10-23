@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { boxToViewBox, clampViewBox, haversineKm } from '../../js/geo.js';
+import { boxToViewBox, clampViewBox, clampViewInPane, haversineKm } from '../../js/geo.js';
 
 const P = (lon, lat) => [lon * 10, (50 - lat) * 10];
 
@@ -25,7 +25,33 @@ test('clampViewBoxLimits', () => {
     const small = clampViewBox({ x: 0, y: 0, w: 50, h: 25 }, limits);
     assert.deepEqual([small.w, small.h], [100, 50]);
     const far = clampViewBox({ x: 9000, y: -9000, w: 500, h: 250 }, limits);
-    assert.deepEqual([far.x, far.y], [2500 - 500, -250]);
+    assert.deepEqual([far.x, far.y], [1.25 * (2000 - 500), -(1000 - 250) / 4]);
     const wide = clampViewBox({ x: 0, y: 0, w: 5000, h: 2500 }, limits);
     assert.deepEqual([wide.w, wide.h], [1000, 500]);
+});
+
+test('clampViewBoxShowsTheWholeWorldWhenFullyOut', () => {
+    const limits = { minW: 100, maxW: 2000, world: { W: 2000, H: 1000 } };
+    const out = clampViewBox({ x: 300, y: -900, w: 2000, h: 1800 }, limits);
+    assert.equal(out.x, 0);
+    assert.equal(out.y, (1000 - 1800) / 2);
+});
+
+// a phone: the window is 390 x 844 but the map pane is a short strip at its top
+const phone = { screenW: 390, pane: { x: 24, y: 24, w: 342, h: 200 } };
+const paneLimits = { minW: 10, maxW: 400, world: { W: 400, H: 300 } };
+const paneWidth = (vb) => vb.w * phone.pane.w / phone.screenW;
+
+test('clampViewInPaneKeepsAHomeView', () => {
+    const home = boxToViewBox([15, 35, 25, 45], { w: 390, h: 844 }, phone.pane, P);
+    const clamped = clampViewInPane(home, { ...phone, ...paneLimits });
+    for (const k of ['x', 'y', 'w', 'h']) assert.ok(Math.abs(clamped[k] - home[k]) < 1e-9, `${k}: ${clamped[k]} vs ${home[k]}`);
+});
+
+test('clampViewInPaneMeasuresWidthInThePane', () => {
+    const close = clampViewInPane({ x: 100, y: 50, w: 5, h: 10.8 }, { ...phone, ...paneLimits });
+    assert.ok(Math.abs(paneWidth(close) - 10) < 1e-9, `got ${paneWidth(close)}`);
+    assert.ok(Math.abs(close.h / close.w - 10.8 / 5) < 1e-9);
+    const far = clampViewInPane({ x: 0, y: 0, w: 2000, h: 4328 }, { ...phone, ...paneLimits });
+    assert.ok(Math.abs(paneWidth(far) - 400) < 1e-9, `got ${paneWidth(far)}`);
 });

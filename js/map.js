@@ -2,7 +2,7 @@
 // Moved from the inline script of index.html; moved code keeps its original style.
 import {
     boxToViewBox,
-    clampViewBox,
+    clampViewInPane,
 } from './geo.js';
 
 const NS = "http://www.w3.org/2000/svg";
@@ -249,6 +249,7 @@ function tick() {
 // lesson mode: one pointer drags the map, two pinch it, the wheel zooms about the cursor.
 // free mode: the wheel scrubs the year (free.js) unless the corner toggle turned wheelZoom on or a trackpad pinch sends ctrlKey,
 // and only two pointers move the map. Markers sit in the overlay, so a press on one never reaches the svg.
+// The limits measure what the kid sees, the free rect, not the whole window behind the reading pane.
 // The projection scales longitude by GEO.cx, so a map unit is 111 / GEO.k km both ways and 50 km is 50 / 111 * GEO.k units.
 const LIMITS = { minW: 50 / 111 * GEO.k, maxW: GEO.W, world: GEO };
 const SLOP = 6; // pixels a press may move and still count as a tap
@@ -278,16 +279,19 @@ svg.addEventListener('pointerup', lift);
 svg.addEventListener('pointercancel', lift);
 // a drag is not a tap: click listeners on the map only hear presses that stayed put
 svg.addEventListener('click', (e) => { if (dragged) e.stopImmediatePropagation(); }, true);
-svg.addEventListener('wheel', (e) => {
+// the overlay too: a wheel over a marker button zooms like one over the map
+[svg, ov].forEach((target) => target.addEventListener('wheel', (e) => {
     if (!zoomsOnWheel(e)) return;
     e.preventDefault();
     moveByHand(zoomed(vb, wheelFactor(e), e.clientX, e.clientY));
-}, { passive: false });
+}, { passive: false }));
 // the midpoint of the first two pointers and their distance; a single pointer gets distance 1, so it never scales
 function spread() {
     const [a, b = a] = pointers.values();
     return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2, d: Math.hypot(a.x - b.x, a.y - b.y) || 1 };
 }
+// the free rect, or the whole window before any mode has set one
+const paneRect = () => freeRect ?? { x: 0, y: 0, w: innerWidth, h: innerHeight };
 const wheelFactor = (e) => 2 ** (e.deltaY * WHEEL_STEP[e.deltaMode] * (e.ctrlKey ? TRACKPAD_PINCH : 1));
 // the view shifted by a screen offset, so the map follows the finger
 function panned(v, dx, dy) {
@@ -297,12 +301,13 @@ function panned(v, dx, dy) {
 // the view scaled by f about a screen point, which keeps the map point under it; the width limits apply here so the point holds at a limit
 function zoomed(v, f, sx, sy) {
     const s = v.w / innerWidth;
-    const k = clamp(v.w * f, LIMITS.minW, LIMITS.maxW) / v.w;
+    const seenW = paneRect().w * s;
+    const k = clamp(seenW * f, LIMITS.minW, LIMITS.maxW) / seenW;
     return { x: v.x + sx * s * (1 - k), y: v.y + sy * s * (1 - k), w: v.w * k, h: v.h * k };
 }
 // a hand move replaces the view and drops the tween's target, so nothing pulls the view back
 function moveByHand(next) {
-    vb = clampViewBox(next, LIMITS);
+    vb = clampViewInPane(next, { pane: paneRect(), screenW: innerWidth, ...LIMITS });
     vbT = null;
     applyVB();
     onUserMoveCb(true);

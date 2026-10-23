@@ -23,5 +23,17 @@ const clamp = (v, lo, hi) => Math.max(lo, Math.min(v, hi));
 export function clampViewBox(vb, { minW, maxW, world: { W, H } }) {
     const w = clamp(vb.w, minW, maxW);
     const h = vb.h * w / vb.w;
-    return { x: clamp(vb.x, -W * 0.25, W * 1.25 - w), y: clamp(vb.y, -H * 0.25, H * 1.25 - h), w, h };
+    return { x: place(vb.x, W - w), y: place(vb.y, H - h), w, h };
+}
+
+// A view may run past the world's edge by a quarter of the room it has left, so a view as wide as the world shows all of it;
+// a view bigger than the world is centred on it.
+const place = (v, room) => (room < 0 ? room / 2 : clamp(v, -room / 4, room * 1.25));
+
+// The window view is wider than what the kid sees: the limits apply to the part of it inside the pane, a rect in window pixels.
+export function clampViewInPane(vb, { pane, screenW, ...limits }) {
+    const s = vb.w / screenW;
+    const seen = clampViewBox({ x: vb.x + pane.x * s, y: vb.y + pane.y * s, w: pane.w * s, h: pane.h * s }, limits);
+    const k = seen.w / pane.w;
+    return { x: seen.x - pane.x * k, y: seen.y - pane.y * k, w: screenW * k, h: vb.h * k / s };
 }
