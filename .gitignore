@@ -1,0 +1,5 @@
+data-src/node_modules/
+data-src/*.geojson
+inspect.mjs
+.playwright-mcp/
+spike/
