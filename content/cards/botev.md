@@ -16,6 +16,7 @@ path:
     - 43.5
   - - 23.55
     - 43.2
+move: walker
 photo: botev
 aliases:
   - Христо Ботев

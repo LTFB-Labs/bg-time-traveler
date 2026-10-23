@@ -18,6 +18,7 @@ path:
     - 46.5
   - - 29.4
     - 45.6
+move: riders
 photo: ongal
 aliases:
   - Битката при Онгъла

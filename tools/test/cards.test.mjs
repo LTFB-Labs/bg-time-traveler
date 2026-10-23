@@ -83,3 +83,8 @@ test('rejectsIdWithCapitalsOrUnderscores', () => {
     const card = parseCard(TEXT.replace('id: teres', 'id: Teres_I'), 'content/cards/Teres_I.md');
     assert.deepEqual(messages(card), ['id "Teres_I" must be lowercase latin letters and digits, joined by single hyphens']);
 });
+
+test('cardMoveWithoutPathIsAProblem', () => {
+    const card = parseCard(TEXT.replace('years:', 'move: army\nyears:'), FILE);
+    assert.deepEqual(validateCard(card, { ...ctx, figures: new Set(['army']) }).map((p) => p.message), ['"move" needs a "path"']);
+});

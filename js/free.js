@@ -38,7 +38,7 @@ function updateMarkers() {
   vis.sort((a, b) => (a === act) - (b === act)); // active last → on top
   map.setMarkers(vis.map((e) => { const age = (y - e.y) / SPAN(e); return toMarker(e, e === act ? 1 : (1 - age * .55).toFixed(2)); }), onMarkerClick);
   map.setActiveMarker(act ? act.id : null);
-  if (act !== activeEv) { activeEv = act; renderCard(); map.drawPath(act ? act.path : null); }
+  if (act !== activeEv) { activeEv = act; renderCard(); map.drawPath(act ? act.path : null, act?.move); }
 }
 const toMarker = (e, opacity) => ({ id: e.id, at: e.at, kind: e.kind, title: e.t, photo: PH[e.id]?.f, opacity });
 const onMarkerClick = (m) => { stopPlay(); goTo(EV.find((e) => e.id === m.id).y, 900); };

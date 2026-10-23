@@ -34,8 +34,10 @@ function entryProblems(entry, files) {
     return isAllowedLicence(entry.l ?? '') ? fileProblems : [...fileProblems, `licence "${entry.l}" is not allowed`];
 }
 
-export function renderCredits(photos) {
+// figures: the content/figures.json credits of the route figures
+export function renderCredits(photos, figures = {}) {
     const rows = Object.keys(photos).filter((key) => photos[key].u).sort().map((key) => creditRow(key, photos[key]));
+    const figureRows = Object.keys(figures).sort().map((id) => `| ${id} | ${figures[id].a} | ${figures[id].l} | ${figures[id].u} |`);
     return [
         '# Снимки',
         '',
@@ -44,6 +46,14 @@ export function renderCredits(photos) {
         '| Снимка | Автор | Лиценз | Файл |',
         '|---|---|---|---|',
         ...rows,
+        '',
+        '## Фигури',
+        '',
+        'Фигурите са от [game-icons.net](https://game-icons.net/), лиценз CC BY 3.0.',
+        '',
+        '| Фигура | Автор | Лиценз | Източник |',
+        '|---|---|---|---|',
+        ...figureRows,
         '',
     ].join('\n');
 }

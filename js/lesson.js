@@ -186,7 +186,7 @@ function showPartOnMap(map, lesson, n, cards) {
         map.setActiveMarker(m.id);
         cards.open(m.id);
     });
-    map.drawPath(meta.path ?? null);
+    map.drawPath(meta.path ?? null, meta.move);
     map.flyTo(meta.box);
 }
 

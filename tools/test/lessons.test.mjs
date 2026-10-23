@@ -87,3 +87,13 @@ test('stripsFactPrefixWithThreeDots', () => {
     const lesson = parseLesson(read('odrysae').replace('Знаеш ли, че…', 'Знаеш ли, че...'), 'odrysae.md');
     assert.match(lesson.parts[1].fact, /^древните хора/);
 });
+
+test('moveWithoutPathIsAProblem', () => {
+    const problems = check(read('odrysae').replace('year: -341', 'year: -341\nmove: army'), { figures: new Set(['army']) });
+    assert.deepEqual(problems.map((p) => p.message), ['part "Филип II завладява Тракия": move needs a path in the same part']);
+});
+
+test('unknownMoveIsAProblem', () => {
+    const problems = check(read('odrysae').replace('year: -341', 'year: -341\npath: [[22.6, 40.9], [26.4, 42.4]]\nmove: dragon'), { figures: new Set(['army']) });
+    assert.deepEqual(problems.map((p) => p.message), ['part "Филип II завладява Тракия": move has unknown figure dragon']);
+});

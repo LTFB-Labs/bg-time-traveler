@@ -116,6 +116,12 @@ button{font-family:inherit;cursor:pointer}
 /* migration arrows */
 .mig{fill:none;stroke:#7a1e12;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:14 10;animation:march 1.2s linear infinite;opacity:.9}
 @keyframes march{to{stroke-dashoffset:-24}}
+/* the figure riding a route arrow (map.js): ink with a cream outline; walkers and riders bob, the ship rocks */
+.fig use{fill:#3d2a17;stroke:#f2e6c6;stroke-width:40;stroke-linejoin:round;paint-order:stroke}
+.fig .bob{animation:fig-bob .5s ease-in-out infinite alternate}
+.fig.ship .bob{animation:fig-rock 1.6s ease-in-out infinite alternate}
+@keyframes fig-bob{to{transform:translateY(-3px)}}
+@keyframes fig-rock{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
 
 /* intro */
 #intro{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px;background:radial-gradient(ellipse at 50% 40%,#f8eed4 0,#efdfb6 60%,#e0c995 100%);transition:opacity .6s,transform .6s;text-align:center}

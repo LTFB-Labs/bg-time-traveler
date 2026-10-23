@@ -97,6 +97,21 @@ test('reportsUnreadableJsonByFileName', () => {
     assert.match(problems[0].message, /cannot read: .*JSON/);
 });
 
+test('eventsCarryMove', () => {
+    const front = 'id: march\nkind: event\nlegacyKind: event\ntitle: Поход\nyears: [-431, -431]\nat: [23.0, 41.0]\npath: [[26.3, 42.2], [23.0, 41.0]]\nmove: army';
+    const card = `---\n${front}\n---\nПоход на запад.\n`;
+    const figures = join(import.meta.dirname, 'fixtures/figures-ok');
+    const { content, problems } = buildContent(copyOkWith({
+        'content/cards/march.md': card,
+        'content/figures.json': readFileSync(join(figures, 'figures.json'), 'utf8'),
+        'content/figures/army.svg': readFileSync(join(figures, 'figures/army.svg'), 'utf8'),
+    }));
+    assert.deepEqual(problems, []);
+    assert.equal(content.figures.army.viewBox, '0 0 512 512');
+    const events = JSON.parse(/^const EVENTS = (.*);$/m.exec(renderContentJs(content))[1]);
+    assert.equal(events.find((event) => event.id === 'march').move, 'army');
+});
+
 function copyOkWith(files) {
     const copy = mkdtempSync(join(tmpdir(), 'content-'));
     cpSync(root, copy, { recursive: true });

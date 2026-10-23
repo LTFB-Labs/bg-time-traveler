@@ -31,7 +31,7 @@ export function validateCard(card, ctx) {
     if (card.parseError) {
         return [problem(card.file, `unreadable front matter: ${card.parseError}`)];
     }
-    const rules = [requiredFields, textRules, kindRule, paragraphRules, photoRule, atRule, yearsRule, idRule, idFormatRule];
+    const rules = [requiredFields, textRules, kindRule, paragraphRules, photoRule, atRule, yearsRule, idRule, idFormatRule, moveRule];
     return rules.flatMap((rule) => rule(card, ctx).map((message) => problem(card.file, message)));
 }
 
@@ -99,4 +99,13 @@ function idFormatRule(card) {
 
 function inRange(value, [min, max]) {
     return Number.isFinite(value) && value >= min && value <= max;
+}
+
+// a figure that rides the card's route on the free map
+function moveRule(card, ctx) {
+    if (card.move === undefined) {
+        return [];
+    }
+    const pathProblems = card.path === undefined ? ['"move" needs a "path"'] : [];
+    return ctx.figures.has(card.move) ? pathProblems : [...pathProblems, `unknown figure "${card.move}" in "move"`];
 }

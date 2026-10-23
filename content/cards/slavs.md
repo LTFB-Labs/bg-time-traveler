@@ -16,6 +16,7 @@ path:
     - 45.6
   - - 23.9
     - 43.9
+move: settlers
 photo: slavs
 aliases:
   - Славяните се заселват
