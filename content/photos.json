@@ -526,5 +526,68 @@
     "u": "https://commons.wikimedia.org/wiki/File:Back_of_Bulgarian_1_euro_coin.png",
     "w": 900,
     "h": 895
+  },
+  "thracian-horseman": {
+    "src": "Marble_votive_tablet_of_a_Thracian_horseman.jpg",
+    "f": "photos/thracian-horseman.jpg",
+    "a": "Scroch",
+    "l": "CC BY-SA 4.0",
+    "u": "https://commons.wikimedia.org/wiki/File:Marble_votive_tablet_of_a_Thracian_horseman.jpg",
+    "w": 706,
+    "h": 900
+  },
+  "teres-mask": {
+    "src": "The_golden_life-size_mask_of_Teres_I_found_in_his_tomb_in_the_Valley_of_the_Thracian_Kings.png",
+    "f": "photos/teres-mask.png",
+    "a": "ChernorizetsHrabar",
+    "l": "CC BY-SA 4.0",
+    "u": "https://commons.wikimedia.org/wiki/File:The_golden_life-size_mask_of_Teres_I_found_in_his_tomb_in_the_Valley_of_the_Thracian_Kings.png",
+    "w": 900,
+    "h": 689
+  },
+  "panagyurishte": {
+    "src": "Sofia_-_Panagyurishte_Thracian_Gold_Treasure.jpg",
+    "f": "photos/panagyurishte.jpg",
+    "a": "Ann Wuyts",
+    "l": "CC BY 2.0",
+    "u": "https://commons.wikimedia.org/wiki/File:Sofia_-_Panagyurishte_Thracian_Gold_Treasure.jpg",
+    "w": 900,
+    "h": 600
+  },
+  "sozopol": {
+    "src": "Sozopol2.jpg",
+    "f": "photos/sozopol.jpg",
+    "a": "Nenko Lazarov",
+    "l": "CC BY 2.5",
+    "u": "https://commons.wikimedia.org/wiki/File:Sozopol2.jpg",
+    "w": 900,
+    "h": 675
+  },
+  "philip-ii": {
+    "src": "Phillip_II, king of Macedonia, Roman copy of Greek original, Ny Carlsberg Glyptotek, Copenhagen (36420294055).jpg",
+    "f": "photos/philip-ii.jpg",
+    "a": "Richard Mortel from Riyadh, Saudi Arabia",
+    "l": "CC BY 2.0",
+    "u": "https://commons.wikimedia.org/wiki/File:Phillip_II,_king_of_Macedonia,_Roman_copy_of_Greek_original,_Ny_Carlsberg_Glyptotek,_Copenhagen_(36420294055).jpg",
+    "w": 680,
+    "h": 900
+  },
+  "seuthes-iii-head": {
+    "src": "National_Archaeological_Museum_Sofia_-_Bronze_Head_from_the_Golyama_Kosmatka_Tumulus_near_Shipka.jpg",
+    "f": "photos/seuthes-iii-head.jpg",
+    "a": "Ann Wuyts",
+    "l": "CC BY 2.0",
+    "u": "https://commons.wikimedia.org/wiki/File:National_Archaeological_Museum_Sofia_-_Bronze_Head_from_the_Golyama_Kosmatka_Tumulus_near_Shipka.jpg",
+    "w": 600,
+    "h": 900
+  },
+  "kazanlak-tomb": {
+    "src": "Kazanluk_1.jpg",
+    "f": "photos/kazanlak-tomb.jpg",
+    "a": "Kmrakmra",
+    "l": "CC BY-SA 3.0",
+    "u": "https://commons.wikimedia.org/wiki/File:Kazanluk_1.jpg",
+    "w": 900,
+    "h": 855
   }
 }
