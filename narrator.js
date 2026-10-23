@@ -33,10 +33,10 @@ const start = (app) => {
 .nar-orb.drag{cursor:grabbing;transform:scale(1.08)}
 @keyframes narSpin{to{transform:rotate(360deg)}}
 /* active: the orb lies down as a spinning disk, light rises from it and the monster stands on top */
-.nar-orb:not([data-state=dormant]) .core{transform:translateY(20px) scaleY(.36)}
+.nar-orb:not([data-state=dormant]) .core{transform:translateY(20px) scale(1.5,.54)}
 .nar-orb:not([data-state=dormant]) > svg{opacity:0!important}
 .nar-orb:not([data-state=dormant]) .glow{inset:-9px;filter:blur(12px)}
-.nar-orb .beam{position:absolute;left:50%;bottom:17px;width:62px;height:100px;margin-left:-31px;background:linear-gradient(to top,rgba(150,180,255,.8),rgba(255,130,210,.32) 45%,rgba(120,240,255,0));clip-path:polygon(10% 100%,90% 100%,100% 0,0 0);filter:blur(5px);mix-blend-mode:screen;opacity:0;transform:scaleY(.15);transform-origin:50% 100%;transition:opacity .5s,transform .6s;pointer-events:none}
+.nar-orb .beam{position:absolute;left:50%;bottom:14px;width:93px;height:104px;margin-left:-46.5px;background:linear-gradient(to top,rgba(150,180,255,.8),rgba(255,130,210,.32) 45%,rgba(120,240,255,0));clip-path:polygon(10% 100%,90% 100%,100% 0,0 0);filter:blur(5px);mix-blend-mode:screen;opacity:0;transform:scaleY(.15);transform-origin:50% 100%;transition:opacity .5s,transform .6s;pointer-events:none}
 .nar-orb:not([data-state=dormant]) .beam{opacity:.85;transform:none;animation:narBeam 2.4s ease-in-out infinite}
 .nar-orb[data-state=paused] .beam{opacity:.35;animation:none}
 .nar-orb .mon{position:absolute;left:50%;bottom:18px;width:82px;height:95px;margin-left:-41px;opacity:0;transform:translateY(26px) scale(.4);transform-origin:50% 100%;transition:opacity .4s,transform .65s cubic-bezier(.3,1.5,.5,1);pointer-events:none}
@@ -69,7 +69,7 @@ const start = (app) => {
 .nar-photo figcaption{margin-top:6px;font:400 17px/1.2 Kurale,Georgia,serif;color:#3f230f;text-align:center}
 .nar-photo figcaption small{display:block;margin-top:2px;font:600 10.5px Nunito,sans-serif;color:#8a7352}
 @keyframes narIn{from{opacity:0;transform:translateY(8px)}}
-@media (max-width:760px){.nar-orb{--nar-size:58px}.nar-orb:not([data-state=dormant]) .core{transform:translateY(17px) scaleY(.36)}.nar-orb .mon{width:70px;height:81px;margin-left:-35px;bottom:15px}.nar-orb .beam{width:52px;height:84px;margin-left:-26px;bottom:15px}.nar-bubble{font-size:15px}.nar-bubble .say{font-size:15.5px}.nar-bubble .keys{display:none}}
+@media (max-width:760px){.nar-orb{--nar-size:58px}.nar-orb:not([data-state=dormant]) .core{transform:translateY(17px) scale(1.5,.54)}.nar-orb .mon{width:70px;height:81px;margin-left:-35px;bottom:15px}.nar-orb .beam{width:78px;height:88px;margin-left:-39px;bottom:12px}.nar-bubble{font-size:15px}.nar-bubble .say{font-size:15.5px}.nar-bubble .keys{display:none}}
 @media (prefers-reduced-motion:reduce){.nar-orb .glow,.nar-orb .swirl,.nar-orb .blobs,.nar-orb .beam,.nar-orb .mon svg{animation:none!important}.nar-photo{transition:opacity .3s}}
 `;
   const style = document.createElement("style"); style.textContent = css; document.head.appendChild(style);
@@ -267,7 +267,7 @@ const start = (app) => {
     const size = orb.offsetWidth || 68;
     let x, y;
     if (custom) { x = custom.x * innerWidth - size / 2; y = custom.y * innerHeight - size / 2; }
-    else { const d = app.dock(); x = d.left + (d.width - size) / 2; y = d.top + (d.height - size) / 2; }
+    else { const d = app.dock(); x = d.left + (d.width - size) / 2; y = d.bottom - size - 8; } // bottom of the slot: the monster needs the room above
     x = Math.max(8, Math.min(innerWidth - size - 8, x)); y = Math.max(8, Math.min(innerHeight - size - 8, y));
     orb.style.left = Math.round(x) + "px"; orb.style.top = Math.round(y) + "px";
     if (!bubble.hidden) placeBubble();
