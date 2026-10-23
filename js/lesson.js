@@ -5,6 +5,11 @@ import {
     icon,
 } from './map.js';
 import {
+    createTimeline,
+    shortHeading,
+    storyCount,
+} from './timeline.js';
+import {
     fmtSpan,
     fmtYear,
 } from './years.js';
@@ -18,6 +23,10 @@ export function startLesson(map, lesson, { part = 0 } = {}) {
         if (target === current) return;
         current = target;
         renderPart(lesson, current);
+        showPartOnMap(map, lesson, current);
+        renderYear(lesson, current);
+        renderLegend(mapMeta(lesson, current).borders);
+        timeline.setPart(current);
         markSteps(current);
         updateNav(lesson, current);
         history.replaceState(null, '', `#lesson/${lesson.id}/${current}`);
@@ -25,6 +34,7 @@ export function startLesson(map, lesson, { part = 0 } = {}) {
     const player = { goTo, next: () => goTo(current + 1), prev: () => goTo(current - 1), current: () => current };
     showPane();
     renderHead(lesson, goTo);
+    const timeline = createTimeline($('lsTl'), lesson, { onPick: goTo });
     wireNav(player);
     fitMapPane(map);
     addEventListener('resize', () => fitMapPane(map));
@@ -43,10 +53,13 @@ function showPane() {
     $('lesson').hidden = false;
 }
 
-// the SVG still fills the window; the camera fits its boxes into the visible map pane
+const MAP_PAD = 24;
+
+// the SVG still fills the window; the camera fits its boxes into the visible map pane above the timeline strip
 function fitMapPane(map) {
     const r = $('lsMap').getBoundingClientRect();
-    map.setFreeRect({ x: r.x, y: r.y, w: r.width, h: r.height });
+    const strip = $('lsTl').offsetHeight;
+    map.setFreeRect({ x: r.x + MAP_PAD, y: r.y + MAP_PAD, w: r.width - 2 * MAP_PAD, h: r.height - strip - 2 * MAP_PAD });
 }
 
 /* ---------- header ---------- */
@@ -71,16 +84,6 @@ function stepChip(p, n, goTo) {
     b.title = p.heading;
     b.addEventListener('click', () => goTo(n));
     return b;
-}
-
-const SHORT_MAX = 24;
-
-// a chapter chip: the heading up to its first dash or colon, cut at a word to at most 24 characters
-export function shortHeading(heading) {
-    const head = heading.split(/ [—–] |:/)[0];
-    if (head.length <= SHORT_MAX) return head;
-    const cut = head.slice(0, SHORT_MAX + 1);
-    return cut.slice(0, cut.lastIndexOf(' ')) || head.slice(0, SHORT_MAX);
 }
 
 function markSteps(current) {
@@ -112,6 +115,80 @@ function wireNav(player) {
 function updateNav(lesson, current) {
     $('lsPrev').disabled = current === 0;
     $('lsNext').disabled = current === lesson.parts.length - 1;
+}
+
+/* ---------- map pane ---------- */
+// the map follows the part: its borders with the ghost of the earlier main border, its markers, its arrow, its box
+function showPartOnMap(map, lesson, n) {
+    const meta = mapMeta(lesson, n);
+    map.showBorders(meta.borders, ghostFor(lesson, n));
+    map.setMarkers(markersFromCards(meta.marks ?? []), (m) => map.setActiveMarker(m.id));
+    map.drawPath(meta.path ?? null);
+    map.flyTo(meta.box);
+}
+
+// the check has no map of its own: it shows the summary's area and borders, without markers that would give answers away
+function mapMeta(lesson, n) {
+    const { meta } = lesson.parts[n];
+    if (meta.box) return meta;
+    const { box, borders } = lesson.parts[0].meta;
+    return { box, borders };
+}
+
+// the part's own ghost, else the previous story part's main border when the main border changed
+export function ghostFor(lesson, n) {
+    const { meta } = lesson.parts[n];
+    if (meta.ghost) return meta.ghost;
+    const previous = lesson.parts.slice(0, n).findLast((p) => p.type === 'story');
+    const before = previous && mainBorder(previous.meta.borders);
+    return before && before !== mainBorder(meta.borders) ? before : undefined;
+}
+
+// the first state among the borders, as map.showBorders picks it
+const mainBorder = (ids = []) => ids.find((id) => GEO.borders[id]?.kind === 'state');
+
+export function markersFromCards(ids) {
+    const cards = ids.map((id) => CONTENT.cards[id] ?? { id });
+    cards.filter((c) => !c.at).forEach(warnNoPlace);
+    return cards.filter((c) => c.at).map((c) => ({ id: c.id, at: c.at, kind: c.kind, title: c.title, photo: CONTENT.photos[c.photo]?.f }));
+}
+
+const warnedNoPlace = new Set();
+
+function warnNoPlace({ id }) {
+    if (warnedNoPlace.has(id)) return;
+    warnedNoPlace.add(id);
+    console.warn(`markersFromCards: card ${id} has no place on the map, skipped`);
+}
+
+// the year corner; the summary and the check show the lesson's span, smaller
+function renderYear(lesson, n) {
+    const { type, meta } = lesson.parts[n];
+    const isStory = type === 'story';
+    const year = $('lsYear');
+    year.innerHTML = yearHtml(isStory ? fmtYear(meta) : fmtSpan(lesson.span));
+    year.classList.toggle('span', !isStory);
+}
+
+// the number large and the era words small, as in spike/lesson.html
+function yearHtml(text) {
+    const [number, words] = text.split(/ (?=г\.)/);
+    return words ? `${esc(number)}<small>${esc(words)}</small>` : esc(number);
+}
+
+function renderLegend(ids) {
+    const main = mainBorder(ids);
+    $('lsLegend').innerHTML = ids.map((id) => legendPill(GEO.borders[id], id === main)).join('');
+}
+
+function legendPill(border, isMain) {
+    return `<span><i style="background:${swatch(border, isMain)}"></i>${esc(border.n)}</span>`;
+}
+
+// tribes are hatched; states are the border colour on paper, the main one stronger
+function swatch({ kind, c }, isMain) {
+    if (kind === 'tribes') return `repeating-linear-gradient(35deg, ${c} 0 2px, #e8d7b0 2px 5px)`;
+    return `color-mix(in srgb, ${c} ${isMain ? 55 : 35}%, #f2e6c6)`;
 }
 
 /* ---------- part body ---------- */
@@ -154,8 +231,6 @@ function storyHtml(lesson, n) {
 const checkHtml = () => '<h2>Проверка</h2><p>Скоро тук ще има въпроси.</p>';
 
 const PART_HTML = { summary: summaryHtml, story: storyHtml, check: checkHtml };
-
-const storyCount = (lesson) => lesson.parts.filter((p) => p.type === 'story').length;
 
 function nameChip(id) {
     const { title, dates } = CONTENT.cards[id];
