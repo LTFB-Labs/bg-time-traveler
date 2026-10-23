@@ -25,6 +25,8 @@ export const KIND = {
 export const icon = (k) => `<svg viewBox="0 0 24 24">${KIND[k].i}</svg>`;
 // lesson cards have their own kinds; free-mode events use the KIND keys directly
 const CARD_ICON = { person: 'person', people: 'person', place: 'building', state: 'building', object: 'event', event: 'event', idea: 'event' };
+// the icon of a card kind; map kinds that are not card kinds pass through
+export const cardIcon = (kind) => icon(CARD_ICON[kind] ?? kind);
 
 export function createMap(svg, ov) {
 /* ---------- static map ---------- */
@@ -284,7 +286,7 @@ function paintMarker(b, m) {
     if (b._look === look) return;
     b._look = look;
     b.setAttribute('aria-label', m.title);
-    b.innerHTML = icon(CARD_ICON[m.kind] ?? m.kind);
+    b.innerHTML = cardIcon(m.kind);
     b.classList.toggle('has-img', Boolean(m.photo));
     b.style.backgroundImage = m.photo ? `url("${m.photo}")` : '';
 }

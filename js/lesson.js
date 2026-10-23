@@ -1,9 +1,11 @@
 // The lesson player: the reading pane for CONTENT.lessons[id], one part at a time.
 // Node imports this module for the pure helpers, so every DOM access stays inside a function.
 import {
+    cardIcon,
     clamp,
-    icon,
 } from './map.js';
+import { createCards } from './cards.js';
+import { setPosition } from './store.js';
 import {
     createTimeline,
     eraAt,
@@ -20,18 +22,21 @@ const $ = (id) => document.getElementById(id);
 
 export function startLesson(map, lesson, { part = 0 } = {}) {
     let current = -1;
+    const cards = createCards($('lsPop'));
     const goTo = (n) => {
         const target = clamp(n, 0, lesson.parts.length - 1);
         if (target === current) return;
         current = target;
-        renderPart(lesson, current);
-        showPartOnMap(map, lesson, current);
+        cards.close();
+        renderPart(lesson, current, cards);
+        showPartOnMap(map, lesson, current, cards);
         renderYear(lesson, current);
         renderEra(lesson, current);
         renderLegend(mapMeta(lesson, current).borders);
         timeline.setPart(current);
         markSteps(current);
         updateNav(lesson, current);
+        setPosition(lesson.id, current);
         history.replaceState(null, '', `#lesson/${lesson.id}/${current}`);
     };
     const player = { goTo, next: () => goTo(current + 1), prev: () => goTo(current - 1), current: () => current };
@@ -122,10 +127,13 @@ function updateNav(lesson, current) {
 
 /* ---------- map pane ---------- */
 // the map follows the part: its borders with the ghost of the earlier main border, its markers, its arrow, its box
-function showPartOnMap(map, lesson, n) {
+function showPartOnMap(map, lesson, n, cards) {
     const meta = mapMeta(lesson, n);
     map.showBorders(meta.borders, ghostFor(lesson, n));
-    map.setMarkers(markersFromCards(meta.marks ?? []), (m) => map.setActiveMarker(m.id));
+    map.setMarkers(markersFromCards(meta.marks ?? []), (m) => {
+        map.setActiveMarker(m.id);
+        cards.open(m.id);
+    });
     map.drawPath(meta.path ?? null);
     map.flyTo(meta.box);
 }
@@ -204,15 +212,17 @@ function swatch({ kind, c }, isMain) {
 }
 
 /* ---------- part body ---------- */
-function renderPart(lesson, n) {
+function renderPart(lesson, n, cards) {
     const body = $('lsBody');
     body.innerHTML = PART_HTML[lesson.parts[n].type](lesson, n);
     body.scrollTop = 0;
-    body.querySelectorAll('.ph img').forEach(swapForPlaceholderOnError);
+    body.querySelectorAll('.ph img').forEach((img) => swapForPlaceholderOnError(img));
+    body.querySelectorAll('b.term[data-card]').forEach((b) => b.addEventListener('click', () => cards.open(b.dataset.card)));
 }
 
-function swapForPlaceholderOnError(img) {
-    img.addEventListener('error', () => { img.parentElement.outerHTML = photoBlock(null); }, { once: true });
+// kind: the card kind whose icon replaces a picture that fails to load
+export function swapForPlaceholderOnError(img, kind) {
+    img.addEventListener('error', () => { img.parentElement.outerHTML = photoBlock(null, kind); }, { once: true });
 }
 
 function summaryHtml(lesson) {
@@ -262,9 +272,9 @@ function wordList(words = []) {
 
 const teaser = (next) => (next ? `<div class="teaser"><small>Следва</small>${esc(next)}</div>` : '');
 
-// the picture of a part (and later of a card): the photo with its credit, or the kind icon when there is none
+// the picture of a part or a card: the photo with its credit, or the icon of the card kind when there is none
 export function photoBlock(photo, kind = 'event') {
-    if (!photo) return `<div class="ph"><div class="noimg">${icon(kind)}</div></div>`;
+    if (!photo) return `<div class="ph"><div class="noimg">${cardIcon(kind)}</div></div>`;
     const credit = `Снимка: <a href="${esc(photo.u)}" target="_blank" rel="noopener">${esc(photo.a)}</a>, ${esc(photo.l)}`;
     return `<div class="ph"><img src="${esc(photo.f)}" alt=""><div class="cr">${credit}</div></div>`;
 }

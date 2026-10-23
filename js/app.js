@@ -2,6 +2,7 @@
 // '' or '#free' → the free timeline; '#lesson/<id>' or '#lesson/<id>/<n>' → the lesson player.
 import { createMap } from './map.js';
 import { startFree } from './free.js';
+import { loadProgress } from './store.js';
 import {
     showNoLesson,
     startLesson,
@@ -19,5 +20,6 @@ function openLesson(id, part) {
         showNoLesson();
         return;
     }
-    startLesson(map, CONTENT.lessons[id], { part: Number(part) });
+    const saved = loadProgress().position[id] ?? 0;
+    startLesson(map, CONTENT.lessons[id], { part: part === '' ? saved : Number(part) });
 }
