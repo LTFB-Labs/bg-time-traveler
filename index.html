@@ -59,6 +59,8 @@ button{font-family:inherit;cursor:pointer}
 #ruler:empty{display:none}
 #ruler b{font-weight:900;color:var(--ink)}
 #hudBr{display:block;height:0}
+#wheelMode{display:flex;margin-top:8px;padding:5px 12px;font-size:13px;pointer-events:auto;box-shadow:0 1px 4px rgba(60,40,15,.15)}
+@media (hover:none){#wheelMode{display:none}}
 
 /* card */
 #card{position:fixed;right:16px;top:16px;bottom:calc(var(--tl) + 14px);width:var(--cardw);background:var(--card);border-radius:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line);transition:transform .45s cubic-bezier(.2,.9,.3,1),opacity .3s}
@@ -164,6 +166,7 @@ button{font-family:inherit;cursor:pointer}
   <div id="year">600</div>
   <div id="era"><i></i><span></span></div><span id="hudBr"></span>
   <div id="ruler"></div>
+  <button class="btn" id="wheelMode">Колелце: година</button>
 </div>
 
 <aside id="card" aria-live="polite">

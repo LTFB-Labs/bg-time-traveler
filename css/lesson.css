@@ -114,6 +114,9 @@ body.lesson #vignette { right: var(--ls-w); }
 #lsBig > span:nth-of-type(2) { transform: none; }
 #lsBig .lbl { top: -9px; left: 0; transform: none; color: #7a1e12; }
 
+/* "Върни ме": the map pane's top right corner, after the kid moves the map; the pane box itself lets clicks through to the map */
+#lsReturn { position: absolute; top: 12px; right: 16px; pointer-events: auto; box-shadow: var(--shadow); }
+
 /* ---- reading pane ---- */
 #lesson {
     position: fixed;

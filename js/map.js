@@ -1,6 +1,9 @@
 // The map: static Balkans base, era frames, camera and the HTML overlay (cities, markers, path).
 // Moved from the inline script of index.html; moved code keeps its original style.
-import { boxToViewBox } from './geo.js';
+import {
+    boxToViewBox,
+    clampViewBox,
+} from './geo.js';
 
 const NS = "http://www.w3.org/2000/svg";
 const el = (tag, attrs = {}, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
@@ -191,7 +194,7 @@ function prebuildFrames() {
 // free mode: the camera follows the CAMERA keyframes for a year and fits them into the free rect;
 // it eases faster while the kid scrubs the timeline.
 // lesson mode: flyTo fits a box instead and keeps it as home; from then on the year no longer moves the camera.
-let vb = { x: 0, y: 0, w: GEO.W, h: GEO.H }, vbT = null, freeRect = null, scrubbing = false, home = null, flyRate = 1;
+let vb = { x: 0, y: 0, w: GEO.W, h: GEO.H }, vbT = null, freeRect = null, scrubbing = false, home = null, flyRate = 1, onUserMoveCb = () => {};
 function boxAt(y) {
   let i = 0; while (i < CAMERA.length - 1 && CAMERA[i + 1][0] <= y) i++;
   const a = CAMERA[i], b = CAMERA[Math.min(i + 1, CAMERA.length - 1)];
@@ -213,13 +216,19 @@ function flyTo(box, { ms = 900 } = {}) {
     home = box;
     flyRate = rateFor(ms);
     vbT = fitBox(box);
+    onUserMoveCb(false);
 }
 // ponytail: per-frame easing like free mode, so ms holds at 60 frames a second; time-based steps if other refresh rates matter
 const rateFor = (ms) => ms > 0 ? 1 - Math.pow(.01, (1000 / 60) / ms) : 1;
-// whoever owns the resize handler only sets the new rect; a lesson camera re-fits its home box to it
+// whoever owns the resize handler only sets the new rect; a lesson camera re-fits its home box to it,
+// which also drops a hand move: its view no longer matches the window's shape
 function setFreeRect(rect) {
     freeRect = rect;
-    if (home) vbT = fitBox(home);
+    resetCamera();
+}
+// back to the last box given to flyTo; the free camera has none
+function resetCamera() {
+    if (home) flyTo(home);
 }
 function snapToYear(y) {
     if (home) return;
@@ -234,6 +243,69 @@ function tick() {
     if (moving) applyVB(); else { applyVB(); vbT = null; }
   }
   requestAnimationFrame(tick);
+}
+
+/* ---------- pan and zoom by hand ---------- */
+// lesson mode: one pointer drags the map, two pinch it, the wheel zooms about the cursor.
+// free mode: the wheel scrubs the year (free.js) unless the corner toggle turned wheelZoom on or a trackpad pinch sends ctrlKey,
+// and only two pointers move the map. Markers sit in the overlay, so a press on one never reaches the svg.
+// The projection scales longitude by GEO.cx, so a map unit is 111 / GEO.k km both ways and 50 km is 50 / 111 * GEO.k units.
+const LIMITS = { minW: 50 / 111 * GEO.k, maxW: GEO.W, world: GEO };
+const SLOP = 6; // pixels a press may move and still count as a tap
+const WHEEL_STEP = [.002, .05, 1]; // zoom per wheel unit for deltaMode pixel, line, page (the d3-zoom values)
+const TRACKPAD_PINCH = 10; // a trackpad pinch sends small deltas with ctrlKey
+let mode = 'free', wheelZoom = false, dragged = false;
+const pointers = new Map();
+const zoomsOnWheel = (e) => mode === 'lesson' || wheelZoom || e.ctrlKey;
+const movesWithPointers = () => mode === 'lesson' || pointers.size > 1;
+svg.addEventListener('pointerdown', (e) => {
+    svg.setPointerCapture(e.pointerId);
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    dragged = pointers.size > 1;
+});
+svg.addEventListener('pointermove', (e) => {
+    const p = pointers.get(e.pointerId);
+    if (!p) return;
+    if (!dragged && Math.hypot(e.clientX - p.x, e.clientY - p.y) < SLOP) return;
+    dragged = true;
+    const before = spread();
+    Object.assign(p, { x: e.clientX, y: e.clientY });
+    const after = spread();
+    if (movesWithPointers()) moveByHand(zoomed(panned(vb, after.x - before.x, after.y - before.y), before.d / after.d, after.x, after.y));
+});
+const lift = (e) => pointers.delete(e.pointerId);
+svg.addEventListener('pointerup', lift);
+svg.addEventListener('pointercancel', lift);
+// a drag is not a tap: click listeners on the map only hear presses that stayed put
+svg.addEventListener('click', (e) => { if (dragged) e.stopImmediatePropagation(); }, true);
+svg.addEventListener('wheel', (e) => {
+    if (!zoomsOnWheel(e)) return;
+    e.preventDefault();
+    moveByHand(zoomed(vb, wheelFactor(e), e.clientX, e.clientY));
+}, { passive: false });
+// the midpoint of the first two pointers and their distance; a single pointer gets distance 1, so it never scales
+function spread() {
+    const [a, b = a] = pointers.values();
+    return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2, d: Math.hypot(a.x - b.x, a.y - b.y) || 1 };
+}
+const wheelFactor = (e) => 2 ** (e.deltaY * WHEEL_STEP[e.deltaMode] * (e.ctrlKey ? TRACKPAD_PINCH : 1));
+// the view shifted by a screen offset, so the map follows the finger
+function panned(v, dx, dy) {
+    const s = v.w / innerWidth;
+    return { ...v, x: v.x - dx * s, y: v.y - dy * s };
+}
+// the view scaled by f about a screen point, which keeps the map point under it; the width limits apply here so the point holds at a limit
+function zoomed(v, f, sx, sy) {
+    const s = v.w / innerWidth;
+    const k = clamp(v.w * f, LIMITS.minW, LIMITS.maxW) / v.w;
+    return { x: v.x + sx * s * (1 - k), y: v.y + sy * s * (1 - k), w: v.w * k, h: v.h * k };
+}
+// a hand move replaces the view and drops the tween's target, so nothing pulls the view back
+function moveByHand(next) {
+    vb = clampViewBox(next, LIMITS);
+    vbT = null;
+    applyVB();
+    onUserMoveCb(true);
 }
 
 /* ---------- overlay: cities + markers ---------- */
@@ -342,5 +414,10 @@ return {
     setMarkers,
     setActiveMarker,
     drawPath,
+    setMode: (m) => { mode = m; },
+    setWheelZoom: (isOn) => { wheelZoom = isOn; },
+    zoomsOnWheel,
+    onUserMove: (cb) => { onUserMoveCb = cb; },
+    resetCamera,
 };
 }

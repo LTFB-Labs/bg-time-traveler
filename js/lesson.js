@@ -44,6 +44,7 @@ export function startLesson(map, lesson, { part = 0 } = {}) {
     renderHead(lesson, goTo);
     const timeline = createTimeline($('lsTl'), lesson, { onPick: goTo });
     wireNav(player);
+    wireHandCamera(map);
     fitMapPane(map);
     addEventListener('resize', () => fitMapPane(map));
     goTo(part);
@@ -118,6 +119,13 @@ function wireNav(player) {
         if (e.key === 'ArrowRight') player.next();
         if (e.key === 'ArrowLeft') player.prev();
     });
+}
+
+// the kid may pan and zoom the map; "Върни ме" shows once they do and flies back to the part's box
+function wireHandCamera(map) {
+    map.setMode('lesson');
+    map.onUserMove((moved) => { $('lsReturn').hidden = !moved; });
+    $('lsReturn').addEventListener('click', map.resetCamera);
 }
 
 function updateNav(lesson, current) {

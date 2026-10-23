@@ -193,8 +193,14 @@ addEventListener("keydown", (e) => {
   if (e.key === " ") { $("play").click(); e.preventDefault(); }
 });
 
-/* ---------- map drag to scrub? no: wheel on map scrubs time ---------- */
-$("map").addEventListener("wheel", (e) => { e.preventDefault(); stopPlay(); setYear(state.year + (e.deltaY + e.deltaX) * .08); }, { passive: false });
+/* ---------- wheel on map scrubs time, unless the corner toggle gives the wheel to the map's zoom ---------- */
+let wheelZoom = false;
+$('wheelMode').addEventListener('click', () => {
+    wheelZoom = !wheelZoom;
+    map.setWheelZoom(wheelZoom);
+    $('wheelMode').textContent = wheelZoom ? 'Колелце: мащаб' : 'Колелце: година';
+});
+$("map").addEventListener("wheel", (e) => { if (map.zoomsOnWheel(e)) return; e.preventDefault(); stopPlay(); setYear(state.year + (e.deltaY + e.deltaX) * .08); }, { passive: false });
 
 /* ---------- intro & boot ---------- */
 function start() {
