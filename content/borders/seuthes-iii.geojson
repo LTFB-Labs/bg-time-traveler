@@ -1,0 +1,5 @@
+{
+  "type": "Feature",
+  "properties": { "name": "Царство на Севт III", "kind": "state", "colour": "#c8402f" },
+  "geometry": { "type": "Polygon", "coordinates": [[[24.6, 42.3], [24.7, 42.9], [25.6, 43], [26.5, 42.9], [26.6, 42.3], [25.6, 42.1], [24.6, 42.3]]] }
+}

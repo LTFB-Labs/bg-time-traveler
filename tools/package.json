@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test test/",
+    "test": "node --test",
     "geo": "node build-geo.mjs",
     "build": "node build-content.mjs",
     "photos": "node fetch-photos.mjs",
