@@ -59,6 +59,8 @@ Each of these was decided in the brainstorming session.
 10. When the main border changes between parts, the previous border stays as a faint dashed line labelled "преди", so growth and loss are visible.
 11. Pictures are downloaded into the repo, resized to about 900 px wide, with source, author and licence kept next to them. No hotlinking.
 12. First-round learning features: the end-of-lesson check (5 to 7 questions, mostly on the map and timeline), one prediction question per lesson inside the story, a recap screen instead of a generated mind map, and a card album.
+13. Borders are drawn and stored as GeoJSON files, one per border, so they can be edited on a real map (geojson.io, QGIS) instead of as numbers in code.
+14. The map can be panned and zoomed by hand in lesson mode (drag, pinch, scroll). A "Върни ме" button flies back to the part's camera box. This is the "Google Earth" half of the idea.
 
 ## 5. The product, screen by screen
 
@@ -85,6 +87,8 @@ Map pane: year in the corner (or the lesson span on the summary part), era pill,
 Per part the map does five things: moves the camera to the part's box, swaps the border layer (with a fade, as the app does today), draws the ghost of the previous main border, places the part's markers, and draws a dashed marching arrow when the part has a path.
 
 Clicking a marker or a city shows its name and opens its card. Clicking a bold term opens its card over the reading pane. The card closes with ×, Escape, Back or Next.
+
+The kid can move the map by hand: drag to pan, pinch or scroll to zoom, within limits (no further out than the whole map, no closer than about 50 km across). As soon as they do, a "Върни ме" button appears; it flies the camera back to the part's box. Tapping Next also returns the camera. In free mode the wheel keeps changing the year as today, so there a two-finger drag and pinch move the map and a toggle in the corner switches the wheel between year and zoom.
 
 ### 5.4 Summary part
 
@@ -254,7 +258,7 @@ Deep time. The prehistory lesson spans from about 1.4 million years ago to 3000 
 
 ### 6.3 Borders
 
-The hand-drawn polygons stay in the same form as today (`data-src/defs.mjs`), split into files by period, and gain an `id` so lessons can reference them. The build script clips them to land and writes projected SVG paths, as it does today. Lesson borders and free-timeline frames are the same kind of thing: a free-timeline frame is a list of border ids at a year.
+Each border is one GeoJSON file in `content/borders/`, named by its id (`odrysae-peak.geojson`), holding one Polygon or MultiPolygon in longitude and latitude, with `name`, `kind` (`state` or `tribes`) and `colour` in its properties. They can be drawn and corrected on a real map in geojson.io or QGIS. The existing hand-drawn polygons in `data-src/defs.mjs` are exported to this form once by a script; the shared lines (Danube, Balkan range) they were built from become ordinary coordinates in each file. The build script clips every border to land and writes projected SVG paths, as it does today. Lesson borders and free-timeline frames are the same kind of thing: a free-timeline frame is a list of border ids at a year, kept in `content/maps/balkans.json`.
 
 New borders needed for the first round, all approximate and hand-drawn: Thracian tribal lands, the Odrysian core under Teres, the kingdom under Sitalces, under Kotys, Macedon under Philip II (to the Balkan range), the Getae north of the range, Seuthes III's kingdom, Lysimachus' holdings, Greek colony dots, the Roman provinces of Moesia and Thracia (and Dacia if the Roman lesson needs it), the empire split at 395, the migration-era picture that hands over to the existing 600 AD frame.
 
@@ -320,6 +324,16 @@ Browser storage only (`localStorage`), one JSON blob under a single key: lessons
 - The search index format and the tokeniser, within the matching rules in 5.9.
 - Camera padding so the map never hides under the timeline strip.
 - Test approach. Suggested: a content validation step that fails the build on missing cards, photos, borders or malformed parts, plus a short Playwright run that clicks through every lesson and checks for console errors.
+- Whether markers are drawn inside the SVG (they then pan and zoom for free) or stay as HTML over it. City names stay HTML either way, for crisp text.
+- River names along the river with an SVG text path are welcome but not required.
+
+## 12a. Later, not in this round
+
+- Morphing borders: when the same realm changes shape between parts, stretch the path into its new shape instead of cross-fading. Needs care with the coastline clipping.
+- Offline use with a service worker that caches the site once, so the app works on a tablet without internet.
+- Load the map file per lesson once there are two maps, so a lesson pays only for the map it uses.
+- On a phone, a draggable divider between map and text instead of the fixed split.
+- Spaced review, the open "explain it yourself" box, and a grade-level progress map (from the learning-features discussion).
 
 ## 13. Order of work
 
