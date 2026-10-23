@@ -80,7 +80,7 @@ One screen per grade: the lessons in textbook order, each a row with number, nam
 
 ### 5.3 Lesson screen
 
-Layout on a laptop: map on the left, about 56 percent of the width; reading pane on the right. On a phone: map on top, about 42 percent of the height, reading pane below. The sample at `spike/lesson.html` is the reference for look and feel; it reuses the app's existing map style, fonts and colours.
+Layout on a laptop: map on the left, about 56 percent of the width; reading pane on the right. On a phone: map on top, about 42 percent of the height, reading pane below. The built lesson player (`#lesson/5-odrisko-tsarstvo`) is the reference for look and feel; it reuses the app's existing map style, fonts and colours.
 
 Reading pane, top to bottom:
 

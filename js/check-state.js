@@ -28,10 +28,11 @@ export const matchIsCorrect = (q, pairsChosen) => q.pairs.every(([id, text]) => 
 
 // the sentence of a red answer: the question's explain; without one, a pointer to its part,
 // or for a question tied to no part a hint by type
-const SEE_PART = 'Виж отново частта.';
+const SEE_PART = 'Отговорът е в една от частите на урока.';
+const NO_HINT = 'Виж отново частта.';
 const NO_PART_HINT = { order: 'Погледни годините на линията на времето.' };
 
-export const redSentence = (q) => q.explain ?? (q.part ? SEE_PART : NO_PART_HINT[q.type] ?? SEE_PART);
+export const redSentence = (q) => q.explain ?? (q.part ? SEE_PART : NO_PART_HINT[q.type] ?? NO_HINT);
 
 const IS_CORRECT = { tap: tapIsCorrect, order: orderIsCorrect, choose: chooseIsCorrect, 'pick-border': pickBorderIsCorrect, match: matchIsCorrect };
 

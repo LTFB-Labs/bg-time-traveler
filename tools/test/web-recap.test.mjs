@@ -13,6 +13,10 @@ test('replayBordersKeepsMainBordersInOrderWithoutRepeats', () => {
     assert.deepEqual(replayBorders(lesson, isState), ['s1', 's2']);
 });
 
+test('replayBordersIsEmptyWithoutStateBorders', () => {
+    assert.deepEqual(replayBorders({ parts: [story('t1'), story()] }, isState), []);
+});
+
 test('nextLessonIsTheReadyEntryAfterThisOne', () => {
     const lesson = { id: 'a', grade: 5 };
     assert.equal(nextLesson({ 5: [{ id: 'a', state: 'ready' }] }, lesson), undefined);

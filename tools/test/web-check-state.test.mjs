@@ -65,7 +65,7 @@ test('matchNeedsEveryPairRight', () => {
 test('redSentenceFallsBackByType', () => {
     assert.equal(redSentence({ type: 'tap', explain: 'Севтополис е на Тунджа.', part: 6 }), 'Севтополис е на Тунджа.');
     assert.equal(redSentence({ type: 'order' }), 'Погледни годините на линията на времето.');
-    assert.equal(redSentence({ type: 'order', part: 2 }), 'Виж отново частта.');
-    assert.equal(redSentence({ type: 'choose', part: 1 }), 'Виж отново частта.');
+    assert.equal(redSentence({ type: 'order', part: 2 }), 'Отговорът е в една от частите на урока.');
+    assert.equal(redSentence({ type: 'choose', part: 1 }), 'Отговорът е в една от частите на урока.');
     assert.equal(redSentence({ type: 'choose' }), 'Виж отново частта.');
 });

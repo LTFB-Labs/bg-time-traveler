@@ -4,6 +4,9 @@ import { problem } from './problems.mjs';
 
 const CREDIT_FIELDS = ['a', 'l', 'u'];
 const SVG = /<svg\b[^>]*?\bviewBox="([^"]*)"[^>]*>([\s\S]*)<\/svg>/;
+const SAFE_ELEMENTS = new Set(['path', 'g', 'circle', 'rect', 'polygon', 'polyline', 'ellipse', 'line']);
+const TAG_NAME = /<([a-zA-Z][\w:-]*)/g;
+const UNSAFE_ATTRIBUTE = /\s(on\w+|href|xlink:href)\s*=/gi;
 const FILL = /\s+fill=("[^"]*"|'[^']*')/g;
 
 // Reads the route figures in <dir>/figures/*.svg and their credits in <dir>/figures.json.
@@ -13,7 +16,8 @@ export function readFigures(dir) {
     const files = readSvgFiles(join(dir, 'figures'));
     const figures = Object.fromEntries(files.flatMap(({ id, text }) => figureEntry(id, text)));
     const unreadable = files.filter(({ id }) => !figures[id]).map(({ id }) => problem(`figures/${id}.svg`, 'is not an SVG with a viewBox'));
-    return { figures, problems: [...credits.problems, ...unreadable, ...creditProblems(credits.value, files.map(({ id }) => id))] };
+    const unsafe = files.flatMap(({ id, text }) => unsafeProblems(id, figures[id]?.body ?? ''));
+    return { figures, problems: [...credits.problems, ...unreadable, ...unsafe, ...creditProblems(credits.value, files.map(({ id }) => id))] };
 }
 
 function readCredits(file) {
@@ -35,6 +39,13 @@ function readSvgFiles(folder) {
 function figureEntry(id, text) {
     const match = SVG.exec(text);
     return match ? [[id, { viewBox: match[1], body: match[2].replace(FILL, '').trim() }]] : [];
+}
+
+// bodies go into the page as markup, so only drawing elements without handlers or links may stay
+function unsafeProblems(id, body) {
+    const elements = [...body.matchAll(TAG_NAME)].map((m) => m[1]).filter((name) => !SAFE_ELEMENTS.has(name));
+    const attributes = [...body.matchAll(UNSAFE_ATTRIBUTE)].map((m) => m[1]);
+    return [...new Set([...elements, ...attributes])].map((name) => problem(`figures/${id}.svg`, `uses "${name}", which a figure may not use`));
 }
 
 function creditProblems(credits, ids) {

@@ -155,11 +155,14 @@ function wireNav(player) {
     $('lsPrev').addEventListener('click', player.prev);
     $('lsNext').addEventListener('click', player.next);
     addEventListener('keydown', (e) => {
-        if (e.altKey || e.metaKey || e.ctrlKey) return;
+        if (e.altKey || e.metaKey || e.ctrlKey || isTypingArea(e.target)) return;
         if (e.key === 'ArrowRight') player.next();
         if (e.key === 'ArrowLeft') player.prev();
     });
 }
+
+// arrow keys belong to the field, the check or the prediction when the focus is in one
+const isTypingArea = (el) => Boolean(el.closest?.('input, textarea, select, [contenteditable], #lsCheck, .predict'));
 
 // the kid may pan and zoom the map; "Върни ме" shows once they do and flies back to the part's box
 function wireHandCamera(map) {

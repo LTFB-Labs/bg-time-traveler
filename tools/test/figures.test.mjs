@@ -25,3 +25,13 @@ test('creditWithoutFileIsAProblem', () => {
 test('creditWithoutLicenceIsAProblem', () => {
     assert.ok(bad.problems.some((p) => p.file === 'figures.json' && /"riders".*"l"/.test(p.message)));
 });
+
+test('scriptElementInAFigureIsAProblem', () => {
+    const { problems } = readFigures(fixture('figures-script'));
+    assert.ok(problems.some((p) => p.file === 'figures/army.svg' && /script/.test(p.message)));
+});
+
+test('onAttributeInAFigureIsAProblem', () => {
+    const { problems } = readFigures(fixture('figures-onload'));
+    assert.ok(problems.some((p) => p.file === 'figures/army.svg' && /onload/.test(p.message)));
+});

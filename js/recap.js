@@ -36,9 +36,16 @@ export function renderRecap(container, map, lesson, timeline) {
             <a class="btn" href="#free">Към началото</a>
         </div>`;
     timeline.setPart(lesson.parts.length);
-    const replay = startReplay(map, replayBorders(lesson, (id) => GEO.borders[id]?.kind === 'state'));
-    container.querySelector('#lsReplay').addEventListener('click', replay.restart);
+    const ids = replayBorders(lesson, (id) => GEO.borders[id]?.kind === 'state');
+    const replay = startReplay(map, ids);
+    wireReplayButton(container.querySelector('#lsReplay'), ids, replay);
     return replay.stop;
+}
+
+// with no state border there is nothing to replay
+function wireReplayButton(button, ids, replay) {
+    button.hidden = !ids.length;
+    button.addEventListener('click', replay.restart);
 }
 
 const nextLink = (next) => (next
@@ -48,6 +55,7 @@ const nextLink = (next) => (next
 function startReplay(map, ids) {
     let timer;
     const stop = () => clearInterval(timer);
+    if (!ids.length) return { stop, restart: stop };
     const restart = () => {
         stop();
         let i = 0;
