@@ -37,6 +37,12 @@ test('ghostForIsPreviousStoryMainBorderWhenItChanges', () => {
     assert.equal(ghostFor(lesson, 4), undefined);
 });
 
+test('ghostForNoneWhenPartHasNoMainBorder', () => {
+    globalThis.GEO = { borders: { tribes: { kind: 'tribes' }, seuthes: { kind: 'state' } } };
+    const lesson = { parts: [part('story', ['seuthes']), part('story', ['tribes'])] };
+    assert.equal(ghostFor(lesson, 1), undefined);
+});
+
 test('ghostForPrefersPartGhost', () => {
     globalThis.GEO = { borders: { core: { kind: 'state' }, peak: { kind: 'state' } } };
     const lesson = { parts: [part('story', ['core']), { type: 'story', meta: { borders: ['peak'], ghost: 'tribes' } }] };

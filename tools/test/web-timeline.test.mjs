@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
     bandLayout,
     bigLayout,
+    eraAt,
     tickYears,
 } from '../../js/timeline.js';
 
@@ -46,4 +47,18 @@ test('bigLayoutClampsEarlierSpanToLeftEdge', () => {
     const frame = bigLayout([-1400000, -3000], BIG);
     assert.equal(frame.left, 0);
     assert.ok(frame.width > 0);
+});
+
+test('eraAtFindsEraHoldingYear', () => {
+    assert.equal(eraAt(ERAS, -431), 'Одриско царство');
+    assert.equal(eraAt(ERAS, -480), 'Одриско царство');
+});
+
+test('eraAtNoneOutsideAllEras', () => {
+    assert.equal(eraAt(ERAS, -2000), undefined);
+    assert.equal(eraAt(ERAS, -100), undefined);
+});
+
+test('eraAtLastEraHoldsItsEndYear', () => {
+    assert.equal(eraAt(ERAS, -250), 'Севт III и наследниците му');
 });

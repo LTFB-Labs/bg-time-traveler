@@ -6,6 +6,8 @@ import {
 } from './map.js';
 import {
     createTimeline,
+    eraAt,
+    isOnStrip,
     shortHeading,
     storyCount,
 } from './timeline.js';
@@ -25,6 +27,7 @@ export function startLesson(map, lesson, { part = 0 } = {}) {
         renderPart(lesson, current);
         showPartOnMap(map, lesson, current);
         renderYear(lesson, current);
+        renderEra(lesson, current);
         renderLegend(mapMeta(lesson, current).borders);
         timeline.setPart(current);
         markSteps(current);
@@ -135,13 +138,14 @@ function mapMeta(lesson, n) {
     return { box, borders };
 }
 
-// the part's own ghost, else the previous story part's main border when the main border changed
+// the part's own ghost, else the previous story part's main border when both parts have one and it changed
 export function ghostFor(lesson, n) {
     const { meta } = lesson.parts[n];
     if (meta.ghost) return meta.ghost;
     const previous = lesson.parts.slice(0, n).findLast((p) => p.type === 'story');
     const before = previous && mainBorder(previous.meta.borders);
-    return before && before !== mainBorder(meta.borders) ? before : undefined;
+    const now = mainBorder(meta.borders);
+    return before && now && before !== now ? before : undefined;
 }
 
 // the first state among the borders, as map.showBorders picks it
@@ -174,6 +178,14 @@ function renderYear(lesson, n) {
 function yearHtml(text) {
     const [number, words] = text.split(/ (?=г\.)/);
     return words ? `${esc(number)}<small>${esc(words)}</small>` : esc(number);
+}
+
+// the era pill: the lesson era that holds the part's year; hidden without a year on the strip or an era around it
+function renderEra(lesson, n) {
+    const part = lesson.parts[n];
+    const name = isOnStrip(part) ? eraAt(lesson.eras, part.meta.year) : undefined;
+    $('lsEra').hidden = !name;
+    $('lsEra').lastElementChild.textContent = name ?? '';
 }
 
 function renderLegend(ids) {

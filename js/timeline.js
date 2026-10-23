@@ -24,14 +24,14 @@ function buildStrip(find, lesson, onPick) {
 }
 
 // a story part with a year sits on the strip; the summary, the check and label-only parts do not
-const isOnStrip = (p) => p.type === 'story' && typeof p.meta.year === 'number';
+export const isOnStrip = (p) => p.type === 'story' && typeof p.meta.year === 'number';
 
 function setPart(find, lesson, n) {
     const p = lesson.parts[n];
     const year = isOnStrip(p) ? p.meta.year : null;
     placeKnob(find('lsKnob'), year, lesson.span);
     markDots(find('lsDots'), n);
-    markBand(find('lsBands'), year);
+    markBand(find('lsBands'), lesson.eras, year);
     find('lsTlHead').lastElementChild.textContent = HEAD_RIGHT[p.type](lesson, n);
 }
 
@@ -48,9 +48,18 @@ function markDots(dots, n) {
     });
 }
 
-function markBand(bands, year) {
-    [...bands.children].forEach((b) => b.classList.toggle('cur', year !== null && year >= Number(b.dataset.from) && year < Number(b.dataset.to)));
+function markBand(bands, eras, year) {
+    const cur = year === null ? -1 : eraIndex(eras, year);
+    [...bands.children].forEach((b, i) => b.classList.toggle('cur', i === cur));
 }
+
+// the era that holds the year: from its start up to its end, and the last era also holds its end year
+function eraIndex(eras, year) {
+    const isLastEnd = (to, i) => i === eras.length - 1 && year === to;
+    return eras.findIndex(([from, to], i) => year >= from && (year < to || isLastEnd(to, i)));
+}
+
+export const eraAt = (eras, year) => eras[eraIndex(eras, year)]?.[2];
 
 const HEAD_RIGHT = {
     summary: () => 'Преглед на урока',
@@ -79,13 +88,12 @@ const MIN_LABEL_SHARE = .1;
 export function bandLayout(eras, [a, b]) {
     return eras.map(([from, to, name, cls]) => {
         const weight = (to - from) / (b - a);
-        return { from, to, name, color: ERA_COLOR[cls], weight, hideLabel: weight < MIN_LABEL_SHARE };
+        return { name, color: ERA_COLOR[cls], weight, hideLabel: weight < MIN_LABEL_SHARE };
     });
 }
 
-function bandEl({ from, to, name, color, weight, hideLabel }) {
+function bandEl({ name, color, weight, hideLabel }) {
     const d = document.createElement('div');
-    Object.assign(d.dataset, { from, to });
     d.style.flex = `${weight} 0 0`;
     d.style.background = color;
     d.title = name;
