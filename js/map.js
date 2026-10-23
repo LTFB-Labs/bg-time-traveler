@@ -11,6 +11,8 @@ export const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 export const lerp = (a, b, t) => a + (b - a) * t;
 export const ease = (t) => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 const P = (lon, lat) => [(lon - GEO.lon0) * GEO.cx * GEO.k, (GEO.lat1 - lat) * GEO.k];
+// the inverse of P: map units back to [lon, lat]
+const unP = (x, y) => [x / (GEO.cx * GEO.k) + GEO.lon0, GEO.lat1 - y / GEO.k];
 
 const COLORS = {
   bg: "#c8402f", bg2: "#e3825a", byz: "#8a5fb0", steppe: "#c6a54c", steppe2: "#a98a5a", slav: "#6f9a45",
@@ -24,12 +26,16 @@ export const KIND = {
   building: { n: "Сграда", i: '<path d="M3 21h18M5 21V10l7-6 7 6v11M9 21v-6h6v6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>' },
   battle: { n: "Битка", i: '<path d="M4 4l10 10M14 14l-2 4 4-2M20 4L10 14M10 14l2 4-4-2M4 20l3-3M20 20l-3-3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>' },
   event: { n: "Събитие", i: '<path d="M6 3h10l3 3v15H6z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M9 10h7M9 14h7M9 18h4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>' },
+  pin: { n: "Място", i: '<circle cx="12" cy="12" r="6" fill="currentColor"/>' },
 };
 export const icon = (k) => `<svg viewBox="0 0 24 24">${KIND[k].i}</svg>`;
 // lesson cards have their own kinds; free-mode events use the KIND keys directly
 const CARD_ICON = { person: 'person', people: 'person', place: 'building', state: 'building', object: 'event', event: 'event', idea: 'event' };
 // the icon of a card kind; map kinds that are not card kinds pass through
 export const cardIcon = (kind) => icon(CARD_ICON[kind] ?? kind);
+// the check's border choices: the letters on the map and on the answer buttons, and their colours
+export const CHOICE_LETTERS = ['А', 'Б', 'В'];
+export const CHOICE_COLOURS = ['#4d6fa8', '#8a5fb0', '#c7822f'];
 
 export function createMap(svg, ov) {
 /* ---------- static map ---------- */
@@ -102,6 +108,30 @@ function buildBorders(ids, ghostId) {
     if (ghostId) drawGhost(L, GEO.borders[ghostId]);
     return L;
 }
+const LETTER_R = 17;
+// all fills first, then all outlines, so a larger border never hides a smaller one's edge
+function buildChoices(ids) {
+    const L = newLayer();
+    const borders = ids.map((id) => GEO.borders[id]);
+    borders.forEach((b, i) => el('path', { d: b.d, fill: CHOICE_COLOURS[i], 'fill-opacity': .14 }, L.gFill));
+    borders.forEach((b, i) => el('path', { d: b.d, fill: 'none', stroke: CHOICE_COLOURS[i], 'stroke-width': 3, 'stroke-linejoin': 'round' }, L.gFill));
+    letterSpots(borders).forEach(([x, y], i) => drawLetter(L.gLab, x, y, i));
+    return L;
+}
+// label points of nested borders sit close together: a letter that would touch an earlier one moves down until it is clear
+function letterSpots(borders) {
+    const spots = [];
+    borders.forEach((b) => {
+        let y = b.ly;
+        while (spots.some(([x, sy]) => Math.hypot(x - b.lx, sy - y) < LETTER_R * 2.4)) y += LETTER_R;
+        spots.push([b.lx, y]);
+    });
+    return spots;
+}
+function drawLetter(gLab, x, y, i) {
+    el('circle', { cx: x, cy: y, r: LETTER_R, fill: CHOICE_COLOURS[i], stroke: PAPER, 'stroke-width': 3 }, gLab);
+    el('text', { x, y, class: 'choice-lab', 'font-size': LETTER_R * 1.25 }, gLab).textContent = CHOICE_LETTERS[i];
+}
 // a layer is opaque: it has its own paper base
 function newLayer() {
     const gFill = el('g', { class: 'layer', style: 'opacity:0' });
@@ -153,9 +183,17 @@ function showFrame(i) {
     showLayer(i, () => buildFrame(i));
 }
 function showBorders(ids, ghostId) {
-    const unknown = ids.concat(ghostId || []).filter((id) => !Object.hasOwn(GEO.borders, id));
-    if (unknown.length) throw new Error(`showBorders: unknown border id ${unknown.join(', ')}`);
+    assertKnownBorders('showBorders', ids.concat(ghostId || []));
     showLayer(`${ids.join(' ')}|${ghostId ?? ''}`, () => buildBorders(ids, ghostId));
+}
+// the check: the borders to choose from, drawn alike, each in its own colour with its letter at its label point
+function showChoices(ids) {
+    assertKnownBorders('showChoices', ids);
+    showLayer(`choices|${ids.join(' ')}`, () => buildChoices(ids));
+}
+function assertKnownBorders(caller, ids) {
+    const unknown = ids.filter((id) => !Object.hasOwn(GEO.borders, id));
+    if (unknown.length) throw new Error(`${caller}: unknown border id ${unknown.join(', ')}`);
 }
 function showLayer(key, build) {
     if (key === curLayer) return;
@@ -208,6 +246,11 @@ function applyVB() {
   placeOverlay();
 }
 const toScreen = (lon, lat) => { const [x, y] = P(lon, lat), s = innerWidth / vb.w; return [(x - vb.x) * s, (y - vb.y) * s]; };
+// a window point back through the current viewBox to [lon, lat]
+function toLonLat(sx, sy) {
+    const s = vb.w / innerWidth;
+    return unP(vb.x + sx * s, vb.y + sy * s);
+}
 function followYear(y) {
     if (home) return;
     vbT = targetVB(y);
@@ -279,6 +322,9 @@ svg.addEventListener('pointerup', lift);
 svg.addEventListener('pointercancel', lift);
 // a drag is not a tap: click listeners on the map only hear presses that stayed put
 svg.addEventListener('click', (e) => { if (dragged) e.stopImmediatePropagation(); }, true);
+// the check's map question hears taps on the map as [lon, lat]; marker buttons sit in the overlay, so a tap on one never gets here
+let onMapClickCb = null;
+svg.addEventListener('click', (e) => onMapClickCb?.(toLonLat(e.clientX, e.clientY)));
 // the overlay too: a wheel over a marker button zooms like one over the map
 [svg, ov].forEach((target) => target.addEventListener('wheel', (e) => {
     if (!zoomsOnWheel(e)) return;
@@ -357,11 +403,13 @@ function newMarkerButton(id) {
   ov.appendChild(b); mkEls.set(id, b); b.classList.add("pop");
   return b;
 }
-// a later list may reuse an id with a new title, kind or photo; repaint only when one of them changed
+// a later list may reuse an id with a new title, kind, photo or tone; repaint only when one of them changed
+// tone: 'ok' or 'bad' colours a pin of the check green or red
 function paintMarker(b, m) {
-    const look = [m.title, m.kind, m.photo].join('|');
+    const look = [m.title, m.kind, m.photo, m.tone].join('|');
     if (b._look === look) return;
     b._look = look;
+    b.dataset.tone = m.tone ?? '';
     b.setAttribute('aria-label', m.title);
     b.innerHTML = cardIcon(m.kind);
     b.classList.toggle('has-img', Boolean(m.photo));
@@ -408,6 +456,7 @@ return {
     P,
     showFrame,
     showBorders,
+    showChoices,
     prebuildFrames,
     setFreeRect,
     setScrubbing: (isScrubbing) => { scrubbing = isScrubbing; },
@@ -423,6 +472,7 @@ return {
     setWheelZoom: (isOn) => { wheelZoom = isOn; },
     zoomsOnWheel,
     onUserMove: (cb) => { onUserMoveCb = cb; },
+    onMapClick: (cb) => { onMapClickCb = cb; },
     resetCamera,
 };
 }

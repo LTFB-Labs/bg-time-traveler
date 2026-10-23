@@ -5,6 +5,7 @@ import {
     clamp,
 } from './map.js';
 import { createCards } from './cards.js';
+import { renderCheck } from './check.js';
 import { renderPredict } from './predict.js';
 import { setPosition } from './store.js';
 import {
@@ -23,6 +24,7 @@ const $ = (id) => document.getElementById(id);
 
 export function startLesson(map, lesson, { part = 0 } = {}) {
     let current = -1;
+    let isCheckPassed = false;
     const cards = createCards($('lsPop'));
     const goTo = (n) => {
         const target = clamp(n, 0, lesson.parts.length - 1);
@@ -32,8 +34,9 @@ export function startLesson(map, lesson, { part = 0 } = {}) {
         renderPart(lesson, current, cards);
         showScene(isHeld(lesson, current) ? sceneBefore(lesson, current) : current);
         wirePredict(lesson, current, () => showScene(current));
+        wireCheck(map, lesson, current, { onPassed, goTo });
         markSteps(current);
-        updateNav(lesson, current);
+        updateNav(lesson, current, isCheckPassed);
         setPosition(lesson.id, current);
         history.replaceState(null, '', `#lesson/${lesson.id}/${current}`);
     };
@@ -42,8 +45,12 @@ export function startLesson(map, lesson, { part = 0 } = {}) {
         showPartOnMap(map, lesson, n, cards);
         renderYear(lesson, n);
         renderEra(lesson, n);
-        renderLegend(mapMeta(lesson, n).borders);
+        renderLegend(legendIds(lesson, n));
         timeline.setPart(n);
+    };
+    const onPassed = () => {
+        isCheckPassed = true;
+        updateNav(lesson, current, isCheckPassed);
     };
     const player = { goTo, next: () => goTo(current + 1), prev: () => goTo(current - 1), current: () => current };
     showPane();
@@ -134,9 +141,12 @@ function wireHandCamera(map) {
     $('lsReturn').addEventListener('click', map.resetCamera);
 }
 
-function updateNav(lesson, current) {
+// on a passed check Next names the recap; it stays disabled until the recap part exists (Task 10)
+function updateNav(lesson, current, isCheckPassed) {
+    const isPassedCheck = isCheckPassed && lesson.parts[current].type === 'check';
     $('lsPrev').disabled = current === 0;
     $('lsNext').disabled = current === lesson.parts.length - 1;
+    $('lsNext').firstChild.textContent = isPassedCheck ? 'Към обобщението ' : 'Напред ';
 }
 
 /* ---------- map pane ---------- */
@@ -186,6 +196,9 @@ function warnNoPlace({ id }) {
     warnedNoPlace.add(id);
     console.warn(`markersFromCards: card ${id} has no place on the map, skipped`);
 }
+
+// the check shows no legend: its map changes with the question, and border names would hint at answers
+const legendIds = (lesson, n) => (lesson.parts[n].type === 'check' ? [] : mapMeta(lesson, n).borders);
 
 // the year corner; the summary and the check show the lesson's span, smaller
 function renderYear(lesson, n) {
@@ -293,8 +306,18 @@ function storyHtml(lesson, n) {
         </div>`;
 }
 
-// a placeholder until the check lands (Task 9)
-const checkHtml = () => '<h2>Проверка</h2><p>Скоро тук ще има въпроси.</p>';
+function checkHtml(lesson, n) {
+    return `<div class="meta"><span class="chip y">${fmtSpan(lesson.span)}</span></div>
+        <h2>${esc(lesson.parts[n].heading)}</h2>
+        <div id="lsCheck"></div>`;
+}
+
+// the check owns the map taps while it is on screen; every other part turns them off
+function wireCheck(map, lesson, n, handlers) {
+    map.onMapClick(null);
+    if (lesson.parts[n].type !== 'check') return;
+    renderCheck($('lsCheck'), map, lesson, handlers);
+}
 
 const PART_HTML = { summary: summaryHtml, story: storyHtml, check: checkHtml };
 
