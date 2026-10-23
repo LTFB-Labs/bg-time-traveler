@@ -15,6 +15,7 @@ export function borderToRealm(border, { land, BOX }) {
     const smoothed = toMulti(border.geometry).map((poly) => poly.map(smooth));
     const shape = pc.intersection(pc.intersection(smoothed, BOX), land);
     const label = labelPoint(shape);
+    if (!label) throw new Error(`border "${border.id}" lies outside the land on the map`);
     return { n: border.name, kind: border.kind, c: border.colour, d: multiPath(shape, 1.6), lx: r1(label.x), ly: r1(label.y), lr: r1(label.d) };
 }
 
