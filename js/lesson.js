@@ -7,7 +7,11 @@ import {
 import { createCards } from './cards.js';
 import { renderCheck } from './check.js';
 import { renderPredict } from './predict.js';
-import { setPosition } from './store.js';
+import { renderRecap } from './recap.js';
+import {
+    loadProgress,
+    setPosition,
+} from './store.js';
 import {
     createTimeline,
     eraAt,
@@ -25,20 +29,42 @@ const $ = (id) => document.getElementById(id);
 export function startLesson(map, lesson, { part = 0 } = {}) {
     let current = -1;
     let isCheckPassed = false;
+    let stopReplay = () => {};
+    const recapAt = lesson.parts.length;
+    // the recap is the virtual part after the check; it opens once the check was passed in this sitting or the lesson is stored as passed
+    const canRecap = () => isCheckPassed || Boolean(loadProgress().passed[lesson.id]);
     const cards = createCards($('lsPop'));
     const goTo = (n) => {
-        const target = clamp(n, 0, lesson.parts.length - 1);
+        const target = clamp(n, 0, canRecap() ? recapAt : recapAt - 1);
         if (target === current) return;
         current = target;
         cards.close();
+        stopReplay();
+        if (current === recapAt) stopReplay = openRecap();
+        else openPart();
+        markSteps(current);
+        updateNav(lesson, current, canRecap());
+        setPosition(lesson.id, current);
+        history.replaceState(null, '', `#lesson/${lesson.id}/${current}`);
+    };
+    const openPart = () => {
         renderPart(lesson, current, cards);
         showScene(isHeld(lesson, current) ? sceneBefore(lesson, current) : current);
         wirePredict(lesson, current, () => showScene(current));
         wireCheck(map, lesson, current, { onPassed, goTo });
-        markSteps(current);
-        updateNav(lesson, current, isCheckPassed);
-        setPosition(lesson.id, current);
-        history.replaceState(null, '', `#lesson/${lesson.id}/${current}`);
+    };
+    // the recap shows the summary's area with no markers, arrow or legend, and replays the borders over it
+    const openRecap = () => {
+        map.onMapClick(null);
+        map.setMarkers([], () => {});
+        map.drawPath(null);
+        map.flyTo(lesson.parts[0].meta.box);
+        renderYear(lesson, 0);
+        renderEra(lesson, 0);
+        renderLegend([]);
+        const stop = renderRecap($('lsBody'), map, lesson, timeline);
+        $('lsBody').scrollTop = 0;
+        return stop;
     };
     // the map, year corner, era pill, legend and timeline knob of one part
     const showScene = (n) => {
@@ -50,7 +76,7 @@ export function startLesson(map, lesson, { part = 0 } = {}) {
     };
     const onPassed = () => {
         isCheckPassed = true;
-        updateNav(lesson, current, isCheckPassed);
+        updateNav(lesson, current, canRecap());
     };
     const player = { goTo, next: () => goTo(current + 1), prev: () => goTo(current - 1), current: () => current };
     showPane();
@@ -90,13 +116,14 @@ function renderHead(lesson, goTo) {
     grade.textContent = `${lesson.grade}. клас`;
     position.textContent = `Урок ${lesson.number}`;
     $('lsTitle').textContent = lesson.title;
-    $('lsSteps').replaceChildren(...lesson.parts.map((p, n) => stepChip(p, n, goTo)));
+    $('lsSteps').replaceChildren(...[...lesson.parts.map((p, n) => stepChip(p, n, goTo)), stepChip({ type: 'recap', heading: 'Обобщение' }, lesson.parts.length, goTo)]);
 }
 
 const STEP_LABEL = {
     summary: () => 'Начало',
     story: (p, n) => `${n}. ${shortHeading(p.heading)}`,
     check: () => 'Проверка',
+    recap: () => 'Край',
 };
 
 function stepChip(p, n, goTo) {
@@ -141,11 +168,12 @@ function wireHandCamera(map) {
     $('lsReturn').addEventListener('click', map.resetCamera);
 }
 
-// on a passed check Next names the recap; it stays disabled until the recap part exists (Task 10)
-function updateNav(lesson, current, isCheckPassed) {
-    const isPassedCheck = isCheckPassed && lesson.parts[current].type === 'check';
+// on the check Next stays disabled until the check is passed, then it names the recap; the recap is the last part
+function updateNav(lesson, current, canRecap) {
+    const isCheck = lesson.parts[current]?.type === 'check';
+    const isPassedCheck = canRecap && isCheck;
     $('lsPrev').disabled = current === 0;
-    $('lsNext').disabled = current === lesson.parts.length - 1;
+    $('lsNext').disabled = current === lesson.parts.length || (isCheck && !canRecap);
     $('lsNext').firstChild.textContent = isPassedCheck ? 'Към обобщението ' : 'Напред ';
 }
 
@@ -321,7 +349,7 @@ function wireCheck(map, lesson, n, handlers) {
 
 const PART_HTML = { summary: summaryHtml, story: storyHtml, check: checkHtml };
 
-function nameChip(id) {
+export function nameChip(id) {
     const { title, dates } = CONTENT.cards[id];
     const when = dates ? ` ${esc(dates.split(' ').slice(0, 3).join(' '))}` : '';
     return `<span><b>${esc(title)}</b>${when}</span>`;
@@ -347,4 +375,4 @@ export function photoBlock(photo, kind = 'event') {
 }
 
 const ESC = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' };
-const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ESC[c]);
+export const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ESC[c]);

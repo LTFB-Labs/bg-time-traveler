@@ -27,7 +27,7 @@ function buildStrip(find, lesson, onPick) {
 export const isOnStrip = (p) => p.type === 'story' && typeof p.meta.year === 'number';
 
 function setPart(find, lesson, n) {
-    const p = lesson.parts[n];
+    const p = lesson.parts[n] ?? RECAP_PART;
     const year = isOnStrip(p) ? p.meta.year : null;
     placeKnob(find('lsKnob'), year, lesson.span);
     markDots(find('lsDots'), n);
@@ -65,7 +65,11 @@ const HEAD_RIGHT = {
     summary: () => 'Преглед на урока',
     story: (lesson, n) => `${n} от ${storyCount(lesson)}: ${shortHeading(lesson.parts[n].heading)}`,
     check: () => 'Проверка',
+    recap: () => 'Край на урока',
 };
+
+// the recap sits after the last part: no year, every dot done
+const RECAP_PART = { type: 'recap' };
 
 export const storyCount = (lesson) => lesson.parts.filter((p) => p.type === 'story').length;
 

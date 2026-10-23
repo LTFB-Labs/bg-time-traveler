@@ -397,3 +397,8 @@ body.lesson #vignette { right: var(--ls-w); }
     pointer-events: none;
     animation: fadein .65s ease-out;
 }
+
+/* the recap after the check */
+.recap-acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.recap-acts .btn { text-decoration: none; }
+.recap-acts .btn:disabled { opacity: .45; cursor: default; }
