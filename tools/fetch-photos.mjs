@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { fetchMissing, renderCredits } from './lib/photos.mjs';
 import { formatProblems } from './lib/problems.mjs';
 
-const ROOT = '..';
+const ROOT = join(import.meta.dirname, '..');
 const PHOTOS_FILE = join(ROOT, 'content/photos.json');
 
 const photos = JSON.parse(readFileSync(PHOTOS_FILE, 'utf8'));

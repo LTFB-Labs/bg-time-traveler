@@ -40,6 +40,14 @@ aliases: [Терес, Терес Първи]
 
 Файл `content/lessons/<клас>/<име>.md`. Най-добре е да копираш `content/lessons/5/odrisko-tsarstvo.md` и да го промениш.
 
+След това добави урока в `content/lessons/5/index.json` с `id`, `file` и `state: ready`:
+
+```json
+{ "id": "5-odrisko-tsarstvo", "file": "odrisko-tsarstvo.md", "state": "ready" }
+```
+
+Урок, който го няма в този списък, спира сглобяването.
+
 - В началото: `id`, `grade`, `number`, `title`, `map`, `span: [от, до]`, `eras`.
 - Първо е част `summary` (`<!-- part: summary -->`, в нея пишеш `year: span`), накрая е част `check`. Между тях има от 6 до 8 части на историята.
 - Всяка част на историята има 3 абзаца по 60 до 90 думи (строго: 3 или 4 абзаца, 40 до 110 думи, общо най-много 1800 думи за историята).

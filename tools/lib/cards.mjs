@@ -7,6 +7,7 @@ const KINDS = { person: 1, place: 1, object: 1, people: 1, idea: 1, event: 1, st
 const LON = [12, 42];
 const LAT = [34, 49.5];
 const WORDS = [50, 90];
+const ID_FORMAT = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
 export function parseCard(text, file) {
     try {
@@ -30,7 +31,7 @@ export function validateCard(card, ctx) {
     if (card.parseError) {
         return [problem(card.file, `unreadable front matter: ${card.parseError}`)];
     }
-    const rules = [requiredFields, textRules, kindRule, paragraphRules, photoRule, atRule, yearsRule, idRule];
+    const rules = [requiredFields, textRules, kindRule, paragraphRules, photoRule, atRule, yearsRule, idRule, idFormatRule];
     return rules.flatMap((rule) => rule(card, ctx).map((message) => problem(card.file, message)));
 }
 
@@ -90,6 +91,10 @@ function yearsRule(card) {
 function idRule(card) {
     const name = basename(card.file, '.md');
     return !card.id || card.id === name ? [] : [`id "${card.id}" does not match file name "${name}"`];
+}
+
+function idFormatRule(card) {
+    return !card.id || ID_FORMAT.test(card.id) ? [] : [`id "${card.id}" must be lowercase latin letters and digits, joined by single hyphens`];
 }
 
 function inRange(value, [min, max]) {

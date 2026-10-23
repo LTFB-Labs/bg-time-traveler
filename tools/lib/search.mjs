@@ -4,7 +4,7 @@ const ENDINGS = ['ът', 'та', 'то', 'те', 'ят', 'ъ', 'а', 'я', 'о',
 export function normalize(text) {
     return text.toLowerCase()
         .replace(/[йѝ]/g, 'и')
-        .replace(/[^\p{L}\p{N}\s]/gu, '')
+        .replace(/[^\p{L}\p{N}\s]/gu, ' ')
         .split(/\s+/)
         .filter((word) => word !== '')
         .map(stripEnding)

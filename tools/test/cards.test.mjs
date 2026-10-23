@@ -78,3 +78,8 @@ test('rejectsNonTextTitleAndKindConstructor', () => {
     assert.ok(messages(card).some((m) => m.includes('"title" must be text')));
     assert.ok(messages(card).some((m) => m.includes('unknown kind "constructor"')));
 });
+
+test('rejectsIdWithCapitalsOrUnderscores', () => {
+    const card = parseCard(TEXT.replace('id: teres', 'id: Teres_I'), 'content/cards/Teres_I.md');
+    assert.deepEqual(messages(card), ['id "Teres_I" must be lowercase latin letters and digits, joined by single hyphens']);
+});

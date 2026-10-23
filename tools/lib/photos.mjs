@@ -23,6 +23,17 @@ export function isAllowedLicence(shortName) {
     return shortName.startsWith('CC BY') && !/-N[CD]\b|\bN[CD]\b/.test(shortName);
 }
 
+// Checks the photos.json entries that cards and lessons use. Files are matched against the folder listing, so the letter case must match too.
+export function photoProblems(keys, photos, files) {
+    return keys.filter((key) => Object.hasOwn(photos, key)).flatMap((key) => entryProblems(photos[key], files).map((message) => problem('photos.json', `"${key}": ${message}`)));
+}
+
+function entryProblems(entry, files) {
+    if (!entry.f) return ['no "f" (file); run npm run photos'];
+    const fileProblems = files.has(entry.f) ? [] : [`file "${entry.f}" is not in photos/`];
+    return isAllowedLicence(entry.l ?? '') ? fileProblems : [...fileProblems, `licence "${entry.l}" is not allowed`];
+}
+
 export function renderCredits(photos) {
     const rows = Object.keys(photos).filter((key) => photos[key].u).sort().map((key) => creditRow(key, photos[key]));
     return [

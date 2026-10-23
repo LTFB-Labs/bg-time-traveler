@@ -3,7 +3,8 @@ import path from 'node:path';
 import pc from 'polygon-clipping';
 import { chaikin, labelPoint, multiPath, r1 } from './geo-core.mjs';
 
-const KINDS = { state: 2, tribes: 1 };
+// Chaikin smoothing passes. Tribes get 3, the same as tribal frames in build-geo.mjs (1 pass, then 2 more for every plain polygon).
+const KINDS = { state: 2, tribes: 3 };
 const GEOMETRIES = ['Polygon', 'MultiPolygon'];
 
 export function loadBorders(dir) {

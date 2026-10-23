@@ -14,7 +14,7 @@ const TOTAL_WORDS = 1800;
 const MAX_PARTS = 8;
 const MIN_PARTS = 6;
 const PART_COMMENT = /^<!--\s*part:\s*(summary|check)\s*-->$/;
-const FACT_PREFIX = /^Знаеш ли, че…\s*/;
+const FACT_PREFIX = /^Знаеш ли, че(…|\.\.\.)\s*/;
 
 // ---------- parsing ----------
 

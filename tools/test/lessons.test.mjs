@@ -82,3 +82,8 @@ test('checksSpanWhenAnotherKeyIsMissing', () => {
     const messages = check(noTitle.replace('span: [-1300, -250]', 'span: [5, 2]')).map((p) => p.message);
     assert.ok(messages.includes('span must start before it ends'));
 });
+
+test('stripsFactPrefixWithThreeDots', () => {
+    const lesson = parseLesson(read('odrysae').replace('Знаеш ли, че…', 'Знаеш ли, че...'), 'odrysae.md');
+    assert.match(lesson.parts[1].fact, /^древните хора/);
+});

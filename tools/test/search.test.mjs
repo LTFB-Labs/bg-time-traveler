@@ -14,6 +14,19 @@ test('normalizeFoldsIKratko', () => {
     assert.equal(normalize('Йордан'), normalize('иордан'));
 });
 
+test('normalizeSplitsOnPunctuation', () => {
+    assert.deepEqual(normalize('Тракия-Македония').split(' '), [normalize('Тракия'), normalize('Македония')]);
+});
+
+test('normalizeFoldsDefiniteEndings', () => {
+    assert.equal(normalize('градът'), normalize('град'));
+    assert.equal(normalize('царят'), normalize('цар'));
+});
+
+test('normalizeKeepsShortWords', () => {
+    assert.equal(normalize('вода'), 'вода');
+});
+
 test('indexesCardsAndParts', () => {
     const card = { id: 'teres', kind: 'person', title: 'Терес I', aliases: ['Терес'], paragraphs: ['Цар на **одрисите**.'] };
     const event = { id: 'battle', kind: 'event', legacyKind: 'war', title: 'Битка', aliases: [], paragraphs: ['> Голяма битка.'] };

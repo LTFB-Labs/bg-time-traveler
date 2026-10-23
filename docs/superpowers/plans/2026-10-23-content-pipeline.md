@@ -71,7 +71,7 @@ geo.js                         generated
 
 ```js
 const CONTENT = {
-    cards: { [id]: { id, kind, title, dates, at, years, photo, aliases, html, lesson } },
+    cards: { [id]: { id, kind, legacyKind, title, dates, at, years, photo, aliases, paragraphs, path, html } },
     lessons: { [id]: Lesson },
     grades: { '5': [{ id, number, title, span, map, state: 'ready' | 'partial' | 'other-map' }] },
     photos: { [key]: { f, a, l, u, w, h } },
