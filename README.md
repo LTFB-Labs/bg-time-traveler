@@ -14,7 +14,7 @@ python3 -m http.server 8765
 
 - `index.html` е цялата игра: картата, слайдърът, картичките и началният екран.
 - `events.js` съдържа събитията (година, място, текст), а `data.js` — епохите, владетелите, градовете и движението на камерата.
-- `geo.js` е генериран. Пуска се с `cd data-src && npm i && node build.mjs`, като преди това трябва да изтеглиш Natural Earth файловете. Историческите граници са ръчно начертани в `data-src/defs.mjs`.
+- `geo.js` е генериран. Пуска се с `cd tools && npm install && npm run ne && npm run geo` (`npm run ne` тегли Natural Earth файловете). Историческите граници са ръчно начертани в `tools/defs.mjs`. Тестовете се пускат с `npm test` в `tools/`.
 - `photos.js` и `photos/` са снимките от Wikimedia Commons. Авторите и лицензите са в [CREDITS.md](CREDITS.md).
 
 Картата е направена с данни от [Natural Earth](https://www.naturalearthdata.com/) (public domain). Историческите граници са приблизителни и са рисувани на ръка за деца.
