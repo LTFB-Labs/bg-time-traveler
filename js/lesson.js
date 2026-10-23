@@ -5,6 +5,7 @@ import {
     clamp,
 } from './map.js';
 import { createCards } from './cards.js';
+import { renderPredict } from './predict.js';
 import { setPosition } from './store.js';
 import {
     createTimeline,
@@ -29,6 +30,7 @@ export function startLesson(map, lesson, { part = 0 } = {}) {
         current = target;
         cards.close();
         renderPart(lesson, current, cards);
+        wirePredict(lesson, current);
         showPartOnMap(map, lesson, current, cards);
         renderYear(lesson, current);
         renderEra(lesson, current);
@@ -228,6 +230,19 @@ function renderPart(lesson, n, cards) {
     body.querySelectorAll('b.term[data-card]').forEach((b) => b.addEventListener('click', () => cards.open(b.dataset.card)));
 }
 
+// the guess is asked once per sitting; Back and Next show the text straight away
+const guessed = new Set();
+
+function wirePredict(lesson, n) {
+    const { predict } = lesson.parts[n].meta;
+    const key = `${lesson.id}:${n}`;
+    if (!predict || guessed.has(key)) return;
+    renderPredict($('lsPredict'), predict, () => {
+        guessed.add(key);
+        $('lsText').classList.remove('held');
+    });
+}
+
 // kind: the card kind whose icon replaces a picture that fails to load
 export function swapForPlaceholderOnError(img, kind) {
     img.addEventListener('error', () => { img.parentElement.outerHTML = photoBlock(null, kind); }, { once: true });
@@ -250,12 +265,17 @@ function storyHtml(lesson, n) {
     return `${photoBlock(CONTENT.photos[meta.photo])}
         <div class="meta"><span class="chip y">${fmtYear(meta)}</span><span class="chip">Част ${n} от ${storyCount(lesson)}</span></div>
         <h2>${esc(heading)}</h2>
-        ${html}
-        ${factHtml ? `<div class="fact"><span class="t">Знаеш ли, че…</span>${factHtml}</div>` : ''}
-        ${onMapLine(meta.marks)}
-        ${wordList(meta.words)}
-        ${teaser(meta.next)}`;
+        <div id="lsPredict"></div>
+        <div id="lsText" class="${isHeld(lesson, n) ? 'held' : ''}">
+            ${html}
+            ${factHtml ? `<div class="fact"><span class="t">Знаеш ли, че…</span>${factHtml}</div>` : ''}
+            ${onMapLine(meta.marks)}
+            ${wordList(meta.words)}
+            ${teaser(meta.next)}
+        </div>`;
 }
+
+const isHeld = (lesson, n) => Boolean(lesson.parts[n].meta.predict) && !guessed.has(`${lesson.id}:${n}`);
 
 // a placeholder until the check lands (Task 9)
 const checkHtml = () => '<h2>Проверка</h2><p>Скоро тук ще има въпроси.</p>';
