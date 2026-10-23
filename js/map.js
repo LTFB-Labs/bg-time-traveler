@@ -148,6 +148,8 @@ function showFrame(i) {
     showLayer(i, () => buildFrame(i));
 }
 function showBorders(ids, ghostId) {
+    const unknown = ids.concat(ghostId || []).filter((id) => !Object.hasOwn(GEO.borders, id));
+    if (unknown.length) throw new Error(`showBorders: unknown border id ${unknown.join(', ')}`);
     showLayer(`${ids.join(' ')}|${ghostId ?? ''}`, () => buildBorders(ids, ghostId));
 }
 function showLayer(key, build) {
@@ -212,7 +214,13 @@ function flyTo(box, { ms = 900 } = {}) {
 }
 // ponytail: per-frame easing like free mode, so ms holds at 60 frames a second; time-based steps if other refresh rates matter
 const rateFor = (ms) => ms > 0 ? 1 - Math.pow(.01, (1000 / 60) / ms) : 1;
+// whoever owns the resize handler only sets the new rect; a lesson camera re-fits its home box to it
+function setFreeRect(rect) {
+    freeRect = rect;
+    if (home) vbT = fitBox(home);
+}
 function snapToYear(y) {
+    if (home) return;
     vb = targetVB(y);
     vbT = null;
     applyVB();
@@ -322,7 +330,7 @@ return {
     showFrame,
     showBorders,
     prebuildFrames,
-    setFreeRect: (rect) => { freeRect = rect; },
+    setFreeRect,
     setScrubbing: (isScrubbing) => { scrubbing = isScrubbing; },
     followYear,
     snapToYear,
