@@ -8,7 +8,7 @@
 
 **Tech Stack:** Plain HTML, CSS and ES modules in the browser; Node 24 `node --test` for pure modules; Playwright MCP for the browser checks; `content.js` and `geo.js` from plan 1.
 
-**Spec:** `docs/superpowers/specs/2026-10-23-grade-lessons-design.md` (sections 4.3 to 4.14, 5.3 to 5.7, 11, 12). Plan 1: `docs/superpowers/plans/2026-10-23-content-pipeline.md` (the `content.js` contract).
+**Spec:** `docs/superpowers/specs/2026-10-23-grade-lessons-design.md` (sections 4.3 to 4.15, 5.3 to 5.7, 5.10, 6.6, 11, 12). Plan 1: `docs/superpowers/plans/2026-10-23-content-pipeline.md` (the `content.js` contract).
 
 ## Global Constraints
 
@@ -16,7 +16,7 @@
 - Generated inputs are read-only: `content.js` defines `CONTENT = { cards, lessons, grades, photos, maps, search }` plus the globals `EVENTS, PHOTOS, ERAS, RULERS, CITIES, MOUNTAINS, SEAS, CAMERA, START, END`; `geo.js` defines `GEO = { W, H, k, cx, lon0, lat1, land, lakes, rivers, frames, borders }`.
 - Projection, shared by every module: `P(lon, lat) = [(lon - GEO.lon0) * GEO.cx * GEO.k, (GEO.lat1 - lat) * GEO.k]`.
 - The free timeline keeps today's behaviour exactly (69 dots, year scrubbing by wheel, play, cards, camera), with one fix: the keydown handler must not throw after the intro is removed.
-- The kid taps Next; nothing advances by itself. Layout: laptop map left about 56 percent, reading pane right; phone map on top about 42 percent of the height, pane below. Visual reference: `spike/lesson.html` (fonts, colours, chips, timeline strip, card pop-over) until Task 11 deletes it.
+- The kid taps Next; nothing advances by itself. Layout: laptop map left about 56 percent, reading pane right; phone map on top about 42 percent of the height, pane below. Visual reference: `spike/lesson.html` (fonts, colours, chips, timeline strip, card pop-over) until Task 12 deletes it.
 - Years: `480 г. пр.Хр.`, `46 г. сл.Хр.` for years 1 to 999, `1396 г.` from 1000 on, `ок.` before approximate; a part `label` wins over `year`; years before 10 000 BC as `преди N години`.
 - No scores. Feedback is green or red with one sentence; "Опитай пак" on red; a lesson is passed when every question has been green at least once in this sitting.
 - Camera pan and zoom limits: no further out than the whole map, no closer than about 50 km across. "Върни ме" appears after the kid moves the map; Next also returns the camera.
@@ -54,6 +54,8 @@ js/store.js                  loadProgress(), saveProgress(p), markCardOpened(id)
 js/years.js                  pure: fmtYear({ year, approx, label }) → string; fmtSpan([a, b]) → string
 js/geo.js                    pure: haversineKm(a, b); boxToViewBox(box, pane, inset); clampViewBox(vb, limits)
 tools/test/web-years.test.mjs, web-geo.test.mjs, web-check-state.test.mjs
+content/figures/*.svg         route figures (Task 11), credits in content/figures.json
+tools/lib/figures.mjs         reads and checks the figures for the content build (Task 11)
 ```
 
 Map API produced by Task 1 and extended in Task 3 (all later tasks consume it):
@@ -67,7 +69,7 @@ map.flyTo(box: Box, opts?: { ms?: number }): void      // eases the viewBox so b
 map.setMarkers(list: Marker[], onClick: (m: Marker) => void): void
 map.setActiveMarker(id: string | null): void
 map.setCities(list: typeof CITIES, year: number): void // free mode only
-map.drawPath(points: [number, number][] | null): void
+map.drawPath(points: [number, number][] | null, move?: string): void // move: figure id riding the path (Task 11)
 map.setMode('free' | 'lesson'): void                   // lesson: drag pans, wheel zooms; free: wheel scrubs year unless wheelZoom is on
 map.onUserMove(cb: (moved: boolean) => void): void     // true after a pan/zoom by hand, false after flyTo
 map.resetCamera(): void                                // flies back to the last box given to flyTo
@@ -248,7 +250,31 @@ Lesson part fields consumed from `CONTENT.lessons[id].parts[n]`: `type` (`summar
 - [ ] **Step 2: Smoke check**: after the check, Next shows the recap with 6 name chips, the replay changes the main border at least three times within 8 seconds, `Към следващия урок` is disabled, `Към началото` returns to the free timeline; 0 console errors.
 - [ ] **Step 3: Commit** `feat: lesson recap with border replay`.
 
-### Task 11: Entry point, clean-up and the full run
+### Task 11: Moving figures on routes
+
+Spec section 5.10 and 6.6. The figure source is still open (spec open question 2); this task uses the free game-icons.net figures, so a later switch to bought figures only replaces files and `content/figures.json`.
+
+**Files:**
+- Create: `content/figures/army.svg`, `riders.svg`, `settlers.svg`, `ship.svg`, `walker.svg`; `content/figures.json`; `tools/lib/figures.mjs`; `tools/test/figures.test.mjs` (fixtures under `tools/test/fixtures/`)
+- Modify: `tools/build-content.mjs` (read figures, add `CONTENT.figures`, pass `move` into `EVENTS`), `tools/lib/lessons.mjs` (`move` key), `tools/lib/cards.mjs` (`move` key), `tools/lib/photos.mjs` and `tools/fetch-photos.mjs` (figure credits in `CREDITS.md`), `js/map.js`, `js/free.js`, `js/lesson.js`, `index.html` (two keyframes), the eight route sources listed below, regenerated `content.js` and `CREDITS.md`
+
+**Interfaces:**
+- Figure files come from `https://game-icons.net/icons/000000/transparent/1x1/<author>/<name>.svg`: army `delapouite/pikeman`, riders `delapouite/cavalry`, settlers `delapouite/old-wagon`, ship `delapouite/caravel`, walker `delapouite/walk`. Download them once with curl into `content/figures/<id>.svg`. `figures.json`: `{ "<id>": { "a": "Delapouite", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/<author>/<name>.html" } }`.
+- `readFigures(dir) → { figures: { [id]: { viewBox, body } }, problems }` in `tools/lib/figures.mjs`: `body` is the inner markup of the `<svg>` with every `fill` attribute removed, so the page colours it; a file without a `figures.json` entry, an entry without a file, or an entry missing `a`, `l` or `u` is a problem. `CONTENT.figures` holds the result.
+- `move` key: allowed on lesson story parts and on cards, valid only when the same part or card has `path` and the value is a key of `CONTENT.figures`. `EVENTS` entries carry `move` when the card has it.
+- `renderCredits(photos, figures)`: after the photo table, a section `## Фигури`, the line `Фигурите са от [game-icons.net](https://game-icons.net/), лиценз CC BY 3.0.` and a table `| Фигура | Автор | Лиценз | Източник |`.
+- `map.drawPath(points, move)`: when `move` is given, after the arrow it adds `g.fig` holding `<use href="#fig-<move>">` that rides the arrow with `animateMotion` + `mpath` (repeat indefinitely). Seconds per run by id: `{ army: 9, riders: 5, settlers: 12, ship: 7, walker: 10 }`, default 9. The figure is mirrored when the path's last point lies west of its first. It stays about 40 screen pixels high at any zoom: its scale is updated whenever the viewBox changes. Ink `#3d2a17` with a cream outline (`stroke #f2e6c6`, `paint-order: stroke`). An inner group bobs (`translateY(-3px)`, 0.5 s alternate) or, for `ship`, rocks (±7 degrees, 1.6 s alternate); the two keyframes go in `index.html`. Symbols `#fig-<id>` are added to `defs` once from `CONTENT.figures`. With `prefers-reduced-motion: reduce` there is no `animateMotion`; the figure stands at the path's end.
+- Callers: `free.js` passes `activeEv.move`; `lesson.js` passes `meta.move`.
+- Route sources to tag: cards `slavs` settlers, `ongal` riders, `kuber` settlers, `osmanli` army, `botev` walker; in `content/lessons/5/odrisko-tsarstvo.md` the parts with a `path`: the Teres part riders, the Sitalces part army, the Philip II part army.
+
+- [ ] **Step 1: Write failing tests**: `figures.test.mjs` `readsBodyWithoutFill` (fixture svg with `fill="#000"` → body has no `fill=`, viewBox `0 0 512 512`), `figureWithoutCreditIsAProblem`, `creditWithoutFileIsAProblem`; in `lessons.test.mjs` `moveWithoutPathIsAProblem` and `unknownMoveIsAProblem`; in `cards.test.mjs` `cardMoveWithoutPathIsAProblem`; in `photos.test.mjs` `creditsListFigures`; in `build-content.test.mjs` `eventsCarryMove`.
+- [ ] **Step 2: Run** `cd tools && npm test` → FAIL.
+- [ ] **Step 3: Implement** the build side, download the five figures, tag the eight routes, run `npm run build` and `node fetch-photos.mjs` (it downloads nothing new and rewrites `CREDITS.md`). **Run** `npm test` → PASS.
+- [ ] **Step 4: Implement** the map side and the two callers.
+- [ ] **Step 5: Smoke check**: free mode `BGTT.setYear(610)` → one `#map g.fig` whose `use` points to `#fig-settlers`; its screen position moves at least 5 px between two samples 1 s apart; its rendered height is 40 px ± 8 both before and after zooming the free map in by about 3 times; lesson part with Sitalces → `#fig-army`; with reduced motion emulated (`page.emulateMedia({ reducedMotion: 'reduce' })`) the figure sits at the arrow's end and does not move; `map.drawPath(points)` without a move draws the arrow and no figure; 0 console errors.
+- [ ] **Step 6: Commit** `feat: moving figures ride the route arrows`.
+
+### Task 12: Entry point, clean-up and the full run
 
 **Files:**
 - Modify: `index.html` (intro gets a second button `Урок: Древна Тракия` → `#lesson/5-odrisko-tsarstvo`, temporary until plan 3), `README.md` (one paragraph: how to open a lesson by its address), `.gitignore` (remove the `spike/` line)
