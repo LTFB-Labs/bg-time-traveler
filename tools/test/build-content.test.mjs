@@ -10,6 +10,7 @@ test('buildsCompatibilityGlobals', () => {
     assert.deepEqual(problems, []);
     assert.equal(content.cards.teres.title, 'Терес I');
     assert.equal(content.cards.teres.file, undefined);
+    assert.ok(content.search.some((entry) => entry.type === 'card'));
     const text = renderContentJs(content);
     assert.match(text, /const EVENTS = \[/);
     assert.match(text, /"START":600/);
