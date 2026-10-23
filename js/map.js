@@ -1,5 +1,7 @@
 // The map: static Balkans base, era frames, camera and the HTML overlay (cities, markers, path).
 // Moved from the inline script of index.html; moved code keeps its original style.
+import { boxToViewBox } from './geo.js';
+
 const NS = "http://www.w3.org/2000/svg";
 const el = (tag, attrs = {}, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
 export const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -21,6 +23,8 @@ export const KIND = {
   event: { n: "Събитие", i: '<path d="M6 3h10l3 3v15H6z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M9 10h7M9 14h7M9 18h4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>' },
 };
 export const icon = (k) => `<svg viewBox="0 0 24 24">${KIND[k].i}</svg>`;
+// lesson cards have their own kinds; free-mode events use the KIND keys directly
+const CARD_ICON = { person: 'person', people: 'person', place: 'building', state: 'building', object: 'event', event: 'event', idea: 'event' };
 
 export function createMap(svg, ov) {
 /* ---------- static map ---------- */
@@ -65,62 +69,102 @@ const mtLabG = el("g", {}, world);
 const frameG = el("g", {}, world);
 const migG = el("g", {}, world);
 
-/* ---------- realm frames ---------- */
+/* ---------- realm frames and lesson borders ---------- */
 const frames = GEO.frames;
 const layers = new Map();
+let clipSeq = 0;
 function buildFrame(i) {
-  const f = frames[i];
-  const gFill = el("g", { class: "layer", style: "opacity:0" });
-  const gLab = el("g", { class: "layer", style: "opacity:0" });
-  el("rect", { x: -3000, y: -3000, width: GEO.W + 6000, height: GEO.H + 6000, fill: PAPER }, gFill);
-  f.realms.forEach((r, j) => {
-    const col = COLORS[r.c] || "#999";
-    const isBg = r.c === "bg" || r.c === "bg2";
-    const g = el("g", {}, gFill);
-    if (r.tribe) {
-      el("path", { d: r.d, fill: col, "fill-opacity": r.over ? .12 : .2 }, g);
-      el("path", { d: r.d, fill: "url(#hatch)", opacity: .35, style: `mix-blend-mode:multiply` }, g);
-      el("path", { d: r.d, fill: "none", stroke: col, "stroke-width": 2, "stroke-dasharray": "2 6", "stroke-linecap": "round", "stroke-opacity": .9 }, g);
-    } else {
-      const id = `rc${i}_${j}`;
-      el("path", { d: r.d }, el("clipPath", { id }, defs));
-      el("path", { d: r.d, fill: mix(PAPER, col, isBg ? .42 : .26) }, g);
-      el("path", { d: r.d, fill: "none", stroke: col, "stroke-width": isBg ? 16 : 11, "stroke-opacity": isBg ? .55 : .38, "clip-path": `url(#${id})` }, g);
-      el("path", { d: r.d, fill: "none", stroke: isBg ? "#7a1e12" : "#5b4a33", "stroke-width": isBg ? 2.2 : 1.1, "stroke-opacity": isBg ? .9 : .55, "stroke-dasharray": isBg ? "" : "5 3" }, g);
-    }
-    if (r.n && r.lx != null) {
-      const big = r.c === "bg" && !r.tribe;
-      let fs = clamp(r.lr * (big ? .55 : .42), big ? 15 : 9, big ? 46 : 42);
-      const name = big ? r.n.toUpperCase() : r.n;
-      fs = Math.min(fs, (r.lr * 2.6) / Math.max(4, name.length * .55));
-      fs = Math.max(fs, big ? 13 : 8);
-      const t = el("text", { x: r.lx, y: r.ly, class: "rlab" + (big ? " bg" : ""), "font-size": fs.toFixed(1), "stroke-width": (fs / 5).toFixed(1), fill: shade(col, -.45) }, gLab);
-      t.textContent = name;
-    }
-  });
-  return { gFill, gLab };
+    const L = newLayer();
+    frames[i].realms.forEach((r) => {
+        const col = COLORS[r.c] || '#999';
+        if (r.tribe) drawTribe(L.gFill, r.d, col, r.over ? .12 : .2);
+        else drawState(L.gFill, r.d, col, r.c === 'bg' || r.c === 'bg2');
+        drawRealmLabel(L.gLab, r, col, r.c === 'bg' && !r.tribe);
+    });
+    return L;
 }
+// lesson mode: the borders of GEO.borders by id, the first state among them is the main one;
+// the ghost is an earlier border drawn as a faint dashed outline, so growth and loss are visible
+function buildBorders(ids, ghostId) {
+    const L = newLayer();
+    const mainId = ids.find((id) => GEO.borders[id].kind === 'state');
+    ids.forEach((id) => {
+        const b = GEO.borders[id];
+        if (b.kind === 'tribes') drawTribe(L.gFill, b.d, b.c, .2);
+        else drawState(L.gFill, b.d, b.c, id === mainId);
+        drawRealmLabel(L.gLab, b, b.c, id === mainId);
+    });
+    if (ghostId) drawGhost(L, GEO.borders[ghostId]);
+    return L;
+}
+// a layer is opaque: it has its own paper base
+function newLayer() {
+    const gFill = el('g', { class: 'layer', style: 'opacity:0' });
+    const gLab = el('g', { class: 'layer', style: 'opacity:0' });
+    el('rect', { x: -3000, y: -3000, width: GEO.W + 6000, height: GEO.H + 6000, fill: PAPER }, gFill);
+    return { gFill, gLab };
+}
+function drawTribe(gFill, d, col, fillOpacity) {
+    const g = el('g', {}, gFill);
+    el('path', { d, fill: col, 'fill-opacity': fillOpacity }, g);
+    el('path', { d, fill: 'url(#hatch)', opacity: .35, style: 'mix-blend-mode:multiply' }, g);
+    el('path', { d, fill: 'none', stroke: col, 'stroke-width': 2, 'stroke-dasharray': '2 6', 'stroke-linecap': 'round', 'stroke-opacity': .9 }, g);
+}
+// a state: paper tinted with its colour, a glow inside the edge (clipped to the shape) and an outline
+function drawState(gFill, d, col, isMain) {
+    const g = el('g', {}, gFill);
+    const clipId = `rc${clipSeq++}`;
+    el('path', { d }, el('clipPath', { id: clipId }, defs));
+    el('path', { d, fill: mix(PAPER, col, isMain ? .42 : .26) }, g);
+    el('path', { d, fill: 'none', stroke: col, 'stroke-width': isMain ? 16 : 11, 'stroke-opacity': isMain ? .55 : .38, 'clip-path': `url(#${clipId})` }, g);
+    const outline = isMain ? '#7a1e12' : '#5b4a33';
+    el('path', { d, fill: 'none', stroke: outline, 'stroke-width': isMain ? 2.2 : 1.1, 'stroke-opacity': isMain ? .9 : .55, 'stroke-dasharray': isMain ? '' : '5 3' }, g);
+}
+function drawRealmLabel(gLab, r, col, isBig) {
+    if (!r.n || r.lx == null) return;
+    const name = isBig ? r.n.toUpperCase() : r.n;
+    const fs = labelSize(r.lr, name, isBig);
+    const t = el('text', { x: r.lx, y: r.ly, class: 'rlab' + (isBig ? ' bg' : ''), 'font-size': fs.toFixed(1), 'stroke-width': (fs / 5).toFixed(1), fill: shade(col, -.45) }, gLab);
+    t.textContent = name;
+}
+// grows with the realm's label radius, then shrinks so a long name still fits inside
+function labelSize(lr, name, isBig) {
+    const fs = clamp(lr * (isBig ? .55 : .42), isBig ? 15 : 9, isBig ? 46 : 42);
+    return Math.max(Math.min(fs, (lr * 2.6) / Math.max(4, name.length * .55)), isBig ? 13 : 8);
+}
+function drawGhost(L, b) {
+    el('path', { d: b.d, fill: 'none', stroke: '#5b4a33', 'stroke-width': 2, 'stroke-dasharray': '8 6', opacity: .55 }, L.gFill);
+    const t = el('text', { x: b.lx, y: b.ly + 22, class: 'rlab', 'font-size': GHOST_FONT, 'stroke-width': GHOST_FONT / 5, fill: '#6e5536', opacity: .8 }, L.gLab);
+    t.textContent = `${b.n} преди`;
+}
+const GHOST_FONT = 16;
 const PAPER = "#f2e6c6";
 function mix(a, b, t) { const A = parseInt(a.slice(1), 16), B = parseInt(b.slice(1), 16); const c = [16, 8, 0].map((sh) => Math.round(lerp((A >> sh) & 255, (B >> sh) & 255, t))); return `rgb(${c.join(",")})`; }
 function shade(hex, k) { const n = parseInt(hex.slice(1), 16); let r = n >> 16, g = (n >> 8) & 255, b = n & 255; r = Math.round(r * (1 + k)); g = Math.round(g * (1 + k)); b = Math.round(b * (1 + k)); return `rgb(${clamp(r, 0, 255)},${clamp(g, 0, 255)},${clamp(b, 0, 255)})`; }
-let curFrame = -1;
-// Each layer is opaque (it has its own paper base), so the new frame fades in on top of the old one,
+let curLayer = -1;
+// Each layer is opaque (it has its own paper base), so the new layer fades in on top of the old one,
 // which stays fully visible underneath until the fade is over: no see-through dip between frames.
 function showFrame(i) {
-  if (i === curFrame) return;
-  const prev = curFrame; curFrame = i;
-  if (!layers.has(i)) layers.set(i, buildFrame(i));
-  const L = layers.get(i);
-  clearTimeout(L.t);
-  realmsG.appendChild(L.gFill); frameG.appendChild(L.gLab);
-  fade(L.gFill, 0, 1, 650); fade(L.gLab, 0, 1, 650);
-  layers.forEach((o, k) => {
-    if (k === i) return;
-    clearTimeout(o.t);
-    if (k !== prev) { o.gFill.remove(); o.gLab.remove(); return; }
-    fade(o.gLab, null, 0, 450);
-    o.t = setTimeout(() => { if (curFrame !== k) { o.gFill.remove(); o.gLab.remove(); } }, 700);
-  });
+    showLayer(i, () => buildFrame(i));
+}
+function showBorders(ids, ghostId) {
+    showLayer(`${ids.join(' ')}|${ghostId ?? ''}`, () => buildBorders(ids, ghostId));
+}
+function showLayer(key, build) {
+    if (key === curLayer) return;
+    const prev = curLayer; curLayer = key;
+    if (!layers.has(key)) layers.set(key, build());
+    const L = layers.get(key);
+    clearTimeout(L.t);
+    realmsG.appendChild(L.gFill); frameG.appendChild(L.gLab);
+    fade(L.gFill, 0, 1, 650); fade(L.gLab, 0, 1, 650);
+    layers.forEach((o, k) => {
+        if (k === key) return;
+        clearTimeout(o.t);
+        if (k !== prev) { o.gFill.remove(); o.gLab.remove(); return; }
+        fade(o.gLab, null, 0, 450);
+        o.t = setTimeout(() => { if (curLayer !== k) { o.gFill.remove(); o.gLab.remove(); } }, 700);
+    });
 }
 // Web Animations start on the next frame no matter how busy the page is; a CSS transition on a just-inserted
 // element can be skipped or start late while the slider tween keeps the main thread busy.
@@ -141,29 +185,33 @@ function prebuildFrames() {
 
 /* ---------- camera ---------- */
 // free mode: the camera follows the CAMERA keyframes for a year and fits them into the free rect;
-// it eases faster while the kid scrubs the timeline
-let vb = { x: 0, y: 0, w: GEO.W, h: GEO.H }, vbT = null, freeRect = null, scrubbing = false;
+// it eases faster while the kid scrubs the timeline.
+// lesson mode: flyTo fits a box instead and keeps it as home; from then on the year no longer moves the camera.
+let vb = { x: 0, y: 0, w: GEO.W, h: GEO.H }, vbT = null, freeRect = null, scrubbing = false, home = null, flyRate = 1;
 function boxAt(y) {
   let i = 0; while (i < CAMERA.length - 1 && CAMERA[i + 1][0] <= y) i++;
   const a = CAMERA[i], b = CAMERA[Math.min(i + 1, CAMERA.length - 1)];
   const t = a === b ? 0 : ease(clamp((y - a[0]) / (b[0] - a[0]), 0, 1));
   return a[1].map((v, k) => lerp(v, b[1][k], t));
 }
-function targetVB(y) {
-  const [w, s, e, n] = boxAt(y); const [x0, y0] = P(w, n), [x1, y1] = P(e, s);
-  const fr = freeRect, bw = x1 - x0, bh = y1 - y0;
-  const sc = Math.min(fr.w / bw, fr.h / bh);
-  const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
-  return { x: cx - (fr.x + fr.w / 2) / sc, y: cy - (fr.y + fr.h / 2) / sc, w: innerWidth / sc, h: innerHeight / sc };
-}
+const targetVB = (y) => fitBox(boxAt(y));
+const fitBox = (box) => boxToViewBox(box, { w: innerWidth, h: innerHeight }, freeRect, P);
 function applyVB() {
   svg.setAttribute("viewBox", `${vb.x.toFixed(2)} ${vb.y.toFixed(2)} ${vb.w.toFixed(2)} ${vb.h.toFixed(2)}`);
   placeOverlay();
 }
 const toScreen = (lon, lat) => { const [x, y] = P(lon, lat), s = innerWidth / vb.w; return [(x - vb.x) * s, (y - vb.y) * s]; };
 function followYear(y) {
+    if (home) return;
     vbT = targetVB(y);
 }
+function flyTo(box, { ms = 900 } = {}) {
+    home = box;
+    flyRate = rateFor(ms);
+    vbT = fitBox(box);
+}
+// ponytail: per-frame easing like free mode, so ms holds at 60 frames a second; time-based steps if other refresh rates matter
+const rateFor = (ms) => ms > 0 ? 1 - Math.pow(.01, (1000 / 60) / ms) : 1;
 function snapToYear(y) {
     vb = targetVB(y);
     vbT = null;
@@ -171,7 +219,7 @@ function snapToYear(y) {
 }
 function tick() {
   if (vbT) {
-    const k = scrubbing ? .2 : .12; let moving = false;
+    const k = home ? flyRate : scrubbing ? .2 : .12; let moving = false;
     for (const key of ["x", "y", "w", "h"]) { const d = vbT[key] - vb[key]; if (Math.abs(d) > .05) { vb[key] += d * k; moving = true; } else vb[key] = vbT[key]; }
     if (moving) applyVB(); else { applyVB(); vbT = null; }
   }
@@ -201,7 +249,7 @@ function setMarkers(list, onClick) {
     mkEls.forEach((b, id) => { if (!ids.has(id)) { b.remove(); mkEls.delete(id); } });
     markers = list;
     list.forEach((m) => { mkFor(m).style.opacity = m.opacity ?? 1; });
-    placeOverlay();
+    setActiveMarker(ids.has(activeId) ? activeId : null);
 }
 function setActiveMarker(id) {
     activeId = id;
@@ -211,14 +259,26 @@ function setActiveMarker(id) {
     placeOverlay();
 }
 function mkFor(m) {
-  if (mkEls.has(m.id)) return mkEls.get(m.id);
-  const b = document.createElement("button"); b.className = "mk"; b.type = "button"; b.setAttribute("aria-label", m.title);
-  b.innerHTML = icon(m.kind);
-  if (m.photo) { b.classList.add("has-img"); b.style.backgroundImage = `url("${m.photo}")`; }
-  b.addEventListener("click", (e) => { e.stopPropagation(); onMarkerClick(m); });
+    const b = mkEls.get(m.id) ?? newMarkerButton(m.id);
+    paintMarker(b, m);
+    return b;
+}
+function newMarkerButton(id) {
+  const b = document.createElement("button"); b.className = "mk"; b.type = "button";
+  b.addEventListener("click", (e) => { e.stopPropagation(); onMarkerClick(markers.find((m) => m.id === id)); });
   b.addEventListener("pointerdown", (e) => e.stopPropagation());
-  ov.appendChild(b); mkEls.set(m.id, b); b.classList.add("pop");
+  ov.appendChild(b); mkEls.set(id, b); b.classList.add("pop");
   return b;
+}
+// a later list may reuse an id with a new title, kind or photo; repaint only when one of them changed
+function paintMarker(b, m) {
+    const look = [m.title, m.kind, m.photo].join('|');
+    if (b._look === look) return;
+    b._look = look;
+    b.setAttribute('aria-label', m.title);
+    b.innerHTML = icon(CARD_ICON[m.kind] ?? m.kind);
+    b.classList.toggle('has-img', Boolean(m.photo));
+    b.style.backgroundImage = m.photo ? `url("${m.photo}")` : '';
 }
 function placeOverlay() {
   const y = cityYear;
@@ -260,11 +320,13 @@ requestAnimationFrame(tick);
 return {
     P,
     showFrame,
+    showBorders,
     prebuildFrames,
     setFreeRect: (rect) => { freeRect = rect; },
     setScrubbing: (isScrubbing) => { scrubbing = isScrubbing; },
     followYear,
     snapToYear,
+    flyTo,
     toScreen,
     setCities,
     setMarkers,
