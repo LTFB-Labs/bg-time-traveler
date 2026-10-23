@@ -152,6 +152,7 @@ button{font-family:inherit;cursor:pointer}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
+<link rel="stylesheet" href="css/lesson.css">
 </head>
 <body>
 <svg id="map" xmlns="http://www.w3.org/2000/svg" aria-label="Карта на Балканите"></svg>
@@ -186,6 +187,28 @@ button{font-family:inherit;cursor:pointer}
   </div>
   <button class="step" id="sNext" aria-label="Напред"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
 </div>
+
+<div id="lsMap">
+  <div id="lsHud"><div id="lsYear"></div><div id="lsEra"></div></div>
+  <div id="lsLegend"></div>
+  <div id="lsTl"></div>
+  <button class="btn" id="lsReturn" hidden>Върни ме</button>
+</div>
+
+<aside id="lesson" hidden>
+  <div id="lsHead">
+    <div id="lsCrumbs"><span class="chip grade"></span><span class="chip"></span></div>
+    <h1 id="lsTitle"></h1>
+    <div id="lsSteps"></div>
+  </div>
+  <div id="lsBody"></div>
+  <div id="lsPop" hidden></div>
+  <div id="lsNav">
+    <button class="btn" id="lsPrev" aria-label="Назад"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button class="btn pri" id="lsNext">Напред <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    <span class="hint">← → на клавиатурата</span>
+  </div>
+</aside>
 
 <div id="intro">
   <div class="art"><img src="traveler.svg" alt="Чудовището пътешественик във времето"></div>
