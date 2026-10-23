@@ -11,6 +11,9 @@ const WORDS = [50, 90];
 export function parseCard(text, file) {
     try {
         const { meta, body } = splitFrontMatter(text);
+        if (typeof meta !== 'object' || meta === null || Array.isArray(meta)) {
+            throw new Error('front matter must be a key/value map');
+        }
         return buildCard(meta, splitParagraphs(body), file);
     } catch (error) {
         return { ...buildCard({}, [], file), parseError: error.message };
@@ -18,15 +21,16 @@ export function parseCard(text, file) {
 }
 
 function buildCard(meta, paragraphs, file) {
-    const aliases = [...new Set([...(meta.aliases ?? []), ...(meta.title ? [meta.title] : [])])];
-    return { ...meta, file, aliases, paragraphs };
+    const listed = Array.isArray(meta.aliases) ? meta.aliases.filter(isText) : [];
+    const aliases = [...new Set([...listed, ...(isText(meta.title) ? [meta.title] : [])])];
+    return { ...meta, file, aliases, rawAliases: meta.aliases, paragraphs };
 }
 
 export function validateCard(card, ctx) {
     if (card.parseError) {
         return [problem(card.file, `unreadable front matter: ${card.parseError}`)];
     }
-    const rules = [requiredFields, kindRule, paragraphRules, photoRule, atRule, yearsRule, idRule];
+    const rules = [requiredFields, textRules, kindRule, paragraphRules, photoRule, atRule, yearsRule, idRule];
     return rules.flatMap((rule) => rule(card, ctx).map((message) => problem(card.file, message)));
 }
 
@@ -34,8 +38,18 @@ function requiredFields(card) {
     return ['id', 'kind', 'title'].filter((field) => !card[field]).map((field) => `missing required field "${field}"`);
 }
 
+function textRules(card) {
+    const titleProblems = card.title === undefined || isText(card.title) ? [] : ['"title" must be text'];
+    const aliasesOk = card.rawAliases === undefined || (Array.isArray(card.rawAliases) && card.rawAliases.every(isText));
+    return aliasesOk ? titleProblems : [...titleProblems, '"aliases" must be a list of text'];
+}
+
+function isText(value) {
+    return typeof value === 'string';
+}
+
 function kindRule(card) {
-    return !card.kind || card.kind in KINDS ? [] : [`unknown kind "${card.kind}", expected one of ${Object.keys(KINDS).join(', ')}`];
+    return !card.kind || Object.hasOwn(KINDS, card.kind) ? [] : [`unknown kind "${card.kind}", expected one of ${Object.keys(KINDS).join(', ')}`];
 }
 
 function paragraphRules(card) {

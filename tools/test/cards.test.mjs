@@ -47,13 +47,34 @@ test('rejectsMissingFieldsBadCoordinatesAndYears', () => {
     const card = parseCard('---\nat: [50, 40]\nyears: [10, 5]\n---\nКратко.\n', FILE);
     const found = messages(card);
     assert.ok(['id', 'kind', 'title'].every((f) => found.some((m) => m.includes(`"${f}"`))));
-    assert.ok(found.some((m) => m.includes('at')));
+    assert.ok(found.some((m) => m.includes('"at"')));
     assert.ok(found.some((m) => m.includes('years')));
-    assert.ok(found.some((m) => m.includes('paragraph')));
+    assert.ok(found.some((m) => m.includes('expected 2 paragraphs')));
 });
 
 test('badYamlBecomesProblemNamingFile', () => {
     const card = parseCard('---\nid: [oops\n---\nТекст.\n', FILE);
     const problems = validateCard(card, ctx);
     assert.equal(problems[0].file, FILE);
+});
+
+test('rejectsNonMapFrontMatter', () => {
+    ['- a\n- b', 'just text'].forEach((yaml) => {
+        const problems = validateCard(parseCard(`---\n${yaml}\n---\nТекст.\n`, FILE), ctx);
+        assert.equal(problems.length, 1);
+        assert.ok(problems[0].message.includes('key/value map'));
+    });
+});
+
+test('rejectsAliasesThatAreNotAList', () => {
+    const card = parseCard(TEXT.replace(/aliases: .*/, 'aliases: foo'), FILE);
+    assert.deepEqual(card.aliases, ['Терес I']);
+    assert.ok(messages(card).some((m) => m.includes('"aliases" must be a list')));
+});
+
+test('rejectsNonTextTitleAndKindConstructor', () => {
+    const card = parseCard(TEXT.replace('title: Терес I', 'title: 5').replace('kind: person', 'kind: constructor'), FILE);
+    assert.ok(!card.aliases.includes(5));
+    assert.ok(messages(card).some((m) => m.includes('"title" must be text')));
+    assert.ok(messages(card).some((m) => m.includes('unknown kind "constructor"')));
 });
