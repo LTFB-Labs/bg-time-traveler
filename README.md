@@ -13,8 +13,8 @@ python3 -m http.server 8765
 ## Файлове
 
 - `index.html` е цялата игра: картата, слайдърът, картичките и началният екран.
-- `events.js` съдържа събитията (година, място, текст), а `data.js` — епохите, владетелите, градовете и движението на камерата.
+- `content/` е мястото на данните: `cards/` (събитията като Markdown картички), `photos.json`, `maps/balkans.json` (епохи, владетели, градове, камера). `content.js` се генерира с `cd tools && npm run build`.
 - `geo.js` е генериран. Пуска се с `cd tools && npm install && npm run ne && npm run geo` (`npm run ne` тегли Natural Earth файловете). Историческите граници са ръчно начертани в `tools/defs.mjs`. Тестовете се пускат с `npm test` в `tools/`.
-- `photos.js` и `photos/` са снимките от Wikimedia Commons. Авторите и лицензите са в [CREDITS.md](CREDITS.md).
+- `photos/` са снимките от Wikimedia Commons. Авторите и лицензите са в [CREDITS.md](CREDITS.md).
 
 Картата е направена с данни от [Natural Earth](https://www.naturalearthdata.com/) (public domain). Историческите граници са приблизителни и са рисувани на ръка за деца.
