@@ -86,6 +86,7 @@ button{font-family:inherit;cursor:pointer}
 
 /* timeline */
 #tl{position:fixed;left:0;right:0;bottom:0;height:calc(var(--tl) + env(safe-area-inset-bottom));padding:10px max(16px,env(safe-area-inset-right)) env(safe-area-inset-bottom) max(16px,env(safe-area-inset-left));display:flex;align-items:center;gap:12px;background:linear-gradient(180deg,rgba(242,230,198,0) 0,rgba(242,230,198,.92) 22%,#efe1bd 100%);user-select:none;-webkit-user-select:none}
+#dock{flex:none;width:72px;height:72px}
 #play{flex:none;width:56px;height:56px;border-radius:50%;border:0;background:var(--red);color:#fff;display:grid;place-items:center;box-shadow:0 4px 12px rgba(122,30,18,.35);transition:transform .12s}
 #play:active{transform:scale(.94)}
 #play svg{width:24px;height:24px}
@@ -145,6 +146,7 @@ button{font-family:inherit;cursor:pointer}
   #era{font-size:13px}
   #ruler{font-size:12.5px}
   .step{display:none}
+  #dock{width:60px;height:60px}
   #play{width:48px;height:48px}
   #bands div{font-size:0}
   .mk{width:38px;height:38px;margin:-50px 0 0 -19px}
@@ -185,6 +187,7 @@ button{font-family:inherit;cursor:pointer}
     <div id="knob"><div id="tip"></div><div class="head"><img src="traveler-head.svg" alt=""></div></div>
   </div>
   <button class="step" id="sNext" aria-label="Напред"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  <div id="dock" aria-hidden="true"></div>
 </div>
 
 <div id="intro">
@@ -199,6 +202,7 @@ button{font-family:inherit;cursor:pointer}
 <script src="data.js"></script>
 <script src="events.js"></script>
 <script src="photos.js"></script>
+<script src="narrator.js" defer></script>
 <script>
 (() => {
 "use strict";
@@ -227,6 +231,11 @@ const KIND = {
 const icon = (k) => `<svg viewBox="0 0 24 24">${KIND[k].i}</svg>`;
 const yInt = (y) => Math.floor(y + 1e-6);
 const EV = EVENTS.slice().sort((a, b) => a.y - b.y);
+
+/* ---------- events for add-ons (see window.BGTT at the end) ---------- */
+const bus = new EventTarget();
+const emit = (name, detail) => bus.dispatchEvent(new CustomEvent(name, { detail }));
+const userInput = () => emit("input", {});
 
 /* ---------- static map ---------- */
 const svg = $("map");
@@ -383,7 +392,7 @@ function mkFor(ev) {
   const b = document.createElement("button"); b.className = "mk"; b.type = "button"; b.setAttribute("aria-label", ev.t);
   b.innerHTML = icon(ev.kind);
   const ph = PH[ev.id]; if (ph) { b.classList.add("has-img"); b.style.backgroundImage = `url("${ph.f}")`; }
-  b.addEventListener("click", (e) => { e.stopPropagation(); stopPlay(); goTo(ev.y, 900); });
+  b.addEventListener("click", (e) => { e.stopPropagation(); userInput(); stopPlay(); goTo(ev.y, 900); });
   b.addEventListener("pointerdown", (e) => e.stopPropagation());
   ov.appendChild(b); mkEls.set(ev.id, b); b.classList.add("pop");
   return b;
@@ -418,7 +427,7 @@ function updateMarkers() {
   mkEls.forEach((b, id) => { if (!ids.has(id)) { b.remove(); mkEls.delete(id); } });
   visibleEv = vis.sort((a, b) => (a === act) - (b === act)); // active last → on top
   vis.forEach((e) => { const b = mkFor(e); const age = (y - e.y) / SPAN(e); b.style.opacity = e === act ? 1 : (1 - age * .55).toFixed(2); b.classList.toggle("on", e === act); });
-  if (act !== activeEv) { activeEv = act; renderCard(); drawMigration(); }
+  if (act !== activeEv) { activeEv = act; renderCard(); drawMigration(); emit("focus", { item: act && lessonItem(act) }); }
   labEl.textContent = act ? act.t : ""; labEl.style.opacity = act && innerWidth > 760 ? 1 : 0;
   placeOverlay();
 }
@@ -508,7 +517,7 @@ function placeKnob() {
 let dragging = false;
 function yearFromEvent(e) { const r = track.getBoundingClientRect(); return xToY(e.clientX - r.left); }
 track.addEventListener("pointerdown", (e) => {
-  stopPlay(); dragging = true; track.classList.add("drag"); track.setPointerCapture(e.pointerId);
+  userInput(); stopPlay(); dragging = true; track.classList.add("drag"); track.setPointerCapture(e.pointerId);
   const dot = e.target.closest(".dot");
   if (dot) { const ev = EV.find((q) => q.id === dot.dataset.id); goTo(ev.y, 700); return; }
   setYear(yearFromEvent(e)); showTip(e);
@@ -535,14 +544,15 @@ function setYear(y) {
   vbT = targetVB(state.year);
   updateMarkers(); updateHUD(); placeKnob();
 }
-function goTo(y, ms = 900) {
-  const from = state.year, t0 = performance.now(); tween = { from, to: y, t0, ms };
+function goTo(y, ms = 900, done) {
+  if (tween && tween.done) tween.done();
+  const from = state.year, t0 = performance.now(); tween = { from, to: y, t0, ms, done };
 }
 function tick(now) {
   if (tween) {
     const t = clamp((now - tween.t0) / tween.ms, 0, 1);
     setYear(lerp(tween.from, tween.to, ease(t)));
-    if (t >= 1) { tween = null; setYear(state.year); }
+    if (t >= 1) { const done = tween.done; tween = null; setYear(state.year); if (done) done(); }
   }
   if (vbT) {
     const k = dragging ? .2 : .12; let moving = false;
@@ -567,24 +577,26 @@ function playStep() {
 }
 const readTime = (e) => clamp(2600 + e.d.length * 28, 4500, 9000);
 $("play").addEventListener("click", () => {
+  userInput();
   if (playing) { stopPlay(); return; }
   if (state.year >= END - .01) setYear(START);
   playing = true; $("play").innerHTML = PAUSE_ICON; $("play").setAttribute("aria-label", "Пауза"); playStep();
 });
-const stepNext = () => { stopPlay(); const n = nextAfter(state.year); if (n) goTo(n.y, clamp(500 + Math.sqrt(n.y - state.year) * 220, 600, 2600)); };
-const stepPrev = () => { stopPlay(); const p = prevBefore(state.year); if (p) goTo(p.y, clamp(500 + Math.sqrt(state.year - p.y) * 220, 600, 2600)); };
+const stepNext = () => { userInput(); stopPlay(); const n = nextAfter(state.year); if (n) goTo(n.y, clamp(500 + Math.sqrt(n.y - state.year) * 220, 600, 2600)); };
+const stepPrev = () => { userInput(); stopPlay(); const p = prevBefore(state.year); if (p) goTo(p.y, clamp(500 + Math.sqrt(state.year - p.y) * 220, 600, 2600)); };
 $("next").addEventListener("click", stepNext); $("sNext").addEventListener("click", stepNext);
 $("prev").addEventListener("click", stepPrev); $("sPrev").addEventListener("click", stepPrev);
 $("more").addEventListener("click", () => { card.classList.toggle("open"); $("more").textContent = card.classList.contains("open") ? "По-малко" : "Още"; requestAnimationFrame(() => { vbT = targetVB(state.year); }); });
 addEventListener("keydown", (e) => {
-  if (!$("intro").classList.contains("leave")) { if (e.key === "Enter" || e.key === " ") start(); return; }
-  if (e.key === "ArrowRight") { e.shiftKey ? (stopPlay(), goTo(state.year + 10, 300)) : stepNext(); e.preventDefault(); }
-  if (e.key === "ArrowLeft") { e.shiftKey ? (stopPlay(), goTo(state.year - 10, 300)) : stepPrev(); e.preventDefault(); }
+  const intro = $("intro");
+  if (intro && !intro.classList.contains("leave")) { if (e.key === "Enter" || e.key === " ") start(); return; }
+  if (e.key === "ArrowRight") { e.shiftKey ? (userInput(), stopPlay(), goTo(state.year + 10, 300)) : stepNext(); e.preventDefault(); }
+  if (e.key === "ArrowLeft") { e.shiftKey ? (userInput(), stopPlay(), goTo(state.year - 10, 300)) : stepPrev(); e.preventDefault(); }
   if (e.key === " ") { $("play").click(); e.preventDefault(); }
 });
 
 /* ---------- map drag to scrub? no: wheel on map scrubs time ---------- */
-svg.addEventListener("wheel", (e) => { e.preventDefault(); stopPlay(); setYear(state.year + (e.deltaY + e.deltaX) * .08); }, { passive: false });
+svg.addEventListener("wheel", (e) => { e.preventDefault(); userInput(); stopPlay(); setYear(state.year + (e.deltaY + e.deltaX) * .08); }, { passive: false });
 
 /* ---------- paper grain ---------- */
 (function grain() {
@@ -606,7 +618,37 @@ setYear(START);
 vb = targetVB(START); applyVB();
 requestAnimationFrame(tick);
 prebuildFrames();
-window.BGTT = { setYear: (y) => { stopPlay(); setYear(y); } };
+/* ---------- window.BGTT: the only way add-ons (narrator.js) talk to the game ----------
+   items()      → the lesson: every event in time order, as plain data
+   current()    → { item, year, era } for what the timeline shows now (item is null between events)
+   goTo(id)     → moves the timeline to that event; resolves when the move has finished
+   stage()      → screen rect of the map that is not covered by the card and timeline
+   dock()       → screen rect of the free slot at the right end of the timeline
+   on(name, cb) → "focus" (the shown event changed) and "input" (the viewer moved the timeline); returns an unsubscribe */
+function lessonItem(e) {
+  const p = PH[e.id], era = eraAt(e.y);
+  return { id: e.id, year: yInt(e.y), title: e.t, text: e.d, kind: e.kind, kindName: KIND[e.kind].n,
+    photo: p ? { src: p.f, author: p.a, license: p.l, url: p.u } : null,
+    era: { name: era.n, from: era.a, to: era.b > END ? null : era.b, text: era.d } };
+}
+const LESSON = EV.map(lessonItem);
+window.BGTT = {
+  version: 1,
+  items: () => LESSON.slice(),
+  current: () => { const era = eraAt(state.year); return { item: activeEv && lessonItem(activeEv), year: yInt(state.year), era: { name: era.n, from: era.a, to: era.b > END ? null : era.b, text: era.d } }; },
+  goTo: (id) => new Promise((resolve) => {
+    const ev = EV.find((q) => q.id === id); if (!ev) { resolve(); return; }
+    stopPlay();
+    const gap = Math.abs(ev.y - state.year);
+    if (gap < 1e-6) { setYear(ev.y); setTimeout(resolve, 150); return; }
+    goTo(ev.y, clamp(500 + Math.sqrt(gap) * 240, 600, 3000), () => setTimeout(resolve, 250));
+  }),
+  stage: () => freeRect(),
+  dock: () => $("dock").getBoundingClientRect(),
+  on: (name, cb) => { const h = (e) => cb(e.detail); bus.addEventListener(name, h); return () => bus.removeEventListener(name, h); },
+  setYear: (y) => { stopPlay(); setYear(y); },
+};
+dispatchEvent(new Event("bgtt:ready"));
 })();
 </script>
 </body>
