@@ -245,11 +245,13 @@ function toLonLat(sx, sy) {
 function followYear(y) {
     if (home) return;
     vbT = targetVB(y);
+    glide();
 }
 function flyTo(box, { ms = 900 } = {}) {
     home = box;
     flyRate = rateFor(ms);
     vbT = fitBox(box);
+    glide();
     onUserMoveCb(false);
 }
 // ponytail: per-frame easing like free mode, so ms holds at 60 frames a second; time-based steps if other refresh rates matter
@@ -270,12 +272,19 @@ function snapToYear(y) {
     vbT = null;
     applyVB();
 }
+// the camera eases on animation frames only while it has somewhere to go: glide starts the frames, tick stops on arrival
+let gliding = false;
+function glide() {
+  if (gliding) return;
+  gliding = true;
+  requestAnimationFrame(tick);
+}
 function tick() {
-  if (vbT) {
-    const k = home ? flyRate : scrubbing ? .2 : .12; let moving = false;
-    for (const key of ["x", "y", "w", "h"]) { const d = vbT[key] - vb[key]; if (Math.abs(d) > .05) { vb[key] += d * k; moving = true; } else vb[key] = vbT[key]; }
-    if (moving) applyVB(); else { applyVB(); vbT = null; }
-  }
+  if (!vbT) { gliding = false; return; }
+  const k = home ? flyRate : scrubbing ? .2 : .12; let moving = false;
+  for (const key of ["x", "y", "w", "h"]) { const d = vbT[key] - vb[key]; if (Math.abs(d) > .05) { vb[key] += d * k; moving = true; } else vb[key] = vbT[key]; }
+  applyVB();
+  if (!moving) vbT = null;
   requestAnimationFrame(tick);
 }
 
@@ -504,7 +513,6 @@ function scaleFigure() {
   x.putImageData(im, 0, 0); document.getElementById("grain").style.backgroundImage = `url(${c.toDataURL()})`;
 })();
 
-requestAnimationFrame(tick);
 return {
     P,
     showFrame,

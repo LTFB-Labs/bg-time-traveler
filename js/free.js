@@ -148,16 +148,17 @@ function setYear(y) {
   map.setCities(CITIES, state.year);
   updateMarkers(); updateHUD(); placeKnob();
 }
+// the year tween runs on animation frames only while it lasts: goTo starts the frames when none run, tick stops at the end
 function goTo(y, ms = 900) {
-  const from = state.year, t0 = performance.now(); tween = { from, to: y, t0, ms };
+  const from = state.year, t0 = performance.now();
+  if (!tween) requestAnimationFrame(tick);
+  tween = { from, to: y, t0, ms };
 }
 function tick(now) {
-  if (tween) {
-    const t = clamp((now - tween.t0) / tween.ms, 0, 1);
-    setYear(lerp(tween.from, tween.to, ease(t)));
-    if (t >= 1) { tween = null; setYear(state.year); }
-  }
-  requestAnimationFrame(tick);
+  const t = clamp((now - tween.t0) / tween.ms, 0, 1);
+  setYear(lerp(tween.from, tween.to, ease(t)));
+  if (t < 1) { requestAnimationFrame(tick); return; }
+  tween = null; setYear(state.year);
 }
 
 /* ---------- play ---------- */
@@ -213,7 +214,6 @@ addEventListener("resize", () => { buildTimeline(); aimCamera(); });
 buildTimeline();
 setYear(START);
 map.setFreeRect(freeRect()); map.snapToYear(START);
-requestAnimationFrame(tick);
 map.prebuildFrames();
 window.BGTT = { setYear: (y) => { stopPlay(); setYear(y); }, map };
 }
