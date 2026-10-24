@@ -63,6 +63,12 @@ el("path", { d: GEO.land, fill: "none", stroke: "#5b4a33", "stroke-width": 1.1, 
 
 const labelsStatic = el("g", {}, world);
 SEAS.forEach((s) => { const [x, y] = P(s.at[0], s.at[1]); el("text", { x, y, class: "sea-lab", "font-size": s.s, transform: s.r ? `rotate(${s.r} ${x} ${y})` : "" }, labelsStatic).textContent = s.n; });
+// river names along their water; tools/build-geo.mjs lays each one on a smoothed stretch of its river
+GEO.riverLabels.forEach(({ n, d }, i) => {
+    el('path', { id: `riverLab${i}`, d }, defs);
+    const text = el('text', { class: 'riv-lab', 'font-size': 10, dy: -3 }, labelsStatic);
+    el('textPath', { href: `#riverLab${i}`, startOffset: '50%' }, text).textContent = n;
+});
 const mtLabG = el("g", {}, world);
 [["Стара планина", 25.3, 42.95, 13], ["Родопи", 24.8, 41.45, 12], ["Карпати", 24.3, 45.75, 14], ["Динарски планини", 17.3, 43.85, 12], ["Пинд", 21.6, 39.55, 11]].forEach(([n, lon, lat, s]) => {
   const [x, y] = P(lon, lat); el("text", { x, y, class: "mt-lab", "font-size": s }, mtLabG).textContent = n;
