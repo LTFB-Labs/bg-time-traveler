@@ -5,7 +5,7 @@ import { linkTerms } from './terms.mjs';
 import { problem } from './problems.mjs';
 import { isIndexIn, isMap, isNumberPair, isText, validateQuestions } from './questions.mjs';
 
-const STORY_KEYS = ['year', 'approx', 'label', 'box', 'borders', 'ghost', 'marks', 'path', 'stand', 'photo', 'words', 'next', 'predict'];
+const STORY_KEYS = ['year', 'approx', 'label', 'box', 'borders', 'ghost', 'marks', 'path', 'photo', 'words', 'next', 'predict'];
 const KEYS = { story: STORY_KEYS, summary: [...STORY_KEYS, 'lead', 'goals', 'names'], check: ['questions'] };
 const REQUIRED = ['id', 'grade', 'number', 'title', 'map', 'span', 'eras'];
 const PARAGRAPHS = [3, 4];
@@ -163,7 +163,6 @@ const KEY_RULES = {
     marks: idList('card', 'cards'),
     names: idList('card', 'cards'),
     path: (value) => (isList(value) && value.length >= 2 && value.every(isNumberPair) ? '' : 'must be a list of at least 2 [lon, lat] pairs'),
-    stand: (value, ctx) => (ctx.cards.get(value)?.at ? '' : 'needs a card id with a place on the map'),
     photo: (value, ctx) => (ctx.photos.has(value) ? '' : `has unknown photo ${value}`),
     words: (value) => (isList(value) && value.every((entry) => isMap(entry) && Object.keys(entry).length === 1) ? '' : 'must be a list of one-key maps'),
     next: text,

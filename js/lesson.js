@@ -74,7 +74,7 @@ export function startLesson(map, lesson, { part = 0 } = {}) {
         renderEra(lesson, n);
         renderLegend(legendIds(lesson, n));
         timeline.setPart(n);
-        alive.showPart(n);
+        alive.showPart();
     };
     const onPassed = () => {
         isCheckPassed = true;
@@ -84,7 +84,7 @@ export function startLesson(map, lesson, { part = 0 } = {}) {
     showPane();
     renderHead(lesson, goTo);
     const timeline = createTimeline($('lsTl'), lesson, { onPick: goTo });
-    const alive = startAlive(map, lesson);
+    const alive = startAlive(map);
     wireNav(player);
     wirePrint();
     wireHandCamera(map);

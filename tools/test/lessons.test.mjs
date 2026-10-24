@@ -88,12 +88,3 @@ test('stripsFactPrefixWithThreeDots', () => {
     assert.match(lesson.parts[1].fact, /^древните хора/);
 });
 
-test('standNeedsACardWithAPlace', () => {
-    const problems = check(read('odrysae').replace('year: -341', 'year: -341\nstand: troy'));
-    assert.deepEqual(problems.map((p) => p.message), ['part "Филип II завладява Тракия": stand needs a card id with a place on the map']);
-});
-
-test('standOnACardWithAPlaceIsFine', () => {
-    const placed = new Map(ids.map((id) => [id, { ...card(id), at: [25, 42] }]));
-    assert.deepEqual(check(read('odrysae').replace('year: -341', 'year: -341\nstand: troy'), { cards: placed }), []);
-});

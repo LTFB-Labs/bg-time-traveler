@@ -1,8 +1,7 @@
-// The living lesson map: wave marks on the sea, small white vapours, flocks of birds, ships of the time, and the traveler
-// standing at the part's place with a dotted trail of the places visited. The border trace lives in map.js.
+// The living lesson map: wave marks on the sea, small white vapours, flocks of birds and ships of the time.
+// The border trace lives in map.js.
 // Energy: nothing here redraws the map itself. The waves sit still on a canvas above it, drawn again only when the camera
-// moves; the ships and the trail sit on an SVG layer of their own; the vapours, the birds and the traveler move as layers
-// of their own. Everything moves for AWAKE_MS after a part opens or the camera moves, slowing to a stop over the last
+// moves; the ships sit on an SVG layer of their own; the vapours and the birds move as layers of their own. Everything moves for AWAKE_MS after a part opens or the camera moves, slowing to a stop over the last
 // SLOW_MS, then holds still. Still means no animation at all: macOS keeps redrawing a layer that has even a paused one.
 // Node imports this module for the pure helpers, so every DOM access stays inside a function.
 const NS = 'http://www.w3.org/2000/svg';
@@ -27,43 +26,24 @@ const VAPOURS = 6;
 // a flock takes off only this long before the map starts to slow down, so it is seen before it fades
 const FLOCK_LEAD_MS = 4000;
 const MAX_FLOCKS = 2;
-const WALK_MS = 1600;
 
-// where the traveler stands in a part: at the card its stand names, else at its first marked card with a place
-export function standOf(part, cards) {
-    const ids = part.meta.stand ? [part.meta.stand] : part.meta.marks ?? [];
-    return ids.map((id) => cards[id]?.at).find(Boolean) ?? null;
-}
-
-// the places the traveler has stood on, story part by story part, up to part n
-export function visitedUpTo(lesson, n, cards) {
-    return lesson.parts.slice(0, n + 1).filter((p) => p.type === 'story').map((p) => standOf(p, cards)).filter(Boolean);
-}
-
-export function startAlive(map, lesson) {
-    const scene = { map, lesson, isCalm: matchMedia('(prefers-reduced-motion: reduce)').matches, isAwake: false, slowing: null, ships: [] };
+export function startAlive(map) {
+    const scene = { map, isCalm: matchMedia('(prefers-reduced-motion: reduce)').matches, isAwake: false, slowing: null, ships: [] };
     scene.timers = { slow: 0, birds: 0 };
     scene.waves = addWaves(scene);
     scene.layer = addLayer();
     scene.clouds = addClouds();
     if (!scene.isCalm) addFleet(scene);
-    scene.traveler = addTraveler(scene);
     map.onView(() => onView(scene));
     onView(scene);
     if (scene.isCalm) sleep(scene);
-    return { showPart: (n) => showPart(scene, n) };
-}
-
-function showPart(scene, n) {
-    wake(scene);
-    walkTo(scene, visitedUpTo(scene.lesson, n, CONTENT.cards).map(([lon, lat]) => scene.map.P(lon, lat)));
+    return { showPart: () => wake(scene) };
 }
 
 function onView(scene) {
     wake(scene);
     drawWaves(scene);
     followCamera(scene);
-    if (scene.traveler.at) placeToken(scene);
 }
 
 function el(tag, attrs, parent) {
@@ -98,7 +78,7 @@ function slowDown(scene) {
     fadeFlocks();
     scene.layer.pauseAnimations();
     document.documentElement.classList.add('fx-slowing');
-    const anims = [scene.layer, scene.traveler.token, scene.clouds.sky].flatMap((e) => e.getAnimations({ subtree: true }));
+    const anims = [scene.layer, scene.clouds.sky].flatMap((e) => e.getAnimations({ subtree: true }));
     const now = performance.now();
     scene.slowing = { anims, start: now, last: now, shipTime: scene.layer.getCurrentTime() };
     requestAnimationFrame(() => stepSlowing(scene, scene.slowing));
@@ -332,48 +312,3 @@ function followCamera(scene) {
     scene.ships.forEach(({ sized, mirror }) => sized.setAttribute('transform', `scale(${(mirror / zoom).toFixed(4)} ${(1 / zoom).toFixed(4)})`));
 }
 
-/* ---------- traveler ---------- */
-// the traveler's coin floats over a pulsing ring next to the current place, above the map and below its markers
-function addTraveler(scene) {
-    const token = document.createElement('div');
-    token.className = 'fx-token away';
-    token.innerHTML = '<i class="pulse"></i><i class="shadow"></i><b><img src="traveler-head.svg" alt=""></b>';
-    document.getElementById('ov').before(token);
-    return { token, trail: el('path', { class: 'fx-trail' }, scene.layer), at: null, walk: null };
-}
-
-// the traveler walks to the last place visited, and the trail joins the places in order
-function walkTo(scene, visited) {
-    const me = scene.traveler;
-    const here = visited.at(-1);
-    me.token.classList.toggle('away', !here);
-    if (!here) return;
-    me.trail.setAttribute('d', visited.length > 1 ? `M${visited.join('L')}` : '');
-    if (!me.at || scene.isCalm) {
-        me.at = here;
-        placeToken(scene);
-        return;
-    }
-    if (String(me.walk?.to ?? me.at) === String(here)) return;
-    const isWalking = Boolean(me.walk);
-    me.walk = { from: me.at, to: here, start: performance.now() };
-    if (!isWalking) requestAnimationFrame(() => stepWalk(scene));
-}
-
-function stepWalk(scene) {
-    const me = scene.traveler;
-    const { from, to, start } = me.walk;
-    const t = Math.min(1, (performance.now() - start) / WALK_MS);
-    const k = t < .5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2;
-    me.at = [from[0] + (to[0] - from[0]) * k, from[1] + (to[1] - from[1]) * k];
-    placeToken(scene);
-    if (t < 1) requestAnimationFrame(() => stepWalk(scene));
-    else me.walk = null;
-}
-
-function placeToken(scene) {
-    const me = scene.traveler;
-    const view = scene.map.view();
-    const zoom = innerWidth / view.w;
-    me.token.style.transform = `translate(${((me.at[0] - view.x) * zoom).toFixed(1)}px, ${((me.at[1] - view.y) * zoom).toFixed(1)}px)`;
-}
