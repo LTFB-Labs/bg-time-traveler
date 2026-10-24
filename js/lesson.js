@@ -4,6 +4,7 @@ import {
     cardIcon,
     clamp,
 } from './map.js';
+import { startAlive } from './alive.js';
 import { createCards } from './cards.js';
 import { renderCheck } from './check.js';
 import { renderPredict } from './predict.js';
@@ -73,6 +74,7 @@ export function startLesson(map, lesson, { part = 0 } = {}) {
         renderEra(lesson, n);
         renderLegend(legendIds(lesson, n));
         timeline.setPart(n);
+        alive.showPart(n);
     };
     const onPassed = () => {
         isCheckPassed = true;
@@ -82,6 +84,7 @@ export function startLesson(map, lesson, { part = 0 } = {}) {
     showPane();
     renderHead(lesson, goTo);
     const timeline = createTimeline($('lsTl'), lesson, { onPick: goTo });
+    const alive = startAlive(map, lesson);
     wireNav(player);
     wirePrint();
     wireHandCamera(map);

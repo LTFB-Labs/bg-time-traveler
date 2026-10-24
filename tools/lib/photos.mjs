@@ -34,7 +34,8 @@ function entryProblems(entry, files) {
     return isAllowedLicence(entry.l ?? '') ? fileProblems : [...fileProblems, `licence "${entry.l}" is not allowed`];
 }
 
-export function renderCredits(photos) {
+// icons: the content/icons.json credits of the drawings on the map, such as the ships
+export function renderCredits(photos, icons = {}) {
     const rows = Object.keys(photos).filter((key) => photos[key].u).sort().map((key) => creditRow(key, photos[key]));
     return [
         '# Снимки',
@@ -45,7 +46,23 @@ export function renderCredits(photos) {
         '|---|---|---|---|',
         ...rows,
         '',
+        ...iconCredits(icons),
     ].join('\n');
+}
+
+function iconCredits(icons) {
+    const rows = Object.keys(icons).sort().map((id) => `| ${id} | ${icons[id].a} | ${icons[id].l} | ${icons[id].u} |`);
+    if (rows.length === 0) return [];
+    return [
+        '## Рисунки',
+        '',
+        'Рисунките на картата са от [game-icons.net](https://game-icons.net/), лиценз CC BY 3.0.',
+        '',
+        '| Рисунка | Автор | Лиценз | Източник |',
+        '|---|---|---|---|',
+        ...rows,
+        '',
+    ];
 }
 
 export async function fetchMissing(photos, io) {

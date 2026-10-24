@@ -52,7 +52,7 @@ const world = el("g", {}, svg);
 el("rect", { x: -3000, y: -3000, width: GEO.W + 6000, height: GEO.H + 6000, fill: "#c9d5c6" }, world);
 const ripple = el("g", { fill: "none", "stroke-linejoin": "round" }, world);
 [[26, .06], [16, .1], [8, .16]].forEach(([w, o]) => el("path", { d: GEO.land, stroke: "#5f8378", "stroke-width": w, "stroke-opacity": o }, ripple));
-el("path", { d: GEO.land, fill: "#f2e6c6" }, world);
+const landPath = el("path", { d: GEO.land, fill: "#f2e6c6" }, world);
 const realmsG = el("g", { "clip-path": "url(#landClip)" }, world);
 el("path", { d: GEO.lakes, fill: "#c9d5c6", stroke: "#6f8f86", "stroke-width": .8 }, world);
 el("path", { d: GEO.rivers, fill: "none", stroke: "#5c8fa3", "stroke-width": 1.5, "stroke-opacity": .85, "stroke-linecap": "round", "stroke-linejoin": "round" }, world);
@@ -142,7 +142,8 @@ function drawState(gFill, d, col, isMain) {
     el('path', { d, fill: mix(PAPER, col, isMain ? .42 : .26) }, g);
     el('path', { d, fill: 'none', stroke: col, 'stroke-width': isMain ? 16 : 11, 'stroke-opacity': isMain ? .55 : .38, 'clip-path': `url(#${clipId})` }, g);
     const outline = isMain ? '#7a1e12' : '#5b4a33';
-    el('path', { d, fill: 'none', stroke: outline, 'stroke-width': isMain ? 2.2 : 1.1, 'stroke-opacity': isMain ? .9 : .55, 'stroke-dasharray': isMain ? '' : '5 3' }, g);
+    const edge = el('path', { d, fill: 'none', stroke: outline, 'stroke-width': isMain ? 2.2 : 1.1, 'stroke-opacity': isMain ? .9 : .55, 'stroke-dasharray': isMain ? '' : '5 3' }, g);
+    if (isMain) edge.classList.add('main-edge');
 }
 function drawRealmLabel(gLab, r, col, isBig) {
     if (!r.n || r.lx == null) return;
@@ -192,6 +193,7 @@ function showLayer(key, build) {
     setLetters(L.letters ?? []);
     clearTimeout(L.t);
     realmsG.appendChild(L.gFill); frameG.appendChild(L.gLab);
+    if (mode === 'lesson') traceEdges(L.gFill);
     fade(L.gFill, 0, 1, 650); fade(L.gLab, 0, 1, 650);
     layers.forEach((o, k) => {
         if (k === key) return;
@@ -208,6 +210,16 @@ function fade(node, from, to, ms) {
   if (node._fade) node._fade.cancel();
   node.style.opacity = to;
   node._fade = node.animate([{ opacity: cur }, { opacity: to }], { duration: ms, easing: "ease-out" });
+}
+
+// in a lesson, the main state's outline draws itself around the land it holds as its border appears
+const calm = matchMedia('(prefers-reduced-motion: reduce)');
+function traceEdges(layer) {
+  if (calm.matches) return;
+  layer.querySelectorAll('.main-edge').forEach((path) => {
+    const len = path.getTotalLength();
+    path.animate([{ strokeDasharray: len, strokeDashoffset: len }, { strokeDasharray: len, strokeDashoffset: 0 }], { duration: 1800, easing: 'ease-in-out' });
+  });
 }
 
 // build every frame's layer ahead of time while the page is idle, so crossing a border change never stalls
@@ -231,9 +243,12 @@ function boxAt(y) {
 }
 const targetVB = (y) => fitBox(boxAt(y));
 const fitBox = (box) => boxToViewBox(box, { w: innerWidth, h: innerHeight }, freeRect, P);
+// the living map (alive.js) follows the camera through onView
+const viewListeners = [];
 function applyVB() {
   svg.setAttribute("viewBox", `${vb.x.toFixed(2)} ${vb.y.toFixed(2)} ${vb.w.toFixed(2)} ${vb.h.toFixed(2)}`);
   placeOverlay();
+  viewListeners.forEach((cb) => cb());
 }
 const toScreen = (lon, lat) => { const [x, y] = P(lon, lat), s = innerWidth / vb.w; return [(x - vb.x) * s, (y - vb.y) * s]; };
 // a window point back through the current viewBox to [lon, lat]
@@ -490,5 +505,8 @@ return {
     onUserMove: (cb) => { onUserMoveCb = cb; },
     onMapClick: (cb) => { onMapClickCb = cb; },
     resetCamera,
+    onView: (cb) => { viewListeners.push(cb); },
+    view: () => ({ ...vb }),
+    isLand: (x, y) => landPath.isPointInFill(new DOMPoint(x, y)),
 };
 }

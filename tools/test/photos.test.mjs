@@ -109,3 +109,14 @@ test('imageSizeReadsJpegFrameHeader', () => {
     const jpeg = Buffer.from([0xff, 0xd8, 0xff, 0xe0, 0x00, 0x04, 0x00, 0x00, 0xff, 0xc0, 0x00, 0x0b, 0x08, 0x02, 0x58, 0x03, 0x20, 0x01, 0x01, 0x11, 0x00]);
     assert.deepEqual(imageSize(jpeg), { w: 800, h: 600 });
 });
+
+test('creditsListIconsAfterPhotos', () => {
+    const photos = { a: { f: 'photos/a.jpg', a: 'Bob', l: 'CC BY 3.0', u: 'https://commons.wikimedia.org/wiki/File:A.jpg' } };
+    const md = renderCredits(photos, { trireme: { a: 'Delapouite', l: 'CC BY 3.0', u: 'https://game-icons.net/1x1/delapouite/trireme.html' } });
+    assert.ok(md.indexOf('| a | Bob |') < md.indexOf('\n## Рисунки\n'));
+    assert.ok(md.includes('\n| Рисунка | Автор | Лиценз | Източник |\n|---|---|---|---|\n| trireme | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/trireme.html |\n'));
+});
+
+test('creditsWithoutIconsHaveNoDrawingsSection', () => {
+    assert.ok(!renderCredits({}).includes('## Рисунки'));
+});

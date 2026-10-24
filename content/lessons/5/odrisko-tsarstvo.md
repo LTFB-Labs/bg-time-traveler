@@ -39,6 +39,7 @@ approx: true
 box: [20.5, 39.6, 30.2, 46.2]
 borders: [thrace-tribes]
 marks: [troy, triballi, getae, bessi, odrysae]
+stand: odrysae
 photo: thracian-horseman
 words:
   - племе: група хора с общ език и обичаи, водена от вожд
@@ -120,6 +121,7 @@ year: -341
 box: [20.0, 38.8, 29.8, 45.4]
 borders: [macedon-philip, getae]
 marks: [philip-ii, philippopolis, kabyle, bessi]
+stand: philippopolis
 path: [[22.6, 40.9], [23.6, 41.2], [24.4, 41.8], [25.4, 42.1], [26.4, 42.4]]
 photo: philip-ii
 predict:
@@ -167,6 +169,7 @@ approx: true
 box: [21.8, 40.4, 29.2, 44.6]
 borders: [thrace-tribes]
 marks: [valchitran-treasure, panagyurishte-treasure, rogozen-treasure, kazanlak-tomb, sveshtari-tomb, perperikon, orpheus]
+stand: kazanlak-tomb
 photo: kazanlak-tomb
 words:
   - провинция: земя, която Рим завладява и управлява чрез свой управител
