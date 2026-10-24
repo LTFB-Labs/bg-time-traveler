@@ -60,7 +60,6 @@ box: [22.8, 40.4, 29.4, 44.2]
 borders: [odrysae-core, thrace-tribes]
 marks: [teres, golden-mask]
 path: [[28.9, 41.0], [27.8, 41.6], [26.4, 42.1], [25.2, 42.4]]
-move: riders
 photo: teres-mask
 words:
   - царство: държава, управлявана от цар
@@ -82,7 +81,6 @@ box: [21.0, 39.5, 30.2, 45.9]
 borders: [odrysae-peak, macedon-431]
 marks: [sitalces, sitalces-army]
 path: [[26.3, 42.2], [25.0, 41.9], [24.0, 41.4], [23.0, 41.0], [22.4, 40.9]]
-move: army
 photo: panagyurishte
 words:
   - съюзник: приятел, който помага във война
@@ -123,7 +121,6 @@ box: [20.0, 38.8, 29.8, 45.4]
 borders: [macedon-philip, getae]
 marks: [philip-ii, philippopolis, kabyle, bessi]
 path: [[22.6, 40.9], [23.6, 41.2], [24.4, 41.8], [25.4, 42.1], [26.4, 42.4]]
-move: army
 photo: philip-ii
 predict:
   q: Котис е мъртъв и царството е разделено на три. Какво мислиш, че става сега?

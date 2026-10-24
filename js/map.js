@@ -234,7 +234,6 @@ const fitBox = (box) => boxToViewBox(box, { w: innerWidth, h: innerHeight }, fre
 function applyVB() {
   svg.setAttribute("viewBox", `${vb.x.toFixed(2)} ${vb.y.toFixed(2)} ${vb.w.toFixed(2)} ${vb.h.toFixed(2)}`);
   placeOverlay();
-  scaleFigure();
 }
 const toScreen = (lon, lat) => { const [x, y] = P(lon, lat), s = innerWidth / vb.w; return [(x - vb.x) * s, (y - vb.y) * s]; };
 // a window point back through the current viewBox to [lon, lat]
@@ -453,57 +452,13 @@ function placeOverlay() {
     if (m.id === activeId) { labEl.style.left = x + "px"; labEl.style.top = sy + "px"; }
   });
 }
-function drawPath(points, move) {
+function drawPath(points) {
   migG.innerHTML = "";
-  figure = null;
   if (!points) return;
   const pts = points.map((c) => P(c[0], c[1]));
   let d = `M${pts[0][0]} ${pts[0][1]}`;
   for (let i = 1; i < pts.length; i++) { const [x0, y0] = pts[i - 1], [x1, y1] = pts[i]; d += `Q${x0 + (x1 - x0) * .5 + (y1 - y0) * .12} ${y0 + (y1 - y0) * .5 - (x1 - x0) * .12} ${x1} ${y1}`; }
-  el("path", { id: "migPath", d, class: "mig", "stroke-width": 5, "marker-end": "url(#arrow)" }, migG);
-  if (Object.hasOwn(FIGURES, move)) drawFigure(move, pts);
-}
-
-/* ---------- a figure riding the route arrow ---------- */
-// The figure's ink, outline and bob or rock live in index.html (.fig). Its inner group is in screen pixels:
-// scaleFigure keeps the drawing FIGURE_PX high whatever the zoom, and mirrors it when the route runs west.
-const FIGURE_SECONDS = { army: 9, riders: 5, settlers: 12, ship: 7, walker: 10 };
-const DEFAULT_SECONDS = 9;
-const FIGURE_PX = 40;
-const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-let figure = null; // { g, mirror } while the arrow has a figure
-// a stale cached content.js may have no figures: the arrows then stay plain
-const FIGURES = CONTENT.figures ?? {};
-Object.entries(FIGURES).forEach(([id, { viewBox, body }]) => {
-    el('symbol', { id: `fig-${id}`, viewBox }, defs).innerHTML = body;
-});
-function drawFigure(move, pts) {
-    const g = el('g', { class: `fig ${move}` }, migG);
-    rideOrStand(g, move, pts.at(-1));
-    const sized = el('g', {}, g);
-    standOnOrigin(el('use', { href: `#fig-${move}`, width: FIGURE_PX, height: FIGURE_PX }, el('g', { class: 'bob' }, sized)));
-    figure = { g: sized, mirror: pts.at(-1)[0] < pts[0][0] ? -1 : 1 };
-    scaleFigure();
-}
-// with reduced motion the figure stands at the arrow's end; otherwise it rides the arrow from the start, again and again
-function rideOrStand(g, move, [endX, endY]) {
-    if (reducedMotion.matches) {
-        g.setAttribute('transform', `translate(${endX} ${endY})`);
-        return;
-    }
-    const motion = el('animateMotion', { dur: `${FIGURE_SECONDS[move] ?? DEFAULT_SECONDS}s`, begin: 'indefinite', repeatCount: 'indefinite' }, g);
-    el('mpath', { href: '#migPath' }, motion);
-    motion.beginElement();
-}
-// the drawing fills its symbol box by a different amount per figure: fit the drawing itself, its feet on the arrow
-function standOnOrigin(use) {
-    const { x, y, width, height } = use.getBBox();
-    use.setAttribute('transform', `scale(${FIGURE_PX / height}) translate(${-x - width / 2} ${-y - height})`);
-}
-function scaleFigure() {
-    if (!figure) return;
-    const s = vb.w / innerWidth;
-    figure.g.setAttribute('transform', `scale(${s * figure.mirror} ${s})`);
+  el("path", { d, class: "mig", "stroke-width": 5, "marker-end": "url(#arrow)" }, migG);
 }
 
 /* ---------- paper grain ---------- */

@@ -6,10 +6,8 @@ import { formatProblems } from './lib/problems.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
 const PHOTOS_FILE = join(ROOT, 'content/photos.json');
-const FIGURES_FILE = join(ROOT, 'content/figures.json');
 
 const photos = JSON.parse(readFileSync(PHOTOS_FILE, 'utf8'));
-const figures = JSON.parse(readFileSync(FIGURES_FILE, 'utf8'));
 const io = {
     fetch,
     writeFile: (f, data) => writeFile(join(ROOT, f), data),
@@ -17,7 +15,7 @@ const io = {
 };
 const result = await fetchMissing(photos, io);
 writeFileSync(PHOTOS_FILE, JSON.stringify(result.photos, null, 2) + '\n');
-writeFileSync(join(ROOT, 'CREDITS.md'), renderCredits(result.photos, figures));
+writeFileSync(join(ROOT, 'CREDITS.md'), renderCredits(result.photos));
 if (result.problems.length > 0) {
     console.error(formatProblems(result.problems));
     process.exit(1);

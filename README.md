@@ -92,7 +92,7 @@ aliases: [Терес, Терес Първи]
 ## Файлове
 
 - `index.html` е страницата и стиловете на свободната линия на времето. Кодът е в `js/`: свободната линия, урокът, картата, проверката и обобщението, по един файл на задача.
-- `css/lesson.css` са стиловете на урока. `content/figures/` са фигурките, които се движат по стрелките на картата.
+- `css/lesson.css` са стиловете на урока.
 - `content/` е мястото на данните: `cards/` (събитията като Markdown картички), `photos.json`, `maps/balkans.json` (епохи, владетели, градове, камера). `content.js` се генерира с `cd tools && npm run build`.
 - `geo.js` е генериран. Пуска се с `cd tools && npm install && npm run ne && npm run geo` (`npm run ne` тегли Natural Earth файловете). Историческите граници са ръчно начертани в `tools/defs.mjs`. Тестовете се пускат с `npm test` в `tools/`.
 - `photos/` са снимките от Wikimedia Commons. Авторите и лицензите са в [CREDITS.md](CREDITS.md).

@@ -1,7 +1,6 @@
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import { parseCard, validateCard } from './lib/cards.mjs';
-import { readFigures } from './lib/figures.mjs';
 import { parseLesson, renderLesson, validateLesson } from './lib/lessons.mjs';
 import { renderMarkdown } from './lib/markdown.mjs';
 import { photoProblems } from './lib/photos.mjs';
@@ -15,7 +14,6 @@ export function buildContent(rootDir) {
     const dir = join(rootDir, 'content');
     const photos = readJson(dir, 'photos.json', {});
     const balkans = readJson(dir, 'maps/balkans.json', {});
-    const figures = readFigures(dir);
     const cards = readCards(dir);
     const grades = readGrades(dir);
     const listed = Object.values(grades.rows).flat().filter((row) => row.lesson);
@@ -24,13 +22,11 @@ export function buildContent(rootDir) {
         cards: new Map(cards.map((card) => [card.id, card])),
         borders: readBorderIds(join(dir, 'borders')),
         photos: new Set(Object.keys(photos.value)),
-        figures: new Set(Object.keys(figures.figures)),
     };
     const aliases = buildAliasIndex(cards);
     const problems = [
         ...photos.problems,
         ...balkans.problems,
-        ...figures.problems,
         ...grades.problems,
         ...cards.flatMap((card) => validateCard(card, ctx)),
         ...aliases.problems,
@@ -44,7 +40,6 @@ export function buildContent(rootDir) {
         grades: toPageGrades(grades.rows),
         photos: photos.value,
         maps: { balkans: balkans.value },
-        figures: figures.figures,
         search: [],
     };
     content.search = buildSearchIndex(content);
@@ -129,9 +124,9 @@ function toPageCards(cards, aliasIndex) {
     return Object.fromEntries(cards.map((card) => [card.id, toPageCard(card, aliasIndex)]));
 }
 
-function toPageCard({ id, kind, legacyKind, title, dates, at, years, photo, aliases, paragraphs, path, move }, aliasIndex) {
+function toPageCard({ id, kind, legacyKind, title, dates, at, years, photo, aliases, paragraphs, path }, aliasIndex) {
     const html = paragraphs.map((paragraph) => linkTerms(renderMarkdown(paragraph), aliasIndex)).join('\n');
-    return { id, kind, legacyKind, title, dates, at, years, photo, aliases, paragraphs, path, move, html };
+    return { id, kind, legacyKind, title, dates, at, years, photo, aliases, paragraphs, path, html };
 }
 
 function toPageLessons(lessons, aliasIndex) {
@@ -155,9 +150,9 @@ function toGradeEntry({ entry, lesson }) {
     return lesson ? { ...rest, title: lesson.title, number: lesson.number, span: lesson.span, map: lesson.map } : rest;
 }
 
-// JSON.stringify leaves out a path or move the card does not have
+// JSON.stringify leaves out a path the card does not have
 function toEvent(card) {
-    return { id: card.id, y: card.years[0], kind: card.legacyKind, at: card.at, t: card.title, d: card.paragraphs[0], path: card.path, move: card.move };
+    return { id: card.id, y: card.years[0], kind: card.legacyKind, at: card.at, t: card.title, d: card.paragraphs[0], path: card.path };
 }
 
 function rootFromArgs(args) {

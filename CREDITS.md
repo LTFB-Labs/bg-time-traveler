@@ -77,15 +77,3 @@
 | varbitsa | Unknown 14th-century illuminator (Manasses Chronicle) | Public domain | [File:50-manasses-chronicle.jpg](https://commons.wikimedia.org/wiki/File:50-manasses-chronicle.jpg) |
 | varna1444 | Jan Matejko | Public domain | [File:Battle of Varna, Jan Matejko.jpg](https://commons.wikimedia.org/wiki/File:Battle_of_Varna,_Jan_Matejko.jpg) |
 | vizantia | Arild Vågen | CC BY-SA 3.0 | [File:Hagia Sophia Mars 2013.jpg](https://commons.wikimedia.org/wiki/File:Hagia_Sophia_Mars_2013.jpg) |
-
-## Фигури
-
-Фигурите са от [game-icons.net](https://game-icons.net/), лиценз CC BY 3.0.
-
-| Фигура | Автор | Лиценз | Източник |
-|---|---|---|---|
-| army | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/pikeman.html |
-| riders | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/cavalry.html |
-| settlers | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/old-wagon.html |
-| ship | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/caravel.html |
-| walker | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/walk.html |

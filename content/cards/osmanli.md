@@ -18,7 +18,6 @@ path:
     - 40.41
   - - 26.56
     - 41.68
-move: army
 photo: osmanli
 aliases:
   - Османците идват в Европа
