@@ -26,8 +26,8 @@ button{font-family:inherit;cursor:pointer}
 .rlab{font-family:var(--map);font-weight:700;font-style:italic;text-anchor:middle;dominant-baseline:middle;paint-order:stroke;stroke:rgba(242,230,198,.75);stroke-linejoin:round;pointer-events:none}
 .rlab.bg{font-style:normal;letter-spacing:.18em;fill:#7a1e12}
 .sea-lab{font-family:var(--map);font-style:italic;font-weight:600;fill:#4f6d66;text-anchor:middle;letter-spacing:.12em;opacity:.85}
-.riv-lab{font-family:var(--map);font-style:italic;font-weight:700;fill:#3f7387;text-anchor:middle;letter-spacing:.15em;opacity:.85;paint-order:stroke;stroke:rgba(242,230,198,.75);stroke-width:3px;stroke-linejoin:round}
-.mt-lab{font-family:var(--map);font-style:italic;font-weight:700;fill:#7a6142;text-anchor:middle;letter-spacing:.2em;opacity:.8;paint-order:stroke;stroke:rgba(242,230,198,.7);stroke-width:3px}
+.riv-lab{font-family:var(--map);font-style:italic;font-weight:700;fill:#3f7387;text-anchor:middle;letter-spacing:.15em;opacity:.85;paint-order:stroke;stroke:rgba(242,230,198,.75);stroke-width:calc(3px * var(--ink-scale,1));stroke-linejoin:round}
+.mt-lab{font-family:var(--map);font-style:italic;font-weight:700;fill:#7a6142;text-anchor:middle;letter-spacing:.2em;opacity:.8;paint-order:stroke;stroke:rgba(242,230,198,.7);stroke-width:calc(3px * var(--ink-scale,1))}
 
 /* overlay: cities and markers in screen space */
 #ov{position:fixed;inset:0;pointer-events:none;overflow:hidden}
@@ -148,8 +148,8 @@ button{font-family:inherit;cursor:pointer}
 #tip.show{opacity:1}
 
 /* migration arrows: the dashes march three times to show the way, then hold still, so a page left open costs nothing */
-.mig{fill:none;stroke:#7a1e12;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:14 10;animation:march 1.2s linear 3;opacity:.9}
-@keyframes march{to{stroke-dashoffset:-24}}
+.mig{fill:none;stroke:#7a1e12;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:calc(14px * var(--ink-scale,1)) calc(10px * var(--ink-scale,1));animation:march 1.2s linear 3;opacity:.9}
+@keyframes march{to{stroke-dashoffset:calc(-24px * var(--ink-scale,1))}}
 
 /* intro */
 #intro{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px;background:radial-gradient(ellipse at 50% 40%,#f8eed4 0,#efdfb6 60%,#e0c995 100%);transition:opacity .6s,transform .6s;text-align:center}

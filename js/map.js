@@ -15,6 +15,11 @@ export const ease = (t) => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) 
 const P = (lon, lat) => [(lon - GEO.lon0) * GEO.cx * GEO.k, (GEO.lat1 - lat) * GEO.k];
 // the inverse of P: map units back to [lon, lat]
 const unP = (x, y) => [x / (GEO.cx * GEO.k) + GEO.lon0, GEO.lat1 - y / GEO.k];
+// text and lines are drawn in map units, so they grow with the zoom; past INK_ZOOM (screen pixels per map unit) they keep
+// their screen size: applyVB sets --ink-scale, and ink() turns a size in map units into one that follows it
+const INK_ZOOM = 1.25;
+const ink = (units) => `calc(${units}px * var(--ink-scale, 1))`;
+const inkDashes = (dashes) => dashes.split(' ').map(ink).join(' ');
 
 const COLORS = {
   bg: "#c8402f", bg2: "#e3825a", byz: "#8a5fb0", steppe: "#c6a54c", steppe2: "#a98a5a", slav: "#6f9a45",
@@ -44,34 +49,34 @@ export function createMap(svg, ov) {
 const defs = el("defs", {}, svg);
 el("path", { d: GEO.land }, el("clipPath", { id: "landClip" }, defs));
 const hatch = el("pattern", { id: "hatch", width: 9, height: 9, patternUnits: "userSpaceOnUse", patternTransform: "rotate(35)" }, defs);
-el("line", { x1: 0, y1: 0, x2: 0, y2: 9, stroke: "#000", "stroke-width": 3.2, "stroke-opacity": .5 }, hatch);
+el("line", { x1: 0, y1: 0, x2: 0, y2: 9, stroke: "#000", "stroke-width": 3.2, "stroke-opacity": .5 }, hatch); // applyVB scales the whole pattern
 const arrow = el("marker", { id: "arrow", viewBox: "0 0 10 10", refX: 6, refY: 5, markerWidth: 4.2, markerHeight: 4.2, orient: "auto-start-reverse" }, defs);
 el("path", { d: "M0 0L10 5L0 10z", fill: "#7a1e12" }, arrow);
 
 const world = el("g", {}, svg);
 el("rect", { x: -3000, y: -3000, width: GEO.W + 6000, height: GEO.H + 6000, fill: "#c9d5c6" }, world);
 const ripple = el("g", { fill: "none", "stroke-linejoin": "round" }, world);
-[[26, .06], [16, .1], [8, .16]].forEach(([w, o]) => el("path", { d: GEO.land, stroke: "#5f8378", "stroke-width": w, "stroke-opacity": o }, ripple));
+[[26, .06], [16, .1], [8, .16]].forEach(([w, o]) => el("path", { d: GEO.land, stroke: "#5f8378", style: `stroke-width:${ink(w)}`, "stroke-opacity": o }, ripple));
 const landPath = el("path", { d: GEO.land, fill: "#f2e6c6" }, world);
 const realmsG = el("g", { "clip-path": "url(#landClip)" }, world);
 // relief: ink mountains, hills, forests and reeds over the whole map, drawn by tools/build-terrain.py; it lies over the
 // border fills, faint and blended like printed ink, so it tints with them and stays a quiet detail of a historical map
 el('image', { href: 'img/terrain.webp', x: 0, y: 0, width: GEO.W, height: GEO.H, preserveAspectRatio: 'none', opacity: .6, style: 'mix-blend-mode:multiply', 'pointer-events': 'none' }, world);
-el("path", { d: GEO.lakes, fill: "#c9d5c6", stroke: "#6f8f86", "stroke-width": .8 }, world);
-el("path", { d: GEO.rivers, fill: "none", stroke: "#5c8fa3", "stroke-width": 1.5, "stroke-opacity": .85, "stroke-linecap": "round", "stroke-linejoin": "round" }, world);
-el("path", { d: GEO.land, fill: "none", stroke: "#5b4a33", "stroke-width": 1.1, "stroke-opacity": .8 }, world);
+el("path", { d: GEO.lakes, fill: "#c9d5c6", stroke: "#6f8f86", style: `stroke-width:${ink(.8)}` }, world);
+el("path", { d: GEO.rivers, fill: "none", stroke: "#5c8fa3", style: `stroke-width:${ink(1.5)}`, "stroke-opacity": .85, "stroke-linecap": "round", "stroke-linejoin": "round" }, world);
+el("path", { d: GEO.land, fill: "none", stroke: "#5b4a33", style: `stroke-width:${ink(1.1)}`, "stroke-opacity": .8 }, world);
 
 const labelsStatic = el("g", {}, world);
-SEAS.forEach((s) => { const [x, y] = P(s.at[0], s.at[1]); el("text", { x, y, class: "sea-lab", "font-size": s.s, transform: s.r ? `rotate(${s.r} ${x} ${y})` : "" }, labelsStatic).textContent = s.n; });
+SEAS.forEach((s) => { const [x, y] = P(s.at[0], s.at[1]); el("text", { x, y, class: "sea-lab", style: `font-size:${ink(s.s)}`, transform: s.r ? `rotate(${s.r} ${x} ${y})` : "" }, labelsStatic).textContent = s.n; });
 // river names along their water; tools/build-geo.mjs lays each one on a smoothed stretch of its river
 GEO.riverLabels.forEach(({ n, d }, i) => {
     el('path', { id: `riverLab${i}`, d }, defs);
-    const text = el('text', { class: 'riv-lab', 'font-size': 10, dy: -3 }, labelsStatic);
+    const text = el('text', { class: 'riv-lab', style: `font-size:${ink(10)}`, dy: '-.3em' }, labelsStatic);
     el('textPath', { href: `#riverLab${i}`, startOffset: '50%' }, text).textContent = n;
 });
 const mtLabG = el("g", {}, world);
 [["Стара планина", 25.3, 42.95, 13], ["Родопи", 24.8, 41.45, 12], ["Карпати", 24.3, 45.75, 14], ["Динарски планини", 17.3, 43.85, 12], ["Пинд", 21.6, 39.55, 11]].forEach(([n, lon, lat, s]) => {
-  const [x, y] = P(lon, lat); el("text", { x, y, class: "mt-lab", "font-size": s }, mtLabG).textContent = n;
+  const [x, y] = P(lon, lat); el("text", { x, y, class: "mt-lab", style: `font-size:${ink(s)}` }, mtLabG).textContent = n;
 });
 const frameG = el("g", {}, world);
 const migG = el("g", {}, world);
@@ -126,7 +131,7 @@ function drawTribe(gFill, d, col, fillOpacity) {
     const g = el('g', {}, gFill);
     el('path', { d, fill: col, 'fill-opacity': fillOpacity }, g);
     el('path', { d, fill: 'url(#hatch)', opacity: .35, style: 'mix-blend-mode:multiply' }, g);
-    el('path', { d, fill: 'none', stroke: col, 'stroke-width': 2, 'stroke-dasharray': '2 6', 'stroke-linecap': 'round', 'stroke-opacity': .9 }, g);
+    el('path', { d, fill: 'none', stroke: col, style: `stroke-width:${ink(2)};stroke-dasharray:${inkDashes('2 6')}`, 'stroke-linecap': 'round', 'stroke-opacity': .9 }, g);
 }
 // a state: paper tinted with its colour, a glow inside the edge (clipped to the shape) and an outline
 function drawState(gFill, d, col, isMain) {
@@ -134,16 +139,17 @@ function drawState(gFill, d, col, isMain) {
     const clipId = `rc${clipSeq++}`;
     el('path', { d }, el('clipPath', { id: clipId }, defs));
     el('path', { d, fill: mix(PAPER, col, isMain ? .42 : .26) }, g);
-    el('path', { d, fill: 'none', stroke: col, 'stroke-width': isMain ? 16 : 11, 'stroke-opacity': isMain ? .55 : .38, 'clip-path': `url(#${clipId})` }, g);
+    el('path', { d, fill: 'none', stroke: col, style: `stroke-width:${ink(isMain ? 16 : 11)}`, 'stroke-opacity': isMain ? .55 : .38, 'clip-path': `url(#${clipId})` }, g);
     const outline = isMain ? '#7a1e12' : '#5b4a33';
-    const edge = el('path', { d, fill: 'none', stroke: outline, 'stroke-width': isMain ? 2.2 : 1.1, 'stroke-opacity': isMain ? .9 : .55, 'stroke-dasharray': isMain ? '' : '5 3' }, g);
+    const dashes = isMain ? '' : `;stroke-dasharray:${inkDashes('5 3')}`;
+    const edge = el('path', { d, fill: 'none', stroke: outline, style: `stroke-width:${ink(isMain ? 2.2 : 1.1)}${dashes}`, 'stroke-opacity': isMain ? .9 : .55 }, g);
     if (isMain) edge.classList.add('main-edge');
 }
 function drawRealmLabel(gLab, r, col, isBig) {
     if (!r.n || r.lx == null) return;
     const name = isBig ? r.n.toUpperCase() : r.n;
     const fs = labelSize(r.lr, name, isBig);
-    const t = el('text', { x: r.lx, y: r.ly, class: 'rlab' + (isBig ? ' bg' : ''), 'font-size': fs.toFixed(1), 'stroke-width': (fs / 5).toFixed(1), fill: shade(col, -.45) }, gLab);
+    const t = el('text', { x: r.lx, y: r.ly, class: 'rlab' + (isBig ? ' bg' : ''), style: `font-size:${ink(fs.toFixed(1))};stroke-width:${ink((fs / 5).toFixed(1))}`, fill: shade(col, -.45) }, gLab);
     t.textContent = name;
 }
 // grows with the realm's label radius, then shrinks so a long name still fits inside
@@ -152,8 +158,8 @@ function labelSize(lr, name, isBig) {
     return Math.max(Math.min(fs, (lr * 2.6) / Math.max(4, name.length * .55)), isBig ? 13 : 8);
 }
 function drawGhost(L, b) {
-    el('path', { d: b.d, fill: 'none', stroke: '#5b4a33', 'stroke-width': 2, 'stroke-dasharray': '8 6', opacity: .55 }, L.gFill);
-    const t = el('text', { x: b.lx, y: b.ly + 22, class: 'rlab', 'font-size': GHOST_FONT, 'stroke-width': GHOST_FONT / 5, fill: '#6e5536', opacity: .8 }, L.gLab);
+    el('path', { d: b.d, fill: 'none', stroke: '#5b4a33', style: `stroke-width:${ink(2)};stroke-dasharray:${inkDashes('8 6')}`, opacity: .55 }, L.gFill);
+    const t = el('text', { x: b.lx, y: b.ly + 22, class: 'rlab', style: `font-size:${ink(GHOST_FONT)};stroke-width:${ink(GHOST_FONT / 5)}`, fill: '#6e5536', opacity: .8 }, L.gLab);
     t.textContent = `${b.n} преди`;
 }
 const GHOST_FONT = 16;
@@ -241,8 +247,15 @@ const fitBox = (box) => boxToViewBox(box, { w: innerWidth, h: innerHeight }, fre
 const viewListeners = [];
 function applyVB() {
   svg.setAttribute("viewBox", `${vb.x.toFixed(2)} ${vb.y.toFixed(2)} ${vb.w.toFixed(2)} ${vb.h.toFixed(2)}`);
+  keepInkSize();
   placeOverlay();
   viewListeners.forEach((cb) => cb());
+}
+function keepInkSize() {
+    const scale = Math.min(1, (INK_ZOOM * vb.w) / innerWidth).toFixed(3);
+    if (svg.style.getPropertyValue('--ink-scale') === scale) return;
+    svg.style.setProperty('--ink-scale', scale);
+    hatch.setAttribute('patternTransform', `rotate(35) scale(${scale})`);
 }
 const toScreen = (lon, lat) => { const [x, y] = P(lon, lat), s = innerWidth / vb.w; return [(x - vb.x) * s, (y - vb.y) * s]; };
 // a window point back through the current viewBox to [lon, lat]
@@ -467,7 +480,7 @@ function drawPath(points) {
   const pts = points.map((c) => P(c[0], c[1]));
   let d = `M${pts[0][0]} ${pts[0][1]}`;
   for (let i = 1; i < pts.length; i++) { const [x0, y0] = pts[i - 1], [x1, y1] = pts[i]; d += `Q${x0 + (x1 - x0) * .5 + (y1 - y0) * .12} ${y0 + (y1 - y0) * .5 - (x1 - x0) * .12} ${x1} ${y1}`; }
-  el("path", { d, class: "mig", "stroke-width": 5, "marker-end": "url(#arrow)" }, migG);
+  el("path", { d, class: "mig", style: `stroke-width:${ink(5)}`, "marker-end": "url(#arrow)" }, migG);
 }
 
 /* ---------- paper grain ---------- */
