@@ -34,7 +34,7 @@ export function startLesson(map, lesson, { part = 0 } = {}) {
     const recapAt = lesson.parts.length;
     // the recap is the virtual part after the check; it opens once the check was passed in this sitting or the lesson is stored as passed
     const canRecap = () => isCheckPassed || Boolean(loadProgress().passed[lesson.id]);
-    const cards = createCards($('lsPop'));
+    const cards = createCards($('lsPop'), () => map.setActiveMarker(null));
     const goTo = (n) => {
         const target = clamp(n, 0, canRecap() ? recapAt : recapAt - 1);
         if (target === current) return;

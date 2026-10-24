@@ -4,8 +4,12 @@ import { markCardOpened } from './store.js';
 
 const KIND_LABEL = { person: 'Личност', place: 'Място', object: 'Предмет', people: 'Народ', idea: 'Понятие', event: 'Събитие', state: 'Държава' };
 
-export function createCards(popEl) {
-    const close = () => { popEl.hidden = true; };
+// onClose: the map drops its selected marker, so the marker stops pinging once its card is gone
+export function createCards(popEl, onClose) {
+    const close = () => {
+        popEl.hidden = true;
+        onClose();
+    };
     const open = (id) => {
         const card = CONTENT.cards[id];
         if (!card) return;
