@@ -82,6 +82,7 @@ function wake(scene) {
     if (scene.isCalm) return;
     clearTimeout(scene.timers.sleep);
     scene.timers.sleep = setTimeout(() => sleep(scene), AWAKE_MS);
+    scene.sleepsAt = performance.now() + AWAKE_MS;
     if (scene.isAwake) return;
     scene.isAwake = true;
     document.documentElement.classList.remove('fx-still');
@@ -228,13 +229,15 @@ function scheduleFlock(scene, ms) {
     scene.timers.birds = setTimeout(() => flyBirds(scene), ms);
 }
 
-// a flock of 3 to 9 birds crosses the map on a line of its own; the next one comes only while the map is awake
+// a flock of 3 to 9 birds crosses the map on a line of its own, only when it can land before the map goes still,
+// so no wings beat on a still map; the next one comes only while the map is awake
 function flyBirds(scene) {
+    const { keyframes, ms } = flightPath();
+    if (performance.now() + ms > scene.sleepsAt) return;
     const flock = document.createElement('div');
     flock.className = 'fx-birds';
     flock.innerHTML = flockSvg(3 + Math.floor(Math.random() * 7));
     scene.clouds.sky.before(flock);
-    const { keyframes, ms } = flightPath();
     flock.animate(keyframes, { duration: ms, easing: 'linear' }).onfinish = () => {
         flock.remove();
         if (scene.isAwake) scheduleFlock(scene, random(6000, 18000));
@@ -259,12 +262,14 @@ function looseSpot(i) {
     return i ? [random(-55, 0), random(-30, 30)] : [0, 0];
 }
 
-// east or west, tilted up to about 25 degrees, at 60 to 110 pixels a second
+// east or west across the visible map (the right end slips under the reading sheet), tilted up to about 25 degrees,
+// at 60 to 110 pixels a second
 function flightPath() {
+    const width = document.getElementById('lsMap').getBoundingClientRect().right;
     const dir = Math.random() < .5 ? 1 : -1;
-    const x0 = dir > 0 ? -160 : innerWidth + 160;
+    const x0 = dir > 0 ? -160 : width + 160;
     const y0 = innerHeight * random(.08, .7);
-    const dx = dir * (innerWidth + 320);
+    const dx = dir * (width + 320);
     const dy = Math.tan(random(-.45, .45)) * Math.abs(dx);
     const pose = `rotate(${Math.atan2(dir * dy, Math.abs(dx)).toFixed(3)}rad) scaleX(${dir})`;
     const ms = (Math.hypot(dx, dy) / random(60, 110)) * 1000;
