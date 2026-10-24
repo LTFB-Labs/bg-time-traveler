@@ -4,8 +4,8 @@ import { markCardOpened } from './store.js';
 
 const KIND_LABEL = { person: 'Личност', place: 'Място', object: 'Предмет', people: 'Народ', idea: 'Понятие', event: 'Събитие', state: 'Държава' };
 
-// onClose: the map drops its selected marker, so the marker stops pinging once its card is gone
-export function createCards(popEl, onClose) {
+// onOpen: the card's marker shows it was seen; onClose: the map drops its selected marker
+export function createCards(popEl, { onOpen, onClose }) {
     const close = () => {
         popEl.hidden = true;
         onClose();
@@ -19,6 +19,7 @@ export function createCards(popEl, onClose) {
         popEl.querySelectorAll('.ph img').forEach((img) => swapForPlaceholderOnError(img, card.kind));
         popEl.querySelector('.x').addEventListener('click', close);
         markCardOpened(id);
+        onOpen(id);
     };
     addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
     document.getElementById('lsBody').addEventListener('click', (e) => { if (!e.target.closest('b.term')) close(); });

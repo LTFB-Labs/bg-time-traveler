@@ -1,7 +1,8 @@
 // Progress in localStorage under one key. Every storage access is guarded: a private window or a full disk must not break a lesson.
 const KEY = 'bgtt';
 
-const defaults = () => ({ passed: {}, cards: [], position: {} });
+// pins: the look of the map's markers, picked in the options menu
+const defaults = () => ({ passed: {}, cards: [], position: {}, pins: 'seal' });
 
 export function createStore(storage) {
     const loadProgress = () => {
@@ -29,6 +30,7 @@ export function createStore(storage) {
         markCardOpened: (id) => update((p) => { if (!p.cards.includes(id)) p.cards.push(id); }),
         markPassed: (lessonId) => update((p) => { p.passed[lessonId] = new Date().toISOString(); }),
         setPosition: (lessonId, n) => update((p) => { p.position[lessonId] = n; }),
+        setPins: (look) => update((p) => { p.pins = look; }),
     };
 }
 
@@ -44,4 +46,5 @@ export const {
     markCardOpened,
     markPassed,
     setPosition,
+    setPins,
 } = createStore(lazyStorage);

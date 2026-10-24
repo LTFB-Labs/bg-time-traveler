@@ -2,12 +2,14 @@
 // '' or '#free' → the free timeline; '#lesson/<id>' or '#lesson/<id>/<n>' → the lesson player.
 import { createMap } from './map.js';
 import { startFree } from './free.js';
+import { startOptions } from './options.js';
 import { loadProgress } from './store.js';
 import {
     showNoLesson,
     startLesson,
 } from './lesson.js';
 
+startOptions();
 const map = createMap(document.getElementById('map'), document.getElementById('ov'));
 const route = location.hash.match(/^#lesson\/([^/]*)\/?(\d*)/);
 if (route) openLesson(route[1], route[2]);

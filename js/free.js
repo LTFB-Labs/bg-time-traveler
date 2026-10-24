@@ -40,7 +40,7 @@ function updateMarkers() {
   map.setActiveMarker(act ? act.id : null);
   if (act !== activeEv) { activeEv = act; renderCard(); map.drawPath(act ? act.path : null); }
 }
-const toMarker = (e, opacity) => ({ id: e.id, at: e.at, kind: e.kind, title: e.t, photo: PH[e.id]?.f, opacity });
+const toMarker = (e, opacity) => ({ id: e.id, at: e.at, kind: e.kind, title: e.t, opacity });
 const onMarkerClick = (m) => { stopPlay(); goTo(EV.find((e) => e.id === m.id).y, 900); };
 
 /* ---------- card ---------- */

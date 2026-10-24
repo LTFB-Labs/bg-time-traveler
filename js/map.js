@@ -370,7 +370,6 @@ function moveByHand(next) {
 /* ---------- overlay: cities + markers ---------- */
 let cityList = [], cityEls = [], cityYear = 0;
 const mkEls = new Map();
-let labEl = document.createElement("div"); labEl.className = "mk-lab"; labEl.style.opacity = 0; ov.appendChild(labEl);
 let markers = [], activeId = null, onMarkerClick = null;
 // the check's choice letters: badges in the overlay, so they keep their size at any zoom; spots are in map units
 let letters = [];
@@ -399,7 +398,7 @@ function buildCities(list) {
     cityEls = list.map((c) => { const d = document.createElement("div"); d.className = "city"; d.innerHTML = "<i></i><span></span>"; return d; });
     ov.prepend(...cityEls);
 }
-// list items { id, at, kind, title, photo?, opacity? }, already in drawing order
+// list items { id, at, kind, title, seen?, tone?, opacity? }, already in drawing order; seen: its card was opened
 function setMarkers(list, onClick) {
     onMarkerClick = onClick;
     const ids = new Set(list.map((m) => m.id));
@@ -411,8 +410,11 @@ function setMarkers(list, onClick) {
 function setActiveMarker(id) {
     activeId = id;
     mkEls.forEach((b, mid) => b.classList.toggle('on', mid === id));
-    const act = markers.find((m) => m.id === id);
-    labEl.textContent = act ? act.title : ''; labEl.style.opacity = act && innerWidth > 760 ? 1 : 0;
+    placeOverlay();
+}
+// a card opened from the text or from its marker: the marker shows it was seen, without waiting for a new list
+function markSeen(id) {
+    markers = markers.map((m) => (m.id === id ? { ...m, seen: true } : m));
     placeOverlay();
 }
 function mkFor(m) {
@@ -427,17 +429,16 @@ function newMarkerButton(id) {
   ov.appendChild(b); mkEls.set(id, b); b.classList.add("pop");
   return b;
 }
-// a later list may reuse an id with a new title, kind, photo or tone; repaint only when one of them changed
+// a later list may reuse an id with a new title, kind or tone; repaint only when one of them changed
 // tone: 'ok' or 'bad' colours a pin of the check green or red
 function paintMarker(b, m) {
-    const look = [m.title, m.kind, m.photo, m.tone].join('|');
+    b.classList.toggle('seen', Boolean(m.seen));
+    const look = [m.title, m.kind, m.tone].join('|');
     if (b._look === look) return;
     b._look = look;
     b.dataset.tone = m.tone ?? '';
     b.setAttribute('aria-label', m.title);
     b.innerHTML = cardIcon(m.kind);
-    b.classList.toggle('has-img', Boolean(m.photo));
-    b.style.backgroundImage = m.photo ? `url("${m.photo}")` : '';
 }
 function placeOverlay() {
   const s = innerWidth / vb.w;
@@ -458,7 +459,6 @@ function placeOverlay() {
     const b = mkFor(m); let [x, sy] = toScreen(m.at[0], m.at[1]);
     for (let k = 0; k < 8; k++) { const hit = placed.find((p) => Math.hypot(p[0] - x, p[1] - sy) < 40); if (!hit) break; const a = (k * 2.2) + .6; x = hit[0] + Math.cos(a) * 44; sy = hit[1] + Math.sin(a) * 44; }
     placed.push([x, sy]); b.style.left = x + "px"; b.style.top = sy + "px";
-    if (m.id === activeId) { labEl.style.left = x + "px"; labEl.style.top = sy + "px"; }
   });
 }
 function drawPath(points) {
@@ -492,6 +492,7 @@ return {
     setCities,
     setMarkers,
     setActiveMarker,
+    markSeen,
     drawPath,
     setMode: (m) => { mode = m; },
     setWheelZoom: (isOn) => { wheelZoom = isOn; },

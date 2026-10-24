@@ -36,19 +36,51 @@ button{font-family:inherit;cursor:pointer}
 .city.cap{font-size:17px;color:#7a1e12;font-family:var(--title)}
 .city.cap i{width:auto;height:auto;background:none;box-shadow:none;font-style:normal;font-size:18px;line-height:1}
 .city.cap span{transform:translateY(-1px)}
-.mk{position:absolute;width:46px;height:46px;margin:-58px 0 0 -23px;border-radius:50%;pointer-events:auto;cursor:pointer;border:3px solid var(--gold);background:#f6ead0 center/cover no-repeat;box-shadow:0 3px 10px rgba(60,40,15,.35);transition:transform .35s cubic-bezier(.2,1.6,.4,1),opacity .4s,border-color .3s;display:grid;place-items:center;padding:0}
-.mk svg{width:24px;height:24px;color:#7a4f1a}
-.mk::before{content:"";position:absolute;left:50%;bottom:-13px;margin-left:-7px;border:7px solid transparent;border-top:9px solid var(--gold);border-bottom:0}
-.mk.on::before{border-top-color:#fff}
-.mk.has-img svg{display:none}
+/* markers: two looks, picked in the options menu (js/options.js sets data-pins on #ov; each preview there has its own);
+   the name sits right of the mark, on a wax seal once its card was opened (a hover peeks), on a shield always on a ribbon;
+   --w1..--w3 are the wax and shield colours, green for a right answer of the check */
+.mk{position:absolute;padding:0;pointer-events:auto;cursor:pointer;display:grid;place-items:center;--w1:#e0644c;--w2:#b3321f;--w3:#7f1d10;transition:transform .35s cubic-bezier(.2,1.6,.4,1),opacity .4s}
+.mk[data-tone=ok]{--w1:#7fb86a;--w2:#3f8a3a;--w3:#245a22}
+.mk svg{display:block}
+.mk::after{content:attr(aria-label);position:absolute;top:50%;white-space:nowrap}
 .mk:hover{transform:scale(1.12)}
-.mk{transform-origin:50% calc(100% + 12px)}
-.mk.on{transform:scale(1.4);border-color:#fff;z-index:5;box-shadow:0 0 0 3px var(--red),0 6px 18px rgba(60,40,15,.45)}
-.mk.on::after{content:"";position:absolute;inset:-12px;border-radius:50%;border:3px solid var(--red);animation:ping 1.8s ease-out infinite}
+.mk.on{z-index:5}
 .mk.pop{animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
 @keyframes pop{from{transform:scale(0)}}
-@keyframes ping{from{opacity:.9;transform:scale(.8)}to{opacity:0;transform:scale(1.5)}}
-.mk-lab{position:absolute;transform:translate(-50%,0);margin-top:8px;padding:3px 10px;border-radius:10px;background:var(--card);box-shadow:var(--shadow);font-weight:800;font-size:13px;white-space:nowrap;color:var(--ink);pointer-events:none;transition:opacity .3s}
+[data-pins=seal] .mk{width:22px;height:22px;margin:-11px 0 0 -11px;border:0;border-radius:48% 52% 46% 54%/53% 47% 53% 47%;--wax:radial-gradient(circle at 36% 30%,var(--w1) 0,var(--w2) 40%,var(--w3) 100%);background:var(--wax);box-shadow:0 1px 3px rgba(50,20,5,.5),inset 0 0 0 3px rgba(90,15,5,.35),inset 0 0 0 4px rgba(255,170,150,.18)}
+[data-pins=seal] .mk svg{width:11px;height:11px;color:rgba(50,6,2,.75);filter:drop-shadow(0 1px 0 rgba(255,200,180,.4))}
+/* a finger-sized hit area around the small seal */
+[data-pins=seal] .mk::before{content:"";position:absolute;inset:-9px;border-radius:50%}
+[data-pins=seal] .mk::after{left:calc(100% + 3px);transform:translateY(-54%);font:italic 700 14px var(--map);color:#3d2a17;text-shadow:0 0 3px var(--paper),0 0 3px var(--paper),0 0 6px var(--paper);transition:opacity .25s}
+[data-pins=seal] .mk:not(.seen,.on,:hover,[data-tone=ok],[data-tone=bad])::after{opacity:0;pointer-events:none}
+[data-pins=seal] .mk.seen{background:linear-gradient(112deg,transparent 45%,rgba(50,5,0,.8) 46%,rgba(50,5,0,.8) 50%,transparent 51%),var(--wax);filter:saturate(.75) brightness(.95)}
+[data-pins=seal] .mk.on{transform:scale(1.3);box-shadow:0 0 0 2px #fff,0 0 0 4px var(--red),0 3px 8px rgba(50,20,5,.5)}
+[data-pins=banner] .mk{width:26px;height:30px;margin:-36px 0 0 -13px;border:2px solid var(--gold);border-radius:4px 4px 13px 13px/4px 4px 18px 18px;background:linear-gradient(var(--w2),var(--w3));box-shadow:0 2px 5px rgba(60,40,15,.4);transform-origin:50% calc(100% + 6px)}
+[data-pins=banner] .mk svg{width:15px;height:15px;color:#f6ead0}
+[data-pins=banner] .mk::before{content:"";position:absolute;left:50%;bottom:-8px;margin-left:-4px;border:4px solid transparent;border-top:6px solid var(--gold);border-bottom:0}
+[data-pins=banner] .mk::after{left:calc(100% + 1px);transform:translateY(-50%);padding:2px 13px 2px 7px;background:#f1dfb2;box-shadow:inset 0 1px 0 #c9a868,inset 0 -1px 0 #a57d43;clip-path:polygon(0 0,100% 0,calc(100% - 7px) 50%,100% 100%,0 100%);font:700 14px/1.1 var(--map);color:#3d2a17}
+[data-pins=banner] .mk.seen{--w2:#ecc96f;--w3:#b9832a;border-color:#8a5f1c}
+[data-pins=banner] .mk.seen svg{color:#5a3517}
+[data-pins=banner] .mk.on{transform:scale(1.2);border-color:#fff;box-shadow:0 0 0 2px var(--red),0 4px 10px rgba(60,40,15,.45)}
+[data-pins=banner] .mk.on::before{border-top-color:#fff}
+[data-pins=banner] .mk.on::after{background:var(--red);color:#fff;box-shadow:none}
+
+/* options: the gear buttons and the menu they open */
+.btn.opt{width:36px;height:36px;padding:0;border-radius:50%;pointer-events:auto;box-shadow:0 1px 4px rgba(60,40,15,.15)}
+.btn.opt svg{width:20px;height:20px}
+#options{max-width:calc(100vw - 24px);border:1px solid #b89a63;border-radius:16px;padding:18px 20px 20px;background:var(--card);color:var(--ink);font-family:var(--font);box-shadow:var(--shadow)}
+#options::backdrop{background:rgba(40,25,10,.25)}
+#options h2{margin:0 0 12px;font-family:var(--title);font-weight:400;font-size:26px;color:#5a2412}
+#options fieldset{display:grid;gap:8px;margin:0;padding:0;border:0}
+#options legend{margin-bottom:8px;padding:0;font-weight:800;font-size:14px;color:var(--ink2)}
+#options label{display:flex;align-items:center;gap:12px;padding:8px 14px 8px 10px;border:2px solid var(--line);border-radius:12px;cursor:pointer}
+#options label:has(:checked){border-color:var(--red);background:#fff6dd}
+#options input{accent-color:var(--red)}
+#options b{font-weight:900;font-size:15px}
+#options small{display:block;font-size:13px;font-weight:700;color:var(--muted)}
+.pv{position:relative;flex:none;width:150px;height:50px}
+.pv .mk{left:16px;top:26px}
+.pv[data-pins=banner] .mk{top:42px}
 
 /* HUD */
 #hud{position:fixed;left:max(16px,env(safe-area-inset-left));top:max(12px,env(safe-area-inset-top));pointer-events:none;max-width:calc(100vw - 32px)}
@@ -62,6 +94,7 @@ button{font-family:inherit;cursor:pointer}
 #hudBr{display:block;height:0}
 #wheelMode{display:flex;margin-top:8px;padding:5px 12px;font-size:13px;pointer-events:auto;box-shadow:0 1px 4px rgba(60,40,15,.15)}
 @media (hover:none){#wheelMode{display:none}}
+#hud .opt{display:flex;margin-top:8px}
 
 /* card */
 #card{position:fixed;right:16px;top:16px;bottom:calc(var(--tl) + 14px);width:var(--cardw);background:var(--card);border-radius:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line);transition:transform .45s cubic-bezier(.2,.9,.3,1),opacity .3s}
@@ -151,7 +184,6 @@ button{font-family:inherit;cursor:pointer}
   .step{display:none}
   #play{width:48px;height:48px}
   #bands div{font-size:0}
-  .mk{width:38px;height:38px;margin:-50px 0 0 -19px}
   .city{font-size:13px}.city.cap{font-size:15px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -169,6 +201,7 @@ button{font-family:inherit;cursor:pointer}
   <div id="era"><i></i><span></span></div><span id="hudBr"></span>
   <div id="ruler"></div>
   <button class="btn" id="wheelMode">Колелце: година</button>
+  <button class="btn opt" popovertarget="options" aria-label="Настройки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" stroke-width="4" stroke-dasharray="3.34 3.34"/><circle cx="12" cy="12" r="5.5" stroke-width="3"/></svg></button>
 </div>
 
 <aside id="card" aria-live="polite">
@@ -211,6 +244,7 @@ button{font-family:inherit;cursor:pointer}
 
 <aside id="lesson" hidden>
   <div id="lsHead">
+    <button class="btn opt" popovertarget="options" aria-label="Настройки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" stroke-width="4" stroke-dasharray="3.34 3.34"/><circle cx="12" cy="12" r="5.5" stroke-width="3"/></svg></button>
     <div id="lsCrumbs"><span class="chip grade"></span><span class="chip"></span></div>
     <h1 id="lsTitle"></h1>
     <div id="lsSteps"></div>
@@ -223,6 +257,16 @@ button{font-family:inherit;cursor:pointer}
     <span class="hint">← → на клавиатурата</span>
   </div>
 </aside>
+
+<!-- the options menu; js/options.js fills the previews' icons and keeps the choice -->
+<div id="options" popover>
+  <h2>Настройки</h2>
+  <fieldset>
+    <legend>Знаци на картата</legend>
+    <label><input type="radio" name="pins" value="seal"><span class="pv" data-pins="seal"><span class="mk seen" aria-label="Перперикон"></span></span><span><b>Печат</b><small>Малък. Името се появява, щом отвориш картичката.</small></span></label>
+    <label><input type="radio" name="pins" value="banner"><span class="pv" data-pins="banner"><span class="mk" aria-label="Перперикон"></span></span><span><b>Щит с име</b><small>Името винаги е на лента до щита.</small></span></label>
+  </fieldset>
+</div>
 
 <div id="intro">
   <div class="art"><img src="traveler.svg" alt="Чудовището пътешественик във времето"></div>

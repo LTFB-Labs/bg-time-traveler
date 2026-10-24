@@ -34,7 +34,7 @@ export function startLesson(map, lesson, { part = 0 } = {}) {
     const recapAt = lesson.parts.length;
     // the recap is the virtual part after the check; it opens once the check was passed in this sitting or the lesson is stored as passed
     const canRecap = () => isCheckPassed || Boolean(loadProgress().passed[lesson.id]);
-    const cards = createCards($('lsPop'), () => map.setActiveMarker(null));
+    const cards = createCards($('lsPop'), { onOpen: (id) => map.markSeen(id), onClose: () => map.setActiveMarker(null) });
     const goTo = (n) => {
         const target = clamp(n, 0, canRecap() ? recapAt : recapAt - 1);
         if (target === current) return;
@@ -207,7 +207,7 @@ function updateNav(lesson, current, canRecap) {
 function showPartOnMap(map, lesson, n, cards) {
     const meta = mapMeta(lesson, n);
     map.showBorders(meta.borders, ghostFor(lesson, n));
-    map.setMarkers(markersFromCards(meta.marks ?? []), (m) => {
+    map.setMarkers(markersFromCards(meta.marks ?? [], new Set(loadProgress().cards)), (m) => {
         map.setActiveMarker(m.id);
         cards.open(m.id);
     });
@@ -236,10 +236,11 @@ export function ghostFor(lesson, n) {
 // the first state among the borders, as map.showBorders picks it
 const mainBorder = (ids = []) => ids.find((id) => GEO.borders[id]?.kind === 'state');
 
-export function markersFromCards(ids) {
+// opened: the ids of the cards the kid has opened, so their markers show they were seen
+export function markersFromCards(ids, opened) {
     const cards = ids.map((id) => CONTENT.cards[id] ?? { id });
     cards.filter((c) => !c.at).forEach(warnNoPlace);
-    return cards.filter((c) => c.at).map((c) => ({ id: c.id, at: c.at, kind: c.kind, title: c.title, photo: CONTENT.photos[c.photo]?.f }));
+    return cards.filter((c) => c.at).map((c) => ({ id: c.id, at: c.at, kind: c.kind, title: c.title, seen: opened.has(c.id) }));
 }
 
 const warnedNoPlace = new Set();

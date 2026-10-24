@@ -49,13 +49,16 @@ test('ghostForPrefersPartGhost', () => {
     assert.equal(ghostFor(lesson, 1), 'tribes');
 });
 
-test('markersFromCardsSkipsCardsWithoutPlace', () => {
+test('markersFromCardsSkipsCardsWithoutPlaceAndMarksTheOpened', () => {
     globalThis.CONTENT = {
         cards: {
-            teres: { id: 'teres', kind: 'person', title: 'Терес', at: [26, 42], photo: 'mask' },
+            teres: { id: 'teres', kind: 'person', title: 'Терес', at: [26, 42] },
+            sitalces: { id: 'sitalces', kind: 'person', title: 'Ситалк', at: [25, 42] },
             idea: { id: 'idea', kind: 'idea', title: 'Идея' },
         },
-        photos: { mask: { f: 'photos/mask.png' } },
     };
-    assert.deepEqual(markersFromCards(['teres', 'idea', 'missing']), [{ id: 'teres', at: [26, 42], kind: 'person', title: 'Терес', photo: 'photos/mask.png' }]);
+    assert.deepEqual(markersFromCards(['teres', 'sitalces', 'idea', 'missing'], new Set(['sitalces', 'idea'])), [
+        { id: 'teres', at: [26, 42], kind: 'person', title: 'Терес', seen: false },
+        { id: 'sitalces', at: [25, 42], kind: 'person', title: 'Ситалк', seen: true },
+    ]);
 });

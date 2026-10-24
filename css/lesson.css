@@ -170,7 +170,9 @@ body.lesson #lsMap { display: flex; }
     border-radius: 16px;
     box-shadow: inset 0 0 0 6px var(--card), inset 0 0 0 7px #d5bd8c, 0 18px 40px rgba(60, 40, 15, .35), 0 3px 8px rgba(60, 40, 15, .2);
 }
-#lsHead { padding: 18px 24px 12px; border-bottom: 1px dashed var(--line); flex: none; }
+#lsHead { position: relative; padding: 18px 24px 12px; border-bottom: 1px dashed var(--line); flex: none; }
+/* the gear that opens the options menu */
+#lsHead .opt { position: absolute; top: 14px; right: 16px; }
 #lsCrumbs { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 #lsCrumbs .chip.grade { background: #7a1e12; color: #fff; }
 #lsTitle { font-family: var(--title); font-weight: 400; font-size: clamp(22px, 2vw, 28px); margin: 8px 0; color: #3f230f; line-height: 1.1; }
@@ -510,12 +512,7 @@ body.lesson #lsMap { display: flex; }
 .fb a { color: inherit; font-weight: 900; }
 .fb .btn { display: flex; margin-top: 8px; }
 
-/* the check's pins and border letters on the map */
-.mk[data-tone=ok] { --tone: #3f8a3a; }
-.mk[data-tone=bad] { --tone: #c8402f; }
-.mk:is([data-tone=ok], [data-tone=bad]) { border-color: var(--tone); }
-.mk:is([data-tone=ok], [data-tone=bad])::before { border-top-color: var(--tone); }
-.mk:is([data-tone=ok], [data-tone=bad]) svg { color: var(--tone); }
+/* the check's border letters on the map; its pins take their colour in index.html with the other markers */
 .choice-mk {
     position: absolute;
     width: 32px;
