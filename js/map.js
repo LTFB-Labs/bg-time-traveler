@@ -54,25 +54,13 @@ const ripple = el("g", { fill: "none", "stroke-linejoin": "round" }, world);
 [[26, .06], [16, .1], [8, .16]].forEach(([w, o]) => el("path", { d: GEO.land, stroke: "#5f8378", "stroke-width": w, "stroke-opacity": o }, ripple));
 const landPath = el("path", { d: GEO.land, fill: "#f2e6c6" }, world);
 const realmsG = el("g", { "clip-path": "url(#landClip)" }, world);
+// relief: ink mountains, hills, forests and reeds over the whole map, drawn by tools/build-terrain.py; it lies over the
+// border fills, faint and blended like printed ink, so it tints with them and stays a quiet detail of a historical map
+el('image', { href: 'img/terrain.webp', x: 0, y: 0, width: GEO.W, height: GEO.H, preserveAspectRatio: 'none', opacity: .6, style: 'mix-blend-mode:multiply', 'pointer-events': 'none' }, world);
 el("path", { d: GEO.lakes, fill: "#c9d5c6", stroke: "#6f8f86", "stroke-width": .8 }, world);
 el("path", { d: GEO.rivers, fill: "none", stroke: "#5c8fa3", "stroke-width": 1.5, "stroke-opacity": .85, "stroke-linecap": "round", "stroke-linejoin": "round" }, world);
 el("path", { d: GEO.land, fill: "none", stroke: "#5b4a33", "stroke-width": 1.1, "stroke-opacity": .8 }, world);
 
-// mountains: little humps along each range
-const mtG = el("g", { fill: "none", stroke: "#7a6142", "stroke-width": 1.4, "stroke-linecap": "round", "stroke-linejoin": "round", opacity: .65 }, world);
-MOUNTAINS.forEach((m) => {
-  const pts = m.p.map((c) => P(c[0], c[1]));
-  let acc = 0, d = "";
-  for (let i = 1; i < pts.length; i++) {
-    const [x0, y0] = pts[i - 1], [x1, y1] = pts[i], len = Math.hypot(x1 - x0, y1 - y0);
-    for (let t = (10 - acc) / len; t <= 1; t += 13 / len) {
-      const x = lerp(x0, x1, t), y = lerp(y0, y1, t), s = 5 + ((i * 7 + t * 13) % 3);
-      d += `M${(x - s).toFixed(1)} ${(y + s * .45).toFixed(1)}Q${(x - s * .3).toFixed(1)} ${(y - s * 1.1).toFixed(1)} ${x.toFixed(1)} ${(y - s * .9).toFixed(1)}Q${(x + s * .4).toFixed(1)} ${(y - s * .4).toFixed(1)} ${(x + s).toFixed(1)} ${(y + s * .45).toFixed(1)}`;
-    }
-    acc = 0;
-  }
-  el("path", { d }, mtG);
-});
 const labelsStatic = el("g", {}, world);
 SEAS.forEach((s) => { const [x, y] = P(s.at[0], s.at[1]); el("text", { x, y, class: "sea-lab", "font-size": s.s, transform: s.r ? `rotate(${s.r} ${x} ${y})` : "" }, labelsStatic).textContent = s.n; });
 const mtLabG = el("g", {}, world);

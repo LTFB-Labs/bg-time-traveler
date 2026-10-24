@@ -87,3 +87,12 @@
 | galley | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/galley.html |
 | sailboat | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/sailboat.html |
 | trireme | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/trireme.html |
+
+## Релеф
+
+Рисунките на планините, хълмовете и дърветата са направени за това приложение. Местата им са по височините от [Terrain Tiles](https://registry.opendata.aws/terrain-tiles/), отворени данни в AWS:
+
+- Europe terrain data produced using Copernicus data and information funded by the European Union - EU-DEM layers;
+- Austria terrain data © offene Daten Österreichs – Digitales Geländemodell (DGM) Österreich;
+- Global ETOPO1 terrain data U.S. National Oceanic and Atmospheric Administration;
+- Global GMTED2010 and SRTM terrain data courtesy of the U.S. Geological Survey.

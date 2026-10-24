@@ -47,8 +47,22 @@ export function renderCredits(photos, icons = {}) {
         ...rows,
         '',
         ...iconCredits(icons),
+        ...TERRAIN_CREDITS,
     ].join('\n');
 }
+
+// the relief layer of the map (tools/build-terrain.py); the sources' own wording, as their licences ask
+const TERRAIN_CREDITS = [
+    '## Релеф',
+    '',
+    'Рисунките на планините, хълмовете и дърветата са направени за това приложение. Местата им са по височините от [Terrain Tiles](https://registry.opendata.aws/terrain-tiles/), отворени данни в AWS:',
+    '',
+    '- Europe terrain data produced using Copernicus data and information funded by the European Union - EU-DEM layers;',
+    '- Austria terrain data © offene Daten Österreichs – Digitales Geländemodell (DGM) Österreich;',
+    '- Global ETOPO1 terrain data U.S. National Oceanic and Atmospheric Administration;',
+    '- Global GMTED2010 and SRTM terrain data courtesy of the U.S. Geological Survey.',
+    '',
+];
 
 function iconCredits(icons) {
     const rows = Object.keys(icons).sort().map((id) => `| ${id} | ${icons[id].a} | ${icons[id].l} | ${icons[id].u} |`);

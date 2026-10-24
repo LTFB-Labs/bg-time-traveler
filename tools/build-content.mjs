@@ -53,7 +53,7 @@ export function renderContentJs(content) {
         `const CONTENT = ${JSON.stringify(content)};`,
         `const EVENTS = ${JSON.stringify(events)};`,
         'const PHOTOS = CONTENT.photos;',
-        'const { ERAS, RULERS, CITIES, MOUNTAINS, SEAS, CAMERA, START, END } = CONTENT.maps.balkans;',
+        'const { ERAS, RULERS, CITIES, SEAS, CAMERA, START, END } = CONTENT.maps.balkans;',
         '',
     ].join('\n');
 }

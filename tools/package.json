@@ -7,6 +7,7 @@
     "geo": "node build-geo.mjs",
     "build": "node build-content.mjs",
     "photos": "node fetch-photos.mjs",
+    "terrain": ".venv/bin/python build-terrain.py",
     "ne": "curl -fL -o ne_50m_land.geojson https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_land.geojson && curl -fL -o ne_50m_admin_0_countries.geojson https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_countries.geojson && curl -fL -o ne_10m_lakes.geojson https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_lakes.geojson && curl -fL -o ne_10m_rivers.geojson https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_rivers_lake_centerlines.geojson && curl -fL -o ne_10m_rivers_eu.geojson https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_rivers_europe.geojson"
   },
   "dependencies": {
