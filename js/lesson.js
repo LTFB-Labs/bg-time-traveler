@@ -141,8 +141,6 @@ function markSteps(current) {
         b.className = stepClass(i, current);
         b.toggleAttribute('aria-current', i === current);
     });
-    // phones show the chips in one scrolling row
-    chips[current].scrollIntoView({ block: 'nearest', inline: 'nearest' });
 }
 
 function stepClass(i, current) {

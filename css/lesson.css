@@ -1,24 +1,24 @@
 /* Lesson mode: the map pane on the left (on top on phones) and the reading pane. Look ported from spike/lesson.html. */
-:root { --ls-w: max(400px, 44vw); }
+/* --ls-w is the reading sheet's width; --gap is the map left showing around the sheet and the timeline */
+:root { --ls-w: clamp(400px, 43vw, 620px); --gap: 28px; }
 [hidden] { display: none !important; }
 
 /* the free timeline's furniture stays out of a lesson */
 body.lesson :is(#hud, #card, #tl, #intro) { display: none; }
 
-/* the SVG still fills the window; #lsMap marks the part the reading pane leaves visible, the legend and the strip stack at its bottom */
+/* the SVG still fills the window; #lsMap marks the part the reading sheet leaves visible, the legend and the strip stack at its bottom */
 #lsMap {
     display: none;
     position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
-    right: var(--ls-w);
+    right: calc(var(--ls-w) + 2 * var(--gap));
     flex-direction: column;
     justify-content: flex-end;
     pointer-events: none;
 }
 body.lesson #lsMap { display: flex; }
-body.lesson #vignette { right: var(--ls-w); }
 
 /* ---- map pane: year corner, legend, lesson timeline strip, whole-history bar ---- */
 #lsHud { position: absolute; left: 16px; top: 12px; }
@@ -46,7 +46,7 @@ body.lesson #vignette { right: var(--ls-w); }
 }
 #lsEra i { width: 12px; height: 12px; border-radius: 50%; background: #b08a4a; }
 
-#lsLegend { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; margin: 0 16px 8px; font-weight: 800; font-size: 12.5px; color: var(--ink2); }
+#lsLegend { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; margin: 0 16px 8px calc(var(--gap) + 4px); font-weight: 800; font-size: 12.5px; color: var(--ink2); }
 #lsLegend span {
     display: inline-flex;
     align-items: center;
@@ -58,9 +58,14 @@ body.lesson #vignette { right: var(--ls-w); }
 }
 #lsLegend i { width: 14px; height: 14px; border-radius: 3px; }
 
+/* the lesson timeline floats on the map like the reading sheet */
 #lsTl {
-    padding: 8px 20px 10px;
-    background: linear-gradient(180deg, rgba(242, 230, 198, 0) 0, rgba(242, 230, 198, .92) 22%, #efe1bd 100%);
+    margin: 0 0 var(--gap) var(--gap);
+    padding: 10px 20px;
+    border: 1px solid #b89a63;
+    border-radius: 16px;
+    background: rgba(251, 244, 226, .94);
+    box-shadow: inset 0 0 0 5px rgba(251, 244, 226, .94), inset 0 0 0 6px #d5bd8c, 0 12px 30px rgba(60, 40, 15, .3);
     user-select: none;
     pointer-events: auto;
 }
@@ -117,39 +122,61 @@ body.lesson #vignette { right: var(--ls-w); }
 /* "Върни ме": the map pane's top right corner, after the kid moves the map; the pane box itself lets clicks through to the map */
 #lsReturn { position: absolute; top: 12px; right: 16px; pointer-events: auto; box-shadow: var(--shadow); }
 
-/* ---- reading pane ---- */
+/* ---- reading sheet: laid on the map, with the map showing above, below and to its right ---- */
 #lesson {
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
+    top: var(--gap);
+    right: var(--gap);
+    bottom: var(--gap);
     width: var(--ls-w);
     z-index: 10;
     display: flex;
     flex-direction: column;
     background: var(--card);
-    border-left: 1px solid var(--line);
-    box-shadow: -8px 0 24px rgba(60, 40, 15, .12);
+    border: 1px solid #b89a63;
+    border-radius: 16px;
+    box-shadow: inset 0 0 0 6px var(--card), inset 0 0 0 7px #d5bd8c, 0 18px 40px rgba(60, 40, 15, .35), 0 3px 8px rgba(60, 40, 15, .2);
 }
-#lsHead { padding: 14px 22px 10px; border-bottom: 1px dashed var(--line); flex: none; }
+#lsHead { padding: 18px 24px 12px; border-bottom: 1px dashed var(--line); flex: none; }
 #lsCrumbs { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 #lsCrumbs .chip.grade { background: #7a1e12; color: #fff; }
 #lsTitle { font-family: var(--title); font-weight: 400; font-size: clamp(22px, 2vw, 28px); margin: 8px 0; color: #3f230f; line-height: 1.1; }
-#lsSteps { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
-#lsSteps button {
-    font-size: 12.5px;
-    font-weight: 800;
-    padding: 4px 10px;
-    border-radius: 999px;
-    background: #efe0bc;
-    color: #6b4a1d;
-    border: 1.5px solid transparent;
-    transition: background .2s, color .2s;
+/* the parts as a quest trail: waypoints on a dashed route, a flag at the start, a question mark for the check, a star at the end;
+   the button text stays for screen readers and the title shows the part's name on hover; the traveler stands on the current waypoint */
+#lsSteps { counter-reset: step -1; position: relative; display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding: 4px 2px; }
+#lsSteps::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    top: 50%;
+    height: 3px;
+    margin-top: -1.5px;
+    background: repeating-linear-gradient(90deg, #b08a4a 0 7px, transparent 7px 13px);
 }
+#lsSteps button {
+    counter-increment: step;
+    position: relative;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    font-size: 0;
+    background: #f3e7cc;
+    border: 2px solid #c9ad78;
+    transition: background .2s;
+}
+#lsSteps button::before { content: counter(step); font-family: var(--title); font-size: 15px; color: #8a6a3a; }
+#lsSteps button:first-child::before { content: '⚑'; }
+#lsSteps button:nth-last-child(2)::before { content: '?'; }
+#lsSteps button:last-child::before { content: '★'; }
 #lsSteps button:hover { background: #e8d4a7; }
-#lsSteps button.done { background: #f3e7cc; color: #8a6a3a; border-color: #c88f3a; }
-#lsSteps button.cur { background: var(--red); color: #fff; }
-#lsSteps button.todo { opacity: .55; }
+#lsSteps button.done { background: var(--gold); border-color: var(--gold2); }
+#lsSteps button.done::before { color: #fff; }
+#lsSteps button.cur { width: 44px; height: 44px; margin: -6px 0; background: #fff6dd url(../traveler-head.svg) center / cover; border: 3px solid var(--red); box-shadow: 0 0 0 4px rgba(200, 64, 47, .2); }
+#lsSteps button.cur::before { content: none; }
 
 #lsBody { flex: 1; min-height: 0; overflow: auto; padding: 0 22px 22px; }
 #lsBody .missing { margin-top: 24px; }
@@ -249,15 +276,17 @@ body.lesson #vignette { right: var(--ls-w); }
 }
 .teaser small { display: block; font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
 
-/* footer */
-#lsNav { display: flex; gap: 8px; align-items: center; padding: 12px 16px max(16px, env(safe-area-inset-bottom)); border-top: 1px dashed var(--line); flex: none; }
+/* footer: a round back button, the keyboard hint, and a compact Next pill on the right */
+#lsNav { display: flex; gap: 8px; align-items: center; padding: 10px 16px max(14px, env(safe-area-inset-bottom)); border-top: 1px dashed var(--line); flex: none; }
 #lsNav .btn:disabled { opacity: .45; cursor: default; }
-#lsNav .hint { font-size: 12.5px; color: var(--muted); font-weight: 700; margin-left: 4px; }
+#lsNav .hint { order: 1; font-size: 12.5px; color: var(--muted); font-weight: 700; margin-left: 4px; }
+#lsPrev { width: 40px; height: 40px; padding: 0; border-radius: 50%; }
+#lsNext.btn.pri { order: 2; flex: none; margin-left: auto; padding: 9px 16px 9px 20px; border-radius: 999px; box-shadow: 0 2px 0 #8e2a1e; }
 
-/* phones: the map on top, the reading pane below */
+/* phones: the map on top, the reading sheet below */
 @media (max-width: 820px) {
-    #lsMap { right: 0; bottom: auto; height: 42vh; }
-    body.lesson #vignette { right: 0; bottom: auto; height: 42vh; }
+    :root { --gap: 10px; }
+    #lsMap { right: var(--gap); bottom: auto; height: 42vh; }
     #lsYear { font-size: 36px; }
     #lsYear.span { font-size: 20px; }
     #lsLegend { display: none; }
@@ -268,10 +297,9 @@ body.lesson #vignette { right: var(--ls-w); }
     #lsBands div { font-size: 0; }
     /* a phone shows the whole-history bar only when the lesson has no strip */
     #lsTrack:not([hidden]) + #lsBig { display: none; }
-    #lesson { top: 42vh; left: 0; width: auto; border-left: 0; border-top: 1px solid var(--line); box-shadow: 0 -8px 24px rgba(60, 40, 15, .12); }
+    #lesson { top: 42vh; left: var(--gap); width: auto; }
     #lsHead { padding: 10px 16px 8px; }
-    #lsSteps { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
-    #lsSteps button { flex: none; }
+    #lsSteps button:not(.cur) { width: 28px; height: 28px; }
     #lsBody { padding: 0 16px 16px; }
     #lsBody .ph { margin: 12px -16px 0; aspect-ratio: 2 / 1; }
     #lsNav .hint { display: none; }
