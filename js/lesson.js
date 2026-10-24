@@ -83,6 +83,7 @@ export function startLesson(map, lesson, { part = 0 } = {}) {
     renderHead(lesson, goTo);
     const timeline = createTimeline($('lsTl'), lesson, { onPick: goTo });
     wireNav(player);
+    wirePrint();
     wireHandCamera(map);
     fitMapPane(map);
     addEventListener('resize', () => fitMapPane(map));
@@ -157,6 +158,26 @@ function wireNav(player) {
         if (e.key === 'ArrowRight') player.next();
         if (e.key === 'ArrowLeft') player.prev();
     });
+}
+
+// a click on the part's print opens it large over the map; while it is open, any click or Escape closes it, except on the credit link
+function wirePrint() {
+    document.addEventListener('click', togglePrint);
+    addEventListener('keydown', (e) => { if (e.key === 'Escape') closePrint(); });
+}
+
+function togglePrint(e) {
+    if (e.target.closest('a')) return;
+    const open = $('lsBody').querySelector('.snap.big');
+    if (open) {
+        open.classList.remove('big');
+        return;
+    }
+    e.target.closest('#lsBody .snap')?.classList.add('big');
+}
+
+function closePrint() {
+    $('lsBody').querySelector('.snap.big')?.classList.remove('big');
 }
 
 // arrow keys belong to the field, the check or the prediction when the focus is in one
@@ -309,7 +330,7 @@ export function swapForPlaceholderOnError(img, kind) {
 
 function summaryHtml(lesson) {
     const { heading, meta } = lesson.parts[0];
-    return `${photoBlock(CONTENT.photos[meta.photo])}
+    return `${printBlock(CONTENT.photos[meta.photo])}
         <div class="meta"><span class="chip y">${fmtSpan(lesson.span)}</span><span class="chip">Преглед на урока</span></div>
         <h2>${esc(heading)}</h2>
         <p class="lead">${esc(meta.lead)}</p>
@@ -322,7 +343,7 @@ function summaryHtml(lesson) {
 function storyHtml(lesson, n) {
     const { heading, html, factHtml, meta } = lesson.parts[n];
     const held = isHeld(lesson, n) ? 'held' : '';
-    return `<div class="${held}">${photoBlock(CONTENT.photos[meta.photo])}</div>
+    return `<div class="${held}">${printBlock(CONTENT.photos[meta.photo])}</div>
         <div class="meta"><span class="chip y">${fmtYear(meta)}</span><span class="chip">Част ${n} от ${storyCount(lesson)}</span></div>
         <h2 class="${held}">${esc(heading)}</h2>
         <div id="lsPredict"></div>
@@ -367,6 +388,11 @@ function wordList(words = []) {
 }
 
 const teaser = (next) => (next ? `<div class="teaser"><small>Следва</small>${esc(next)}</div>` : '');
+
+// the picture of a part as an instant print: the photo, with its caption handwritten on the white strip below
+function printBlock(photo) {
+    return `<figure class="snap">${photoBlock(photo)}<figcaption>${esc(photo?.c ?? '')}</figcaption></figure>`;
+}
 
 // the picture of a part or a card: the photo with its credit, or the icon of the card kind when there is none
 export function photoBlock(photo, kind = 'event') {

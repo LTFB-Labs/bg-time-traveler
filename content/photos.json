@@ -534,7 +534,8 @@
     "l": "CC BY-SA 4.0",
     "u": "https://commons.wikimedia.org/wiki/File:Marble_votive_tablet_of_a_Thracian_horseman.jpg",
     "w": 706,
-    "h": 900
+    "h": 900,
+    "c": "Тракийският конник"
   },
   "teres-mask": {
     "src": "The_golden_life-size_mask_of_Teres_I_found_in_his_tomb_in_the_Valley_of_the_Thracian_Kings.png",
@@ -543,7 +544,8 @@
     "l": "CC BY-SA 4.0",
     "u": "https://commons.wikimedia.org/wiki/File:The_golden_life-size_mask_of_Teres_I_found_in_his_tomb_in_the_Valley_of_the_Thracian_Kings.png",
     "w": 785,
-    "h": 601
+    "h": 601,
+    "c": "Златната маска от Долината на тракийските царе"
   },
   "panagyurishte": {
     "src": "Sofia_-_Panagyurishte_Thracian_Gold_Treasure.jpg",
@@ -552,7 +554,8 @@
     "l": "CC BY 2.0",
     "u": "https://commons.wikimedia.org/wiki/File:Sofia_-_Panagyurishte_Thracian_Gold_Treasure.jpg",
     "w": 900,
-    "h": 600
+    "h": 600,
+    "c": "Панагюрското златно съкровище"
   },
   "sozopol": {
     "src": "Sozopol2.jpg",
@@ -561,7 +564,8 @@
     "l": "CC BY 2.5",
     "u": "https://commons.wikimedia.org/wiki/File:Sozopol2.jpg",
     "w": 900,
-    "h": 675
+    "h": 675,
+    "c": "Созопол — някога Аполония"
   },
   "philip-ii": {
     "src": "Phillip_II, king of Macedonia, Roman copy of Greek original, Ny Carlsberg Glyptotek, Copenhagen (36420294055).jpg",
@@ -570,7 +574,8 @@
     "l": "CC BY 2.0",
     "u": "https://commons.wikimedia.org/wiki/File:Phillip_II,_king_of_Macedonia,_Roman_copy_of_Greek_original,_Ny_Carlsberg_Glyptotek,_Copenhagen_(36420294055).jpg",
     "w": 680,
-    "h": 899
+    "h": 899,
+    "c": "Филип II Македонски"
   },
   "seuthes-iii-head": {
     "src": "National_Archaeological_Museum_Sofia_-_Bronze_Head_from_the_Golyama_Kosmatka_Tumulus_near_Shipka.jpg",
@@ -579,7 +584,8 @@
     "l": "CC BY 2.0",
     "u": "https://commons.wikimedia.org/wiki/File:National_Archaeological_Museum_Sofia_-_Bronze_Head_from_the_Golyama_Kosmatka_Tumulus_near_Shipka.jpg",
     "w": 600,
-    "h": 900
+    "h": 900,
+    "c": "Бронзовата глава от Голяма Косматка"
   },
   "kazanlak-tomb": {
     "src": "Kazanluk_1.jpg",
@@ -588,6 +594,7 @@
     "l": "CC BY-SA 3.0",
     "u": "https://commons.wikimedia.org/wiki/File:Kazanluk_1.jpg",
     "w": 800,
-    "h": 760
+    "h": 760,
+    "c": "Казанлъшката гробница"
   }
 }

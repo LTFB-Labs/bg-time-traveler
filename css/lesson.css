@@ -184,7 +184,79 @@ body.lesson #lsMap { display: flex; }
 
 /* picture block */
 #lesson .ph { position: relative; aspect-ratio: 16 / 9; background: #e6d5ad; overflow: hidden; }
-#lsBody .ph { margin: 16px -22px 0; }
+/* the part's picture: an instant print taped to the sheet, its caption handwritten on the white strip; a click opens it large */
+#lsBody .snap {
+    position: relative;
+    float: right;
+    width: 196px;
+    margin: 22px 4px 12px 18px;
+    padding: 9px 9px 0;
+    background: #fffdf7;
+    border-radius: 3px;
+    box-shadow: 0 8px 18px rgba(60, 40, 15, .3), 0 1px 3px rgba(60, 40, 15, .25);
+    transform: rotate(2.5deg);
+    cursor: zoom-in;
+    transition: transform .2s;
+}
+#lsBody .snap:not(.big):hover { transform: rotate(0) scale(1.04); }
+#lsBody .snap::before {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    top: -11px;
+    width: 74px;
+    height: 22px;
+    margin-left: -37px;
+    background: rgba(233, 217, 176, .8);
+    box-shadow: 0 1px 2px rgba(60, 40, 15, .15);
+    transform: rotate(-4deg);
+}
+#lsBody .snap .ph { aspect-ratio: 1; }
+#lsBody .snap:not(.big) .cr { display: none; }
+#lsBody .snap .ph::after {
+    content: '⤢';
+    position: absolute;
+    right: 6px;
+    bottom: 6px;
+    width: 26px;
+    height: 26px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(255, 250, 240, .92);
+    color: #5b3d17;
+    font-weight: 900;
+    font-size: 15px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
+}
+#lsBody .snap figcaption {
+    min-height: 54px;
+    padding: 8px 2px 12px;
+    display: grid;
+    place-items: center;
+    font-family: 'Caveat', cursive;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1;
+    text-align: center;
+    color: #2b3f6b;
+}
+#lsBody .snap.big {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 30;
+    width: min(560px, 62vh, 90vw);
+    margin: 0;
+    padding: 16px 16px 0;
+    transform: translate(-50%, -50%) rotate(-1deg);
+    box-shadow: 0 0 0 100vmax rgba(30, 20, 10, .7), 0 20px 60px rgba(0, 0, 0, .5);
+    cursor: zoom-out;
+    animation: fadein .25s ease-out;
+}
+#lsBody .snap.big figcaption { min-height: 90px; font-size: 36px; }
+#lsBody .snap.big .ph::after { content: '✕'; top: 10px; bottom: auto; }
 #lesson .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; animation: fadein .6s ease; }
 #lesson .ph .cr {
     position: absolute;
@@ -301,7 +373,8 @@ body.lesson #lsMap { display: flex; }
     #lsHead { padding: 10px 16px 8px; }
     #lsSteps button:not(.cur) { width: 28px; height: 28px; }
     #lsBody { padding: 0 16px 16px; }
-    #lsBody .ph { margin: 12px -16px 0; aspect-ratio: 2 / 1; }
+    #lsBody .snap { width: 136px; padding: 6px 6px 0; }
+    #lsBody .snap figcaption { min-height: 40px; font-size: 16px; }
     #lsNav .hint { display: none; }
 }
 
