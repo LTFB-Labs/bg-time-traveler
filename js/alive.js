@@ -244,22 +244,18 @@ function flyBirds(scene) {
     };
 }
 
-// a V behind the leader, or now and then a loose bunch; the flock faces east and the flight turns it
+// a V behind the leader; the flock faces east and the flight turns it. Each bird keeps its place in the V on a group of
+// its own, because its flap animates the path's transform and would carry a place set on the path with it; the wings
+// beat in a ripple from the leader back
 function flockSvg(count) {
-    const isLoose = Math.random() < .3;
-    const spots = Array.from({ length: count }, (_, i) => (isLoose ? looseSpot(i) : vSpot(i)));
     const scale = random(.8, 1.4);
-    const birds = spots.map(([x, y]) => `<path transform="translate(${x.toFixed(1)} ${y.toFixed(1)})" d="M-6 0q3 -4 6 0q3 -4 6 0" style="animation-duration:${random(.26, .4).toFixed(2)}s;animation-delay:-${random(0, .4).toFixed(2)}s"/>`);
+    const birds = Array.from({ length: count }, (_, i) => `<g transform="translate(${vSpot(i).join(' ')})"><path d="M-6 0q3 -4 6 0q3 -4 6 0" style="animation-delay:-${(i * .13).toFixed(2)}s"/></g>`);
     return `<svg viewBox="-70 -45 85 90" style="width:${(85 * scale).toFixed(0)}px">${birds.join('')}</svg>`;
 }
 
 function vSpot(i) {
     const row = Math.ceil(i / 2);
-    return [-row * 12 + random(-2, 2), (i % 2 ? -1 : 1) * row * 8 + random(-2, 2)];
-}
-
-function looseSpot(i) {
-    return i ? [random(-55, 0), random(-30, 30)] : [0, 0];
+    return [-row * 12, (i % 2 ? -1 : 1) * row * 8];
 }
 
 // east or west across the visible map (the right end slips under the reading sheet), tilted up to about 25 degrees,
