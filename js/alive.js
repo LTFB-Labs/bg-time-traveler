@@ -1,13 +1,13 @@
 // The living lesson map: wave marks on the sea, small white vapours, flocks of birds, ships of the time, and the traveler
 // standing at the part's place with a dotted trail of the places visited. The border trace lives in map.js.
-// Energy: nothing here redraws the map itself. The waves sit on two canvases above it, drawn again only when the camera
-// moves, and twinkle by swapping the canvases' opacity once a beat; the ships and the trail sit on an SVG layer of their
-// own; the vapours, the birds and the traveler move as layers of their own. Everything moves for AWAKE_MS after a part
-// opens or the camera moves, then holds still. Still means no animation at all: macOS keeps redrawing a layer that has
-// even a paused one.
+// Energy: nothing here redraws the map itself. The waves sit still on a canvas above it, drawn again only when the camera
+// moves; the ships and the trail sit on an SVG layer of their own; the vapours, the birds and the traveler move as layers
+// of their own. Everything moves for AWAKE_MS after a part opens or the camera moves, slowing to a stop over the last
+// SLOW_MS, then holds still. Still means no animation at all: macOS keeps redrawing a layer that has even a paused one.
 // Node imports this module for the pure helpers, so every DOM access stays inside a function.
 const NS = 'http://www.w3.org/2000/svg';
-const AWAKE_MS = 20000;
+const AWAKE_MS = 10000;
+const SLOW_MS = 3000;
 // ponytail: one fleet of ancient ships for every lesson; give lessons their own fleet when a lesson from a later era comes
 // ships on sea lanes in [lon, lat]; px is the drawing's height on screen, seconds one crossing
 const FLEET = [
@@ -20,13 +20,13 @@ const FLEET = [
 ];
 const WAVE_STEP = 40;
 const WAVE_INK = '#36574e';
-// the two wave canvases step through these opacities half a cycle apart, one step per beat
-const WAVE_LEVELS = [.15, .45, .8, .45];
-const WAVE_STILL_LEVEL = .5;
-const BEAT_MS = 1000;
+const WAVE_LEVEL = .5;
 // the waves are at full strength up to this zoom (screen pixels per map unit) and fade as the kid zooms closer
 const WAVE_FULL_ZOOM = 1.3;
 const VAPOURS = 6;
+// a flock takes off only this long before the map starts to slow down, so it is seen before it fades
+const FLOCK_LEAD_MS = 4000;
+const MAX_FLOCKS = 2;
 const WALK_MS = 1600;
 
 // where the traveler stands in a part: at the card its stand names, else at its first marked card with a place
@@ -41,8 +41,8 @@ export function visitedUpTo(lesson, n, cards) {
 }
 
 export function startAlive(map, lesson) {
-    const scene = { map, lesson, isCalm: matchMedia('(prefers-reduced-motion: reduce)').matches, isAwake: false, beat: 0, ships: [] };
-    scene.timers = { sleep: 0, beat: 0, birds: 0 };
+    const scene = { map, lesson, isCalm: matchMedia('(prefers-reduced-motion: reduce)').matches, isAwake: false, slowing: null, ships: [] };
+    scene.timers = { slow: 0, birds: 0 };
     scene.waves = addWaves(scene);
     scene.layer = addLayer();
     scene.clouds = addClouds();
@@ -80,72 +80,108 @@ function random(from, to) {
 /* ---------- awake and still ---------- */
 function wake(scene) {
     if (scene.isCalm) return;
-    clearTimeout(scene.timers.sleep);
-    scene.timers.sleep = setTimeout(() => sleep(scene), AWAKE_MS);
+    clearTimeout(scene.timers.slow);
+    scene.timers.slow = setTimeout(() => slowDown(scene), AWAKE_MS - SLOW_MS);
     scene.sleepsAt = performance.now() + AWAKE_MS;
+    if (scene.slowing) keepPace(scene);
     if (scene.isAwake) return;
     scene.isAwake = true;
     document.documentElement.classList.remove('fx-still');
     scene.layer.unpauseAnimations();
     driftClouds(scene.clouds);
-    drawWaves(scene);
-    scene.timers.beat = setInterval(() => twinkle(scene), BEAT_MS);
-    scheduleFlock(scene, random(1500, 4000));
+    scheduleFlock(scene, random(300, 1200));
+}
+
+// over the last SLOW_MS everything slows to a stop together: the vapours, the rocking ships and the coin take a pace
+// that eases down to 0, and the ships sail on a clock that runs at that pace; the birds fly on and fade away
+function slowDown(scene) {
+    fadeFlocks();
+    scene.layer.pauseAnimations();
+    document.documentElement.classList.add('fx-slowing');
+    const anims = [scene.layer, scene.traveler.token, scene.clouds.sky].flatMap((e) => e.getAnimations({ subtree: true }));
+    const now = performance.now();
+    scene.slowing = { anims, start: now, last: now, shipTime: scene.layer.getCurrentTime() };
+    requestAnimationFrame(() => stepSlowing(scene, scene.slowing));
+}
+
+function stepSlowing(scene, slowing) {
+    if (scene.slowing !== slowing) return;
+    const now = performance.now();
+    const t = Math.min(1, (now - slowing.start) / SLOW_MS);
+    // the pace eases from 1 down to 0, gently at both ends
+    const pace = 1 - t * t * (3 - 2 * t);
+    slowing.anims.forEach((a) => { a.playbackRate = pace; });
+    slowing.shipTime += ((now - slowing.last) / 1000) * pace;
+    slowing.last = now;
+    scene.layer.setCurrentTime(slowing.shipTime);
+    if (t < 1) requestAnimationFrame(() => stepSlowing(scene, slowing));
+    else sleep(scene);
+}
+
+// woken while slowing down: everything goes back to full pace from where it is
+function keepPace(scene) {
+    scene.slowing.anims.forEach((a) => { a.playbackRate = 1; });
+    scene.slowing = null;
+    document.documentElement.classList.remove('fx-slowing');
+    scene.layer.unpauseAnimations();
+    scheduleFlock(scene, random(300, 1200));
 }
 
 function sleep(scene) {
+    holdPoses(scene.slowing?.anims ?? []);
+    scene.slowing = null;
     scene.isAwake = false;
+    document.documentElement.classList.remove('fx-slowing');
     document.documentElement.classList.add('fx-still');
     scene.layer.pauseAnimations();
     parkClouds(scene.clouds);
-    drawWaves(scene);
-    clearInterval(scene.timers.beat);
     clearTimeout(scene.timers.birds);
+    document.querySelectorAll('.fx-birds').forEach((flock) => flock.remove());
+}
+
+// the stopped elements keep the pose they stopped in, so taking their animations away moves nothing
+function holdPoses(anims) {
+    anims.forEach(({ effect }) => { effect.target.style.transform = getComputedStyle(effect.target).transform; });
 }
 
 /* ---------- sea ---------- */
-// small wave marks over the open sea, split between two canvases above the map
+// small still wave marks over the open sea, on a canvas above the map
 function addWaves(scene) {
-    const layers = [0, 1].map(() => Object.assign(document.createElement('canvas'), { className: 'fx-waves' }));
-    document.getElementById('map').after(...layers);
-    const waves = { layers, groups: seaSpots(scene.map), fade: 1 };
-    sizeWaves(waves);
+    const canvas = Object.assign(document.createElement('canvas'), { className: 'fx-waves' });
+    document.getElementById('map').after(canvas);
+    const waves = { canvas, spots: seaSpots(scene.map) };
+    sizeWaves(canvas);
     addEventListener('resize', () => {
-        sizeWaves(waves);
+        sizeWaves(canvas);
         drawWaves(scene);
     });
     return waves;
 }
 
-// a jittered grid over the whole map, without the spots on land, dealt at random between the two canvases
+// a jittered grid over the whole map, without the spots on land
 function seaSpots(map) {
-    const groups = [[], []];
+    const spots = [];
     const rowStep = WAVE_STEP * .8;
     for (let row = 0; row * rowStep < GEO.H; row++) {
         for (let x = (row % 2) * WAVE_STEP / 2; x < GEO.W; x += WAVE_STEP) {
             const at = [x + random(-12, 12), row * rowStep + random(-12, 12)];
-            if (!map.isLand(...at)) groups[Math.random() < .5 ? 0 : 1].push(at);
+            if (!map.isLand(...at)) spots.push(at);
         }
     }
-    return groups;
+    return spots;
 }
 
-function sizeWaves({ layers }) {
-    layers.forEach((c) => {
-        c.width = innerWidth * devicePixelRatio;
-        c.height = innerHeight * devicePixelRatio;
-    });
+function sizeWaves(canvas) {
+    canvas.width = innerWidth * devicePixelRatio;
+    canvas.height = innerHeight * devicePixelRatio;
 }
 
-// awake, each canvas holds half the marks and the two twinkle; still, one canvas holds them all and the other is hidden
 function drawWaves(scene) {
     const view = scene.map.view();
     const zoom = innerWidth / view.w;
-    const [a, b] = scene.waves.groups;
-    const marks = scene.isAwake ? [a, b] : [a.concat(b), []];
-    scene.waves.fade = Math.min(1, WAVE_FULL_ZOOM / zoom);
-    scene.waves.layers.forEach((c, i) => drawWaveLayer(c.getContext('2d'), marks[i], view, zoom));
-    showWaveLevels(scene);
+    const { canvas, spots } = scene.waves;
+    drawWaveLayer(canvas.getContext('2d'), spots, view, zoom);
+    canvas.style.opacity = (WAVE_LEVEL * Math.min(1, WAVE_FULL_ZOOM / zoom)).toFixed(2);
 }
 
 // each mark is two little arcs, five map units each, drawn in screen pixels for the current camera
@@ -167,22 +203,6 @@ function drawWaveLayer(ctx, spots, view, zoom) {
         ctx.quadraticCurveTo(x + 1.5 * w, y + h, x + 2 * w, y);
     });
     ctx.stroke();
-}
-
-function twinkle(scene) {
-    scene.beat++;
-    showWaveLevels(scene);
-}
-
-function showWaveLevels(scene) {
-    const { layers, fade } = scene.waves;
-    layers.forEach((c, i) => { c.style.opacity = (waveLevel(scene, i) * fade).toFixed(2); });
-    layers[1].hidden = !scene.isAwake;
-}
-
-function waveLevel(scene, i) {
-    if (!scene.isAwake) return WAVE_STILL_LEVEL;
-    return WAVE_LEVELS[(scene.beat + i * WAVE_LEVELS.length / 2) % WAVE_LEVELS.length];
 }
 
 /* ---------- sky ---------- */
@@ -229,19 +249,25 @@ function scheduleFlock(scene, ms) {
     scene.timers.birds = setTimeout(() => flyBirds(scene), ms);
 }
 
-// a flock of 3 to 9 birds crosses the map on a line of its own, only when it can land before the map goes still,
-// so no wings beat on a still map; the next one comes only while the map is awake
+// a flock of 3 to 9 birds crosses the map on a line of its own, and a second one may take off while it flies; a flock
+// takes off only when it will be seen for a while before the map slows down, and fades away while the map slows down
 function flyBirds(scene) {
+    if (scene.sleepsAt - SLOW_MS - performance.now() < FLOCK_LEAD_MS) return;
+    if (document.querySelectorAll('.fx-birds').length >= MAX_FLOCKS) return;
     const { keyframes, ms } = flightPath();
-    if (performance.now() + ms > scene.sleepsAt) return;
     const flock = document.createElement('div');
     flock.className = 'fx-birds';
     flock.innerHTML = flockSvg(3 + Math.floor(Math.random() * 7));
     scene.clouds.sky.before(flock);
-    flock.animate(keyframes, { duration: ms, easing: 'linear' }).onfinish = () => {
-        flock.remove();
-        if (scene.isAwake) scheduleFlock(scene, random(6000, 18000));
-    };
+    flock.animate(keyframes, { duration: ms, easing: 'linear' }).onfinish = () => flock.remove();
+    scheduleFlock(scene, random(1000, 3500));
+}
+
+// the flocks still in the air fade away while the map slows down, and are gone when it goes still
+function fadeFlocks() {
+    document.querySelectorAll('.fx-birds').forEach((flock) => {
+        flock.animate([{ opacity: 1 }, { opacity: 0 }], { duration: SLOW_MS, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => flock.remove();
+    });
 }
 
 // a V behind the leader; the flock faces east and the flight turns it. Each bird keeps its place in the V on a group of
@@ -259,16 +285,17 @@ function vSpot(i) {
 }
 
 // east or west across the visible map (the right end slips under the reading sheet), tilted up to about 25 degrees,
-// at 60 to 110 pixels a second
+// at 50 to 70 pixels a second
 function flightPath() {
     const width = document.getElementById('lsMap').getBoundingClientRect().right;
     const dir = Math.random() < .5 ? 1 : -1;
     const x0 = dir > 0 ? -160 : width + 160;
     const y0 = innerHeight * random(.08, .7);
     const dx = dir * (width + 320);
-    const dy = Math.tan(random(-.45, .45)) * Math.abs(dx);
-    const pose = `rotate(${Math.atan2(dir * dy, Math.abs(dx)).toFixed(3)}rad) scaleX(${dir})`;
-    const ms = (Math.hypot(dx, dy) / random(60, 110)) * 1000;
+    const tilt = random(-.45, .45);
+    const dy = Math.tan(tilt) * Math.abs(dx);
+    const pose = `rotate(${(dir * tilt).toFixed(3)}rad) scaleX(${dir})`;
+    const ms = (Math.hypot(dx, dy) / random(50, 70)) * 1000;
     return { ms, keyframes: [{ transform: `translate(${x0}px, ${y0}px) ${pose}` }, { transform: `translate(${x0 + dx}px, ${(y0 + dy).toFixed(0)}px) ${pose}` }] };
 }
 
