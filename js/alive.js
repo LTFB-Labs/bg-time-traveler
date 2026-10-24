@@ -20,7 +20,7 @@ const FLEET = [
 ];
 const WAVE_STEP = 40;
 const WAVE_INK = '#36574e';
-const WAVE_LEVEL = .5;
+const WAVE_LEVEL = .3;
 // the waves are at full strength up to this zoom (screen pixels per map unit) and fade as the kid zooms closer
 const WAVE_FULL_ZOOM = 1.3;
 const VAPOURS = 6;
