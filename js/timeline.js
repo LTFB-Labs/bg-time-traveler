@@ -1,16 +1,12 @@
-// The lesson timeline under the map: era bands, a numbered stop per story part with its year under it, the traveller's
-// head over the current stop, and under it the whole history with the lesson's span framed.
+// The lesson timeline under the map: era bands with a numbered stop per story part hanging from them and its year under
+// it, and under them the whole history as one thin line with the lesson's span framed.
 // Node imports this module for the pure helpers, so every DOM access stays inside a function.
-import {
-    fmtSpan,
-    fmtYear,
-} from './years.js';
+import { fmtYear } from './years.js';
 
 export function createTimeline(rootEl, lesson, { onPick }) {
     const find = (id) => rootEl.querySelector(`#${id}`);
     const hasStrip = lesson.strip !== false;
     const at = stopScale(lesson.parts.filter(isOnStrip).map((p) => p.meta.year), lesson.span);
-    find('lsTlHead').hidden = !hasStrip;
     find('lsTrack').hidden = !hasStrip;
     find('lsBig').innerHTML = bigHtml(lesson);
     if (hasStrip) buildStrip(find, lesson, at, onPick);
@@ -19,7 +15,6 @@ export function createTimeline(rootEl, lesson, { onPick }) {
 
 function buildStrip(find, lesson, at, onPick) {
     const stops = lesson.parts.filter(isOnStrip).map((p) => p.meta);
-    find('lsTlHead').querySelector('b').textContent = fmtSpan(lesson.span);
     find('lsBands').replaceChildren(...bandLayout(lesson.eras, at).map(bandEl));
     find('lsTicks').replaceChildren(...yearMarks(stops, lesson.span, at).map(markEl));
     find('lsDots').replaceChildren(...lesson.parts.flatMap((p, n) => (isOnStrip(p) ? [dotEl(lesson, n, at, onPick)] : [])));
@@ -28,19 +23,12 @@ function buildStrip(find, lesson, at, onPick) {
 // a story part with a year sits on the strip; the summary, the check and label-only parts do not
 export const isOnStrip = (p) => p.type === 'story' && typeof p.meta.year === 'number';
 
+// n may be the recap, after the last part: no year, every dot done
 function setPart(find, lesson, at, n) {
-    const p = lesson.parts[n] ?? RECAP_PART;
-    const year = isOnStrip(p) ? p.meta.year : null;
-    placeKnob(find('lsKnob'), year === null ? null : at(year));
+    const p = lesson.parts[n];
+    const year = p && isOnStrip(p) ? p.meta.year : null;
     markDots(find('lsDots'), n);
     markBand(find('lsBands'), lesson.eras, year);
-    find('lsTlHead').lastElementChild.textContent = HEAD_RIGHT[p.type](lesson, n);
-}
-
-// the traveller's head slides to the current stop; without a year it fades out where it stands
-function placeKnob(knob, left) {
-    knob.classList.toggle('off', left === null);
-    if (left !== null) knob.style.left = `${left}%`;
 }
 
 function markDots(dots, n) {
@@ -63,21 +51,11 @@ function eraIndex(eras, year) {
 
 export const eraAt = (eras, year) => eras[eraIndex(eras, year)]?.[2];
 
-const HEAD_RIGHT = {
-    summary: () => 'Преглед на урока',
-    story: (lesson, n) => `${n} от ${storyCount(lesson)}: ${shortHeading(lesson.parts[n].heading)}`,
-    check: () => 'Проверка',
-    recap: () => 'Край на урока',
-};
-
-// the recap sits after the last part: no year, every dot done
-const RECAP_PART = { type: 'recap' };
-
 export const storyCount = (lesson) => lesson.parts.filter((p) => p.type === 'story').length;
 
 const SHORT_MAX = 24;
 
-// a part's short name, for the chapter chips and the timeline head:
+// a part's short name, for the chapter chips:
 // the heading up to its first dash or colon, cut at a word to at most 24 characters
 export function shortHeading(heading) {
     const head = heading.split(/ [—–] |:/)[0];
@@ -173,7 +151,6 @@ const pct = (year, [a, b]) => Math.min(100, Math.max(0, ((year - a) / (b - a)) *
 
 /* ---------- whole history ---------- */
 const BIG_ERAS = [[-1300, 46, 'Траки', '#b07a3c'], [46, 681, 'Рим и Византия', '#8a5fb0'], [681, 1396, 'България', '#c8402f'], [1396, 1878, 'Османска власт', '#3e8a6a'], [1878, 2026, 'България', '#c8402f']];
-const BIG_LABELS = [[-1300, '1300 пр.Хр.'], [681, '681 България'], [2026, 'днес']];
 // a span far before the bar still gets a visible frame at its left edge
 const MIN_FRAME = 1.5;
 
@@ -186,6 +163,5 @@ function bigHtml(lesson) {
     const { left, width } = bigLayout(lesson.span, lesson.big);
     const early = lesson.strip === false ? '<em>много по-рано</em>' : '';
     const bar = BIG_ERAS.map(([a, b, name, color]) => `<i style="flex:${b - a} 0 0;background:${color}" title="${name}"></i>`).join('');
-    const labels = BIG_LABELS.map(([year, text]) => `<span style="left:${pct(year, lesson.big)}%">${text}</span>`).join('');
-    return `<span class="lbl">Къде сме в цялата история</span><div class="bar">${bar}</div><div class="win" style="left:${left}%;width:${width}%">${early}</div>${labels}`;
+    return `<span class="lbl">Цялата история</span><div class="bar">${bar}</div><div class="win" style="left:${left}%;width:${width}%">${early}</div><span class="now">днес</span>`;
 }

@@ -61,7 +61,7 @@ body.lesson #lsMap { display: flex; }
 /* the lesson timeline floats on the map like the reading sheet */
 #lsTl {
     margin: 0 0 var(--gap) var(--gap);
-    padding: 10px 20px;
+    padding: 8px 16px;
     border: 1px solid #b89a63;
     border-radius: 16px;
     background: rgba(251, 244, 226, .94);
@@ -69,16 +69,14 @@ body.lesson #lsMap { display: flex; }
     user-select: none;
     pointer-events: auto;
 }
-#lsTlHead { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-weight: 800; font-size: 12px; color: var(--muted); }
-#lsTlHead b { color: var(--ink2); font-weight: 900; }
-/* top to bottom: the traveler over the current stop, the era bands, one numbered stop per story part, the years */
-#lsTrack { position: relative; height: 106px; margin-top: 6px; }
-#lsBands { position: absolute; left: 0; right: 0; top: 36px; height: 22px; border-radius: 11px; overflow: hidden; display: flex; box-shadow: inset 0 1px 3px rgba(0, 0, 0, .25); }
+/* top to bottom: the era bands, one numbered stop per story part hanging from their lower edge, the stops' years */
+#lsTrack { position: relative; height: 47px; }
+#lsBands { position: absolute; left: 0; right: 0; top: 0; height: 18px; border-radius: 9px; overflow: hidden; display: flex; box-shadow: inset 0 1px 3px rgba(0, 0, 0, .25); }
 #lsBands div {
-    line-height: 22px;
+    line-height: 18px;
     text-align: center;
     font-weight: 900;
-    font-size: 12px;
+    font-size: 11px;
     color: rgba(255, 255, 255, .95);
     white-space: nowrap;
     overflow: hidden;
@@ -89,21 +87,12 @@ body.lesson #lsMap { display: flex; }
 }
 /* the era of the current stop stays bright, the others fade */
 #lsBands:has(.cur) div:not(.cur) { opacity: .5; }
-#lsDots { position: absolute; left: 0; right: 0; top: 64px; height: 24px; }
-#lsDots::before {
-    content: '';
-    position: absolute;
-    left: 6%;
-    right: 6%;
-    top: 11px;
-    height: 2px;
-    background: repeating-linear-gradient(90deg, #b08a4a 0 6px, transparent 6px 11px);
-}
+#lsDots { position: absolute; left: 0; right: 0; top: 13px; height: 18px; }
 #lsDots .dot {
     top: 0;
-    width: 24px;
-    height: 24px;
-    margin-left: -12px;
+    width: 18px;
+    height: 18px;
+    margin-left: -9px;
     padding: 0;
     display: grid;
     place-items: center;
@@ -113,44 +102,26 @@ body.lesson #lsMap { display: flex; }
     background: #fffaf0;
     color: #8a6a3a;
     font-family: var(--title);
-    font-size: 13px;
+    font-size: 11px;
     line-height: 1;
     box-shadow: 0 1px 3px rgba(60, 40, 15, .25);
 }
 #lsDots .dot:hover { transform: scale(1.15); }
 #lsDots .dot.seen { background: var(--gold); border-color: var(--gold2); color: #fff; }
 #lsDots .dot.on { background: var(--red); border-color: #fff; color: #fff; transform: scale(1.25); box-shadow: 0 0 0 3px rgba(200, 64, 47, .3); }
-#lsTicks { position: absolute; left: 0; right: 0; top: 92px; height: 16px; }
-#lsTicks span { position: absolute; top: 0; transform: translateX(-50%); font-weight: 800; font-size: 12px; color: var(--ink2); white-space: nowrap; }
+#lsTicks { position: absolute; left: 0; right: 0; top: 33px; height: 14px; }
+#lsTicks span { position: absolute; top: 0; transform: translateX(-50%); font-weight: 800; font-size: 11px; color: var(--ink2); white-space: nowrap; }
 #lsTicks .gap { font-style: italic; font-weight: 700; color: #a08660; }
-#lsKnob { position: absolute; top: 0; width: 0; height: 64px; pointer-events: none; transition: left .9s cubic-bezier(.2, .9, .3, 1), opacity .3s; }
-#lsKnob.off { opacity: 0; }
-#lsKnob::before { content: ''; position: absolute; left: -1px; top: 32px; width: 2px; height: 32px; background: #5a2412; border-radius: 2px; }
-#lsKnob .head {
-    position: absolute;
-    left: -17px;
-    top: -2px;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background: #fff6dd;
-    border: 2px solid var(--gold);
-    box-shadow: 0 4px 10px rgba(60, 40, 15, .4);
-    overflow: hidden;
-}
-#lsKnob .head img { width: 100%; height: 100%; display: block; }
 
-/* the whole history: one row under the strip, its label on the left */
-#lsBig { position: relative; height: 28px; margin: 12px 0 0 172px; }
-#lsBig .bar { position: absolute; left: 0; right: 0; top: 4px; height: 8px; border-radius: 4px; display: flex; overflow: hidden; opacity: .75; }
+/* the whole history: one thin line under the strip, its label on the left and today at its right end */
+#lsBig { position: relative; height: 14px; margin: 6px 34px 0 98px; }
+#lsBig .bar { position: absolute; left: 0; right: 0; top: 4px; height: 6px; border-radius: 3px; display: flex; overflow: hidden; opacity: .75; }
 #lsBig .bar i { height: 100%; }
-#lsBig .win { position: absolute; top: -1px; height: 18px; border: 2px solid #7a1e12; border-radius: 4px; background: rgba(200, 64, 47, .18); }
-#lsBig .win em { position: absolute; left: 100%; top: 0; margin-left: 6px; font-style: normal; font-size: 10px; font-weight: 800; color: #7a1e12; white-space: nowrap; }
-#lsBig > span { position: absolute; top: 16px; transform: translateX(-50%); font-size: 10.5px; font-weight: 800; color: var(--muted); white-space: nowrap; }
-/* the first and the last year label would hang over the ends */
-#lsBig > span:nth-of-type(2) { transform: none; }
-#lsBig > span:last-of-type { transform: translateX(-100%); }
-#lsBig .lbl { top: 1px; left: -172px; transform: none; font-size: 11px; color: var(--muted); }
+#lsBig .win { position: absolute; top: 0; height: 14px; border: 2px solid #7a1e12; border-radius: 4px; background: rgba(200, 64, 47, .18); }
+#lsBig .win em { position: absolute; left: 100%; top: -1px; margin-left: 6px; font-style: normal; font-size: 10px; font-weight: 800; color: #7a1e12; white-space: nowrap; }
+#lsBig > span { position: absolute; top: 0; font-size: 10.5px; font-weight: 800; line-height: 14px; color: var(--muted); white-space: nowrap; }
+#lsBig .lbl { left: -98px; }
+#lsBig .now { left: 100%; margin-left: 6px; }
 
 /* "Върни ме": the map pane's top right corner, after the kid moves the map; the pane box itself lets clicks through to the map */
 #lsReturn { position: absolute; top: 12px; right: 16px; pointer-events: auto; box-shadow: var(--shadow); }
@@ -177,7 +148,7 @@ body.lesson #lsMap { display: flex; }
 #lsCrumbs .chip.grade { background: #7a1e12; color: #fff; }
 #lsTitle { font-family: var(--title); font-weight: 400; font-size: clamp(22px, 2vw, 28px); margin: 8px 0; color: #3f230f; line-height: 1.1; }
 /* the parts as a quest trail: waypoints on a dashed route, a flag at the start, a question mark for the check, a star at the end;
-   the button text stays for screen readers and the title shows the part's name on hover; the traveler stands on the current waypoint */
+   the button text stays for screen readers and the title shows the part's name on hover; the current waypoint is red and larger */
 #lsSteps { counter-reset: step -1; position: relative; display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding: 4px 2px; }
 #lsSteps::before {
     content: '';
@@ -210,8 +181,8 @@ body.lesson #lsMap { display: flex; }
 #lsSteps button:hover { background: #e8d4a7; }
 #lsSteps button.done { background: var(--gold); border-color: var(--gold2); }
 #lsSteps button.done::before { color: #fff; }
-#lsSteps button.cur { width: 44px; height: 44px; margin: -6px 0; background: #fff6dd url(../traveler-head.svg) center / cover; border: 3px solid var(--red); box-shadow: 0 0 0 4px rgba(200, 64, 47, .2); }
-#lsSteps button.cur::before { content: none; }
+#lsSteps button.cur { width: 40px; height: 40px; margin: -4px 0; background: var(--red); border: 3px solid #fff; box-shadow: 0 0 0 3px rgba(200, 64, 47, .35); }
+#lsSteps button.cur::before { color: #fff; font-size: 18px; }
 
 #lsBody { flex: 1; min-height: 0; overflow: auto; padding: 0 22px 22px; }
 #lsBody .missing { margin-top: 24px; }
@@ -398,12 +369,9 @@ body.lesson #lsMap { display: flex; }
     #lsYear.span { font-size: 20px; }
     #lsLegend { display: none; }
     #lsTl { padding: 4px 12px 6px; }
-    /* the year corner and the pane's chips already say where we are */
-    #lsTlHead { display: none; }
     /* a phone keeps the map tall: the trail in the sheet already shows the stops */
-    #lsTrack { height: 62px; margin-top: 4px; }
+    #lsTrack { height: 18px; margin-top: 4px; }
     #lsDots, #lsTicks { display: none; }
-    #lsKnob::before { height: 26px; }
     #lsBands div { font-size: 0; }
     /* a phone shows the whole-history bar only when the lesson has no strip */
     #lsTrack:not([hidden]) + #lsBig { display: none; }
