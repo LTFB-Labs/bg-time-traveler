@@ -4,8 +4,8 @@ import { markCardOpened } from './store.js';
 
 const KIND_LABEL = { person: 'Личност', place: 'Място', object: 'Предмет', people: 'Народ', idea: 'Понятие', event: 'Събитие', state: 'Държава' };
 
-// onOpen: the card's marker shows it was seen; onClose: the map drops its selected marker
-export function createCards(popEl, { onOpen, onClose }) {
+// onOpen: the card's marker shows it was seen; onClose: the map drops its selected marker; footer(id): HTML at the end of the card
+export function createCards(popEl, { onOpen, onClose, footer = () => '' }) {
     const close = () => {
         popEl.hidden = true;
         onClose();
@@ -13,7 +13,7 @@ export function createCards(popEl, { onOpen, onClose }) {
     const open = (id) => {
         const card = CONTENT.cards[id];
         if (!card) return;
-        popEl.innerHTML = cardHtml(card);
+        popEl.innerHTML = cardHtml(card, footer(id));
         popEl.hidden = false;
         popEl.scrollTop = 0;
         popEl.querySelectorAll('.ph img').forEach((img) => swapForPlaceholderOnError(img, card.kind));
@@ -26,10 +26,10 @@ export function createCards(popEl, { onOpen, onClose }) {
     return { open, close };
 }
 
-function cardHtml(card) {
+function cardHtml(card, footerHtml) {
     const dates = card.dates ? `<div class="dates">${escapeHtml(card.dates)}</div>` : '';
     return `<div class="pic">${photoBlock(CONTENT.photos[card.photo], card.kind)}<button class="x" type="button" aria-label="Затвори">×</button></div>
-        <div class="pb"><span class="kind">${KIND_LABEL[card.kind] ?? ''}</span><h3>${escapeHtml(card.title)}</h3>${dates}${card.html}</div>`;
+        <div class="pb"><span class="kind">${KIND_LABEL[card.kind] ?? ''}</span><h3>${escapeHtml(card.title)}</h3>${dates}${card.html}${footerHtml}</div>`;
 }
 
 const escapeHtml = (s) => String(s).replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);

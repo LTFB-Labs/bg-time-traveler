@@ -191,7 +191,7 @@ body.lesson #compass { top: 12px; right: calc(var(--ls-w) + 2 * var(--gap) + 16p
 #lsBody .missing a { color: var(--red); font-weight: 800; }
 
 /* picture block */
-#lesson .ph { position: relative; aspect-ratio: 16 / 9; background: #e6d5ad; overflow: hidden; }
+:is(#lesson, #freePop) .ph { position: relative; aspect-ratio: 16 / 9; background: #e6d5ad; overflow: hidden; }
 /* the part's picture: an instant print taped to the sheet, its caption handwritten on the white strip; a click opens it large */
 #lsBody .snap {
     position: relative;
@@ -265,8 +265,8 @@ body.lesson #compass { top: 12px; right: calc(var(--ls-w) + 2 * var(--gap) + 16p
 }
 #lsBody .snap.big figcaption { min-height: 90px; font-size: 36px; }
 #lsBody .snap.big .ph::after { content: '✕'; top: 10px; bottom: auto; }
-#lesson .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; animation: fadein .6s ease; }
-#lesson .ph .cr {
+:is(#lesson, #freePop) .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; animation: fadein .6s ease; }
+:is(#lesson, #freePop) .ph .cr {
     position: absolute;
     left: 0;
     right: 0;
@@ -276,9 +276,9 @@ body.lesson #compass { top: 12px; right: calc(var(--ls-w) + 2 * var(--gap) + 16p
     color: #fff;
     background: linear-gradient(transparent, rgba(0, 0, 0, .6));
 }
-#lesson .ph .cr a { color: #fff; }
-#lesson .ph .noimg { position: absolute; inset: 0; display: grid; place-items: center; color: #a27a3c; }
-#lesson .ph .noimg svg { width: 30%; height: 30%; opacity: .55; }
+:is(#lesson, #freePop) .ph .cr a { color: #fff; }
+:is(#lesson, #freePop) .ph .noimg { position: absolute; inset: 0; display: grid; place-items: center; color: #a27a3c; }
+:is(#lesson, #freePop) .ph .noimg svg { width: 30%; height: 30%; opacity: .55; }
 
 /* part text */
 #lsBody .meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 16px 0 6px; }
@@ -393,17 +393,24 @@ body.lesson #compass { top: 12px; right: calc(var(--ls-w) + 2 * var(--gap) + 16p
 #lsBody p b.term { cursor: pointer; border-bottom: 2px dotted #c8402f; padding: 0 2px; border-radius: 4px; transition: background .15s; }
 #lsBody p b.term:hover { background: #f6dfc9; }
 #lsBody p b.term::after { content: ' ⓘ'; font-size: .7em; vertical-align: super; color: #b9832a; }
-#lsPop { position: absolute; left: 14px; right: 14px; bottom: 90px; z-index: 6; background: #fff8e8; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 16px 40px rgba(60, 40, 15, .35); max-height: 68%; overflow: auto; animation: fadein .3s ease-out; }
-#lsPop[hidden] { display: none; }
-#lsPop .pic { position: relative; }
-#lsPop .ph { margin: 0; border-radius: 18px 18px 0 0; }
-#lsPop .pb { padding: 14px 18px 16px; }
-#lsPop h3 { font-family: var(--title); font-weight: 400; font-size: 22px; margin: 0 0 6px; color: #3f230f; }
-#lsPop .dates { font-size: 13px; font-weight: 800; color: #7a4f1a; margin-bottom: 8px; }
-#lsPop p { margin: 0 0 8px; font-size: 15px; line-height: 1.5; font-weight: 600; color: #4b3722; }
-#lsPop p:last-child { margin: 0; }
-#lsPop .x { position: absolute; right: 10px; top: 10px; z-index: 1; width: 32px; height: 32px; border-radius: 50%; border: 0; background: rgba(255, 255, 255, .9); color: #5b3d17; font-weight: 900; font-size: 18px; box-shadow: 0 2px 6px rgba(0, 0, 0, .25); cursor: pointer; }
-#lsPop .kind { display: inline-block; font-size: 11.5px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; color: #b9832a; margin-bottom: 4px; }
+:is(#lsPop, #freePop) { position: absolute; left: 14px; right: 14px; bottom: 90px; z-index: 6; background: #fff8e8; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 16px 40px rgba(60, 40, 15, .35); max-height: 68%; overflow: auto; animation: fadein .3s ease-out; }
+:is(#lsPop, #freePop)[hidden] { display: none; }
+:is(#lsPop, #freePop) .pic { position: relative; }
+:is(#lsPop, #freePop) .ph { margin: 0; border-radius: 18px 18px 0 0; }
+:is(#lsPop, #freePop) .pb { padding: 14px 18px 16px; }
+:is(#lsPop, #freePop) h3 { font-family: var(--title); font-weight: 400; font-size: 22px; margin: 0 0 6px; color: #3f230f; }
+:is(#lsPop, #freePop) .dates { font-size: 13px; font-weight: 800; color: #7a4f1a; margin-bottom: 8px; }
+:is(#lsPop, #freePop) p { margin: 0 0 8px; font-size: 15px; line-height: 1.5; font-weight: 600; color: #4b3722; }
+:is(#lsPop, #freePop) p:last-child { margin: 0; }
+:is(#lsPop, #freePop) .x { position: absolute; right: 10px; top: 10px; z-index: 1; width: 32px; height: 32px; border-radius: 50%; border: 0; background: rgba(255, 255, 255, .9); color: #5b3d17; font-weight: 900; font-size: 18px; box-shadow: 0 2px 6px rgba(0, 0, 0, .25); cursor: pointer; }
+:is(#lsPop, #freePop) .kind { display: inline-block; font-size: 11.5px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; color: #b9832a; margin-bottom: 4px; }
+/* the free map's pop-over: a lesson card picked in the search, over the map left of the card panel; these come after the
+   shared rules, which weigh the same */
+#freePop { position: fixed; top: 110px; right: auto; bottom: auto; left: max(16px, calc((100vw - var(--cardw) - 32px) / 2 - 210px)); width: min(420px, calc(100vw - 32px)); max-height: calc(100vh - var(--tl) - 130px); z-index: 15; }
+#freePop .btn { margin-top: 12px; text-decoration: none; }
+@media (max-width: 760px) {
+    #freePop { top: auto; left: 10px; right: 10px; width: auto; bottom: calc(var(--tl) + env(safe-area-inset-bottom) + 10px); max-height: 60vh; }
+}
 
 /* ---------- prediction block ---------- */
 #lsBody .held { display: none; }

@@ -7,6 +7,7 @@ import {
     icon,
     lerp,
 } from './map.js';
+import { createCards } from './cards.js';
 import { startSearch } from './free-search.js';
 import { findResults } from './search.js';
 
@@ -214,15 +215,26 @@ function start() {
 }
 $("go").addEventListener("click", start);
 
-/* ---------- search: a pick moves the map to its year, or opens a lesson ---------- */
+/* ---------- search: a pick moves the map to its year, opens a lesson card over the map, or opens a lesson ---------- */
 function pickResult(item) {
     stopPlay();
+    freeCards.close();
     if (item.type === 'lesson' || item.type === 'part') {
         location.hash = lessonHash(item);
         return;
     }
-    if (item.type === 'card') return;
+    if (item.type === 'card') {
+        freeCards.open(item.id);
+        return;
+    }
     goTo(item.year, 900);
+    if (item.type === 'place') map.flashCity(item.city);
+}
+// a lesson card can't show on a map that starts at 600, so it opens over it, with a way to the part where it first appears
+const freeCards = createCards($('freePop'), { onOpen: () => {}, onClose: () => {}, footer: lessonLink });
+function lessonLink(id) {
+    const entry = CONTENT.search.find((e) => e.type === 'card' && e.id === id);
+    return entry?.lesson ? `<a class="btn pri" href="${lessonHash(entry)}">Към урока</a>` : '';
 }
 // a whole lesson resumes where the child left it; a part opens at that part
 const lessonHash = ({ lesson, part }) => (part === undefined ? `#lesson/${lesson}` : `#lesson/${lesson}/${part}`);

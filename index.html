@@ -37,6 +37,10 @@ button{font-family:inherit;cursor:pointer}
 .city.cap{font-size:17px;color:#7a1e12;font-family:var(--title)}
 .city.cap i{width:auto;height:auto;background:none;box-shadow:none;font-style:normal;font-size:18px;line-height:1}
 .city.cap span{transform:translateY(-1px)}
+/* a city picked in the search: a red ring swells round its dot and fades, twice, then map.js drops the class; it grows
+   past the marker that often stands on the same city. At rest the ring is invisible, so with motion off nothing stays */
+.city.flash::before{content:"";position:absolute;left:-20.5px;top:50%;width:48px;height:48px;margin-top:-24px;border:3px solid var(--red);border-radius:50%;opacity:0;pointer-events:none;animation:cityFlash 1.2s ease-out 2}
+@keyframes cityFlash{from{opacity:1;transform:scale(.4)}to{opacity:0;transform:scale(1.6)}}
 /* markers: two looks, picked in the options menu (js/options.js sets data-pins on #ov; each preview there has its own);
    the name sits right of the mark, on a wax seal once its card was opened (a hover peeks), on a shield always on a ribbon;
    --w1..--w3 are the wax and shield colours, green for a right answer of the check */
@@ -241,6 +245,7 @@ button{font-family:inherit;cursor:pointer}
     <button class="btn pri" id="next">Напред <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
   </div>
 </aside>
+<div id="freePop" hidden></div>
 
 <div id="tl">
   <button id="play" aria-label="Пусни"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg></button>

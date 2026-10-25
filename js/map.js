@@ -424,8 +424,18 @@ function setCities(list, year) {
 function buildCities(list) {
     cityEls.forEach((d) => d.remove());
     cityList = list;
-    cityEls = list.map((c) => { const d = document.createElement("div"); d.className = "city"; d.innerHTML = "<i></i><span></span>"; return d; });
+    cityEls = list.map((c) => { const d = document.createElement("div"); d.className = "city"; d.innerHTML = "<i></i><span></span>"; d.addEventListener('animationend', endFlash); return d; });
     ov.prepend(...cityEls);
+}
+// a city picked in the search gets a ring for a moment: placeOverlay keeps its "flash" class until the ring has played
+let flashedCity = null;
+function flashCity(i) {
+    flashedCity = i;
+    placeOverlay();
+}
+function endFlash() {
+    flashedCity = null;
+    placeOverlay();
 }
 // list items { id, at, kind, title, seen?, tone?, opacity? }, already in drawing order; seen: its card was opened
 function setMarkers(list, onClick) {
@@ -477,7 +487,7 @@ function placeOverlay() {
     const d = cityEls[i], nm = c.n.find((r) => y >= r[0] && y < r[1]);
     if (!nm) { d.style.display = "none"; return; }
     const isCap = (c.cap || []).some((r) => y >= r[0] && y < r[1]);
-    d.style.display = ""; d.className = "city" + (isCap ? " cap" : "");
+    d.style.display = ""; d.className = "city" + (isCap ? " cap" : "") + (i === flashedCity ? " flash" : "");
     d.firstChild.textContent = isCap ? "♛" : "";
     d.lastChild.textContent = nm[2];
     const [x, sy] = toScreen(c.at[0], c.at[1]); d.style.left = x + "px"; d.style.top = sy + "px";
@@ -560,6 +570,7 @@ return {
     flyTo,
     toScreen,
     setCities,
+    flashCity,
     setMarkers,
     setActiveMarker,
     markSeen,
