@@ -85,13 +85,19 @@ function readGrade(dir, grade) {
     const folder = `lessons/${grade}`;
     const index = readJson(dir, `${folder}/index.json`, []);
     const rows = index.value.map((entry) => (entry.file ? { entry, lesson: readLesson(dir, `${folder}/${entry.file}`) } : { entry }));
-    return { grade, rows, problems: [...index.problems, ...unlistedProblems(dir, folder, index.value)] };
+    return { grade, rows, problems: [...index.problems, ...unlistedProblems(dir, folder, index.value), ...unreadyProblems(folder, index.value)] };
 }
 
 function unlistedProblems(dir, folder, entries) {
     const listed = new Set(entries.map((entry) => entry.file));
     const unlisted = readdirSync(join(dir, folder)).filter((name) => isMarkdown(name) && !listed.has(name));
     return unlisted.map((name) => problem(`${folder}/${name}`, `not listed in ${folder}/index.json`));
+}
+
+// a lesson listed without a file is one the list shows greyed out; it still needs the book's number and title
+function unreadyProblems(folder, entries) {
+    const isBad = (entry) => !entry.file && !(Number.isInteger(entry.number) && typeof entry.title === 'string' && entry.title !== '');
+    return entries.filter(isBad).map(() => problem(`${folder}/index.json`, 'a lesson without a file needs a number and a title'));
 }
 
 function readLesson(dir, path) {

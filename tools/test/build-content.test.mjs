@@ -49,6 +49,21 @@ test('reportsIndexIdThatDiffersFromLesson', () => {
     assert.match(problems[0].message, /5-other/);
 });
 
+test('passesUnreadyLessonToThePage', () => {
+    const index = '[{ "number": 1, "title": "Какво е история" }, { "id": "5-test", "file": "test-lesson.md", "state": "ready" }]';
+    const { content, problems } = buildContent(copyOkWith({ 'content/lessons/5/index.json': index }));
+    assert.deepEqual(problems, []);
+    assert.deepEqual(content.grades['5'][0], { number: 1, title: 'Какво е история' });
+    assert.equal(content.grades['5'][1].id, '5-test');
+});
+
+test('reportsUnreadyLessonWithoutNumberOrTitle', () => {
+    const index = '[{ "title": "Без номер" }, { "number": 2 }, { "id": "5-test", "file": "test-lesson.md", "state": "ready" }]';
+    const { problems } = buildContent(copyOkWith({ 'content/lessons/5/index.json': index }));
+    assert.deepEqual(problems.map((p) => p.file), ['lessons/5/index.json', 'lessons/5/index.json']);
+    assert.match(problems[0].message, /number and a title/);
+});
+
 test('cliExitsOnError', () => {
     const run = spawnSync(process.execPath, ['build-content.mjs', '--root', 'test/fixtures/content-bad'], { cwd: join(import.meta.dirname, '..'), encoding: 'utf8' });
     assert.equal(run.status, 1);
