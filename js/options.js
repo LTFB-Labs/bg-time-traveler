@@ -1,8 +1,9 @@
-// The options menu: the look of the map's markers, a small wax seal or a shield with a name ribbon, kept with the progress.
+// The options menu: the look of the map's markers, a small wax seal or a shield with a name ribbon, kept with the progress; and delete progress.
 // The menu is a native popover; the gear buttons open it and a click outside or Escape closes it.
 import { icon } from './map.js';
 import {
     loadProgress,
+    resetProgress,
     setPins,
 } from './store.js';
 
@@ -16,6 +17,24 @@ export function startOptions() {
         setPins(e.target.value);
         showPins(e.target.value);
     });
+    startReset(menu, document.getElementById('reset'));
+}
+
+// no browser dialog: the first click asks on the button itself, the second deletes and reloads, so every screen reads the empty progress
+function startReset(menu, button) {
+    const ask = (isAsking) => {
+        button.classList.toggle('sure', isAsking);
+        button.textContent = isAsking ? 'Сигурен ли си?' : 'Изтрий напредъка';
+    };
+    button.addEventListener('click', () => {
+        if (!button.classList.contains('sure')) {
+            ask(true);
+            return;
+        }
+        resetProgress();
+        location.reload();
+    });
+    menu.addEventListener('toggle', (e) => { if (e.newState === 'closed') ask(false); });
 }
 
 function showPins(look) {

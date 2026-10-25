@@ -42,3 +42,13 @@ test('setPinsKeepsTheChosenLook', () => {
     store.setPins('banner');
     assert.equal(store.loadProgress().pins, 'banner');
 });
+
+test('resetProgressKeepsOnlyTheMarkerLook', () => {
+    const store = createStore(fakeStorage());
+    store.setPins('banner');
+    store.markPassed('l1');
+    store.markCardOpened('troy');
+    store.setPosition('l1', 3);
+    store.resetProgress();
+    assert.deepEqual(store.loadProgress(), { ...EMPTY, pins: 'banner' });
+});

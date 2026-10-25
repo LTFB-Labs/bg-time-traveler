@@ -83,6 +83,9 @@ button{font-family:inherit;cursor:pointer}
 #options input{accent-color:var(--red)}
 #options b{font-weight:900;font-size:15px}
 #options small{display:block;font-size:13px;font-weight:700;color:var(--muted)}
+/* delete progress: a second click on the same button, now red, deletes; closing the menu takes the question back */
+#reset{width:100%;margin-top:16px}
+#reset.sure{background:var(--red);color:#fff}
 .pv{position:relative;flex:none;width:150px;height:50px}
 .pv .mk{left:16px;top:26px}
 .pv[data-pins=banner] .mk{top:42px}
@@ -297,6 +300,7 @@ button{font-family:inherit;cursor:pointer}
     <label><input type="radio" name="pins" value="seal"><span class="pv" data-pins="seal"><span class="mk seen" aria-label="Перперикон"></span></span><span><b>Печат</b><small>Малък. Името се появява, щом отвориш картичката.</small></span></label>
     <label><input type="radio" name="pins" value="banner"><span class="pv" data-pins="banner"><span class="mk" aria-label="Перперикон"></span></span><span><b>Щит с име</b><small>Името винаги е на лента до щита.</small></span></label>
   </fieldset>
+  <button class="btn" id="reset" type="button">Изтрий напредъка</button>
 </div>
 
 <div id="intro">

@@ -31,6 +31,8 @@ export function createStore(storage) {
         markPassed: (lessonId) => update((p) => { p.passed[lessonId] = new Date().toISOString(); }),
         setPosition: (lessonId, n) => update((p) => { p.position[lessonId] = n; }),
         setPins: (look) => update((p) => { p.pins = look; }),
+        // everything the child did goes; the marker look is a setting, so it stays
+        resetProgress: () => saveProgress({ ...defaults(), pins: loadProgress().pins }),
     };
 }
 
@@ -47,4 +49,5 @@ export const {
     markPassed,
     setPosition,
     setPins,
+    resetProgress,
 } = createStore(lazyStorage);
