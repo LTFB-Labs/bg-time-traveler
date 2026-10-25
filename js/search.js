@@ -34,8 +34,8 @@ const GROUPS = {
     'Картички от уроците': ['card'],
     'Уроци': ['lesson', 'part'],
 };
-// digits, an optional "г.", then an optional era: "пр.Хр.", "пр.н.е." or "сл.Хр.", dots and spaces as a child types them
-const YEAR = /^(\d{1,4})\s*(?:г\.?)?\s*(?:(пр|сл)\.?\s*(?:хр|н\.?\s*е)\.?)?$/;
+// digits, an optional "г.", "год." or "година", then an optional era: "пр.Хр.", "пр.н.е." or "сл.Хр.", dots and spaces as a child types them
+const YEAR = /^(\d{1,4})\s*(?:г(?:од(?:ина)?)?\.?)?\s*(?:(пр|сл)\.?\s*(?:хр|н\.?\s*е)\.?)?$/;
 
 // a year before Christ comes back negative; anything that is not just a year gives null
 export function parseYear(query) {

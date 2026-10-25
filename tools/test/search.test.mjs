@@ -81,3 +81,8 @@ test('cardEntryPointsToItsFirstStoryPart', () => {
     assert.deepEqual([card('athens').lesson, card('athens').part, card('athens').date], [undefined, undefined, '']);
     assert.equal(index.find((entry) => entry.type === 'part').date, 'Урок 26');
 });
+
+test('rulerReigningTodayEndsToday', () => {
+    const [entry] = buildSearchIndex({ cards: {}, lessons: {}, maps: balkans([[2026, 2027, 'президент', 'Илияна Йотова']], []) });
+    assert.equal(entry.date, '2026–днес');
+});

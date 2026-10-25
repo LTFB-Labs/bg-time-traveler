@@ -7,7 +7,7 @@ export function buildSearchIndex(content) {
     const lessons = Object.values(content.lessons);
     const cards = Object.values(content.cards).map((card) => toCardEntry(card, lessons));
     const parts = lessons.flatMap(toPartEntries);
-    const rulers = RULERS.map(toRulerEntry);
+    const rulers = RULERS.map((ruler, i) => toRulerEntry(ruler, i, END));
     const places = CITIES.flatMap((city, i) => city.n.map((name, k) => toPlaceEntry(name, i, k, END)));
     return [...cards, ...parts, ...rulers, ...places];
 }
@@ -46,13 +46,18 @@ function toPartEntry(lesson, part, number) {
 }
 
 // the title word goes before the name, except "водач", which reads wrong there (the HUD drops it too)
-function toRulerEntry([from, to, title, name], i) {
+function toRulerEntry([from, to, title, name], i, end) {
     const shown = title === 'водач' ? name : `${title} ${name}`;
-    return { type: 'ruler', id: `ruler-${i}`, title: shown, text: normalize(`${title} ${name}`), date: `${from}–${to}`, year: from };
+    return { type: 'ruler', id: `ruler-${i}`, title: shown, text: normalize(`${title} ${name}`), date: period(from, to, end), year: from };
 }
 
 function toPlaceEntry([from, to, name], i, k, end) {
-    return { type: 'place', id: `place-${i}-${k}`, title: name, text: normalize(name), date: `${from}–${to > end ? 'днес' : to}`, year: from, city: i };
+    return { type: 'place', id: `place-${i}-${k}`, title: name, text: normalize(name), date: period(from, to, end), year: from, city: i };
+}
+
+// the data ends a reign or a name that lasts until now after the map's last year; it reads "днес"
+function period(from, to, end) {
+    return `${from}–${to > end ? 'днес' : to}`;
 }
 
 function plain(markdown) {

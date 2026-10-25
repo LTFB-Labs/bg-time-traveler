@@ -239,6 +239,8 @@ function lessonLink(id) {
 // a whole lesson resumes where the child left it; a part opens at that part
 const lessonHash = ({ lesson, part }) => (part === undefined ? `#lesson/${lesson}` : `#lesson/${lesson}/${part}`);
 startSearch($('find'), { find: (query) => findResults(query, { index: CONTENT.search, lessons: Object.values(CONTENT.lessons), span: [START, END] }), onPick: pickResult });
+// the list and an open lesson card would overlap, so going back to the box closes the card
+['focus', 'input'].forEach((type) => $('findBox').addEventListener(type, () => freeCards.close()));
 
 addEventListener("resize", () => { buildTimeline(); aimCamera(); });
 buildTimeline();

@@ -71,3 +71,9 @@ test('capsEachGroupAtFive', () => {
     const many = Array.from({ length: 7 }, (_, i) => entry('ruler', `ruler-${i}`, `цар Иван ${i}`, { year: 1200 + i }));
     assert.equal(find('Иван', many)[0].items.length, 5);
 });
+
+test('readsTheWordGodina', () => {
+    assert.equal(parseYear('893 година'), 893);
+    assert.equal(parseYear('893 год.'), 893);
+    assert.equal(parseYear('500 година пр.Хр.'), -500);
+});
