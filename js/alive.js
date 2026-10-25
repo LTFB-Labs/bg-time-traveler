@@ -35,6 +35,11 @@ export function startAlive(map) {
     scene.clouds = addClouds();
     if (!scene.isCalm) addFleet(scene);
     map.onView(() => onView(scene));
+    // a page shown again can find its paused SVG animations running (Safari: the ships sailed on a still map while the
+    // vapours and the birds stayed put); coming back wakes the whole map instead, so it moves and stops as one
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') wake(scene);
+    });
     onView(scene);
     if (scene.isCalm) sleep(scene);
     return { showPart: () => wake(scene) };
@@ -280,10 +285,11 @@ function flightPath() {
 }
 
 /* ---------- ships and trail ---------- */
-// an SVG layer of its own that follows the map's camera, so its ships and trail never redraw the map
+// an SVG layer of its own that follows the map's camera, so its ships never redraw the map; it lies on the map under the
+// vignette, and the birds and the vapours, added after the vignette, pass over the ships
 function addLayer() {
     const layer = el('svg', { class: 'fx-layer' });
-    document.getElementById('vignette').after(layer);
+    document.getElementById('vignette').before(layer);
     return layer;
 }
 
