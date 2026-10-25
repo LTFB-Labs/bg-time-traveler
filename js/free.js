@@ -227,8 +227,14 @@ function pickResult(item) {
         freeCards.open(item.id);
         return;
     }
-    goTo(item.year, 900);
+    jumpTo(item.year);
     if (item.type === 'place') map.flashCity(item.city);
+}
+// a picked result lands straight on its year and the map fades in on it, instead of running through every year between;
+// the 1 ms tween also ends a tween that is still running
+function jumpTo(y) {
+    goTo(y, 1);
+    [$('map'), $('ov')].forEach((el) => el.animate([{ opacity: 0.2 }, { opacity: 1 }], 400));
 }
 // a lesson card can't show on a map that starts at 600, so it opens over it, with a way to the part where it first appears
 const freeCards = createCards($('freePop'), { onOpen: () => {}, onClose: () => {}, footer: lessonLink });
