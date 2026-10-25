@@ -5,3 +5,4 @@ inspect.mjs
 spike/
 tools/.venv/
 tools/terrain-tiles/
+.superpowers/
