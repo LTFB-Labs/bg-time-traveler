@@ -59,15 +59,17 @@ el("ellipse", { cy: -2.2, rx: 2.6, ry: 4 }, foot);
 el("ellipse", { cy: 4.2, rx: 1.8, ry: 1.9 }, foot);
 
 const world = el("g", {}, svg);
-el("rect", { x: -3000, y: -3000, width: GEO.W + 6000, height: GEO.H + 6000, fill: "#c9d5c6" }, world);
+// the sea: a soft watercolour blue, as on old hand-coloured maps
+const SEA = "#bdd2d8";
+el("rect", { x: -3000, y: -3000, width: GEO.W + 6000, height: GEO.H + 6000, fill: SEA }, world);
 const ripple = el("g", { fill: "none", "stroke-linejoin": "round" }, world);
-[[26, .06], [16, .1], [8, .16]].forEach(([w, o]) => el("path", { d: GEO.land, stroke: "#5f8378", style: `stroke-width:${ink(w)}`, "stroke-opacity": o }, ripple));
+[[26, .06], [16, .1], [8, .16]].forEach(([w, o]) => el("path", { d: GEO.land, stroke: "#4f7f92", style: `stroke-width:${ink(w)}`, "stroke-opacity": o }, ripple));
 const landPath = el("path", { d: GEO.land, fill: "#f2e6c6" }, world);
 const realmsG = el("g", { "clip-path": "url(#landClip)" }, world);
 // relief: ink mountains, hills, forests and reeds over the whole map, drawn by tools/build-terrain.py; it lies over the
 // border fills, faint and blended like printed ink, so it tints with them and stays a quiet detail of a historical map
 el('image', { href: 'img/terrain.webp', x: 0, y: 0, width: GEO.W, height: GEO.H, preserveAspectRatio: 'none', opacity: .6, style: 'mix-blend-mode:multiply', 'pointer-events': 'none' }, world);
-el("path", { d: GEO.lakes, fill: "#c9d5c6", stroke: "#6f8f86", style: `stroke-width:${ink(.8)}` }, world);
+el("path", { d: GEO.lakes, fill: SEA, stroke: "#6f8f86", style: `stroke-width:${ink(.8)}` }, world);
 el("path", { d: GEO.rivers, fill: "none", stroke: "#5c8fa3", style: `stroke-width:${ink(1.5)}`, "stroke-opacity": .85, "stroke-linecap": "round", "stroke-linejoin": "round" }, world);
 el("path", { d: GEO.land, fill: "none", stroke: "#5b4a33", style: `stroke-width:${ink(1.1)}`, "stroke-opacity": .8 }, world);
 
@@ -136,19 +138,20 @@ function newLayer() {
 function drawTribe(gFill, d, col, fillOpacity) {
     const g = el('g', {}, gFill);
     el('path', { d, fill: col, 'fill-opacity': fillOpacity }, g);
-    el('path', { d, fill: 'url(#hatch)', opacity: .35, style: 'mix-blend-mode:multiply' }, g);
+    el('path', { d, fill: 'url(#hatch)', opacity: .14, style: 'mix-blend-mode:multiply' }, g);
     el('path', { d, fill: 'none', stroke: col, style: `stroke-width:${ink(2)};stroke-dasharray:${inkDashes('2 6')}`, 'stroke-linecap': 'round', 'stroke-opacity': .9 }, g);
 }
-// a state: paper tinted with its colour, a glow inside the edge (clipped to the shape) and an outline
+// a state, drawn like a hand-coloured map: paper lightly tinted with its colour, a narrow band of the colour inside the
+// edge (clipped to the shape) and a dark ink outline
+const INK_LINE = '#3d2a17';
 function drawState(gFill, d, col, isMain) {
     const g = el('g', {}, gFill);
     const clipId = `rc${clipSeq++}`;
     el('path', { d }, el('clipPath', { id: clipId }, defs));
-    el('path', { d, fill: mix(PAPER, col, isMain ? .42 : .26) }, g);
-    el('path', { d, fill: 'none', stroke: col, style: `stroke-width:${ink(isMain ? 16 : 11)}`, 'stroke-opacity': isMain ? .55 : .38, 'clip-path': `url(#${clipId})` }, g);
-    const outline = isMain ? '#7a1e12' : '#5b4a33';
+    el('path', { d, fill: mix(PAPER, col, isMain ? .15 : .1) }, g);
+    el('path', { d, fill: 'none', stroke: col, style: `stroke-width:${ink(6)}`, 'stroke-opacity': isMain ? .55 : .4, 'clip-path': `url(#${clipId})` }, g);
     const dashes = isMain ? '' : `;stroke-dasharray:${inkDashes('5 3')}`;
-    const edge = el('path', { d, fill: 'none', stroke: outline, style: `stroke-width:${ink(isMain ? 2.2 : 1.1)}${dashes}`, 'stroke-opacity': isMain ? .9 : .55 }, g);
+    const edge = el('path', { d, fill: 'none', stroke: INK_LINE, style: `stroke-width:${ink(isMain ? 2 : 1.2)}${dashes}`, 'stroke-opacity': isMain ? .9 : .55 }, g);
     if (isMain) edge.classList.add('main-edge');
 }
 function drawRealmLabel(gLab, r, col, isBig) {
