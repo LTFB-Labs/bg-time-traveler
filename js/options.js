@@ -26,12 +26,16 @@ function startReset(menu, button) {
         button.classList.toggle('sure', isAsking);
         button.textContent = isAsking ? 'Сигурен ли си?' : 'Изтрий напредъка';
     };
-    button.addEventListener('click', () => {
+    button.addEventListener('click', (e) => {
+        // the second click of a double-click is not an answer; a keyboard press counts 0
+        if (e.detail > 1) return;
         if (!button.classList.contains('sure')) {
             ask(true);
             return;
         }
         resetProgress();
+        // a lesson address names its part; without it the reloaded lesson opens at its start, as the empty progress says
+        history.replaceState(null, '', location.hash.replace(/^(#lesson\/[^/]*)\/\d+$/, '$1'));
         location.reload();
     });
     menu.addEventListener('toggle', (e) => { if (e.newState === 'closed') ask(false); });
