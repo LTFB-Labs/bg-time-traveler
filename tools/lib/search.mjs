@@ -1,34 +1,39 @@
-const MIN_STEMMED_LENGTH = 5;
-const ENDINGS = ['ът', 'та', 'то', 'те', 'ят', 'ъ', 'а', 'я', 'о', 'е', 'и'];
+import { normalize } from '../../js/search.js';
 
-export function normalize(text) {
-    return text.toLowerCase()
-        .replace(/[йѝ]/g, 'и')
-        .replace(/[^\p{L}\p{N}\s]/gu, ' ')
-        .split(/\s+/)
-        .filter((word) => word !== '')
-        .map(stripEnding)
-        .join(' ');
-}
-
-function stripEnding(word) {
-    if (word.length < MIN_STEMMED_LENGTH) {
-        return word;
-    }
-    const ending = ENDINGS.find((candidate) => word.endsWith(candidate));
-    return ending === undefined ? word : word.slice(0, -ending.length);
-}
+export { normalize };
 
 export function buildSearchIndex(content) {
-    const cards = Object.values(content.cards).map(toCardEntry);
-    const parts = Object.values(content.lessons).flatMap(toPartEntries);
-    return [...cards, ...parts];
+    const { RULERS = [], CITIES = [], END } = content.maps?.balkans ?? {};
+    const lessons = Object.values(content.lessons);
+    const cards = Object.values(content.cards).map((card) => toCardEntry(card, lessons));
+    const parts = lessons.flatMap(toPartEntries);
+    const rulers = RULERS.map(toRulerEntry);
+    const places = CITIES.flatMap((city, i) => city.n.map((name, k) => toPlaceEntry(name, i, k, END)));
+    return [...cards, ...parts, ...rulers, ...places];
 }
 
-function toCardEntry(card) {
+function toCardEntry(card, lessons) {
     const type = card.legacyKind ? 'event' : 'card';
     const aliases = type === 'card' ? card.aliases : [];
-    return { type, id: card.id, title: card.title, text: normalize(plain([card.title, ...aliases, ...card.paragraphs].join(' '))) };
+    const entry = { type, id: card.id, title: card.title, text: normalize(plain([card.title, ...aliases, ...card.paragraphs].join(' '))) };
+    return type === 'event' ? { ...entry, ...eventYear(card) } : { ...entry, date: card.dates ?? '', ...firstPartWith(card.id, lessons) };
+}
+
+// an event without years gets neither; real events always have them
+function eventYear({ years }) {
+    return years ? { date: `${Math.floor(years[0])} г.`, year: years[0] } : {};
+}
+
+// the first story part, in lesson order, that marks or links the card; the summary only when no story part has it
+function firstPartWith(id, lessons) {
+    const holds = (part) => (part.meta.marks ?? []).includes(id) || Boolean(part.html?.includes(`data-card="${id}"`));
+    for (const type of ['story', 'summary']) {
+        for (const lesson of lessons) {
+            const part = lesson.parts.findIndex((p) => p.type === type && holds(p));
+            if (part >= 0) return { lesson: lesson.id, part };
+        }
+    }
+    return {};
 }
 
 function toPartEntries(lesson) {
@@ -37,7 +42,17 @@ function toPartEntries(lesson) {
 
 function toPartEntry(lesson, part, number) {
     const text = [part.heading, ...part.paragraphs, part.fact ?? ''].join(' ');
-    return { type: 'part', id: `${lesson.id}#${number}`, title: part.heading, text: normalize(plain(text)), lesson: lesson.id, part: number };
+    return { type: 'part', id: `${lesson.id}#${number}`, title: part.heading, text: normalize(plain(text)), date: `Урок ${lesson.number}`, lesson: lesson.id, part: number };
+}
+
+// the title word goes before the name, except "водач", which reads wrong there (the HUD drops it too)
+function toRulerEntry([from, to, title, name], i) {
+    const shown = title === 'водач' ? name : `${title} ${name}`;
+    return { type: 'ruler', id: `ruler-${i}`, title: shown, text: normalize(`${title} ${name}`), date: `${from}–${to}`, year: from };
+}
+
+function toPlaceEntry([from, to, name], i, k, end) {
+    return { type: 'place', id: `place-${i}-${k}`, title: name, text: normalize(name), date: `${from}–${to > end ? 'днес' : to}`, year: from, city: i };
 }
 
 function plain(markdown) {
