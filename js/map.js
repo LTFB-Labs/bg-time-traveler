@@ -50,8 +50,13 @@ const defs = el("defs", {}, svg);
 el("path", { d: GEO.land }, el("clipPath", { id: "landClip" }, defs));
 const hatch = el("pattern", { id: "hatch", width: 9, height: 9, patternUnits: "userSpaceOnUse", patternTransform: "rotate(35)" }, defs);
 el("line", { x1: 0, y1: 0, x2: 0, y2: 9, stroke: "#000", "stroke-width": 3.2, "stroke-opacity": .5 }, hatch); // applyVB scales the whole pattern
-const arrow = el("marker", { id: "arrow", viewBox: "0 0 10 10", refX: 6, refY: 5, markerWidth: 4.2, markerHeight: 4.2, orient: "auto-start-reverse" }, defs);
-el("path", { d: "M0 0L10 5L0 10z", fill: "#7a1e12" }, arrow);
+// a route's arrowhead: a slim dart with a notched back
+const arrow = el("marker", { id: "arrow", viewBox: "0 0 10 10", refX: 6, refY: 5, markerWidth: 3.6, markerHeight: 3.6, orient: "auto-start-reverse" }, defs);
+el("path", { d: "M0 1.6L10 5L0 8.4L2.6 5z", fill: "#7a1e12" }, arrow);
+// one footprint with its toes up: the wide sole ahead, the small heel behind
+const foot = el("g", { id: "foot" }, defs);
+el("ellipse", { cy: -2.2, rx: 2.6, ry: 4 }, foot);
+el("ellipse", { cy: 4.2, rx: 1.8, ry: 1.9 }, foot);
 
 const world = el("g", {}, svg);
 el("rect", { x: -3000, y: -3000, width: GEO.W + 6000, height: GEO.H + 6000, fill: "#c9d5c6" }, world);
@@ -80,6 +85,7 @@ const mtLabG = el("g", {}, world);
 });
 const frameG = el("g", {}, world);
 const migG = el("g", {}, world);
+let route = null, routeRun = null;
 
 /* ---------- realm frames and lesson borders ---------- */
 const frames = GEO.frames;
@@ -256,6 +262,12 @@ function keepInkSize() {
     if (svg.style.getPropertyValue('--ink-scale') === scale) return;
     svg.style.setProperty('--ink-scale', scale);
     hatch.setAttribute('patternTransform', `rotate(35) scale(${scale})`);
+    placeSteps();
+}
+// river names show only once the map is zoomed in enough to read them; zoomed out they would be specks
+const RIVER_NAME_ZOOM = .8;
+function showRiverNames() {
+    svg.classList.toggle('far', innerWidth / vb.w < RIVER_NAME_ZOOM);
 }
 const toScreen = (lon, lat) => { const [x, y] = P(lon, lat), s = innerWidth / vb.w; return [(x - vb.x) * s, (y - vb.y) * s]; };
 // a window point back through the current viewBox to [lon, lat]
@@ -474,13 +486,54 @@ function placeOverlay() {
     placed.push([x, sy]); b.style.left = x + "px"; b.style.top = sy + "px";
   });
 }
+// a route is a trail of footprints with an arrowhead at its end; the line itself is not drawn, it only carries the arrowhead
 function drawPath(points) {
+  routeRun?.cancel();
   migG.innerHTML = "";
+  route = null;
   if (!points) return;
   const pts = points.map((c) => P(c[0], c[1]));
   let d = `M${pts[0][0]} ${pts[0][1]}`;
   for (let i = 1; i < pts.length; i++) { const [x0, y0] = pts[i - 1], [x1, y1] = pts[i]; d += `Q${x0 + (x1 - x0) * .5 + (y1 - y0) * .12} ${y0 + (y1 - y0) * .5 - (x1 - x0) * .12} ${x1} ${y1}`; }
-  el("path", { d, class: "mig", style: `stroke-width:${ink(5)}`, "marker-end": "url(#arrow)" }, migG);
+  const trail = el("g", {}, migG);
+  const path = el("path", { d, class: "mig", style: `stroke-width:${ink(5)}`, "marker-end": "url(#arrow)" }, trail);
+  route = { path, steps: el("g", { class: "steps" }, trail), scale: 0 };
+  placeSteps();
+  if (!calm.matches) travel(trail, d);
+}
+// footprints along the route, toes the way it goes, left and right in turn and turned a little outward; their size and
+// spacing follow the ink scale, so keepInkSize has them laid again when a zoom changes it
+const STEP = 15, STRIDE = 4.2, TOE_OUT = 8, ARROW_ROOM = 13;
+function placeSteps() {
+    const scale = Number(svg.style.getPropertyValue('--ink-scale') || 1);
+    if (!route || route.scale === scale) return;
+    route.scale = scale;
+    const len = route.path.getTotalLength();
+    let prints = '';
+    for (let s = (STEP * scale) / 2, i = 0; s < len - ARROW_ROOM * scale; s += STEP * scale, i++) prints += footAt(route.path, s, i % 2 ? 1 : -1, scale);
+    route.steps.innerHTML = prints;
+}
+function footAt(path, s, side, scale) {
+    const p = path.getPointAtLength(s), q = path.getPointAtLength(s + 1);
+    const deg = (Math.atan2(q.y - p.y, q.x - p.x) * 180) / Math.PI + 90 + side * TOE_OUT;
+    return `<use href="#foot" transform="translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) rotate(${deg.toFixed(1)}) translate(${(side * STRIDE * scale).toFixed(2)} 0) scale(${scale})"/>`;
+}
+// a route draws itself from its start to its end at a traveller's pace, the arrowhead arriving last: a wide white pen
+// grows along the same line inside a mask over the trail. Once it arrives the mask goes, so a still map runs nothing.
+const ROUTE_SPEED = 35; // map units a second
+const ROUTE_MS = [8000, 10000];
+function travel(trail, d) {
+    const mask = el('mask', { id: 'routeMask', maskUnits: 'userSpaceOnUse', x: -3000, y: -3000, width: GEO.W + 6000, height: GEO.H + 6000 }, migG);
+    const pen = el('path', { d, fill: 'none', stroke: '#fff', 'stroke-linecap': 'round', style: `stroke-width:${ink(30)}` }, mask);
+    trail.setAttribute('mask', 'url(#routeMask)');
+    const len = pen.getTotalLength();
+    const duration = clamp((len / ROUTE_SPEED) * 1000, ...ROUTE_MS);
+    routeRun = pen.animate([{ strokeDasharray: len, strokeDashoffset: len }, { strokeDasharray: len, strokeDashoffset: 0 }], { duration, easing: 'ease-in-out', fill: 'forwards' });
+    routeRun.finished.then(() => {
+        trail.removeAttribute('mask');
+        mask.remove();
+        routeRun = null;
+    }, () => {});
 }
 
 /* ---------- paper grain ---------- */
