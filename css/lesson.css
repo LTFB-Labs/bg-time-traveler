@@ -124,7 +124,9 @@ body.lesson #lsMap { display: flex; }
 #lsBig .now { left: 100%; margin-left: 6px; }
 
 /* "Върни ме": the map pane's top right corner, after the kid moves the map; the pane box itself lets clicks through to the map */
-#lsReturn { position: absolute; top: 12px; right: 16px; pointer-events: auto; box-shadow: var(--shadow); }
+#lsReturn { position: absolute; top: 12px; right: 136px; pointer-events: auto; box-shadow: var(--shadow); }
+/* the compass takes the map pane's top right corner, so "Върни ме" stands to its left */
+body.lesson #compass { top: 12px; right: calc(var(--ls-w) + 2 * var(--gap) + 16px); }
 
 /* ---- reading sheet: laid on the map, with the map showing above, below and to its right ---- */
 #lesson {
@@ -363,6 +365,9 @@ body.lesson #lsMap { display: flex; }
 
 /* phones: the map on top, the reading sheet below */
 @media (max-width: 820px) {
+    /* a phone's small map keeps its corners free: no compass, and "Върни ме" goes back to the corner */
+    body.lesson #compass { display: none; }
+    #lsReturn { right: 16px; }
     :root { --gap: 10px; }
     #lsMap { right: var(--gap); bottom: auto; height: 42vh; }
     #lsYear { font-size: 36px; }
