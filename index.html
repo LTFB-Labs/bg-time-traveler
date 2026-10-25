@@ -119,7 +119,10 @@ button{font-family:inherit;cursor:pointer}
 #hudBr{display:block;height:0}
 #wheelMode{display:flex;margin-top:8px;padding:5px 12px;font-size:13px;pointer-events:auto;box-shadow:0 1px 4px rgba(60,40,15,.15)}
 @media (hover:none){#wheelMode{display:none}}
-#hud .opt{display:flex;margin-top:8px}
+#hud .opt{display:flex}
+/* the way into lessons sits in one row with the gear, as tall as it */
+#hudBtns{display:flex;gap:8px;margin-top:8px}
+#toLessons{height:36px;padding:0 14px;font-size:13px;pointer-events:auto;box-shadow:0 1px 4px rgba(60,40,15,.15)}
 
 /* card */
 #card{position:fixed;right:16px;top:16px;bottom:calc(var(--tl) + 14px);width:var(--cardw);background:var(--card);border-radius:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line);transition:transform .45s cubic-bezier(.2,.9,.3,1),opacity .3s}
@@ -185,7 +188,7 @@ button{font-family:inherit;cursor:pointer}
 @keyframes bob{50%{transform:translateY(-8px) rotate(-1deg)}}
 #intro h1{font-family:var(--title);font-weight:400;font-size:clamp(34px,6vw,60px);margin:0;color:#5a2412;line-height:1;animation:rise .6s ease-out .3s both}
 #intro p{margin:0;max-width:34ch;font-weight:700;font-size:clamp(16px,2vw,19px);color:var(--ink2);animation:rise .6s ease-out .5s both}
-#intro a.btn{text-decoration:none}
+a.btn{text-decoration:none}
 #intro .years{font-family:var(--title);font-size:22px;color:#7a1e12;animation:rise .6s ease-out .4s both}
 #go{flex:none;margin-top:10px;font-size:20px;padding:14px 46px;border-radius:999px;animation:rise .6s ease-out .7s both,pulse 2s ease-in-out 1.6s infinite}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}}
@@ -236,7 +239,7 @@ button{font-family:inherit;cursor:pointer}
     <ul id="findList" role="listbox" hidden></ul>
   </div>
   <button class="btn" id="wheelMode">Колелце: година</button>
-  <button class="btn opt" popovertarget="options" aria-label="Настройки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" stroke-width="4" stroke-dasharray="3.34 3.34"/><circle cx="12" cy="12" r="5.5" stroke-width="3"/></svg></button>
+  <div id="hudBtns"><a class="btn" id="toLessons" href="#lessons">Уроци</a><button class="btn opt" popovertarget="options" aria-label="Настройки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" stroke-width="4" stroke-dasharray="3.34 3.34"/><circle cx="12" cy="12" r="5.5" stroke-width="3"/></svg></button></div>
 </div>
 
 <aside id="card" aria-live="polite">
@@ -278,6 +281,7 @@ button{font-family:inherit;cursor:pointer}
 
 <aside id="lesson" hidden>
   <div id="lsHead">
+    <a class="btn" id="lsLessons" href="#lessons">Уроци</a>
     <button class="btn opt" popovertarget="options" aria-label="Настройки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" stroke-width="4" stroke-dasharray="3.34 3.34"/><circle cx="12" cy="12" r="5.5" stroke-width="3"/></svg></button>
     <div id="lsCrumbs"><span class="chip grade"></span><span class="chip"></span></div>
     <h1 id="lsTitle"></h1>
@@ -303,13 +307,23 @@ button{font-family:inherit;cursor:pointer}
   <button class="btn" id="reset" type="button">Изтрий напредъка</button>
 </div>
 
+<!-- the lesson list at #lessons; js/lesson-list.js fills the grade tabs and the rows -->
+<main id="lessonList" hidden>
+  <div class="sheet">
+    <a class="btn back" href="#free"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Към началото</a>
+    <h1>Уроци</h1>
+    <div class="grades"></div>
+    <ol class="rows"></ol>
+  </div>
+</main>
+
 <div id="intro">
   <div class="art"><img src="traveler.svg" alt="Чудовището пътешественик във времето"></div>
   <h1>Пътешествие във времето</h1>
   <div class="years">600 — днес</div>
   <p>Хвани ме и ме дърпай по линията на времето! Ще видим как се ражда България, кой я управлява и как се менят границите ѝ.</p>
   <button class="btn pri" id="go">Тръгваме!</button>
-  <a class="btn" href="#lesson/5-odrisko-tsarstvo">Урок: Древна Тракия</a>
+  <a class="btn" href="#lessons">Уроци</a>
 </div>
 
 <script src="geo.js"></script>
