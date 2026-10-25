@@ -7,6 +7,8 @@ import {
     icon,
     lerp,
 } from './map.js';
+import { startSearch } from './free-search.js';
+import { findResults } from './search.js';
 
 export function startFree(map) {
 const $ = (id) => document.getElementById(id);
@@ -189,6 +191,7 @@ $("more").addEventListener("click", () => { card.classList.toggle("open"); $("mo
 const intro = $("intro");
 addEventListener("keydown", (e) => {
   if (intro.isConnected && !intro.classList.contains("leave")) { if (e.key === "Enter" || e.key === " ") start(); return; }
+  if (e.target.closest?.('input')) return; // keys typed in the search box stay in the box
   if (e.key === "ArrowRight") { e.shiftKey ? (stopPlay(), goTo(state.year + 10, 300)) : stepNext(); e.preventDefault(); }
   if (e.key === "ArrowLeft") { e.shiftKey ? (stopPlay(), goTo(state.year - 10, 300)) : stepPrev(); e.preventDefault(); }
   if (e.key === " ") { $("play").click(); e.preventDefault(); }
@@ -210,6 +213,21 @@ function start() {
   try { localStorage.setItem("bgtt-seen", "1"); } catch (e) {}
 }
 $("go").addEventListener("click", start);
+
+/* ---------- search: a pick moves the map to its year, or opens a lesson ---------- */
+function pickResult(item) {
+    stopPlay();
+    if (item.type === 'lesson' || item.type === 'part') {
+        location.hash = lessonHash(item);
+        return;
+    }
+    if (item.type === 'card') return;
+    goTo(item.year, 900);
+}
+// a whole lesson resumes where the child left it; a part opens at that part
+const lessonHash = ({ lesson, part }) => (part === undefined ? `#lesson/${lesson}` : `#lesson/${lesson}/${part}`);
+startSearch($('find'), { find: (query) => findResults(query, { index: CONTENT.search, lessons: Object.values(CONTENT.lessons), span: [START, END] }), onPick: pickResult });
+
 addEventListener("resize", () => { buildTimeline(); aimCamera(); });
 buildTimeline();
 setYear(START);

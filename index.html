@@ -87,7 +87,7 @@ button{font-family:inherit;cursor:pointer}
 #compass{position:fixed;top:16px;right:calc(var(--cardw) + 44px);width:104px;height:104px;pointer-events:none;opacity:.85;mix-blend-mode:multiply}
 
 /* HUD */
-#hud{position:fixed;left:max(16px,env(safe-area-inset-left));top:max(12px,env(safe-area-inset-top));pointer-events:none;max-width:calc(100vw - 32px)}
+#hud{position:fixed;z-index:12;left:max(16px,env(safe-area-inset-left));top:max(12px,env(safe-area-inset-top));pointer-events:none;max-width:calc(100vw - 32px)}
 #year{font-family:var(--title);font-size:clamp(52px,8vw,92px);line-height:.9;color:#5a2412;text-shadow:0 2px 0 var(--paper),0 0 18px var(--paper),0 0 30px var(--paper);letter-spacing:-.01em}
 #year small{font-size:.32em;margin-left:.15em;letter-spacing:0}
 #era{display:inline-flex;align-items:center;gap:8px;margin-top:6px;padding:5px 12px 5px 10px;border-radius:999px;background:rgba(251,244,226,.92);box-shadow:var(--shadow);font-weight:900;font-size:15px}
@@ -95,6 +95,20 @@ button{font-family:inherit;cursor:pointer}
 #ruler{margin-top:6px;font-weight:700;font-size:14px;color:var(--ink2);background:rgba(251,244,226,.85);display:inline-block;padding:3px 10px;border-radius:999px;box-shadow:0 1px 4px rgba(60,40,15,.15)}
 #ruler:empty{display:none}
 #ruler b{font-weight:900;color:var(--ink)}
+/* search: a pill under the ruler line; its list drops over the map's left side (js/free-search.js). The 16px text keeps
+   iPhone Safari from zooming in; #hud sits above the card panel so the open list does too */
+#find{position:relative;margin-top:8px;pointer-events:auto}
+#findBox{display:block;width:330px;max-width:100%;padding:7px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(251,244,226,.95);box-shadow:0 1px 4px rgba(60,40,15,.15);font:700 16px var(--font);color:var(--ink);outline:none}
+#findBox::placeholder{font-size:13.5px;font-weight:700;color:var(--muted)}
+#findBox:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(200,64,47,.18)}
+#findList{position:absolute;left:0;top:calc(100% + 6px);width:360px;max-width:calc(100vw - 32px);max-height:55vh;overflow:auto;margin:0;padding:6px;list-style:none;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+#findList .grp{padding:8px 10px 3px;font-size:11.5px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+#findList [role=option]{display:flex;align-items:center;gap:10px;min-height:40px;padding:6px 10px;border-radius:10px;cursor:pointer;font-weight:700;font-size:15px;line-height:1.25}
+#findList [role=option] span:first-child{flex:1;min-width:0}
+#findList [role=option] span:last-child{flex:none;font-size:13px;color:var(--muted)}
+#findList [role=option]:hover{background:#fff6dd}
+#findList [aria-selected=true]{background:#f1dfb2;box-shadow:inset 3px 0 0 var(--red)}
+#findList .none{padding:10px;font-weight:700;color:var(--muted)}
 #hudBr{display:block;height:0}
 #wheelMode{display:flex;margin-top:8px;padding:5px 12px;font-size:13px;pointer-events:auto;box-shadow:0 1px 4px rgba(60,40,15,.15)}
 @media (hover:none){#wheelMode{display:none}}
@@ -187,6 +201,8 @@ button{font-family:inherit;cursor:pointer}
   #year{font-size:48px}
   #era{font-size:13px}
   #ruler{font-size:12.5px}
+  #findBox{width:calc(100vw - 32px)}
+  #findList{left:-6px;width:calc(100vw - 20px);max-width:none;max-height:calc(100dvh - var(--tl) - 200px)}
   .step{display:none}
   #play{width:48px;height:48px}
   #bands div{font-size:0}
@@ -208,6 +224,10 @@ button{font-family:inherit;cursor:pointer}
   <div id="year">600</div>
   <div id="era"><i></i><span></span></div><span id="hudBr"></span>
   <div id="ruler"></div>
+  <div id="find" role="search">
+    <input id="findBox" type="search" placeholder="Търси владетел, битка, място или година" autocomplete="off" spellcheck="false" aria-controls="findList" aria-expanded="false">
+    <ul id="findList" role="listbox" hidden></ul>
+  </div>
   <button class="btn" id="wheelMode">Колелце: година</button>
   <button class="btn opt" popovertarget="options" aria-label="Настройки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" stroke-width="4" stroke-dasharray="3.34 3.34"/><circle cx="12" cy="12" r="5.5" stroke-width="3"/></svg></button>
 </div>

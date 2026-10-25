@@ -23,7 +23,7 @@ function stripEnding(word) {
     return ending === undefined ? word : word.slice(0, -ending.length);
 }
 
-const MIN_QUERY = 2;
+export const MIN_QUERY = 2;
 const GROUP_SIZE = 5;
 // the groups of results, in the order the list shows them, and the entry types each one holds
 const GROUPS = {
