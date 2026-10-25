@@ -254,6 +254,7 @@ const viewListeners = [];
 function applyVB() {
   svg.setAttribute("viewBox", `${vb.x.toFixed(2)} ${vb.y.toFixed(2)} ${vb.w.toFixed(2)} ${vb.h.toFixed(2)}`);
   keepInkSize();
+  showRiverNames();
   placeOverlay();
   viewListeners.forEach((cb) => cb());
 }

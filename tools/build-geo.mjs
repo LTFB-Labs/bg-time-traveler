@@ -83,7 +83,21 @@ const RIVER_LABELS = [
 ];
 // about how many map units one letter of a river name takes with its spacing, at the font size js/map.js gives it
 const LETTER = 6.5;
-const riverLabels = RIVER_LABELS.map(([n, lon, lat]) => ({ n, d: riverLabelPath(n, P([lon, lat])) }));
+// every other named river gets its name at the middle of its longest piece
+const riverLabels = [
+    ...RIVER_LABELS.map(([n, lon, lat]) => ({ n, d: riverLabelPath(n, P([lon, lat])) })),
+    ...unpickedRivers().map((n) => ({ n, d: riverLabelPath(n, middleOfLongest(n)) })),
+];
+
+function unpickedRivers() {
+    const picked = new Set(RIVER_LABELS.map(([n]) => n));
+    return [...new Set(lines.map((l) => l.n))].filter((n) => n && !picked.has(n));
+}
+
+function middleOfLongest(name) {
+    const longest = lines.filter((l) => l.n === name).map((l) => resample(l.pts.map(P), 1)).reduce((a, b) => (b.length > a.length ? b : a));
+    return longest[Math.floor(longest.length / 2)];
+}
 
 // the name runs along a smoothed stretch of its river around the point nearest the spot, twice as long as the name,
 // and always left to right, so it never stands on its head
