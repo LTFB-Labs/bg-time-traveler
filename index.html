@@ -310,10 +310,23 @@ a.btn{text-decoration:none}
 <!-- the lesson list at #lessons; js/lesson-list.js fills the grade tabs and the rows -->
 <main id="lessonList" hidden>
   <div class="sheet">
-    <a class="btn back" href="#free"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Към началото</a>
+    <div class="top">
+      <a class="btn back" href="#free"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Към началото</a>
+      <a class="btn" href="#album">Албум</a>
+    </div>
     <h1>Уроци</h1>
     <div class="grades"></div>
     <ol class="rows"></ol>
+  </div>
+</main>
+
+<!-- the album at #album; js/album.js fills the groups -->
+<main id="album" hidden>
+  <div class="sheet">
+    <a class="btn back" href="#free"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Към началото</a>
+    <h1>Албум</h1>
+    <h2>Картички</h2>
+    <div class="groups"></div>
   </div>
 </main>
 
