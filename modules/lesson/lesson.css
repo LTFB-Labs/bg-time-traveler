@@ -4,8 +4,20 @@
 [hidden] { display: none !important; }
 
 /* the start screen shows only on the bare address; the map's corner buttons and compass show only in a lesson */
-:is(body.lesson, body.lessons, body.album) #intro { display: none; }
-body:not(.lesson) :is(#compass, #optBtn, #todayBtn, #toHall) { display: none; }
+:is(body.lesson, body.lessons, body.album, body.quest) #intro { display: none; }
+body:not(.lesson) :is(#compass, #optBtn, #todayBtn, #toHall, #toQuest) { display: none; }
+
+/* the fog on the map's edges: a strip on each side of the map pane, softer and paler than the map, never over the controls */
+#lsFog { display: none; }
+body.lesson #lsFog {
+    --pane: calc(100% - var(--ls-w) - 2 * var(--gap));
+    --fog-x: linear-gradient(to right, #000, transparent 90px, transparent calc(var(--pane) - 50px), #000 var(--pane));
+    --fog-y: linear-gradient(to bottom, #000, transparent 60px, transparent calc(100% - 34px), #000);
+    display: block; position: fixed; inset: 0; pointer-events: none; background: rgba(242, 232, 205, .35);
+    backdrop-filter: blur(2px) grayscale(.7) contrast(.82); -webkit-backdrop-filter: blur(2px) grayscale(.7) contrast(.82);
+    mask-image: var(--fog-x), var(--fog-y); -webkit-mask-image: var(--fog-x), var(--fog-y);
+}
+@media (max-width: 820px) { body.lesson #lsFog { display: none; } }
 
 /* the SVG still fills the window; #lsMap marks the part the reading sheet leaves visible, the legend and the strip stack at its bottom */
 #lsMap {
@@ -647,15 +659,19 @@ body.album #freePop { top: 50%; right: auto; bottom: auto; left: 50%; transform:
     #lessonList .nav { display: none; }
 }
 
-/* ---- the round book button into the lesson hall: in the top-right row with the gear and "!", as small as they are ---- */
-#toHall {
-    position: fixed; z-index: 12; top: 16px; right: calc(var(--gap) + 104px); width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%;
-    background: var(--red); color: #fff; box-shadow: 0 2px 6px rgba(60, 40, 15, .3); transition: transform .15s;
+/* ---- the round book (into the lesson hall) and swords (into the Quest): in the top-right row with the gear and "!", in the gear's
+   colours; on hover they turn red ---- */
+:is(#toHall, #toQuest) {
+    position: fixed; z-index: 12; top: 16px; width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%;
+    background: #efe0bc; color: #5b3d17; box-shadow: 0 1px 4px rgba(60, 40, 15, .15); transition: transform .15s, background .15s, color .15s;
 }
-#toHall:hover { transform: scale(1.07); }
-#toHall svg { width: 22px; height: 22px; }
+#toHall { right: calc(var(--gap) + 104px); }
+#toQuest { right: calc(var(--gap) + 156px); }
+:is(#toHall, #toQuest):hover, :is(#toHall, #toQuest):focus-visible { background: var(--red); color: #fff; transform: scale(1.07); }
+:is(#toHall, #toQuest) svg { width: 22px; height: 22px; }
 @media (max-width: 820px) {
     #toHall { right: 16px; top: calc(42vh - 24px); }
+    #toQuest { right: 68px; top: calc(42vh - 24px); }
 }
 
 /* ---- the settings gear: the top-right corner, above the lesson sheet ---- */

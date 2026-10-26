@@ -146,6 +146,7 @@ a.btn{text-decoration:none}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 <link rel="stylesheet" href="modules/lesson/lesson.css">
+<link rel="stylesheet" href="apps/quest/quest.css">
 </head>
 <body>
 <svg id="map" xmlns="http://www.w3.org/2000/svg" aria-label="Карта на Балканите"></svg>
@@ -154,6 +155,8 @@ a.btn{text-decoration:none}
 <!-- the compass rose in the top right corner of the map; drawn once, it never moves -->
 <svg id="compass" viewBox="-72 -72 144 144" aria-hidden="true"><g fill="none" stroke="#5b4a33"><circle r="46" stroke-width="1.1"/><circle r="42" stroke-width=".6"/><circle r="24" stroke-width=".6"/><circle r="5" stroke-width=".8"/></g><path d="M0.0 -39.0L0.0 -46.0M3.7 -41.8L4.0 -45.8M7.3 -41.4L8.0 -45.3M10.9 -40.6L11.9 -44.4M14.4 -39.5L15.7 -43.2M17.7 -38.1L19.4 -41.7M21.0 -36.4L23.0 -39.8M24.1 -34.4L26.4 -37.7M27.0 -32.2L29.6 -35.2M27.6 -27.6L32.5 -32.5M32.2 -27.0L35.2 -29.6M34.4 -24.1L37.7 -26.4M36.4 -21.0L39.8 -23.0M38.1 -17.7L41.7 -19.4M39.5 -14.4L43.2 -15.7M40.6 -10.9L44.4 -11.9M41.4 -7.3L45.3 -8.0M41.8 -3.7L45.8 -4.0M39.0 -0.0L46.0 -0.0M41.8 3.7L45.8 4.0M41.4 7.3L45.3 8.0M40.6 10.9L44.4 11.9M39.5 14.4L43.2 15.7M38.1 17.7L41.7 19.4M36.4 21.0L39.8 23.0M34.4 24.1L37.7 26.4M32.2 27.0L35.2 29.6M27.6 27.6L32.5 32.5M27.0 32.2L29.6 35.2M24.1 34.4L26.4 37.7M21.0 36.4L23.0 39.8M17.7 38.1L19.4 41.7M14.4 39.5L15.7 43.2M10.9 40.6L11.9 44.4M7.3 41.4L8.0 45.3M3.7 41.8L4.0 45.8M0.0 39.0L0.0 46.0M-3.7 41.8L-4.0 45.8M-7.3 41.4L-8.0 45.3M-10.9 40.6L-11.9 44.4M-14.4 39.5L-15.7 43.2M-17.7 38.1L-19.4 41.7M-21.0 36.4L-23.0 39.8M-24.1 34.4L-26.4 37.7M-27.0 32.2L-29.6 35.2M-27.6 27.6L-32.5 32.5M-32.2 27.0L-35.2 29.6M-34.4 24.1L-37.7 26.4M-36.4 21.0L-39.8 23.0M-38.1 17.7L-41.7 19.4M-39.5 14.4L-43.2 15.7M-40.6 10.9L-44.4 11.9M-41.4 7.3L-45.3 8.0M-41.8 3.7L-45.8 4.0M-39.0 0.0L-46.0 0.0M-41.8 -3.7L-45.8 -4.0M-41.4 -7.3L-45.3 -8.0M-40.6 -10.9L-44.4 -11.9M-39.5 -14.4L-43.2 -15.7M-38.1 -17.7L-41.7 -19.4M-36.4 -21.0L-39.8 -23.0M-34.4 -24.1L-37.7 -26.4M-32.2 -27.0L-35.2 -29.6M-27.6 -27.6L-32.5 -32.5M-27.0 -32.2L-29.6 -35.2M-24.1 -34.4L-26.4 -37.7M-21.0 -36.4L-23.0 -39.8M-17.7 -38.1L-19.4 -41.7M-14.4 -39.5L-15.7 -43.2M-10.9 -40.6L-11.9 -44.4M-7.3 -41.4L-8.0 -45.3M-3.7 -41.8L-4.0 -45.8" stroke="#5b4a33" stroke-width=".5"/><path d="M0.0 -5.0L0.0 -42.0M1.0 -4.9L8.2 -41.2M1.9 -4.6L16.1 -38.8M2.8 -4.2L23.3 -34.9M3.5 -3.5L29.7 -29.7M4.2 -2.8L34.9 -23.3M4.6 -1.9L38.8 -16.1M4.9 -1.0L41.2 -8.2M5.0 -0.0L42.0 -0.0M4.9 1.0L41.2 8.2M4.6 1.9L38.8 16.1M4.2 2.8L34.9 23.3M3.5 3.5L29.7 29.7M2.8 4.2L23.3 34.9M1.9 4.6L16.1 38.8M1.0 4.9L8.2 41.2M0.0 5.0L0.0 42.0M-1.0 4.9L-8.2 41.2M-1.9 4.6L-16.1 38.8M-2.8 4.2L-23.3 34.9M-3.5 3.5L-29.7 29.7M-4.2 2.8L-34.9 23.3M-4.6 1.9L-38.8 16.1M-4.9 1.0L-41.2 8.2M-5.0 0.0L-42.0 0.0M-4.9 -1.0L-41.2 -8.2M-4.6 -1.9L-38.8 -16.1M-4.2 -2.8L-34.9 -23.3M-3.5 -3.5L-29.7 -29.7M-2.8 -4.2L-23.3 -34.9M-1.9 -4.6L-16.1 -38.8M-1.0 -4.9L-8.2 -41.2" stroke="#5b4a33" stroke-width=".25" opacity=".6"/><g transform="rotate(45)"><path d="M0 -32L-5 -5L0 0Z" fill="#5b4a33"/><path d="M0 -32L5 -5L0 0Z" fill="#efe0bc"/><path d="M0 -32L-5 -5L0 0L5 -5Z" fill="none" stroke="#5b4a33" stroke-width=".6" stroke-linejoin="round"/></g><g transform="rotate(135)"><path d="M0 -32L-5 -5L0 0Z" fill="#5b4a33"/><path d="M0 -32L5 -5L0 0Z" fill="#efe0bc"/><path d="M0 -32L-5 -5L0 0L5 -5Z" fill="none" stroke="#5b4a33" stroke-width=".6" stroke-linejoin="round"/></g><g transform="rotate(225)"><path d="M0 -32L-5 -5L0 0Z" fill="#5b4a33"/><path d="M0 -32L5 -5L0 0Z" fill="#efe0bc"/><path d="M0 -32L-5 -5L0 0L5 -5Z" fill="none" stroke="#5b4a33" stroke-width=".6" stroke-linejoin="round"/></g><g transform="rotate(315)"><path d="M0 -32L-5 -5L0 0Z" fill="#5b4a33"/><path d="M0 -32L5 -5L0 0Z" fill="#efe0bc"/><path d="M0 -32L-5 -5L0 0L5 -5Z" fill="none" stroke="#5b4a33" stroke-width=".6" stroke-linejoin="round"/></g><g transform="rotate(90)"><path d="M0 -54L-7 -7L0 0Z" fill="#5b4a33"/><path d="M0 -54L7 -7L0 0Z" fill="#efe0bc"/><path d="M0 -54L-7 -7L0 0L7 -7Z" fill="none" stroke="#5b4a33" stroke-width=".6" stroke-linejoin="round"/></g><g transform="rotate(180)"><path d="M0 -54L-7 -7L0 0Z" fill="#5b4a33"/><path d="M0 -54L7 -7L0 0Z" fill="#efe0bc"/><path d="M0 -54L-7 -7L0 0L7 -7Z" fill="none" stroke="#5b4a33" stroke-width=".6" stroke-linejoin="round"/></g><g transform="rotate(270)"><path d="M0 -54L-7 -7L0 0Z" fill="#5b4a33"/><path d="M0 -54L7 -7L0 0Z" fill="#efe0bc"/><path d="M0 -54L-7 -7L0 0L7 -7Z" fill="none" stroke="#5b4a33" stroke-width=".6" stroke-linejoin="round"/></g><g transform="rotate(0)"><path d="M0 -56L-7.5 -7.5L0 0Z" fill="#7a1e12"/><path d="M0 -56L7.5 -7.5L0 0Z" fill="#efe0bc"/><path d="M0 -56L-7.5 -7.5L0 0L7.5 -7.5Z" fill="none" stroke="#5b4a33" stroke-width=".6" stroke-linejoin="round"/></g><circle r="2.4" fill="#5b4a33"/><g fill="#5b4a33" font-family="'Cormorant Garamond',Georgia,serif" font-weight="700" font-size="12" text-anchor="middle"><text y="-60">С</text><text x="64" y="4">И</text><text y="70">Ю</text><text x="-64" y="4">З</text></g></svg>
 <div id="ov"></div>
+<!-- the lesson map's edges lie in a light fog, so the eye stays on the middle; it is above the map and its markers, under the lesson's own controls -->
+<div id="lsFog" aria-hidden="true"></div>
 
 <div id="freePop" hidden></div>
 
@@ -207,6 +210,7 @@ a.btn{text-decoration:none}
   <header class="hall-top">
     <a class="btn back" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Към началото</a>
     <span class="grow"></span>
+    <a class="btn" href="#quest">Походът</a>
     <a class="btn" href="#album">Албум</a>
     <div class="title"><h1>Уроци</h1><select class="grade" aria-label="Клас"></select></div>
   </header>
@@ -225,8 +229,22 @@ a.btn{text-decoration:none}
 
 <!-- the way into the lesson hall: a round book button left of the "!" in a lesson -->
 <a id="toHall" href="#lessons" aria-label="Уроци" title="Уроци"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10 5 7 4.5 4 5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5z"/><path d="M12 6.5v13"/></svg></a>
+<!-- the way into the Quest: a sword and an axe crossed, left of the book -->
+<a id="toQuest" href="#quest" aria-label="Походът" title="Походът"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/><path d="M13.5 11.5L5 20a2.1 2.1 0 1 1-3-3l8.5-8.5"/><path d="M14.5 12.5l-5-5 3.5-3.5 5 5h3a7 7 0 0 1-6.5 6.5z" fill="currentColor" fill-opacity=".2"/></svg></a>
 
 <!-- the album at #album; js/album.js fills the groups -->
+<!-- the Quest at #quest; apps/quest/quest.js draws the road and the fights -->
+<main id="quest" hidden>
+  <header class="quest-top">
+    <a class="btn back" href="#lessons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Към уроците</a>
+    <h1>Походът</h1>
+    <span class="grow"></span>
+    <span class="total"></span>
+  </header>
+  <div class="trail"><div class="land"></div></div>
+  <div class="fight" hidden><div class="sheet" role="dialog" aria-modal="true" aria-label="Битка"></div></div>
+</main>
+
 <main id="album" hidden>
   <div class="sheet">
     <a class="btn back" href="#lessons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Към уроците</a>

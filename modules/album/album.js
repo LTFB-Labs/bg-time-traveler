@@ -20,7 +20,7 @@ export function albumGroups({ lessons, opened }) {
 }
 
 // the cards a lesson marks on its map or links from its text, in order of first appearance
-function lessonCards(lesson) {
+export function lessonCards(lesson) {
     const ids = lesson.parts.flatMap((part) => [...(part.meta.marks ?? []), ...linkedCards(part.html), ...linkedCards(part.factHtml)]);
     return [...new Set(ids)];
 }

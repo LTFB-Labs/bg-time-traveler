@@ -1,0 +1,133 @@
+/* The Quest (#quest): an old map on a dark table, a stitched road, small castles with ribbons, a fog over the road ahead. */
+#quest {
+    position: fixed; inset: 0; z-index: 30; display: flex; flex-direction: column;
+    background: radial-gradient(ellipse at 50% 40%, #4a3320, #1f150c 80%);
+}
+.quest-top { display: flex; align-items: center; gap: 16px; padding: 16px 24px 10px; color: #f6ead0; }
+.quest-top h1 { margin: 0; font-family: var(--title); font-weight: 400; font-size: clamp(30px, 4vw, 44px); line-height: 1; color: #f3dca6; text-shadow: 0 2px 10px rgba(0, 0, 0, .5); }
+.quest-top .grow { flex: 1; }
+.quest-top .total { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 999px; background: rgba(251, 244, 226, .92); color: #5b3d17; font-weight: 800; font-size: 15px; }
+.quest-top .total svg { width: 18px; height: 18px; fill: var(--gold); }
+.quest-top .total b { font-weight: 900; font-size: 17px; color: #7a1e12; }
+
+/* the map: stained parchment, its edges burnt dark */
+.trail { position: relative; flex: 1; margin: 0 14px 14px; overflow-x: auto; overflow-y: hidden; border-radius: 14px; cursor: grab; scrollbar-width: thin;
+    background: radial-gradient(circle at 20% 30%, rgba(160, 120, 60, .16), transparent 40%) 0 0 / 900px 100% repeat-x,
+        radial-gradient(circle at 70% 75%, rgba(120, 85, 35, .14), transparent 35%) 0 0 / 700px 100% repeat-x, var(--paper);
+    box-shadow: inset 0 0 90px rgba(60, 35, 10, .55), inset 0 0 0 2px rgba(90, 60, 25, .5), 0 12px 40px rgba(0, 0, 0, .5); }
+.trail:active { cursor: grabbing; }
+.land { position: relative; height: 100%; }
+
+/* a section: a tinted stretch of land in its colour, its picture and description at the start */
+.band { position: absolute; top: 0; bottom: 0; background: linear-gradient(to bottom, color-mix(in srgb, var(--c) 18%, transparent), color-mix(in srgb, var(--c) 8%, transparent) 60%, transparent);
+    border-left: 2px dashed color-mix(in srgb, var(--c) 45%, transparent); }
+.band .head { position: absolute; left: 22px; top: 22px; width: 280px; padding: 14px 16px 12px; background: rgba(251, 244, 226, .93); border-radius: 14px; border-top: 5px solid var(--c); box-shadow: var(--shadow); }
+.band .head img { display: block; width: 100%; height: 110px; object-fit: cover; border-radius: 9px; margin-bottom: 10px; box-shadow: 0 0 0 3px #fff, 0 2px 6px rgba(60, 40, 15, .3); }
+.band h2 { margin: 0 0 4px; font-family: var(--title); font-weight: 400; font-size: 23px; line-height: 1.1; color: var(--c); }
+.band p { margin: 0 0 8px; font-size: 14px; line-height: 1.4; font-weight: 700; color: var(--ink2); }
+.band .meta { font-size: 12px; font-weight: 900; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+
+/* the road: a dark edge with light stitches, like a path drawn on an old map */
+.road { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; }
+.road path { fill: none; stroke-linecap: round; }
+.road .edge { stroke: #5b3a1c; stroke-width: 10; opacity: .85; }
+.road .stitch { stroke: #f0d9a2; stroke-width: 4; stroke-dasharray: 11 8; }
+
+/* a stop: a castle standing on the road; the ribbon carries its name, won stops show the lesson's picture and stars above */
+.stop { position: absolute; width: 0; height: 0; padding: 0; border: 0; background: none; font: inherit; color: inherit; }
+.stop .castle { position: absolute; left: -32px; top: -61px; width: 64px; height: 64px; overflow: visible; filter: drop-shadow(0 4px 3px rgba(40, 15, 5, .45)); transition: transform .25s cubic-bezier(.3, 1.6, .5, 1); transform-origin: 50% 100%; }
+.stop .castle .wall { fill: #e3cf9f; stroke: #6b4a26; stroke-width: 1.6; stroke-linejoin: round; }
+.stop .castle .gate { fill: #5b3a1c; }
+.stop .castle .shield { fill: #fbefd0; stroke: #6b4a26; stroke-width: 1.4; }
+.stop .castle .flag { fill: var(--c); stroke: #4a2e14; stroke-width: 1.2; stroke-linejoin: round; }
+.stop .face { position: absolute; left: -12px; top: -32px; width: 24px; height: 24px; display: grid; place-items: center; font-family: var(--title); font-size: 15px; color: #7a1e12; pointer-events: none; transition: transform .25s cubic-bezier(.3, 1.6, .5, 1); transform-origin: 50% 120%; }
+.stop .crown { width: 17px; height: 17px; fill: var(--gold2); }
+.stop .ribbon { position: absolute; left: 36px; top: -56px; display: flex; flex-direction: column; gap: 1px; width: max-content; max-width: 190px; padding: 6px 18px 6px 12px; white-space: normal; text-align: left;
+    background: #f3dca6; color: #4a3520; font-weight: 700; font-size: 12.5px; line-height: 1.2; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); box-shadow: inset 0 0 0 1px #c9a868; }
+.stop .ribbon b { font-family: var(--title); font-weight: 400; font-size: 15px; color: #7a1e12; }
+.stop .ribbon em { font-style: normal; font-weight: 900; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--red); }
+.stop .pic { position: absolute; left: -32px; top: -134px; width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 3px solid #fbefd0; box-shadow: 0 0 0 2px var(--gold2), 0 4px 10px rgba(40, 15, 5, .4); }
+.stop .stars { position: absolute; left: -36px; top: -160px; display: flex; gap: 1px; }
+.stop:not(:has(.pic)) .stars { top: -90px; }
+.stars i { width: 24px; height: 24px; }
+.stars i svg { width: 100%; height: 100%; fill: rgba(90, 60, 25, .3); }
+.stars i.on svg { fill: var(--gold); stroke: #8a5a1b; stroke-width: 1; filter: drop-shadow(0 1px 2px rgba(80, 50, 0, .45)); }
+/* a boss: a bigger, darker fortress with a crown on its shield */
+.stop.boss .castle { left: -44px; top: -84px; width: 88px; height: 88px; }
+.stop.boss .castle .wall { fill: #b9a27a; stroke: #4a2e14; }
+.stop.boss .face { left: -15px; top: -42px; width: 30px; height: 30px; }
+.stop.boss .crown { width: 22px; height: 22px; }
+.stop.boss .ribbon { top: -78px; left: 48px; }
+.stop.boss .pic { top: -168px; left: -40px; width: 80px; height: 80px; }
+.stop.boss .stars { top: -194px; }
+
+/* the stop to fight now: it calls for a click */
+.stop.open { cursor: pointer; }
+.stop.open::before { content: ""; position: absolute; left: -44px; top: -16px; width: 88px; height: 32px; border-radius: 50%; border: 3px solid var(--red); animation: questCall 1.6s ease-out infinite; pointer-events: none; }
+.stop.open .castle, .stop.open .face { animation: questBob 1.4s ease-in-out infinite; }
+.stop.open:hover .castle, .stop.open:hover .face, .stop.open:focus-visible .castle { transform: scale(1.15); animation: none; }
+.stop.open .ribbon { background: #fff3cf; box-shadow: inset 0 0 0 2px var(--red); }
+@keyframes questCall { from { opacity: .9; transform: scale(.5); } to { opacity: 0; transform: scale(1.6); } }
+@keyframes questBob { 50% { translate: 0 -6px; } }
+/* a stop that just opened after a win pops in */
+.stop.fresh .castle, .stop.fresh .face { animation: questFresh .7s cubic-bezier(.3, 1.6, .5, 1) both, questBob 1.4s ease-in-out .7s infinite; }
+@keyframes questFresh { from { transform: scale(0); } }
+/* locked and not-yet-written stops wait in grey */
+.stop.locked .castle, .stop.soon .castle { filter: grayscale(1) brightness(1.05) drop-shadow(0 3px 3px rgba(40, 15, 5, .3)); }
+.stop.locked .ribbon, .stop.soon .ribbon { filter: grayscale(.8); opacity: .85; }
+.stop.locked .face, .stop.soon .face { color: #6b6156; }
+
+/* the fog of war: everything two stops past the front is under drifting cloud */
+.fog { position: absolute; top: 0; bottom: 0; right: 0; pointer-events: none; overflow: hidden;
+    background: linear-gradient(to right, transparent, rgba(232, 222, 200, .9) 200px);
+    backdrop-filter: blur(5px) grayscale(.7); -webkit-backdrop-filter: blur(5px) grayscale(.7);
+    mask-image: linear-gradient(to right, transparent, #000 220px); -webkit-mask-image: linear-gradient(to right, transparent, #000 220px); }
+.fog i { position: absolute; width: 520px; height: 260px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255, 255, 255, .75), transparent); animation: fogDrift 28s ease-in-out infinite alternate; }
+.fog i:nth-child(1) { left: 120px; top: 8%; }
+.fog i:nth-child(2) { left: 520px; top: 45%; animation-duration: 36s; }
+.fog i:nth-child(3) { left: 980px; top: 15%; animation-duration: 32s; }
+@keyframes fogDrift { to { translate: 140px 20px; } }
+
+/* a fight: a parchment sheet over the map */
+.fight { position: fixed; inset: 0; z-index: 35; display: grid; place-items: center; padding: 16px; background: rgba(20, 12, 5, .62); }
+.fight[hidden] { display: none; }
+.fight .sheet { width: min(640px, 100%); max-height: calc(100vh - 32px); overflow: auto; padding: 18px 24px 22px; background: var(--card); border-radius: 18px; border: 1px solid #b89a63;
+    box-shadow: inset 0 0 0 6px var(--card), inset 0 0 0 7px #d5bd8c, 0 24px 60px rgba(0, 0, 0, .5); animation: rise .35s ease-out; }
+.fight header { display: flex; align-items: center; gap: 12px; }
+.fight h2 { flex: 1; margin: 0; font-family: var(--title); font-weight: 400; font-size: 20px; color: #5a2412; }
+.fight .lives { display: flex; gap: 2px; }
+.fight .lives i { width: 26px; height: 26px; transition: transform .3s; }
+.fight .lives i:not(.on) { transform: scale(.8); }
+.fight .x { width: 34px; height: 34px; border: 0; border-radius: 50%; background: #efe0bc; color: #5b3d17; font-size: 20px; font-weight: 900; }
+.fight .bar { height: 6px; margin: 12px 0 4px; border-radius: 3px; background: #efe0bc; overflow: hidden; }
+.fight .bar i { display: block; height: 100%; background: var(--gold); transition: width .4s; }
+.fight .count { margin: 8px 0 2px; font-size: 13px; font-weight: 900; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.fight h3 { margin: 0 0 16px; font-family: var(--title); font-weight: 400; font-size: clamp(22px, 3vw, 28px); line-height: 1.2; color: #3f230f; }
+.fight .choices { display: grid; gap: 10px; }
+.fight .choice { padding: 14px 18px; border: 2px solid var(--line); border-radius: 14px; background: #fffaf0; color: var(--ink); font: 800 17px var(--font); text-align: left; transition: background .15s, border-color .15s, transform .1s; }
+.fight .choice:hover:not(:disabled) { border-color: var(--gold2); background: #fff3cf; }
+.fight .choice:active:not(:disabled) { transform: scale(.98); }
+.fight .choice:disabled { cursor: default; }
+.fight .choice.right { border-color: #3f8a3a; background: #e4f0d8; color: #245a22; }
+.fight .choice.wrong { border-color: var(--red); background: #f9e0d6; color: #7a1e12; animation: questShake .35s; }
+@keyframes questShake { 25% { translate: -6px 0; } 75% { translate: 6px 0; } }
+.fight .why { margin-top: 16px; padding: 12px 16px; border-radius: 12px; background: #fff3cf; box-shadow: inset 0 0 0 1px #e5cf95; }
+.fight .why p { margin: 0 0 6px; font-weight: 800; font-size: 14px; color: var(--ink2); }
+.fight .why blockquote { margin: 0 0 12px; font-size: 16px; line-height: 1.5; font-weight: 600; color: #4b3722; }
+.fight .why mark { background: #f6d77c; color: inherit; padding: 0 2px; border-radius: 3px; }
+.fight .result { padding: 18px 0 4px; text-align: center; }
+.fight .result h3 { margin-bottom: 10px; font-size: 34px; }
+.fight .result p { margin: 10px 0 18px; font-weight: 700; color: var(--ink2); }
+.fight .result .row { display: flex; gap: 10px; justify-content: center; }
+.stars.big { display: inline-flex; gap: 6px; }
+.stars.big i { width: 58px; height: 58px; }
+.stars.big i.on { animation: questStar .5s cubic-bezier(.3, 1.7, .5, 1) var(--d) both; }
+@keyframes questStar { from { transform: scale(0) rotate(-40deg); } }
+
+@media (max-width: 760px) {
+    .quest-top { padding: 12px 14px 8px; gap: 10px; }
+    .trail { margin: 0 8px 8px; }
+    .band .head { width: 240px; }
+    .band .head img { height: 80px; }
+}
+@media (prefers-reduced-motion: reduce) { .fog i, .stop.open::before { animation: none; } }
