@@ -54,6 +54,8 @@ const start = (app) => {
 /* awake, the whole teacher can be taken and carried, not only the small orb under it */
 .nar-orb:not([data-state=dormant]){cursor:grab}
 .nar-orb:not([data-state=dormant]) .mon{pointer-events:auto}
+.nar-orb .mon img{transition:scale .35s ease}
+.nar-orb[data-side=left] .mon img{scale:-1 1}
 .nar-orb[data-state=asking] .mon img,.nar-orb[data-state=playing] .mon img{animation:narBob 2.2s ease-in-out infinite}
 .nar-orb.talk .mon img{transform-origin:50% 100%;animation:narBob 2.2s ease-in-out infinite,narTalk .2s ease-in-out infinite alternate}
 @keyframes narTalk{to{scale:1.035 .97}}
@@ -310,6 +312,8 @@ const start = (app) => {
   const KEY = "bgtt-narrator-pos";
   let custom = null;
   try { custom = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { custom = null; }
+  // which half of the screen the orb is in: on the right half the teacher turns to face the middle (the CSS mirrors it)
+  function setSide() { orb.dataset.side = parseFloat(orb.style.left) + orb.offsetWidth / 2 > innerWidth / 2 ? "left" : "right"; }
   function placeOrb() {
     const size = orb.offsetWidth || 68;
     let x, y;
@@ -319,7 +323,7 @@ const start = (app) => {
     else { const d = app.dock(); x = mode === "dormant" ? d.left : d.left + 78; y = mode === "dormant" ? d.top + 4 : d.bottom - size - 8; }
     x = Math.max(8, Math.min(innerWidth - size - 8, x)); y = Math.max(8, Math.min(innerHeight - size - 8, y));
     orb.style.left = Math.round(x) + "px"; orb.style.top = Math.round(y) + "px";
-    orb.dataset.side = x + size / 2 > innerWidth / 2 ? "left" : "right"; // the hover question opens toward the middle
+    setSide(); // the hover question opens toward the middle
     if (!bubble.hidden) placeBubble();
   }
   let drag = null, justDragged = false;
@@ -329,7 +333,7 @@ const start = (app) => {
     const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
     if (!drag.on && Math.hypot(dx, dy) < 6) return;
     drag.on = true; orb.classList.add("drag");
-    orb.style.left = drag.ox + dx + "px"; orb.style.top = drag.oy + dy + "px";
+    orb.style.left = drag.ox + dx + "px"; orb.style.top = drag.oy + dy + "px"; setSide();
     if (!bubble.hidden) placeBubble();
   });
   const endDrag = () => {
