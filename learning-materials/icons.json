@@ -1,5 +1,21 @@
 {
   "galley": { "a": "Delapouite", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/delapouite/galley.html" },
   "sailboat": { "a": "Delapouite", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/delapouite/sailboat.html" },
-  "trireme": { "a": "Delapouite", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/delapouite/trireme.html" }
+  "trireme": { "a": "Delapouite", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/delapouite/trireme.html" },
+  "open-book": { "a": "Lorc", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/lorc/open-book.html" },
+  "laurel-crown": { "a": "Lorc", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/lorc/laurel-crown.html" },
+  "roman-shield": { "a": "Delapouite", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/delapouite/roman-shield.html" },
+  "crown": { "a": "Lorc", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/lorc/crown.html" },
+  "tower-flag": { "a": "Delapouite", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/delapouite/tower-flag.html" },
+  "amphora": { "a": "Delapouite", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/delapouite/amphora.html" },
+  "centurion-helmet": { "a": "Delapouite", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/delapouite/centurion-helmet.html" },
+  "horse-head": { "a": "Delapouite", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/delapouite/horse-head.html" },
+  "cavalry": { "a": "Delapouite", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/delapouite/cavalry.html" },
+  "viking-shield": { "a": "Delapouite", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/delapouite/viking-shield.html" },
+  "battle-axe": { "a": "Lorc", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/lorc/battle-axe.html" },
+  "church": { "a": "Delapouite", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/delapouite/church.html" },
+  "quill-ink": { "a": "Lorc", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/lorc/quill-ink.html" },
+  "broken-shield": { "a": "Lorc", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/lorc/broken-shield.html" },
+  "medieval-gate": { "a": "Delapouite", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/delapouite/medieval-gate.html" },
+  "throne-king": { "a": "Delapouite", "l": "CC BY 3.0", "u": "https://game-icons.net/1x1/delapouite/throne-king.html" }
 }

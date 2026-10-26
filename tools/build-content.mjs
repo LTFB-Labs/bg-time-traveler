@@ -5,7 +5,7 @@ import { collectPhotos, compileContract, contractProblems, packageFolders, packa
 import { parseLesson, renderLesson, validateLesson } from './lib/lessons.mjs';
 import { renderMarkdown } from './lib/markdown.mjs';
 import { photoProblems } from './lib/photos.mjs';
-import { sectionProblems } from './lib/quest.mjs';
+import { sectionProblems, textbookProblems } from './lib/quest.mjs';
 import { formatProblems, problem } from './lib/problems.mjs';
 import { buildSearchIndex } from './lib/search.mjs';
 import { buildAliasIndex, linkTerms } from './lib/terms.mjs';
@@ -17,8 +17,13 @@ export function buildContent(rootDir) {
     const dir = join(rootDir, MATERIALS);
     const infoDir = join(dir, 'information');
     const balkans = readJson(dir, 'maps/balkans.json', {});
-    // the Quest is optional: a content root without quest/sections.json has no sections
-    const sections = existsSync(join(dir, 'quest/sections.json')) ? readJson(dir, 'quest/sections.json', []) : { value: [], problems: [] };
+    // textbooks and sections are optional: a content root without them has none
+    const optionalJson = (path) => (existsSync(join(dir, path)) ? readJson(dir, path, []) : { value: [], problems: [] });
+    const textbooks = optionalJson('quest/textbooks.json');
+    const sections = optionalJson('quest/sections.json');
+    // icons: the ids in icons.json that have a drawing in img/icons/
+    const iconCredits = optionalJson('icons.json');
+    const icons = new Set(Object.keys(iconCredits.value ?? {}).filter((id) => existsSync(join(rootDir, 'img/icons', `${id}.svg`))));
     const cards = readCards(infoDir);
     const contract = compileContract();
     const base = (card) => `${MATERIALS}/${dirname(card.file)}`;
@@ -37,8 +42,11 @@ export function buildContent(rootDir) {
     const problems = [
         ...photos.problems,
         ...balkans.problems,
+        ...textbooks.problems,
         ...sections.problems,
-        ...sectionProblems(sections.value, new Set(Object.keys(photos.photos))),
+        ...textbookProblems(textbooks.value, { photos: new Set(Object.keys(photos.photos)), icons }),
+        ...sectionProblems(sections.value, { photos: new Set(Object.keys(photos.photos)), icons, textbooks: new Set((textbooks.value ?? []).map((book) => book?.id)) }),
+        ...lessons.filter((lesson) => lesson.icon !== undefined && !icons.has(lesson.icon)).map((lesson) => problem(lesson.file, `icon "${lesson.icon}" is not in icons.json with a drawing in img/icons/`)),
         ...grades.problems,
         ...cards.flatMap((card) => contractProblems(card, contract)),
         ...cards.flatMap((card) => packageProblems(card, packageDir(card))),
@@ -56,7 +64,7 @@ export function buildContent(rootDir) {
         grades: toPageGrades(grades.rows),
         photos: photos.photos,
         maps: { balkans: balkans.value },
-        quest: { sections: sections.value },
+        quest: { textbooks: textbooks.value, sections: sections.value },
         search: [],
     };
     content.search = buildSearchIndex(content);

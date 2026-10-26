@@ -4,6 +4,7 @@ grade: 5
 number: 26
 title: Древна Тракия. Царството на одрисите
 textbook: Булвест 2000, урок 26
+icon: amphora
 map: balkans
 span: [-1300, -250]
 eras:

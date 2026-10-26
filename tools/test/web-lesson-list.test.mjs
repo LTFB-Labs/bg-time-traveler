@@ -4,6 +4,7 @@ import { hallCards, sectionLessons } from '../../modules/lesson/lesson-list.js';
 
 const READY = { id: '5-odrisko-tsarstvo', state: 'ready', title: 'Древна Тракия. Царството на одрисите', number: 26, span: [-1300, -250], map: 'balkans' };
 const LESSON = {
+    icon: 'amphora',
     parts: [
         { type: 'summary', heading: 'Какво ще научим', meta: { lead: 'Кратко описание.', photo: 'panagyurishte' } },
         { type: 'story', heading: 'Кои са траките', meta: {} },
@@ -24,6 +25,7 @@ test('readyLessonCardHasItsStoryChaptersLeadAndPhoto', () => {
         photo: 'p.jpg',
         href: '#lesson/5-odrisko-tsarstvo',
         isPassed: false,
+        icon: 'amphora',
     }]);
 });
 
@@ -43,10 +45,10 @@ test('lessonsOfAllGradesFollowEachOther', () => {
 });
 
 test('mocksComeAfterTheRealLessonsAndDoNotOpen', () => {
-    const mock = { grade: 5, number: 27, title: 'Римляните', span: [-250, 395], photo: 'panagyurishte', lead: 'Описание.', chapters: ['А'] };
+    const mock = { grade: 5, number: 27, icon: 'centurion-helmet', title: 'Римляните', span: [-250, 395], photo: 'panagyurishte', lead: 'Описание.', chapters: ['А'] };
     const cards = hallCards(data(), [mock]);
     assert.equal(cards.length, 2);
-    assert.deepEqual(cards[1], { grade: 5, number: 27, title: 'Римляните', date: '250 г. пр.Хр. — 395 г. сл.Хр.', lead: 'Описание.', chapters: ['А'], photo: 'p.jpg', href: null, isPassed: false });
+    assert.deepEqual(cards[1], { grade: 5, number: 27, title: 'Римляните', date: '250 г. пр.Хр. — 395 г. сл.Хр.', lead: 'Описание.', chapters: ['А'], photo: 'p.jpg', href: null, isPassed: false, icon: 'centurion-helmet' });
 });
 
 test('sectionLessonsFollowTheSectionsOrderAndGrade', () => {

@@ -650,9 +650,32 @@ body.album #freePop { top: 50%; right: auto; bottom: auto; left: 50%; transform:
 #lessonList .meta { font-size: 12.5px; font-weight: 800; color: #7a4f1a; }
 #lessonList .go { position: absolute; right: 14px; bottom: 16px; width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; background: var(--red); color: #fff; font-size: 22px; font-weight: 900; line-height: 1; box-shadow: 0 2px 0 #8e2a1e; }
 #lessonList .soon .face { opacity: .78; cursor: default; }
-/* a section card: for now only its name, in the middle of the paper */
-#lessonList .section .face { align-items: center; justify-content: center; gap: 14px; padding: 24px; text-align: center; }
-#lessonList .section b { font-family: var(--title); font-weight: 400; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.15; color: #3f230f; }
+/* an icon from img/icons/: the drawing is a mask, painted in the colour around it */
+.icon { display: inline-block; width: 1em; height: 1em; background: currentColor; -webkit-mask: var(--icon) center / contain no-repeat; mask: var(--icon) center / contain no-repeat; }
+#lessonList .badge-icon { width: 34px; height: 34px; color: #7a1e12; }
+
+/* a section: a deck of cards lying flat on the table, away from us, one card per lesson; the icon stands on top like a pawn */
+#lessonList .deck-slot .face { align-items: center; justify-content: flex-end; gap: 6px; padding: 0 12px 28px; background: none; border: 0; box-shadow: none; text-align: center; }
+#lessonList .deck-slot a.face:hover, #lessonList .deck-slot a.face:focus-visible { transform: none; box-shadow: none; }
+#lessonList .table { position: relative; width: 100%; flex: 1; min-height: 0; perspective: 700px; perspective-origin: 50% 55%; }
+#lessonList .deck { position: absolute; left: 50%; bottom: 6%; width: 64%; aspect-ratio: 5 / 7; translate: -50% 0; transform: rotateX(68deg); transform-origin: 50% 100%; transform-style: preserve-3d; transition: transform .3s; }
+#lessonList .deck i { position: absolute; inset: 0; border-radius: 12px; }
+/* each card a little higher than the one under it, its edge darker the lower it lies */
+#lessonList .deck .layer { transform: translateZ(calc(var(--i) * 4px)); background: color-mix(in srgb, var(--c) calc(30% + var(--i) * 6%), #e9d6a8); box-shadow: 0 0 0 1px rgba(60, 35, 10, .35); }
+#lessonList .deck .layer:first-child { box-shadow: 0 0 0 1px rgba(60, 35, 10, .35), 0 0 30px 6px rgba(40, 20, 5, .35); }
+#lessonList .deck .top { transform: translateZ(calc(var(--n) * 4px)); display: grid; place-items: center; background: var(--card); border: 6px solid var(--c); box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .5), 0 0 0 1px rgba(60, 35, 10, .4);
+    background-image: repeating-linear-gradient(45deg, transparent 0 10px, color-mix(in srgb, var(--c) 10%, transparent) 10px 20px); }
+#lessonList .deck .top .icon { width: 46%; height: 46%; color: color-mix(in srgb, var(--c) 35%, transparent); }
+/* the pawn: a round head with the icon on a neck and a foot; it stands on the middle of the deck's top card */
+#lessonList .pawn { position: absolute; left: 50%; bottom: calc(6% + 34px + var(--n) * 3.6px); translate: -50% 0; display: flex; flex-direction: column; align-items: center; filter: drop-shadow(0 8px 6px rgba(40, 20, 5, .4)); transition: translate .3s cubic-bezier(.3, 1.6, .5, 1); }
+#lessonList .pawn .head { position: relative; z-index: 2; width: 74px; height: 74px; display: grid; place-items: center; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff8e6, #f0dcae 70%); border: 4px solid var(--c); box-shadow: inset 0 -4px 0 rgba(60, 35, 10, .15); }
+#lessonList .pawn .head .icon { width: 42px; height: 42px; color: #3f230f; }
+#lessonList .pawn .neck { width: 26px; height: 18px; margin-top: -4px; background: linear-gradient(90deg, #c9ab70, #f0dcae 45%, #b8955a); clip-path: polygon(22% 0, 78% 0, 100% 100%, 0 100%); }
+#lessonList .pawn .foot { width: 54px; height: 14px; border-radius: 50%; background: linear-gradient(#f0dcae, #b8955a); border: 2px solid var(--c); }
+#lessonList .deck-slot a.face:hover .pawn, #lessonList .deck-slot a.face:focus-visible .pawn { translate: -50% -14px; }
+#lessonList .deck-slot a.face:hover .deck, #lessonList .deck-slot a.face:focus-visible .deck { transform: rotateX(64deg) translateZ(6px); }
+#lessonList .deck-slot .name { font-family: var(--title); font-weight: 400; font-size: clamp(22px, 2.2vw, 28px); line-height: 1.15; color: #3f230f; text-shadow: 0 1px 0 rgba(255, 248, 230, .8), 0 0 14px rgba(255, 248, 230, .9); }
+#lessonList .deck-slot .meta { padding: 3px 12px; border-radius: 999px; background: rgba(251, 244, 226, .9); }
 #lessonList .soon .art { filter: saturate(.5) sepia(.25); }
 #lessonList .nav { position: absolute; top: 50%; z-index: 2; translate: 0 -50%; width: 52px; height: 52px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: var(--paper); color: var(--ink); box-shadow: var(--shadow); cursor: pointer; transition: opacity .2s; }
 #lessonList .nav.prev { left: 14px; }

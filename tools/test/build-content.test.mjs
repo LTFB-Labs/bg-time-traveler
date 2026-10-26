@@ -126,14 +126,22 @@ test('checksThatEveryQuestionIsAnsweredByItsText', () => {
     assert.deepEqual(build('Терес', 'Терес е първият', '[терес, Котис]').problems.map((p) => p.message), ['question 1: a wrong answer is the right one']);
 });
 
-test('readsQuestSectionsAndReportsBadOnes', () => {
-    const section = (extra) => JSON.stringify([{ id: 'thracians', title: 'Траките', description: 'Царете.', photo: 'teres-mask', color: '#8a5a2b', grade: 5, lessons: [26], ...extra }]);
-    const good = buildContent(copyOkWith({ 'learning-materials/quest/sections.json': section({}) }));
+test('readsTextbooksAndSectionsAndReportsBadOnes', () => {
+    const icons = { 'learning-materials/icons.json': JSON.stringify({ crown: { a: 'Lorc', l: 'CC BY 3.0', u: 'https://game-icons.net' } }), 'img/icons/crown.svg': '<svg/>' };
+    const book = JSON.stringify([{ id: 'history-5', title: 'История 5. клас', description: 'Учебник.', photo: 'teres-mask', background: 'teres-mask', icon: 'crown', grade: 5 }]);
+    const section = (extra) => JSON.stringify([{ id: 'thracians', textbook: 'history-5', title: 'Траките', description: 'Царете.', photo: 'teres-mask', icon: 'crown', color: '#8a5a2b', grade: 5, lessons: [26], ...extra }]);
+    const build = (extra) => buildContent(copyOkWith({ ...icons, 'learning-materials/quest/textbooks.json': book, 'learning-materials/quest/sections.json': section(extra) }));
+    const good = build({});
     assert.deepEqual(good.problems, []);
+    assert.equal(good.content.quest.textbooks[0].title, 'История 5. клас');
     assert.equal(good.content.quest.sections[0].title, 'Траките');
-    const bad = buildContent(copyOkWith({ 'learning-materials/quest/sections.json': section({ photo: 'nope', lessons: [] }) }));
-    assert.deepEqual(bad.problems.map((p) => p.message), ['section 1: photo "nope" is not a photo of an info package', 'section 1: needs lesson numbers']);
-    assert.deepEqual(buildContent(root).content.quest, { sections: [] });
+    assert.deepEqual(build({ textbook: 'nope', photo: 'nope', icon: 'sword', lessons: [] }).problems.map((p) => p.message), [
+        'section 1: textbook "nope" is not in quest/textbooks.json',
+        'section 1: photo "nope" is not a photo of an info package',
+        'section 1: icon "sword" is not in icons.json with a drawing in img/icons/',
+        'section 1: needs lesson numbers',
+    ]);
+    assert.deepEqual(buildContent(root).content.quest, { textbooks: [], sections: [] });
 });
 
 test('reportsUnlistedLessonsAndGradeWithoutIndex', () => {

@@ -1,36 +1,44 @@
 [
   {
     "id": "thracians",
+    "textbook": "history-5",
     "title": "Траките",
     "description": "Първите големи царе по нашите земи: одрисите, техните златни съкровища, гробници и легенди.",
     "photo": "panagyurishte",
+    "icon": "laurel-crown",
     "color": "#8a5a2b",
     "grade": 5,
     "lessons": [26]
   },
   {
     "id": "new-peoples",
+    "textbook": "history-5",
     "title": "Римляни, славяни и прабългари",
     "description": "Римляните стигат до Дунав, а след тях славяните и прабългарите търсят нов дом на Балканите.",
     "photo": "slavs",
+    "icon": "roman-shield",
     "color": "#5f6f3a",
     "grade": 5,
     "lessons": [27, 28]
   },
   {
     "id": "first-kingdom",
+    "textbook": "history-5",
     "title": "Първото българско царство",
     "description": "От Аспарух до Самуил: как се ражда България, как приема християнството и как стига до своя Златен век.",
     "photo": "madara",
+    "icon": "crown",
     "color": "#7a1e12",
     "grade": 5,
     "lessons": [29, 30, 31, 32, 33, 34]
   },
   {
     "id": "second-kingdom",
+    "textbook": "history-5",
     "title": "Второто българско царство",
     "description": "Асен и Петър вдигат въстание в Търново, а Иван Асен II прави България силна на три морета.",
     "photo": "asen",
+    "icon": "tower-flag",
     "color": "#3f5f7a",
     "grade": 5,
     "lessons": [35, 36]
