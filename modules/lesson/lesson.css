@@ -553,7 +553,7 @@ body.lesson #compass { top: 12px; right: calc(var(--ls-w) + 2 * var(--gap) + 60p
         radial-gradient(closest-side at 30% 60%, rgba(255, 255, 255, .85), rgba(255, 255, 255, 0)),
         radial-gradient(closest-side at 55% 42%, rgba(255, 255, 255, .9), rgba(255, 255, 255, 0)),
         radial-gradient(closest-side at 76% 62%, rgba(255, 255, 255, .8), rgba(255, 255, 255, 0));
-    opacity: .75;
+    opacity: .375;
 }
 
 /* birds: a flock flies as one layer; only the small wing strokes repaint */
