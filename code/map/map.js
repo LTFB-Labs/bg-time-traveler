@@ -61,10 +61,7 @@ el("ellipse", { cy: 4.2, rx: 1.8, ry: 1.9 }, foot);
 const world = el("g", {}, svg);
 // the sea: a soft watercolour blue, as on old hand-coloured maps
 const SEA = "#bdd2d8";
-// the open sea a shade deeper; a broad band along every coast keeps the shallow colour, like the depth line of an old chart
-const DEEP = "#a7c1ca";
-el("rect", { x: -3000, y: -3000, width: GEO.W + 6000, height: GEO.H + 6000, fill: DEEP }, world);
-el("path", { d: GEO.land, fill: SEA, stroke: SEA, "stroke-width": 70, "stroke-linejoin": "round" }, world);
+el("rect", { x: -3000, y: -3000, width: GEO.W + 6000, height: GEO.H + 6000, fill: SEA }, world);
 const ripple = el("g", { fill: "none", "stroke-linejoin": "round" }, world);
 [[26, .06], [16, .1], [8, .16]].forEach(([w, o]) => el("path", { d: GEO.land, stroke: "#4f7f92", style: `stroke-width:${ink(w)}`, "stroke-opacity": o }, ripple));
 const landPath = el("path", { d: GEO.land, fill: "#f2e6c6" }, world);
@@ -72,7 +69,8 @@ const realmsG = el("g", { "clip-path": "url(#landClip)" }, world);
 // relief: ink mountains, hills, forests and reeds over the whole map, drawn by tools/build-terrain.py; it lies over the
 // border fills, faint and blended like printed ink, so it tints with them and stays a quiet detail of a historical map
 el('image', { href: 'img/terrain.webp', x: 0, y: 0, width: GEO.W, height: GEO.H, preserveAspectRatio: 'none', opacity: .6, style: 'mix-blend-mode:multiply', 'pointer-events': 'none' }, world);
-// height tint: the ground above 700 m and above 1500 m in two soft brown steps, drawn by tools/build-elevation.py
+// height tint: the ground above 700 m and above 1500 m in two soft brown steps and the deep sea a shade darker, drawn by
+// tools/build-elevation.py
 el('image', { href: 'img/elevation.webp', x: 0, y: 0, width: GEO.W, height: GEO.H, preserveAspectRatio: 'none', style: 'mix-blend-mode:multiply', 'pointer-events': 'none' }, world);
 el("path", { d: GEO.lakes, fill: SEA, stroke: "#6f8f86", style: `stroke-width:${ink(.8)}` }, world);
 el("path", { d: GEO.rivers, fill: "none", stroke: "#5c8fa3", style: `stroke-width:${ink(1.5)}`, "stroke-opacity": .85, "stroke-linecap": "round", "stroke-linejoin": "round" }, world);
