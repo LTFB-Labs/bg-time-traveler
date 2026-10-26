@@ -310,6 +310,7 @@ function followYear(y) {
 }
 function flyTo(box, { ms = 900 } = {}) {
     home = box;
+    focusOn(box);
     flyRate = rateFor(ms);
     vbT = fitBox(box);
     glide();
@@ -617,6 +618,19 @@ function holdArrow(len) {
   for (let i = 0; i < im.data.length; i += 4) { const v = 200 + Math.random() * 55; im.data[i] = v; im.data[i + 1] = v * .96; im.data[i + 2] = v * .88; im.data[i + 3] = 255; }
   x.putImageData(im, 0, 0); document.getElementById("grain").style.backgroundImage = `url(${c.toDataURL()})`;
 })();
+
+/* ---------- focus fog: a light wash on the map round the part's box; it belongs to the map, so a drag carries it along ---------- */
+// a third of the screen fog's strength: the box stays clear, the land a little further out goes pale
+const focusPaint = el("radialGradient", { id: "focusPaint", gradientUnits: "userSpaceOnUse", cx: 0, cy: 0, r: 1 }, defs);
+el("stop", { offset: 0.72, "stop-color": "#f2e8cd", "stop-opacity": 0 }, focusPaint);
+el("stop", { offset: 1, "stop-color": "#f2e8cd", "stop-opacity": 0.3 }, focusPaint);
+const focusFog = el("rect", { class: "focus-fog", x: -3000, y: -3000, width: GEO.W + 6000, height: GEO.H + 6000, fill: "url(#focusPaint)", "pointer-events": "none", display: "none" }, svg);
+function focusOn([west, south, east, north]) {
+    const [x0, y0] = P(west, north);
+    const [x1, y1] = P(east, south);
+    focusPaint.setAttribute("gradientTransform", `translate(${(x0 + x1) / 2} ${(y0 + y1) / 2}) scale(${((x1 - x0) / 2) * 1.45} ${((y1 - y0) / 2) * 1.45})`);
+    focusFog.removeAttribute("display");
+}
 
 return {
     P,
