@@ -133,10 +133,10 @@ body.lesson #lsMap { display: flex; }
 /* the compass takes the map pane's top right corner, so "Върни ме" stands to its left */
 body.lesson #compass { top: 12px; right: calc(var(--ls-w) + 2 * var(--gap) + 60px); }
 
-/* ---- reading sheet: laid on the map, with the map showing above, below and to its right ---- */
+/* ---- reading sheet: laid on the map, with the map showing above, below and to its right; above it is the row of gear, "!" and book ---- */
 #lesson {
     position: fixed;
-    top: var(--gap);
+    top: calc(var(--gap) + 52px);
     right: var(--gap);
     bottom: var(--gap);
     width: var(--ls-w);
@@ -660,7 +660,9 @@ body.album #freePop { top: 50%; right: auto; bottom: auto; left: 50%; transform:
 }
 #toHall:hover { transform: scale(1.07); }
 #toHall svg { width: 28px; height: 28px; }
-body.lesson #toHall { right: calc(var(--gap) + var(--ls-w) + var(--gap) / 2 - 28px); bottom: calc(var(--gap) + 36px); }
+/* in a lesson the book sits in the top-right row with the gear and "!", as small as they are */
+body.lesson #toHall { top: 16px; right: calc(var(--gap) + 104px); bottom: auto; width: 42px; height: 42px; box-shadow: 0 2px 6px rgba(60, 40, 15, .3); }
+body.lesson #toHall svg { width: 22px; height: 22px; }
 body:is(.lessons, .album) #toHall { display: none; }
 @media (max-width: 820px) {
     #toHall { right: 12px; top: 12px; bottom: auto; width: 48px; height: 48px; }
@@ -669,7 +671,7 @@ body:is(.lessons, .album) #toHall { display: none; }
 
 /* ---- the settings gear: top right above the card on the free map, beside the open panel in a lesson ---- */
 #optBtn { position: fixed; z-index: 12; top: 16px; right: 16px; width: 42px; height: 42px; }
-body.lesson #optBtn { top: var(--gap); right: calc(var(--gap) + var(--ls-w) + 14px); }
+body.lesson #optBtn { top: 16px; right: var(--gap); }
 body:is(.lessons, .album) #optBtn { display: none; }
 @media (max-width: 820px) {
     #optBtn { top: 12px; right: 68px; }
@@ -678,7 +680,7 @@ body:is(.lessons, .album) #optBtn { display: none; }
 
 /* ---- today's Bulgaria: a round "!" left of the gear on the free map, under it in a lesson; its hint shows on hover, to the left ---- */
 #todayBtn { position: fixed; z-index: 12; top: 16px; right: 68px; width: 42px; height: 42px; font-family: var(--title); font-size: 22px; font-weight: 400; color: #7a1e12; }
-body.lesson #todayBtn { top: calc(var(--gap) + 52px); right: calc(var(--gap) + var(--ls-w) + 14px); }
+body.lesson #todayBtn { top: 16px; right: calc(var(--gap) + 52px); }
 #todayBtn[aria-pressed=true] { background: #7a1e12; color: #fff; box-shadow: 0 0 0 3px #fbefd0, 0 2px 6px rgba(60, 40, 15, .3); }
 #todayBtn::after { content: attr(data-hint); position: absolute; right: calc(100% + 10px); top: 50%; translate: 0 -50%; white-space: nowrap; padding: 8px 12px; border-radius: 14px 14px 4px 14px; background: #fbf4e2; color: #4b3722; font: 800 14px/1.2 var(--font); box-shadow: 0 0 0 1px #d8c39a, 0 6px 16px rgba(60, 40, 15, .25); opacity: 0; scale: .9; transform-origin: 100% 60%; transition: opacity .2s, scale .2s; pointer-events: none; }
 #todayBtn:hover::after, #todayBtn:focus-visible::after { opacity: 1; scale: 1; }
