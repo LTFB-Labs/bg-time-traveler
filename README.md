@@ -196,7 +196,7 @@ media:
 - `index.html` е страницата и стиловете на свободната линия на времето.
 - `modules/` са частите на играта: `app.js` (входът), `free/` (свободната линия), `lesson/` (урокът, проверката, обобщението и `lesson.css`), `cards/`, `album/`, `options/`.
 - `code/` е ядрото, което модулите ползват: `map/` (картата, проекцията, живата карта), `timeline/` (линията на времето и годините), `store.js` (прогресът), `search.js`.
-- `apps/narrator/` е AI учителят (`narrator.js`, `teacher.svg`). Говори с играта само през `window.BGTT`.
+- `apps/narrator/` е AI учителят (`narrator.js`; учителят е пухчето от `img/mascot.webp`, в кълбото е лицето му от `img/mascot-face.webp`). Говори с играта само през `window.BGTT`.
 - `themes/` са темите: `default.css` с цветовете и шрифтовете. Училище може да направи своя тема като копие с други стойности.
 - `learning-materials/` е съдържанието: `information/` (info пакетите и договорът им), `lessons/` (уроците: име, стъпки и кои парчета информация ползват), `maps/` (`balkans.json` с епохи, владетели, градове и камера, `borders/`, `terrain-symbols.jpg`), `icons.json`. `content.js` се генерира с `cd tools && npm run build`.
 - `img/ships/` са рисунките на корабите, а авторите им са в `learning-materials/icons.json`. `img/terrain.webp` е релефът, нарисуван от символите в `learning-materials/maps/terrain-symbols.jpg`.

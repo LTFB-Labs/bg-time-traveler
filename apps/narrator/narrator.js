@@ -19,7 +19,7 @@ const start = (app) => {
 .nar-orb .swirl{inset:2px;background:conic-gradient(from 200deg,#4f7dff,#9b5cff,#ff5ea8,#ffae4d,#3fd3c4,#4f7dff)}
 .nar-orb .blobs{inset:2px;animation-direction:reverse;animation-duration:5s;mix-blend-mode:screen;background:radial-gradient(circle at 30% 28%,rgba(255,255,255,.75),transparent 34%),radial-gradient(circle at 72% 70%,rgba(120,240,255,.7),transparent 38%),radial-gradient(circle at 75% 25%,rgba(255,120,200,.55),transparent 30%)}
 .nar-orb .glass{position:absolute;inset:9px;border-radius:50%;background:radial-gradient(circle at 38% 30%,rgba(255,255,255,.42),rgba(255,255,255,.06) 55%,rgba(30,10,60,.28));box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.55),inset 0 -6px 14px rgba(40,10,80,.35)}
-.nar-orb > svg{position:absolute;left:50%;top:50%;width:46%;height:46%;transform:translate(-50%,-50%);color:#fff;filter:drop-shadow(0 1px 2px rgba(40,10,80,.45));transition:opacity .25s,transform .25s}
+.nar-orb > :is(svg,img){position:absolute;left:50%;top:50%;width:46%;height:46%;transform:translate(-50%,-50%);color:#fff;filter:drop-shadow(0 1px 2px rgba(40,10,80,.45));transition:opacity .25s,transform .25s}
 .nar-orb .i-play,.nar-orb .i-pause{opacity:0;transform:translate(-50%,-50%) scale(.6)}
 .nar-orb[data-state=dormant]{opacity:.55;filter:saturate(.1) brightness(1.06)}
 .nar-orb[data-state=dormant]:hover,.nar-orb[data-state=dormant]:focus-visible{opacity:.95;filter:saturate(.55)}
@@ -36,19 +36,20 @@ const start = (app) => {
 @keyframes narSpin{to{transform:rotate(360deg)}}
 /* active: the orb lies down as a spinning disk, light rises from it and the monster stands on top */
 .nar-orb:not([data-state=dormant]) .core{transform:translateY(20px) scale(1.5,.54)}
-.nar-orb:not([data-state=dormant]) > svg{opacity:0!important}
+.nar-orb:not([data-state=dormant]) > :is(svg,img){opacity:0!important}
 .nar-orb:not([data-state=dormant]) .glow{inset:-9px;filter:blur(12px)}
 .nar-orb .beam{position:absolute;left:50%;bottom:14px;width:93px;height:104px;margin-left:-46.5px;background:linear-gradient(to top,rgba(150,180,255,.8),rgba(255,130,210,.32) 45%,rgba(120,240,255,0));clip-path:polygon(10% 100%,90% 100%,100% 0,0 0);filter:blur(5px);mix-blend-mode:screen;opacity:0;transform:scaleY(.15);transform-origin:50% 100%;transition:opacity .5s,transform .6s;pointer-events:none}
 .nar-orb:not([data-state=dormant]) .beam{opacity:.85;transform:none;animation:narBeam 2.4s ease-in-out infinite}
 .nar-orb[data-state=paused] .beam{opacity:.35;animation:none}
-.nar-orb .mon{position:absolute;left:50%;bottom:18px;width:82px;height:95px;margin-left:-41px;opacity:0;transform:translateY(26px) scale(.4);transform-origin:50% 100%;transition:opacity .4s,transform .65s cubic-bezier(.3,1.5,.5,1);pointer-events:none}
-.nar-orb .mon svg{display:block;width:100%;height:100%;filter:drop-shadow(0 5px 7px rgba(120,150,255,.6))}
+.nar-orb > img.i-person{width:80%;height:80%;border-radius:50%;filter:none}
+/* the teacher is the LTFB fluff reading (img/mascot.webp); it bobs while talking, the orb shows its face (img/mascot-face.webp) */
+.nar-orb .mon{position:absolute;left:50%;bottom:16px;width:116px;height:96px;margin-left:-58px;opacity:0;transform:translateY(26px) scale(.4);transform-origin:50% 100%;transition:opacity .4s,transform .65s cubic-bezier(.3,1.5,.5,1);pointer-events:none}
+.nar-orb .mon img{display:block;width:100%;height:100%;object-fit:contain;object-position:50% 100%;filter:drop-shadow(0 5px 7px rgba(120,150,255,.6))}
 .nar-orb .mon::after{content:"";position:absolute;inset:35% -12% -8%;background:radial-gradient(ellipse at 50% 100%,rgba(140,200,255,.65),rgba(255,120,210,.22) 45%,transparent 70%);mix-blend-mode:screen;pointer-events:none}
 .nar-orb:not([data-state=dormant]) .mon{opacity:1;transform:none}
-.nar-orb[data-state=asking] .mon svg,.nar-orb[data-state=playing] .mon svg{animation:narBob 2.2s ease-in-out infinite}
-.nar-orb .mouth{transform-box:fill-box;transform-origin:50% 8%}
-.nar-orb.talk .mouth{animation:narTalk .18s ease-in-out infinite alternate}
-@keyframes narTalk{from{transform:scaleY(.2)}to{transform:scaleY(1)}}
+.nar-orb[data-state=asking] .mon img,.nar-orb[data-state=playing] .mon img{animation:narBob 2.2s ease-in-out infinite}
+.nar-orb.talk .mon img{transform-origin:50% 100%;animation:narBob 2.2s ease-in-out infinite,narTalk .2s ease-in-out infinite alternate}
+@keyframes narTalk{to{scale:1.035 .97}}
 @keyframes narBob{50%{transform:translateY(-3px)}}
 @keyframes narBeam{50%{opacity:.6}}
 .nar-bubble{position:fixed;z-index:16;width:min(350px,calc(100vw - 32px));padding:14px 16px 12px;border-radius:18px;background:#fbf4e2;color:#3f2a14;border:1px solid #d8c39a;box-shadow:0 12px 34px rgba(60,40,15,.28),0 2px 6px rgba(60,40,15,.15);font:600 16px/1.45 Nunito,system-ui,sans-serif;animation:narIn .25s ease-out}
@@ -71,8 +72,8 @@ const start = (app) => {
 .nar-photo figcaption{margin-top:6px;font:400 17px/1.2 Kurale,Georgia,serif;color:#3f230f;text-align:center}
 .nar-photo figcaption small{display:block;margin-top:2px;font:600 10.5px Nunito,sans-serif;color:#8a7352}
 @keyframes narIn{from{opacity:0;transform:translateY(8px)}}
-@media (max-width:760px){.nar-orb{--nar-size:58px}.nar-orb:not([data-state=dormant]) .core{transform:translateY(17px) scale(1.5,.54)}.nar-orb .mon{width:70px;height:81px;margin-left:-35px;bottom:15px}.nar-orb .beam{width:78px;height:88px;margin-left:-39px;bottom:12px}.nar-bubble{font-size:15px}.nar-bubble .say{font-size:15.5px}.nar-bubble .keys{display:none}}
-@media (prefers-reduced-motion:reduce){.nar-orb .glow,.nar-orb .swirl,.nar-orb .blobs,.nar-orb .beam,.nar-orb .mon svg{animation:none!important}.nar-photo{transition:opacity .3s}}
+@media (max-width:760px){.nar-orb{--nar-size:58px}.nar-orb:not([data-state=dormant]) .core{transform:translateY(17px) scale(1.5,.54)}.nar-orb .mon{width:98px;height:82px;margin-left:-49px;bottom:13px}.nar-orb .beam{width:78px;height:88px;margin-left:-39px;bottom:12px}.nar-bubble{font-size:15px}.nar-bubble .say{font-size:15.5px}.nar-bubble .keys{display:none}}
+@media (prefers-reduced-motion:reduce){.nar-orb .glow,.nar-orb .swirl,.nar-orb .blobs,.nar-orb .beam,.nar-orb .mon img{animation:none!important}.nar-photo{transition:opacity .3s}}
 `;
   const style = document.createElement("style"); style.textContent = css; document.head.appendChild(style);
 
@@ -80,15 +81,13 @@ const start = (app) => {
   const orb = document.createElement("button");
   orb.type = "button"; orb.className = "nar-orb"; orb.dataset.state = "dormant";
   orb.setAttribute("aria-label", "Учител: разкажи ми урока");
-  orb.innerHTML = `<span class="core"><span class="glow"></span><span class="swirl"></span><span class="blobs"></span><span class="glass"></span></span><span class="beam"></span><span class="mon"></span>
-<svg class="i-person" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="7.4" r="4"/><path d="M4 21.5c0-4.6 3.6-7.6 8-7.6s8 3 8 7.6z"/></svg>
+  orb.innerHTML = `<span class="core"><span class="glow"></span><span class="swirl"></span><span class="blobs"></span><span class="glass"></span></span><span class="beam"></span><span class="mon"><img src="img/mascot.webp" alt=""></span>
+<img class="i-person" src="img/mascot-face.webp" alt="" aria-hidden="true">
 <svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 4.8v14.4L19.5 12z"/></svg>
 <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4.4" height="14" rx="1.3"/><rect x="13.6" y="5" width="4.4" height="14" rx="1.3"/></svg>`;
   const bubble = document.createElement("div"); bubble.className = "nar-bubble"; bubble.hidden = true; bubble.setAttribute("role", "status"); bubble.setAttribute("aria-live", "polite");
   const photo = document.createElement("figure"); photo.className = "nar-photo"; photo.setAttribute("aria-hidden", "true");
   document.body.append(photo, orb, bubble);
-  // the monster is inline SVG so its mouth can move; it is a separate file to keep this one readable
-  fetch("apps/narrator/teacher.svg").then((r) => (r.ok ? r.text() : "")).then((t) => { if (t) orb.querySelector(".mon").innerHTML = t; }).catch(() => {});
 
   /* ---------- voice ---------- */
   const synth = "speechSynthesis" in window ? window.speechSynthesis : null;
