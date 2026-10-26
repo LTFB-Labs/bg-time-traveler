@@ -282,7 +282,10 @@ const start = (app) => {
     else if (e.target.closest(".no") || e.target.closest(".x")) stop();
   });
   function placeBubble() {
-    const o = orb.getBoundingClientRect(), b = bubble.getBoundingClientRect(), W = innerWidth, H = innerHeight, m = 12;
+    // the orb's place to be, not where it is now: it may still be sliding there
+    const ox = parseFloat(orb.style.left) || 0, oy = parseFloat(orb.style.top) || 0, size = orb.offsetWidth;
+    const o = { left: ox, top: oy, width: size, right: ox + size, bottom: oy + size };
+    const b = bubble.getBoundingClientRect(), W = innerWidth, H = innerHeight, m = 12;
     let left = o.left + o.width / 2 > W / 2 ? o.right - b.width : o.left;
     left = Math.max(16, Math.min(W - 16 - b.width, left));
     // below the orb while the free map has room for it there (above it are the game's own controls), otherwise above the monster
@@ -302,7 +305,8 @@ const start = (app) => {
     let x, y;
     if (custom && mode !== "dormant") { x = custom.x * innerWidth - size / 2; y = custom.y * innerHeight - size / 2; }
     // at the slot's left edge; asleep at its top, awake lower down, so the teacher standing over the orb has room above it
-    else { const d = app.dock(); x = d.left; y = mode === "dormant" ? d.top + 4 : d.bottom - size - 8; }
+    // awake it steps a little right, so the teacher standing over it stays on screen
+    else { const d = app.dock(); x = mode === "dormant" ? d.left : d.left + 28; y = mode === "dormant" ? d.top + 4 : d.bottom - size - 8; }
     x = Math.max(8, Math.min(innerWidth - size - 8, x)); y = Math.max(8, Math.min(innerHeight - size - 8, y));
     orb.style.left = Math.round(x) + "px"; orb.style.top = Math.round(y) + "px";
     orb.dataset.side = x + size / 2 > innerWidth / 2 ? "left" : "right"; // the hover question opens toward the middle

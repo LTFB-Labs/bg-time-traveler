@@ -30,6 +30,9 @@ import {
 const $ = (id) => document.getElementById(id);
 
 export function startLesson(map, lesson, { part = 0 } = {}) {
+    // the small back arrow leads to the lessons of this lesson's section in the hall
+    const section = CONTENT.quest.sections.find((sec) => sec.grade === lesson.grade && sec.lessons.includes(lesson.number));
+    if (section) document.getElementById('lsBack').href = `#lessons/${section.textbook}/${section.id}`;
     let current = -1;
     let isCheckPassed = false;
     let stopReplay = () => {};
