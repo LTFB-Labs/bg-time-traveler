@@ -68,11 +68,11 @@ body.lesson #map.grabbing { cursor: grabbing; }
 #lsDock { position: absolute; left: 8px; top: 40px; width: 80px; height: 200px; }
 
 /* a small back arrow in the top left corner, the legend's pills right of it */
-#lsBack { position: absolute; left: 8px; top: 6px; width: 28px; height: 28px; pointer-events: auto; }
-#lsBack svg { width: 15px; height: 15px; }
+#lsBack { position: absolute; left: 8px; top: 8px; width: 23px; height: 23px; pointer-events: auto; }
+#lsBack svg { width: 12px; height: 12px; }
 #lsBack:hover { background: var(--red); color: #fff; }
 /* the legend's small pills in the top left corner, side by side, clear of the compass */
-#lsLegend { position: absolute; left: 42px; top: 8px; max-width: calc(100% - 200px); display: flex; flex-wrap: wrap; align-items: flex-start; gap: 5px; font-weight: 800; font-size: 12.5px; color: var(--ink2); }
+#lsLegend { position: absolute; left: 35px; top: 8px; max-width: calc(100% - 200px); display: flex; flex-wrap: wrap; align-items: flex-start; gap: 5px; font-weight: 800; font-size: 12.5px; color: var(--ink2); }
 #lsLegend span {
     display: inline-flex;
     align-items: center;
@@ -747,7 +747,7 @@ body.lesson #compass { z-index: 1; top: auto; right: auto; left: 10px; bottom: 1
     body.lesson #lesson { top: calc(var(--big-h) + var(--gap) + 44px); bottom: calc(var(--strip-h) + var(--gap)); }
     body.lesson :is(#optBtn, #todayBtn, #toHall, #toQuest) { top: calc(var(--big-h) + 8px); }
     #lsLegend { top: calc(var(--big-h) + 8px); }
-    #lsBack { top: calc(var(--big-h) + 7px); }
+    #lsBack { top: calc(var(--big-h) + 8px); }
     #lsDock { top: calc(var(--big-h) + 40px); bottom: auto; }
     body.lesson #compass { bottom: calc(var(--strip-h) + 10px); }
     /* next to the sheet, level with its top edge */
