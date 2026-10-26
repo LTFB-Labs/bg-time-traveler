@@ -69,6 +69,8 @@ const realmsG = el("g", { "clip-path": "url(#landClip)" }, world);
 // relief: ink mountains, hills, forests and reeds over the whole map, drawn by tools/build-terrain.py; it lies over the
 // border fills, faint and blended like printed ink, so it tints with them and stays a quiet detail of a historical map
 el('image', { href: 'img/terrain.webp', x: 0, y: 0, width: GEO.W, height: GEO.H, preserveAspectRatio: 'none', opacity: .6, style: 'mix-blend-mode:multiply', 'pointer-events': 'none' }, world);
+// height tint: the ground above 700 m and above 1500 m in two soft brown steps, drawn by tools/build-elevation.py
+el('image', { href: 'img/elevation.webp', x: 0, y: 0, width: GEO.W, height: GEO.H, preserveAspectRatio: 'none', style: 'mix-blend-mode:multiply', 'pointer-events': 'none' }, world);
 el("path", { d: GEO.lakes, fill: SEA, stroke: "#6f8f86", style: `stroke-width:${ink(.8)}` }, world);
 el("path", { d: GEO.rivers, fill: "none", stroke: "#5c8fa3", style: `stroke-width:${ink(1.5)}`, "stroke-opacity": .85, "stroke-linecap": "round", "stroke-linejoin": "round" }, world);
 // the Danube three times as thick as the other rivers and a shade deeper, so the border river stands out

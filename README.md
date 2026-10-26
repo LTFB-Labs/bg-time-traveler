@@ -189,7 +189,7 @@ media:
 
 `content.js`, `geo.js` и `CREDITS.md` се генерират, но се записват в git заедно с промените.
 
-Релефът `img/terrain.webp` също се генерира и се записва в git. Пуска се рядко, само при промяна на рисунките или на правилата в `tools/build-terrain.py`. Скриптът е на Python и иска Pillow, numpy и scipy. Веднъж в `tools/`: `python3 -m venv .venv && .venv/bin/pip install pillow numpy scipy`. После `npm run terrain`. Първия път тегли височините в `tools/terrain-tiles/`.
+Релефът `img/terrain.webp` също се генерира и се записва в git. Пуска се рядко, само при промяна на рисунките или на правилата в `tools/build-terrain.py`. Скриптът е на Python и иска Pillow, numpy и scipy. Веднъж в `tools/`: `python3 -m venv .venv && .venv/bin/pip install pillow numpy scipy`. После `npm run terrain`. Първия път тегли височините в `tools/terrain-tiles/`. Двете нива височина (над 700 м и над 1500 м) в `img/elevation.webp` се правят по същия начин с `npm run elevation`.
 
 ## Файлове
 

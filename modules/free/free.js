@@ -222,13 +222,8 @@ addEventListener("keydown", (e) => {
   if (e.key === " ") { $("play").click(); e.preventDefault(); }
 });
 
-/* ---------- wheel on map scrubs time, unless the corner toggle gives the wheel to the map's zoom ---------- */
-let wheelZoom = false;
-$('wheelMode').addEventListener('click', () => {
-    wheelZoom = !wheelZoom;
-    map.setWheelZoom(wheelZoom);
-    $('wheelMode').textContent = wheelZoom ? 'Колелце: мащаб' : 'Колелце: година';
-});
+/* ---------- wheel on map scrubs time, unless the settings give the wheel to the map's zoom ---------- */
+$('wheelMode').addEventListener('change', (e) => map.setWheelZoom(e.target.value === 'zoom'));
 // a wheel scrub has no end event: it ends once the wheel rests this long. A trackpad keeps sending wheel events for a moment
 // after the fingers lift, so a move or a drag started meanwhile keeps the year, and the wheel waits for its rest to scrub again.
 const WHEEL_STOP_MS = 300;

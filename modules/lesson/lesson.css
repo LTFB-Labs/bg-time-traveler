@@ -601,7 +601,8 @@ body.album #freePop { top: 50%; right: auto; bottom: auto; left: 50%; transform:
 /* behind the cards, a library: shelves of books (img/library.svg, tools/build-library.mjs), softened and washed with the parchment */
 #lessonList::before { content: ''; position: absolute; inset: -8px; z-index: -2; background: url('../../img/library.svg') 0 0 / 520px auto repeat; filter: blur(1.5px) sepia(.3); }
 #lessonList::after { content: ''; position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at 50% 45%, rgba(248, 238, 212, .84) 0, rgba(239, 223, 182, .72) 55%, rgba(224, 201, 149, .58) 100%); }
-#lessonList .hall-top { display: flex; align-items: center; gap: 16px; padding: 20px 24px 4px; }
+#lessonList .hall-top { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 20px 24px 4px; }
+#lessonList .hall-top .title { flex-basis: 100%; display: flex; align-items: center; gap: 16px; }
 #lessonList .hall-top h1 { margin: 0; font-family: var(--title); font-weight: 400; font-size: clamp(32px, 5vw, 48px); line-height: 1; color: #5a2412; }
 #lessonList .hall-top .back { padding: 8px 14px 8px 10px; }
 #lessonList .hall-top .grow { flex: 1; }
@@ -651,10 +652,10 @@ body.album #freePop { top: 50%; right: auto; bottom: auto; left: 50%; transform:
     #lessonList .nav { display: none; }
 }
 
-/* ---- the round book button into the lesson hall: where the timeline meets the right panel, on the free map and in a lesson ---- */
+/* ---- the round book button into the lesson hall: under the card at the bottom right on the free map, where the timeline meets the panel in a lesson ---- */
 #toHall {
     position: fixed; z-index: 12; width: 56px; height: 56px; display: grid; place-items: center; border-radius: 50%;
-    right: calc(16px + var(--cardw) - 28px); bottom: calc(var(--tl) - 16px);
+    right: 16px; bottom: calc(var(--tl) + 20px);
     background: var(--red); color: #fff; box-shadow: 0 0 0 4px var(--card), 0 6px 16px rgba(60, 40, 15, .35); transition: transform .15s;
 }
 #toHall:hover { transform: scale(1.07); }
@@ -666,8 +667,8 @@ body:is(.lessons, .album) #toHall { display: none; }
     body.lesson #toHall { right: 16px; top: calc(42vh - 24px); bottom: auto; }
 }
 
-/* ---- the settings gear: on the year's row, at its right end beside the open panel, on the free map and in a lesson ---- */
-#optBtn { position: fixed; z-index: 12; top: 16px; right: calc(16px + var(--cardw) + 14px); width: 42px; height: 42px; }
+/* ---- the settings gear: top right above the card on the free map, beside the open panel in a lesson ---- */
+#optBtn { position: fixed; z-index: 12; top: 16px; right: 16px; width: 42px; height: 42px; }
 body.lesson #optBtn { top: var(--gap); right: calc(var(--gap) + var(--ls-w) + 14px); }
 body:is(.lessons, .album) #optBtn { display: none; }
 @media (max-width: 820px) {
@@ -675,8 +676,8 @@ body:is(.lessons, .album) #optBtn { display: none; }
     body.lesson #optBtn { top: 12px; right: 16px; }
 }
 
-/* ---- today's Bulgaria: a round "!" hint under the gear; its hint shows on hover, to the left ---- */
-#todayBtn { position: fixed; z-index: 12; top: 68px; right: calc(16px + var(--cardw) + 14px); width: 42px; height: 42px; font-family: var(--title); font-size: 22px; font-weight: 400; color: #7a1e12; }
+/* ---- today's Bulgaria: a round "!" left of the gear on the free map, under it in a lesson; its hint shows on hover, to the left ---- */
+#todayBtn { position: fixed; z-index: 12; top: 16px; right: 68px; width: 42px; height: 42px; font-family: var(--title); font-size: 22px; font-weight: 400; color: #7a1e12; }
 body.lesson #todayBtn { top: calc(var(--gap) + 52px); right: calc(var(--gap) + var(--ls-w) + 14px); }
 #todayBtn[aria-pressed=true] { background: #7a1e12; color: #fff; box-shadow: 0 0 0 3px #fbefd0, 0 2px 6px rgba(60, 40, 15, .3); }
 #todayBtn::after { content: attr(data-hint); position: absolute; right: calc(100% + 10px); top: 50%; translate: 0 -50%; white-space: nowrap; padding: 8px 12px; border-radius: 14px 14px 4px 14px; background: #fbf4e2; color: #4b3722; font: 800 14px/1.2 var(--font); box-shadow: 0 0 0 1px #d8c39a, 0 6px 16px rgba(60, 40, 15, .25); opacity: 0; scale: .9; transform-origin: 100% 60%; transition: opacity .2s, scale .2s; pointer-events: none; }

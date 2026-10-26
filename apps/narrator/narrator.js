@@ -11,7 +11,7 @@ const start = (app) => {
 
   /* ---------- styles ---------- */
   const css = `
-.nar-orb{position:fixed;z-index:15;width:var(--nar-size,68px);height:var(--nar-size,68px);margin:0;padding:0;border:0;border-radius:50%;background:none;cursor:pointer;touch-action:none;transition:opacity .35s,filter .35s,transform .25s;-webkit-tap-highlight-color:transparent}
+.nar-orb{position:fixed;z-index:15;width:var(--nar-size,68px);height:var(--nar-size,68px);margin:0;padding:0;border:0;border-radius:50%;background:none;cursor:pointer;touch-action:none;transition:opacity .35s,filter .35s,transform .25s,scale .3s ease;-webkit-tap-highlight-color:transparent}
 .nar-orb:focus-visible{outline:3px solid #7a1e12;outline-offset:4px}
 .nar-orb .core{position:absolute;inset:0;border-radius:50%;transition:transform .55s cubic-bezier(.3,1.35,.5,1)}
 .nar-orb .glow,.nar-orb .swirl,.nar-orb .blobs{position:absolute;border-radius:50%;animation:narSpin 7s linear infinite;animation-play-state:paused}
@@ -22,10 +22,11 @@ const start = (app) => {
 .nar-orb > :is(svg,img){position:absolute;left:50%;top:50%;width:46%;height:46%;transform:translate(-50%,-50%);color:#fff;filter:drop-shadow(0 1px 2px rgba(40,10,80,.45));transition:opacity .25s,transform .25s}
 .nar-orb .i-play,.nar-orb .i-pause{opacity:0;transform:translate(-50%,-50%) scale(.6)}
 .nar-orb[data-state=dormant]{opacity:.55;filter:saturate(.1) brightness(1.06)}
-.nar-orb[data-state=dormant]:hover,.nar-orb[data-state=dormant]:focus-visible{opacity:1;filter:none}
-/* on hover the dormant teacher shows its colours and asks; no play icon over its face */
+.nar-orb[data-state=dormant]:hover,.nar-orb[data-state=dormant]:focus-visible{opacity:1;filter:none;scale:1.25;transition:opacity .35s,filter .35s,transform .25s,scale .8s linear(0,.3 3%,.85 7%,1.18 11%,1.3 14%,1.27 17%,1.08 23%,.94 29%,.92 33%,.98 41%,1.02 48%,1.01 57%,1)}
+/* on hover the dormant teacher grows a quarter with a spring, shows its colours and asks; no play icon over its face */
 .nar-orb[data-state=dormant]::after{content:"Искаш ли да ти разкажа?";position:absolute;left:calc(100% + 14px);top:50%;translate:0 -50%;white-space:nowrap;padding:9px 14px;border-radius:16px 16px 16px 4px;background:#fbf4e2;color:#4b3722;font:800 14px/1.2 Nunito,system-ui,sans-serif;box-shadow:0 0 0 1px #d8c39a,0 6px 16px rgba(60,40,15,.25);opacity:0;scale:.85;transform-origin:0 70%;transition:opacity .2s,scale .25s cubic-bezier(.3,1.5,.5,1);pointer-events:none}
-.nar-orb[data-state=dormant]:hover::after,.nar-orb[data-state=dormant]:focus-visible::after{opacity:1;scale:1}
+.nar-orb[data-side=left]::after{left:auto;right:calc(100% + 14px);border-radius:16px 16px 4px 16px;transform-origin:100% 70%}
+.nar-orb[data-state=dormant]:hover::after,.nar-orb[data-state=dormant]:focus-visible::after{opacity:1;scale:.8}
 .nar-orb[data-state=paused]:hover .i-person{opacity:0;transform:translate(-50%,-50%) scale(.6)}
 .nar-orb[data-state=paused]:hover .i-play{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .nar-orb[data-state=playing]:hover .i-person{opacity:0;transform:translate(-50%,-50%) scale(.6)}
@@ -305,6 +306,7 @@ const start = (app) => {
     else { const d = app.dock(); x = d.left + (d.width - size) / 2; y = d.bottom - size - 8; } // bottom of the slot: the monster needs the room above
     x = Math.max(8, Math.min(innerWidth - size - 8, x)); y = Math.max(8, Math.min(innerHeight - size - 8, y));
     orb.style.left = Math.round(x) + "px"; orb.style.top = Math.round(y) + "px";
+    orb.dataset.side = x + size / 2 > innerWidth / 2 ? "left" : "right"; // the hover question opens toward the middle
     if (!bubble.hidden) placeBubble();
   }
   let drag = null, justDragged = false;

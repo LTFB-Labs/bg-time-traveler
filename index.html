@@ -7,7 +7,7 @@
 <meta name="description" content="Дърпай слайдъра и виж как се променя България от 600 г. до днес.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Kurale&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Caveat:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Kurale&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Caveat:wght@600&family=Alice&display=swap">
 <!-- colours and fonts come from the theme; the layout sizes stay with the page -->
 <link rel="stylesheet" href="themes/default.css">
 <style>
@@ -87,11 +87,11 @@ button{font-family:inherit;cursor:pointer}
 .pv[data-pins=banner] .mk{top:42px}
 
 /* the compass: an ink rose in the top right corner of the map, left of the card; still, and the same size at any zoom */
-#compass{position:fixed;top:16px;right:calc(var(--cardw) + 84px);width:104px;height:104px;pointer-events:none;opacity:.85;mix-blend-mode:multiply}
+#compass{position:fixed;top:16px;right:calc(var(--cardw) + 40px);width:104px;height:104px;pointer-events:none;opacity:.85;mix-blend-mode:multiply}
 
 /* HUD */
 #hud{position:fixed;z-index:12;left:max(16px,env(safe-area-inset-left));top:max(12px,env(safe-area-inset-top));pointer-events:none;max-width:calc(100vw - 32px)}
-#year{font-family:var(--title);font-size:clamp(39px,6vw,69px);line-height:.9;color:#5a2412;text-shadow:0 2px 0 var(--paper),0 0 18px var(--paper),0 0 30px var(--paper);letter-spacing:-.01em}
+#year{font-family:'Alice',Georgia,serif;font-size:clamp(39px,6vw,69px);line-height:.9;color:#5a2412;text-shadow:0 2px 0 var(--paper),0 0 18px var(--paper),0 0 30px var(--paper);letter-spacing:-.01em}
 #year small{font-size:.32em;margin-left:.15em;letter-spacing:0}
 #era{display:inline-flex;align-items:center;gap:8px;margin-top:6px;padding:5px 12px 5px 10px;border-radius:999px;background:rgba(251,244,226,.92);box-shadow:var(--shadow);font-weight:900;font-size:15px}
 #era i{width:12px;height:12px;border-radius:50%;flex:none}
@@ -100,8 +100,8 @@ button{font-family:inherit;cursor:pointer}
 #ruler b{font-weight:900;color:var(--ink)}
 /* search: a pill under the ruler line; its list drops over the map's left side (js/free-search.js). The 16px text keeps
    iPhone Safari from zooming in; #hud sits above the card panel so the open list does too */
-#find{position:relative;margin-top:8px;pointer-events:auto}
-#findBox{display:block;width:330px;max-width:100%;padding:7px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(251,244,226,.95);box-shadow:0 1px 4px rgba(60,40,15,.15);font:700 16px var(--font);color:var(--ink);outline:none}
+#find{position:relative;display:inline-block;vertical-align:top;margin:6px 0 0 8px;pointer-events:auto}
+#findBox{display:block;width:330px;max-width:100%;height:30.5px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:#fff;box-shadow:var(--shadow);font:700 16px var(--font);color:var(--ink);outline:none}
 #findBox::placeholder{font-size:13.5px;font-weight:700;color:var(--muted)}
 #findBox:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(200,64,47,.18)}
 #findList{position:absolute;left:0;top:calc(100% + 6px);width:360px;max-width:calc(100vw - 32px);max-height:55vh;overflow:auto;margin:0;padding:6px;list-style:none;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
@@ -113,12 +113,14 @@ button{font-family:inherit;cursor:pointer}
 #findList [aria-selected=true]{background:#f1dfb2;box-shadow:inset 3px 0 0 var(--red)}
 #findList .none{padding:10px;font-weight:700;color:var(--muted)}
 #hudBr{display:block;height:0}
-#wheelMode{display:flex;margin-top:8px;padding:5px 12px;font-size:13px;pointer-events:auto;box-shadow:0 1px 4px rgba(60,40,15,.15)}
+#options fieldset + fieldset{margin-top:14px}
 @media (hover:none){#wheelMode{display:none}}
 #hud .opt{display:flex}
 /* the way into lessons sits in one row with the gear, as tall as it */
 #hudBtns{display:flex;gap:8px;margin-top:8px}
 #dock{width:110px;height:150px;margin-top:2px}
+/* on the wide layout the AI teacher's slot is under the card, just left of the book */
+@media (min-width:761px){#dock{position:fixed;right:96px;bottom:calc(var(--tl) + 6px);width:68px;height:76px;margin:0}}
 
 /* "Граници днес" has a dashed line for an icon; pressed, the line darkens and a red ring shows it is on */
 
@@ -126,7 +128,7 @@ button{font-family:inherit;cursor:pointer}
 
 
 /* card */
-#card{position:fixed;right:16px;top:16px;bottom:calc(var(--tl) + 14px);width:var(--cardw);background:var(--card);border-radius:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line);transition:transform .45s cubic-bezier(.2,.9,.3,1),opacity .3s}
+#card{position:fixed;right:16px;top:72px;bottom:calc(var(--tl) + 96px);width:var(--cardw);background:var(--card);border-radius:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line);transition:transform .45s cubic-bezier(.2,.9,.3,1),opacity .3s}
 #card .ph{position:relative;flex:none;aspect-ratio:4/3;max-height:42%;background:#e6d5ad;overflow:hidden}
 #card .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;animation:fadein .6s ease}
 #card .ph .cr{position:absolute;left:0;right:0;bottom:0;padding:14px 10px 5px;font-size:10.5px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.55));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -246,13 +248,11 @@ a.btn{text-decoration:none}
 
 <div id="hud">
   <div id="year">600</div>
-  <div id="era"><i></i><span></span></div><span id="hudBr"></span>
-  <div id="ruler"></div>
-  <div id="find" role="search">
+  <div id="era"><i></i><span></span></div><div id="find" role="search">
     <input id="findBox" type="search" placeholder="Търси владетел, битка, място или година" autocomplete="off" spellcheck="false" aria-controls="findList" aria-expanded="false">
     <ul id="findList" role="listbox" hidden></ul>
-  </div>
-  <button class="btn" id="wheelMode">Колелце: година</button>
+  </div><span id="hudBr"></span>
+  <div id="ruler"></div>
   <div id="dock" aria-hidden="true"></div>
 </div>
 
@@ -321,6 +321,11 @@ a.btn{text-decoration:none}
     <label><input type="radio" name="pins" value="seal"><span class="pv" data-pins="seal"><span class="mk seen" aria-label="Перперикон"></span></span><span><b>Печат</b><small>Малък. Името се появява, щом отвориш картичката.</small></span></label>
     <label><input type="radio" name="pins" value="banner"><span class="pv" data-pins="banner"><span class="mk" aria-label="Перперикон"></span></span><span><b>Щит с име</b><small>Името винаги е на лента до щита.</small></span></label>
   </fieldset>
+  <fieldset id="wheelMode">
+    <legend>Колелцето на мишката над картата</legend>
+    <label><input type="radio" name="wheel" value="year" checked><span><b>Мести годината</b><small>Въртиш и времето тече напред или назад</small></span></label>
+    <label><input type="radio" name="wheel" value="zoom"><span><b>Приближава картата</b><small>Въртиш и картата се приближава или отдалечава</small></span></label>
+  </fieldset>
   <button class="btn" id="reset" type="button">Изтрий напредъка</button>
 </div>
 
@@ -328,10 +333,9 @@ a.btn{text-decoration:none}
 <main id="lessonList" hidden>
   <header class="hall-top">
     <a class="btn back" href="#free"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Към картата</a>
-    <h1>Уроци</h1>
-    <select class="grade" aria-label="Клас"></select>
     <span class="grow"></span>
     <a class="btn" href="#album">Албум</a>
+    <div class="title"><h1>Уроци</h1><select class="grade" aria-label="Клас"></select></div>
   </header>
   <div class="hall">
     <button class="nav prev" type="button" aria-label="Предишни уроци"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
