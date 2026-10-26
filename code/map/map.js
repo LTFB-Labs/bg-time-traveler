@@ -61,7 +61,10 @@ el("ellipse", { cy: 4.2, rx: 1.8, ry: 1.9 }, foot);
 const world = el("g", {}, svg);
 // the sea: a soft watercolour blue, as on old hand-coloured maps
 const SEA = "#bdd2d8";
-el("rect", { x: -3000, y: -3000, width: GEO.W + 6000, height: GEO.H + 6000, fill: SEA }, world);
+// the open sea a shade deeper; a broad band along every coast keeps the shallow colour, like the depth line of an old chart
+const DEEP = "#a7c1ca";
+el("rect", { x: -3000, y: -3000, width: GEO.W + 6000, height: GEO.H + 6000, fill: DEEP }, world);
+el("path", { d: GEO.land, fill: SEA, stroke: SEA, "stroke-width": 70, "stroke-linejoin": "round" }, world);
 const ripple = el("g", { fill: "none", "stroke-linejoin": "round" }, world);
 [[26, .06], [16, .1], [8, .16]].forEach(([w, o]) => el("path", { d: GEO.land, stroke: "#4f7f92", style: `stroke-width:${ink(w)}`, "stroke-opacity": o }, ripple));
 const landPath = el("path", { d: GEO.land, fill: "#f2e6c6" }, world);

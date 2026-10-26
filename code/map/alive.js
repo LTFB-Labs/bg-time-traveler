@@ -28,7 +28,7 @@ const FLOCK_LEAD_MS = 4000;
 const MAX_FLOCKS = 2;
 
 export function startAlive(map) {
-    const scene = { map, isCalm: matchMedia('(prefers-reduced-motion: reduce)').matches, isAwake: false, slowing: null, ships: [] };
+    const scene = { map, isCalm: matchMedia('(prefers-reduced-motion: reduce)').matches, isAwake: false, slowing: null, ships: [], flocks: new Set() };
     scene.timers = { slow: 0, birds: 0 };
     scene.waves = addWaves(scene);
     scene.layer = addLayer();
@@ -49,6 +49,7 @@ function onView(scene) {
     wake(scene);
     drawWaves(scene);
     followCamera(scene);
+    carryFlocks(scene);
 }
 
 function el(tag, attrs, parent) {
@@ -244,8 +245,28 @@ function flyBirds(scene) {
     flock.className = 'fx-birds';
     flock.innerHTML = flockSvg(3 + Math.floor(Math.random() * 7));
     scene.clouds.sky.before(flock);
-    flock.animate(keyframes, { duration: ms, easing: 'linear' }).onfinish = () => flock.remove();
+    // the flock flies over a spot of the map, not of the screen: the map's top left corner on screen now
+    const view = scene.map.view();
+    const ride = { el: flock, at: [view.x, view.y] };
+    scene.flocks.add(ride);
+    flock.animate(keyframes, { duration: ms, easing: 'linear' }).onfinish = () => {
+        scene.flocks.delete(ride);
+        flock.remove();
+    };
     scheduleFlock(scene, random(1000, 3500));
+}
+
+// a dragged map carries its flocks along; they keep their size at any zoom, so a zoom only moves them with the map
+function carryFlocks(scene) {
+    const view = scene.map.view();
+    const s = innerWidth / view.w;
+    scene.flocks.forEach((ride) => {
+        if (!ride.el.isConnected) {
+            scene.flocks.delete(ride);
+            return;
+        }
+        ride.el.style.translate = `${((ride.at[0] - view.x) * s).toFixed(1)}px ${((ride.at[1] - view.y) * s).toFixed(1)}px`;
+    });
 }
 
 // the flocks still in the air fade away while the map slows down, and are gone when it goes still
@@ -259,7 +280,7 @@ function fadeFlocks() {
 // its own, because its flap animates the path's transform and would carry a place set on the path with it; the wings
 // beat in a ripple from the leader back
 function flockSvg(count) {
-    const scale = random(.8, 1.4);
+    const scale = random(.55, .95);
     const birds = Array.from({ length: count }, (_, i) => `<g transform="translate(${vSpot(i).join(' ')})"><path d="M-6 0q3 -4 6 0q3 -4 6 0" style="animation-delay:-${(i * .13).toFixed(2)}s"/></g>`);
     return `<svg viewBox="-70 -45 85 90" style="width:${(85 * scale).toFixed(0)}px">${birds.join('')}</svg>`;
 }
