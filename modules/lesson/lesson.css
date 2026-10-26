@@ -17,6 +17,8 @@ body.lesson :is(#lsFog, #lsFogTint) {
     display: block; position: fixed; inset: 0; pointer-events: none;
     mask: var(--fog-ring), var(--fog-side); -webkit-mask: var(--fog-ring), var(--fog-side);
 }
+/* with the sheet slid away (the AI teacher talks) the fog rings the whole window */
+body.lesson.teacher-on :is(#lsFog, #lsFogTint) { --pane: 100%; }
 /* the fog itself softens and quiets the map; the tint over it warms it like old paper, multiplied into the map's own colours */
 body.lesson #lsFog { backdrop-filter: blur(2px) saturate(.7) contrast(.9); -webkit-backdrop-filter: blur(2px) saturate(.7) contrast(.9); }
 body.lesson #lsFogTint { background: #dcc596; mix-blend-mode: multiply; opacity: .55; }
@@ -480,6 +482,9 @@ body.lesson #compass { z-index: 1; top: auto; right: auto; left: 10px; bottom: 1
 .predict .reveal { margin-top: 12px; padding: 10px 14px; border-left: 4px solid #b9832a; background: #fdf0d0; border-radius: 0 10px 10px 0; font-weight: 800; color: #3f230f; animation: fadein .3s ease-out; }
 
 /* ---------- the check ---------- */
+/* while the AI teacher talks the reading sheet slides out to the right, and comes back when it is switched off */
+body.lesson #lesson { transition: transform .55s cubic-bezier(.3, 1, .4, 1); }
+body.lesson.teacher-on #lesson { transform: translateX(calc(100% + var(--gap) + 24px)); }
 #lesson { --ok: #3f8a3a; --ok-bg: #e4f0d8; --bad: #c8402f; --bad-bg: #f9e0d6; }
 #lsCheck { display: grid; gap: 14px; }
 /* the prediction block also has a .q, its question line: the card style belongs to the check's questions only */

@@ -50,20 +50,20 @@ const start = (app) => {
 .nar-orb .mon{position:absolute;left:50%;bottom:16px;width:116px;height:96px;margin-left:-58px;opacity:0;transform:translateY(26px) scale(.4);transform-origin:50% 100%;transition:opacity .4s,transform .65s cubic-bezier(.3,1.5,.5,1);pointer-events:none}
 .nar-orb .mon img{display:block;width:100%;height:100%;object-fit:contain;object-position:50% 100%;filter:drop-shadow(0 5px 7px rgba(120,150,255,.6))}
 .nar-orb .mon::after{content:"";position:absolute;inset:35% -12% -8%;background:radial-gradient(ellipse at 50% 100%,rgba(140,200,255,.65),rgba(255,120,210,.22) 45%,transparent 70%);mix-blend-mode:screen;pointer-events:none}
-.nar-orb:not([data-state=dormant]) .mon{opacity:1;transform:none}
+.nar-orb:not([data-state=dormant]) .mon{opacity:1;transform:scale(1.3)}
 .nar-orb[data-state=asking] .mon img,.nar-orb[data-state=playing] .mon img{animation:narBob 2.2s ease-in-out infinite}
 .nar-orb.talk .mon img{transform-origin:50% 100%;animation:narBob 2.2s ease-in-out infinite,narTalk .2s ease-in-out infinite alternate}
 @keyframes narTalk{to{scale:1.035 .97}}
 @keyframes narBob{50%{transform:translateY(-3px)}}
 @keyframes narBeam{50%{opacity:.6}}
-.nar-bubble{position:fixed;z-index:16;width:min(350px,calc(100vw - 32px));padding:14px 16px 12px;border-radius:18px;background:#fbf4e2;color:#3f2a14;border:1px solid #d8c39a;box-shadow:0 12px 34px rgba(60,40,15,.28),0 2px 6px rgba(60,40,15,.15);font:600 16px/1.45 Nunito,system-ui,sans-serif;animation:narIn .25s ease-out}
+.nar-bubble{position:fixed;z-index:16;width:min(420px,calc(100vw - 32px));padding:16px 20px 14px;border-radius:18px;background:#fbf4e2;color:#3f2a14;border:1px solid #d8c39a;box-shadow:0 12px 34px rgba(60,40,15,.28),0 2px 6px rgba(60,40,15,.15);font:600 16px/1.45 Nunito,system-ui,sans-serif;animation:narIn .25s ease-out}
 .nar-bubble[hidden]{display:none}
 .nar-bubble .who{display:flex;align-items:center;gap:8px;margin:0 0 6px;font-weight:900;font-size:13px;letter-spacing:.04em;color:#7a1e12;text-transform:uppercase}
 .nar-bubble .who i{width:9px;height:9px;border-radius:50%;background:conic-gradient(#5b8cff,#9b5cff,#ff5ea8,#ffae4d,#3fd3c4,#5b8cff)}
 .nar-bubble .who button{margin-left:auto;border:0;background:#efe0bc;color:#5b3d17;width:28px;height:28px;border-radius:50%;font:900 16px/1 Nunito,sans-serif;cursor:pointer}
-.nar-bubble .say{margin:0;font-size:17px;min-height:1.45em}
+.nar-bubble .say{margin:0;font-size:19.5px;line-height:1.45;min-height:1.45em}
 .nar-bubble .say.dim{opacity:.55}
-.nar-bubble .note{margin:8px 0 0;font-size:13.5px;color:#8a7352}
+.nar-bubble .note{margin:8px 0 0;font-size:14.5px;color:#8a7352}
 .nar-bubble .acts{display:flex;gap:8px;margin-top:12px}
 .nar-bubble .acts button{flex:1;border:0;border-radius:12px;padding:10px 12px;font:900 15px Nunito,sans-serif;cursor:pointer;background:#efe0bc;color:#5b3d17}
 .nar-bubble .acts button.yes{background:#c8402f;color:#fff}
@@ -194,7 +194,7 @@ const start = (app) => {
     const n = items.findIndex((x) => x.year > cur.year);
     return n < 0 ? items.length - 1 : n;
   }
-  function setMode(m) { const woke = (mode === "dormant") !== (m === "dormant"); mode = m; orb.dataset.state = m; if (woke) placeOrb(); orb.setAttribute("aria-label", { dormant: "Учител: разкажи ми урока", asking: "Учител", playing: "Пауза", paused: "Продължи урока" }[m]); render(); }
+  function setMode(m) { const woke = (mode === "dormant") !== (m === "dormant"); mode = m; orb.dataset.state = m; document.body.classList.toggle("teacher-on", m === "playing" || m === "paused"); if (woke) placeOrb(); orb.setAttribute("aria-label", { dormant: "Учител: разкажи ми урока", asking: "Учител", playing: "Пауза", paused: "Продължи урока" }[m]); render(); }
 
   function ask() {
     idx = indexFromTimeline();
@@ -252,8 +252,8 @@ const start = (app) => {
   // switched off, the teacher goes home to its corner; a place the child dragged it to lasts only while it talks
   function stop() { run++; stopSpeech(); hidePhoto(); setMode("dormant"); custom = null; try { localStorage.removeItem(KEY); } catch (e) {} placeOrb(); }
 
-  // the viewer took the timeline into their own hands: pause and continue from wherever they leave it
-  app.on("input", () => { if (mode === "playing") { pause(); moved = true; } else if (mode === "paused") { moved = true; waiting = false; } });
+  // the child opened another part: while talking the teacher reads that part, while paused it continues from there
+  app.on("input", () => { if (mode === "playing") begin(indexFromTimeline(), true); else if (mode === "paused") { moved = true; waiting = false; } });
   // the child answered the question the teacher waits on: read the rest of that part
   app.on("focus", ({ item }) => {
     if (!waiting || mode !== "paused" || !item || item.id !== items[idx].id || item.wait) return;
@@ -289,7 +289,7 @@ const start = (app) => {
     let left = o.left + o.width / 2 > W / 2 ? o.right - b.width : o.left;
     left = Math.max(16, Math.min(W - 16 - b.width, left));
     // below the orb while the free map has room for it there (above it are the game's own controls), otherwise above the monster
-    const st = app.stage(), lift = mode === "dormant" ? 0 : 44; // the monster stands above the orb
+    const st = app.stage(), lift = mode === "dormant" ? 0 : 66; // the monster stands above the orb
     let top = o.bottom + m;
     if (top + b.height > Math.min(H - 12, st.y + st.h)) top = o.top - lift - b.height - m;
     if (top < 12) top = Math.min(H - b.height - 12, o.bottom + m);
@@ -306,7 +306,7 @@ const start = (app) => {
     if (custom && mode !== "dormant") { x = custom.x * innerWidth - size / 2; y = custom.y * innerHeight - size / 2; }
     // at the slot's left edge; asleep at its top, awake lower down, so the teacher standing over the orb has room above it
     // awake it steps a little right, so the teacher standing over it stays on screen
-    else { const d = app.dock(); x = mode === "dormant" ? d.left : d.left + 28; y = mode === "dormant" ? d.top + 4 : d.bottom - size - 8; }
+    else { const d = app.dock(); x = mode === "dormant" ? d.left : d.left + 42; y = mode === "dormant" ? d.top + 4 : d.bottom - size - 8; }
     x = Math.max(8, Math.min(innerWidth - size - 8, x)); y = Math.max(8, Math.min(innerHeight - size - 8, y));
     orb.style.left = Math.round(x) + "px"; orb.style.top = Math.round(y) + "px";
     orb.dataset.side = x + size / 2 > innerWidth / 2 ? "left" : "right"; // the hover question opens toward the middle

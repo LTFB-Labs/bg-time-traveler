@@ -620,15 +620,15 @@ function holdArrow(len) {
 })();
 
 /* ---------- focus fog: a light wash on the map round the part's box; it belongs to the map, so a drag carries it along ---------- */
-// a third of the screen fog's strength: the box stays clear, the land a little further out goes pale
+// two steps: the box stays clear, the land round it goes a little pale, and the far lands, past twice the box, paler still
 const focusPaint = el("radialGradient", { id: "focusPaint", gradientUnits: "userSpaceOnUse", cx: 0, cy: 0, r: 1 }, defs);
-el("stop", { offset: 0.72, "stop-color": "#f2e8cd", "stop-opacity": 0 }, focusPaint);
-el("stop", { offset: 1, "stop-color": "#f2e8cd", "stop-opacity": 0.3 }, focusPaint);
+[[0.24, 0], [0.34, 0.38], [0.6, 0.38], [0.78, 0.7]].forEach(([offset, opacity]) => el("stop", { offset, "stop-color": "#f2e8cd", "stop-opacity": opacity }, focusPaint));
 const focusFog = el("rect", { class: "focus-fog", x: -3000, y: -3000, width: GEO.W + 6000, height: GEO.H + 6000, fill: "url(#focusPaint)", "pointer-events": "none", display: "none" }, svg);
 function focusOn([west, south, east, north]) {
     const [x0, y0] = P(west, north);
     const [x1, y1] = P(east, south);
-    focusPaint.setAttribute("gradientTransform", `translate(${(x0 + x1) / 2} ${(y0 + y1) / 2}) scale(${((x1 - x0) / 2) * 1.45} ${((y1 - y0) / 2) * 1.45})`);
+    // the gradient reaches three times the box's half size; its stops place the two steps inside that
+    focusPaint.setAttribute("gradientTransform", `translate(${(x0 + x1) / 2} ${(y0 + y1) / 2}) scale(${((x1 - x0) / 2) * 4.35} ${((y1 - y0) / 2) * 4.35})`);
     focusFog.removeAttribute("display");
 }
 
