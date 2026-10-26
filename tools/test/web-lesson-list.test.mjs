@@ -15,6 +15,7 @@ const data = (over = {}) => ({ grades: { 5: [READY] }, lessons: { '5-odrisko-tsa
 
 test('readyLessonCardHasItsStoryChaptersLeadAndPhoto', () => {
     assert.deepEqual(hallCards(data()), [{
+        grade: 5,
         number: 26,
         title: 'Древна Тракия. Царството на одрисите',
         date: '1300 — 250 г. пр.Хр.',
@@ -42,8 +43,8 @@ test('lessonsOfAllGradesFollowEachOther', () => {
 });
 
 test('mocksComeAfterTheRealLessonsAndDoNotOpen', () => {
-    const mock = { number: 27, title: 'Римляните', span: [-250, 395], photo: 'panagyurishte', lead: 'Описание.', chapters: ['А'] };
+    const mock = { grade: 5, number: 27, title: 'Римляните', span: [-250, 395], photo: 'panagyurishte', lead: 'Описание.', chapters: ['А'] };
     const cards = hallCards(data(), [mock]);
     assert.equal(cards.length, 2);
-    assert.deepEqual(cards[1], { number: 27, title: 'Римляните', date: '250 г. пр.Хр. — 395 г. сл.Хр.', lead: 'Описание.', chapters: ['А'], photo: 'p.jpg', href: null, isPassed: false });
+    assert.deepEqual(cards[1], { grade: 5, number: 27, title: 'Римляните', date: '250 г. пр.Хр. — 395 г. сл.Хр.', lead: 'Описание.', chapters: ['А'], photo: 'p.jpg', href: null, isPassed: false });
 });

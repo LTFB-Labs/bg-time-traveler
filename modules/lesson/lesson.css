@@ -132,7 +132,7 @@ body.lesson #lsMap { display: flex; }
 /* "Върни ме": the map pane's top right corner, after the kid moves the map; the pane box itself lets clicks through to the map */
 #lsReturn { position: absolute; top: 12px; right: 136px; pointer-events: auto; box-shadow: var(--shadow); }
 /* the compass takes the map pane's top right corner, so "Върни ме" stands to its left */
-body.lesson #compass { top: 12px; right: calc(var(--ls-w) + 2 * var(--gap) + 16px); }
+body.lesson #compass { top: 12px; right: calc(var(--ls-w) + 2 * var(--gap) + 60px); }
 
 /* ---- reading sheet: laid on the map, with the map showing above, below and to its right ---- */
 #lesson {
@@ -156,12 +156,10 @@ body.lesson #compass { top: 12px; right: calc(var(--ls-w) + 2 * var(--gap) + 16p
 #lsFold svg { width: 16px; height: 16px; transition: rotate .2s; }
 #lsFold[aria-expanded="true"] svg { rotate: 180deg; }
 #lsBar { position: relative; padding: 8px 0 6px; }
-/* the gear that opens the options menu */
-#lsBar .opt { position: absolute; top: 8px; right: -8px; }
-/* the way back to the lesson list, left of the gear and as tall as it */
-#lsLessons { position: absolute; top: 8px; right: 36px; height: 36px; padding: 0 14px; font-size: 13px; box-shadow: 0 1px 4px rgba(60, 40, 15, .15); }
+/* the way back to the lesson list, at the right end of the bar */
+#lsLessons { position: absolute; top: 8px; right: -8px; height: 36px; padding: 0 14px; font-size: 13px; box-shadow: 0 1px 4px rgba(60, 40, 15, .15); }
 /* as tall as the buttons beside it */
-#lsCrumbs { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; min-height: 36px; padding-right: 130px; }
+#lsCrumbs { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; min-height: 36px; padding-right: 90px; }
 #lsCrumbs .chip.grade { background: #7a1e12; color: #fff; }
 #lsTitle { font-family: var(--title); font-weight: 400; font-size: clamp(22px, 2vw, 28px); margin: 8px 0 2px; color: #3f230f; line-height: 1.1; }
 /* the parts as a quest trail: waypoints on a dashed route, a flag at the start, a question mark for the check, a star at the end;
@@ -606,8 +604,12 @@ body.album #freePop { top: 50%; right: auto; bottom: auto; left: 50%; transform:
 #lessonList::before { content: ''; position: absolute; inset: -8px; z-index: -2; background: url('../../img/library.svg') 0 0 / 520px auto repeat; filter: blur(1.5px) sepia(.3); }
 #lessonList::after { content: ''; position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at 50% 45%, rgba(248, 238, 212, .84) 0, rgba(239, 223, 182, .72) 55%, rgba(224, 201, 149, .58) 100%); }
 #lessonList .hall-top { display: flex; align-items: center; gap: 16px; padding: 20px 24px 4px; }
-#lessonList .hall-top h1 { flex: 1; margin: 0; font-family: var(--title); font-weight: 400; font-size: clamp(32px, 5vw, 48px); line-height: 1; color: #5a2412; }
+#lessonList .hall-top h1 { margin: 0; font-family: var(--title); font-weight: 400; font-size: clamp(32px, 5vw, 48px); line-height: 1; color: #5a2412; }
 #lessonList .hall-top .back { padding: 8px 14px 8px 10px; }
+#lessonList .hall-top .grow { flex: 1; }
+/* the grade picker beside the title, dressed like the app's buttons */
+#lessonList .grade { appearance: none; padding: 9px 36px 9px 14px; border: 0; border-radius: 14px; font: inherit; font-weight: 900; font-size: 15px; color: #5b3d17; cursor: pointer; background: #efe0bc url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%235b3d17%27 stroke-width=%273%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath d=%27M6 9l6 6 6-6%27/%3E%3C/svg%3E") right 12px center / 14px no-repeat; box-shadow: 0 1px 4px rgba(60, 40, 15, .15); }
+#lessonList .shelf .empty { align-self: center; margin: 0 auto; padding: 18px 24px; border: 2px dashed var(--line); border-radius: 16px; background: rgba(251, 244, 226, .85); font-weight: 800; color: var(--muted); }
 #lessonList .hall { position: relative; flex: 1; min-height: 0; display: flex; align-items: center; }
 #lessonList .shelf {
     display: flex; gap: 24px; width: 100%; margin: 0; padding: 20px max(56px, 6vw) 32px; list-style: none;
@@ -664,4 +666,13 @@ body:is(.lessons, .album) #toHall { display: none; }
 @media (max-width: 820px) {
     #toHall { right: 12px; top: 12px; bottom: auto; width: 48px; height: 48px; }
     body.lesson #toHall { right: 16px; top: calc(42vh - 24px); bottom: auto; }
+}
+
+/* ---- the settings gear: on the year's row, at its right end beside the open panel, on the free map and in a lesson ---- */
+#optBtn { position: fixed; z-index: 12; top: 16px; right: calc(16px + var(--cardw) + 14px); width: 42px; height: 42px; }
+body.lesson #optBtn { top: var(--gap); right: calc(var(--gap) + var(--ls-w) + 14px); }
+body:is(.lessons, .album) #optBtn { display: none; }
+@media (max-width: 820px) {
+    #optBtn { top: 12px; right: 68px; }
+    body.lesson #optBtn { top: 12px; right: 16px; }
 }

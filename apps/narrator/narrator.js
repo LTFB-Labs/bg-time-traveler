@@ -22,9 +22,12 @@ const start = (app) => {
 .nar-orb > :is(svg,img){position:absolute;left:50%;top:50%;width:46%;height:46%;transform:translate(-50%,-50%);color:#fff;filter:drop-shadow(0 1px 2px rgba(40,10,80,.45));transition:opacity .25s,transform .25s}
 .nar-orb .i-play,.nar-orb .i-pause{opacity:0;transform:translate(-50%,-50%) scale(.6)}
 .nar-orb[data-state=dormant]{opacity:.55;filter:saturate(.1) brightness(1.06)}
-.nar-orb[data-state=dormant]:hover,.nar-orb[data-state=dormant]:focus-visible{opacity:.95;filter:saturate(.55)}
-.nar-orb[data-state=dormant]:hover .i-person,.nar-orb[data-state=dormant]:focus-visible .i-person,.nar-orb[data-state=paused]:hover .i-person{opacity:0;transform:translate(-50%,-50%) scale(.6)}
-.nar-orb[data-state=dormant]:hover .i-play,.nar-orb[data-state=dormant]:focus-visible .i-play,.nar-orb[data-state=paused]:hover .i-play{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.nar-orb[data-state=dormant]:hover,.nar-orb[data-state=dormant]:focus-visible{opacity:1;filter:none}
+/* on hover the dormant teacher shows its colours and asks; no play icon over its face */
+.nar-orb[data-state=dormant]::after{content:"Искаш ли да ти разкажа?";position:absolute;left:calc(100% + 14px);top:50%;translate:0 -50%;white-space:nowrap;padding:9px 14px;border-radius:16px 16px 16px 4px;background:#fbf4e2;color:#4b3722;font:800 14px/1.2 Nunito,system-ui,sans-serif;box-shadow:0 0 0 1px #d8c39a,0 6px 16px rgba(60,40,15,.25);opacity:0;scale:.85;transform-origin:0 70%;transition:opacity .2s,scale .25s cubic-bezier(.3,1.5,.5,1);pointer-events:none}
+.nar-orb[data-state=dormant]:hover::after,.nar-orb[data-state=dormant]:focus-visible::after{opacity:1;scale:1}
+.nar-orb[data-state=paused]:hover .i-person{opacity:0;transform:translate(-50%,-50%) scale(.6)}
+.nar-orb[data-state=paused]:hover .i-play{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .nar-orb[data-state=playing]:hover .i-person{opacity:0;transform:translate(-50%,-50%) scale(.6)}
 .nar-orb[data-state=playing]:hover .i-pause{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .nar-orb[data-state=asking] .glow,.nar-orb[data-state=asking] .swirl,.nar-orb[data-state=asking] .blobs,.nar-orb[data-state=playing] .glow,.nar-orb[data-state=playing] .swirl,.nar-orb[data-state=playing] .blobs{animation-play-state:running}

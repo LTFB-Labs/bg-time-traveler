@@ -297,7 +297,8 @@ startSearch($('find'), { find: (query) => findResults(query, { index: CONTENT.se
 addEventListener("resize", () => { buildTimeline(); aimCamera(); });
 buildTimeline();
 const first = EV.find((e) => e.id === event);
-if (first) intro.remove();
+// the start screen greets only the bare address; #free (from "Към картата") and #free/<event> open the map itself
+if (first || location.hash.startsWith("#free")) intro.remove();
 const startYear = first ? first.y : START;
 setYear(startYear);
 map.setFreeRect(freeRect()); map.snapToYear(startYear);

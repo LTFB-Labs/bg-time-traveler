@@ -87,7 +87,7 @@ button{font-family:inherit;cursor:pointer}
 .pv[data-pins=banner] .mk{top:42px}
 
 /* the compass: an ink rose in the top right corner of the map, left of the card; still, and the same size at any zoom */
-#compass{position:fixed;top:16px;right:calc(var(--cardw) + 44px);width:104px;height:104px;pointer-events:none;opacity:.85;mix-blend-mode:multiply}
+#compass{position:fixed;top:16px;right:calc(var(--cardw) + 84px);width:104px;height:104px;pointer-events:none;opacity:.85;mix-blend-mode:multiply}
 
 /* HUD */
 #hud{position:fixed;z-index:12;left:max(16px,env(safe-area-inset-left));top:max(12px,env(safe-area-inset-top));pointer-events:none;max-width:calc(100vw - 32px)}
@@ -119,7 +119,7 @@ button{font-family:inherit;cursor:pointer}
 /* the way into lessons sits in one row with the gear, as tall as it */
 #hudBtns{display:flex;gap:8px;margin-top:8px}
 #dock{width:110px;height:150px;margin-top:2px}
-#toLessons,.today-btn{height:36px;padding:0 14px;font-size:13px;pointer-events:auto;box-shadow:0 1px 4px rgba(60,40,15,.15)}
+.today-btn{height:36px;padding:0 14px;font-size:13px;pointer-events:auto;box-shadow:0 1px 4px rgba(60,40,15,.15)}
 /* "Граници днес" has a dashed line for an icon; pressed, the line darkens and a red ring shows it is on */
 .today-btn i{width:18px;border-top:2px dashed #a08a66}
 .today-btn[aria-pressed=true]{background:#fbefd0;box-shadow:0 0 0 2px #7a1e12}
@@ -251,7 +251,7 @@ a.btn{text-decoration:none}
     <ul id="findList" role="listbox" hidden></ul>
   </div>
   <button class="btn" id="wheelMode">Колелце: година</button>
-  <div id="hudBtns"><a class="btn" id="toLessons" href="#lessons">Уроци</a><button class="btn opt" popovertarget="options" aria-label="Настройки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" stroke-width="4" stroke-dasharray="3.34 3.34"/><circle cx="12" cy="12" r="5.5" stroke-width="3"/></svg></button><button class="btn today-btn" type="button" aria-pressed="false"><i aria-hidden="true"></i>Граници днес</button></div>
+  <div id="hudBtns"><button class="btn today-btn" type="button" aria-pressed="false"><i aria-hidden="true"></i>Граници днес</button></div>
   <div id="dock" aria-hidden="true"></div>
 </div>
 
@@ -299,7 +299,6 @@ a.btn{text-decoration:none}
     <button id="lsFold" type="button" aria-controls="lsBar" aria-expanded="false" aria-label="Покажи частите на урока"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
     <div id="lsBar" hidden>
       <a class="btn" id="lsLessons" href="#lessons">Уроци</a>
-      <button class="btn opt" popovertarget="options" aria-label="Настройки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" stroke-width="4" stroke-dasharray="3.34 3.34"/><circle cx="12" cy="12" r="5.5" stroke-width="3"/></svg></button>
       <div id="lsCrumbs"><span class="chip grade"></span><span class="chip"></span></div>
       <div id="lsSteps"></div>
     </div>
@@ -330,6 +329,8 @@ a.btn{text-decoration:none}
   <header class="hall-top">
     <a class="btn back" href="#free"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Към картата</a>
     <h1>Уроци</h1>
+    <select class="grade" aria-label="Клас"></select>
+    <span class="grow"></span>
     <a class="btn" href="#album">Албум</a>
   </header>
   <div class="hall">
@@ -338,6 +339,9 @@ a.btn{text-decoration:none}
     <button class="nav next" type="button" aria-label="Следващи уроци"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
   </div>
 </main>
+
+<!-- the settings: one gear on the year's row, at its right end beside the open panel, on the free map and in a lesson -->
+<button class="btn opt" id="optBtn" popovertarget="options" aria-label="Настройки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" stroke-width="4" stroke-dasharray="3.34 3.34"/><circle cx="12" cy="12" r="5.5" stroke-width="3"/></svg></button>
 
 <!-- the way into the lesson hall: one round book button where the timeline meets the right panel, on the free map and in a lesson -->
 <a id="toHall" href="#lessons" aria-label="Уроци" title="Уроци"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10 5 7 4.5 4 5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5z"/><path d="M12 6.5v13"/></svg></a>

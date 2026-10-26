@@ -8,10 +8,11 @@ import { fmtSpan } from '../../code/timeline/years.js';
 
 // grades: CONTENT.grades; lessons: CONTENT.lessons; photos: CONTENT.photos; passed: the progress store's passed lessons
 export function hallCards({ grades, lessons, photos, passed }, mocks = []) {
-    const real = Object.keys(grades).sort((a, b) => a - b).flatMap((grade) => grades[grade]).map((entry) => {
+    const real = Object.keys(grades).sort((a, b) => a - b).flatMap((grade) => grades[grade].map((entry) => ({ grade: Number(grade), entry }))).map(({ grade, entry }) => {
         const lesson = lessons[entry.id];
         const summary = lesson?.parts.find((part) => part.type === 'summary');
         return {
+            grade,
             number: entry.number,
             title: entry.title,
             date: entry.span ? fmtSpan(entry.span) : '',
@@ -22,17 +23,29 @@ export function hallCards({ grades, lessons, photos, passed }, mocks = []) {
             isPassed: Object.hasOwn(passed, entry.id),
         };
     });
-    const made = mocks.map(({ number, title, span, lead, chapters, photo }) => ({
-        number, title, date: fmtSpan(span), lead, chapters, photo: photos[photo]?.f ?? null, href: null, isPassed: false,
+    const made = mocks.map(({ grade, number, title, span, lead, chapters, photo }) => ({
+        grade, number, title, date: fmtSpan(span), lead, chapters, photo: photos[photo]?.f ?? null, href: null, isPassed: false,
     }));
     return [...real, ...made];
 }
 
+// the grades the dropdown offers; '' is every grade
+const GRADES = [5, 6, 7];
+
 export function startLessonList() {
     const root = document.getElementById('lessonList');
     const shelf = root.querySelector('.shelf');
+    const pick = root.querySelector('.grade');
     const cards = hallCards({ grades: CONTENT.grades, lessons: CONTENT.lessons, photos: CONTENT.photos, passed: loadProgress().passed }, MOCK_LESSONS);
-    shelf.innerHTML = cards.map(cardHtml).join('');
+    pick.innerHTML = ['<option value="">Всички класове</option>', ...GRADES.map((g) => `<option value="${g}">${g}. клас${cards.some((c) => c.grade === g) ? '' : ' (скоро)'}</option>`)].join('');
+    const show = () => {
+        const shown = cards.filter((c) => !pick.value || c.grade === Number(pick.value));
+        shelf.innerHTML = shown.length ? shown.map(cardHtml).join('') : '<li class="empty">За този клас още няма уроци.</li>';
+        shelf.scrollLeft = 0;
+        shelf.dispatchEvent(new Event('scroll'));
+    };
+    pick.addEventListener('change', show);
+    show();
     root.hidden = false;
     wireScroll(root, shelf);
 }
