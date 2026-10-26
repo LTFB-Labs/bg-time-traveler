@@ -10,6 +10,7 @@ import {
 import { createCards } from './cards.js';
 import { startSearch } from './free-search.js';
 import { findResults } from './search.js';
+import { markCardOpened } from './store.js';
 
 export function startFree(map) {
 const $ = (id) => document.getElementById(id);
@@ -123,18 +124,19 @@ function placeKnob() {
 let dragging = false;
 function yearFromEvent(e) { const r = track.getBoundingClientRect(); return xToY(e.clientX - r.left); }
 track.addEventListener("pointerdown", (e) => {
-  stopPlay(); dragging = true; map.setScrubbing(true); track.classList.add("drag"); track.setPointerCapture(e.pointerId);
+  stopPlay(); stopMove(); dragging = true; map.setScrubbing(true); track.classList.add("drag"); track.setPointerCapture(e.pointerId);
   const dot = e.target.closest(".dot");
   if (dot) { const ev = EV.find((q) => q.id === dot.dataset.id); goTo(ev.y, 700); return; }
   setYear(yearFromEvent(e)); showTip(e);
 });
 track.addEventListener("pointermove", (e) => {
-  if (dragging) { setYear(yearFromEvent(e)); showTip(e); }
+  if (dragging) { stopMove(); setYear(yearFromEvent(e)); showTip(e); }
   else if (e.pointerType === "mouse") { const y = yearFromEvent(e); const near = nearestDot(y, 7); tip.textContent = near ? `${yInt(near.y)} — ${near.t}` : yInt(y); tip.style.left = (e.clientX - track.getBoundingClientRect().left) + "px"; tip.classList.add("show"); }
 });
 const endDrag = () => {
   if (!dragging) return; dragging = false; map.setScrubbing(false); track.classList.remove("drag"); tip.classList.remove("show");
-  const near = nearestDot(state.year, 12); if (near) goTo(near.y, 350);
+  if (tween) return; // a click on a dot: its move is still on the way there
+  const near = nearestDot(state.year, 12); if (near) goTo(near.y, 350); else markStop();
 };
 track.addEventListener("pointerup", endDrag); track.addEventListener("pointercancel", endDrag);
 track.addEventListener("pointerleave", () => { if (!dragging) tip.classList.remove("show"); });
@@ -143,7 +145,7 @@ function showTip(e) { tip.textContent = yInt(state.year); tip.style.left = yToX(
 
 /* ---------- state & animation ---------- */
 const state = { year: START };
-let tween = null;
+let tween = null, frame = 0;
 function setYear(y) {
   state.year = clamp(y, START, END);
   map.showFrame(frameAt(state.year));
@@ -154,14 +156,23 @@ function setYear(y) {
 // the year tween runs on animation frames only while it lasts: goTo starts the frames when none run, tick stops at the end
 function goTo(y, ms = 900) {
   const from = state.year, t0 = performance.now();
-  if (!tween) requestAnimationFrame(tick);
+  if (!tween) frame = requestAnimationFrame(tick);
   tween = { from, to: y, t0, ms };
 }
 function tick(now) {
   const t = clamp((now - tween.t0) / tween.ms, 0, 1);
   setYear(lerp(tween.from, tween.to, ease(t)));
-  if (t < 1) { requestAnimationFrame(tick); return; }
-  tween = null; setYear(state.year);
+  if (t < 1) { frame = requestAnimationFrame(tick); return; }
+  tween = null; setYear(state.year); markStop();
+}
+// a free-map event counts as opened when the year stops on it with its card in the panel, never while the knob passes over it
+function markStop() {
+    if (activeEv) markCardOpened(activeEv.id);
+}
+// a drag or a wheel scrub takes the year from a move still running, so the move neither fights it nor counts its event
+function stopMove() {
+    cancelAnimationFrame(frame);
+    tween = null;
 }
 
 /* ---------- play ---------- */
@@ -205,13 +216,17 @@ $('wheelMode').addEventListener('click', () => {
     map.setWheelZoom(wheelZoom);
     $('wheelMode').textContent = wheelZoom ? 'Колелце: мащаб' : 'Колелце: година';
 });
-$("map").addEventListener("wheel", (e) => { if (map.zoomsOnWheel(e)) return; e.preventDefault(); stopPlay(); setYear(state.year + (e.deltaY + e.deltaX) * .08); }, { passive: false });
+// a wheel scrub has no end event: it stops once the wheel rests this long
+const WHEEL_STOP_MS = 300;
+let wheelStop = null;
+$("map").addEventListener("wheel", (e) => { if (map.zoomsOnWheel(e)) return; e.preventDefault(); stopPlay(); stopMove(); setYear(state.year + (e.deltaY + e.deltaX) * .08); clearTimeout(wheelStop); wheelStop = setTimeout(markStop, WHEEL_STOP_MS); }, { passive: false });
 
 /* ---------- intro & boot ---------- */
 function start() {
   intro.classList.add("leave");
   setTimeout(() => intro.remove(), 700);
   try { localStorage.setItem("bgtt-seen", "1"); } catch (e) {}
+  markStop();
 }
 $("go").addEventListener("click", start);
 
