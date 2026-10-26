@@ -44,6 +44,22 @@ function filesIn(dir) {
     return existsSync(dir) ? readdirSync(dir).filter((name) => !name.startsWith('.')) : [];
 }
 
+// every question is answered by its own package: the quote is in the text (bold marks and spacing aside), the answer is in the quote,
+// and no wrong answer is the right one
+export function questionProblems(card) {
+    const flat = (text) => text.replaceAll('**', '').replace(/\s+/g, ' ').trim().toLowerCase();
+    const body = flat((card.paragraphs ?? []).join(' '));
+    return (card.questions ?? []).flatMap((question, i) => {
+        const { answer, wrong, quote } = question ?? {};
+        if (typeof answer !== 'string' || typeof quote !== 'string' || !Array.isArray(wrong)) return [];
+        return [
+            ...(body.includes(flat(quote)) ? [] : ['its quote is not in the text']),
+            ...(flat(quote).includes(flat(answer)) ? [] : ['its answer is not in its quote']),
+            ...(wrong.some((w) => typeof w === 'string' && flat(w) === flat(answer)) ? ['a wrong answer is the right one'] : []),
+        ].map((message) => problem(card.file, `question ${i + 1}: ${message}`));
+    });
+}
+
 export function relatedProblems(card, ids) {
     return (card.related ?? []).filter((id) => !ids.has(id)).map((id) => problem(card.file, `related "${id}" is not an info package`));
 }

@@ -1,10 +1,11 @@
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join } from 'node:path';
 import { parseCard, validateCard } from './lib/cards.mjs';
-import { collectPhotos, compileContract, contractProblems, packageFolders, packageProblems, photoFiles, relatedProblems } from './lib/info.mjs';
+import { collectPhotos, compileContract, contractProblems, packageFolders, packageProblems, photoFiles, questionProblems, relatedProblems } from './lib/info.mjs';
 import { parseLesson, renderLesson, validateLesson } from './lib/lessons.mjs';
 import { renderMarkdown } from './lib/markdown.mjs';
 import { photoProblems } from './lib/photos.mjs';
+import { sectionProblems } from './lib/quest.mjs';
 import { formatProblems, problem } from './lib/problems.mjs';
 import { buildSearchIndex } from './lib/search.mjs';
 import { buildAliasIndex, linkTerms } from './lib/terms.mjs';
@@ -16,6 +17,8 @@ export function buildContent(rootDir) {
     const dir = join(rootDir, MATERIALS);
     const infoDir = join(dir, 'information');
     const balkans = readJson(dir, 'maps/balkans.json', {});
+    // the Quest is optional: a content root without quest/sections.json has no sections
+    const sections = existsSync(join(dir, 'quest/sections.json')) ? readJson(dir, 'quest/sections.json', []) : { value: [], problems: [] };
     const cards = readCards(infoDir);
     const contract = compileContract();
     const base = (card) => `${MATERIALS}/${dirname(card.file)}`;
@@ -34,10 +37,13 @@ export function buildContent(rootDir) {
     const problems = [
         ...photos.problems,
         ...balkans.problems,
+        ...sections.problems,
+        ...sectionProblems(sections.value, new Set(Object.keys(photos.photos))),
         ...grades.problems,
         ...cards.flatMap((card) => contractProblems(card, contract)),
         ...cards.flatMap((card) => packageProblems(card, packageDir(card))),
         ...cards.flatMap((card) => relatedProblems(card, ids)),
+        ...cards.flatMap(questionProblems),
         ...cards.flatMap((card) => validateCard(card, ctx)),
         ...aliases.problems,
         ...listed.flatMap(idProblems),
@@ -50,6 +56,7 @@ export function buildContent(rootDir) {
         grades: toPageGrades(grades.rows),
         photos: photos.photos,
         maps: { balkans: balkans.value },
+        quest: { sections: sections.value },
         search: [],
     };
     content.search = buildSearchIndex(content);
@@ -135,9 +142,9 @@ function toPageCards(cards, aliasIndex) {
     return Object.fromEntries(cards.map((card) => [card.id, toPageCard(card, aliasIndex)]));
 }
 
-function toPageCard({ id, kind, legacyKind, title, dates, at, years, photo, aliases, paragraphs, path }, aliasIndex) {
+function toPageCard({ id, kind, legacyKind, title, dates, at, years, photo, aliases, paragraphs, path, questions }, aliasIndex) {
     const html = paragraphs.map((paragraph) => linkTerms(renderMarkdown(paragraph), aliasIndex)).join('\n');
-    return { id, kind, legacyKind, title, dates, at, years, photo, aliases, paragraphs, path, html };
+    return { id, kind, legacyKind, title, dates, at, years, photo, aliases, paragraphs, path, html, questions };
 }
 
 function toPageLessons(lessons, aliasIndex) {

@@ -19,6 +19,11 @@
     "aliases": { "type": "array", "items": { "type": "string", "minLength": 1 } },
     "tags": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true, "description": "Свободни етикети за търсене и групиране." },
     "related": { "type": "array", "items": { "$ref": "#/$defs/id" }, "uniqueItems": true, "description": "id-та на свързани парчета; всяко трябва да съществува." },
+    "questions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/question" },
+      "description": "Въпроси за проверка в Похода. Отговорът на всеки е в текста на този пакет: quote е изречение оттам, а answer е част от quote."
+    },
     "media": {
       "type": "object",
       "additionalProperties": false,
@@ -33,6 +38,17 @@
   },
   "$defs": {
     "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "question": {
+      "type": "object",
+      "required": ["q", "answer", "wrong", "quote"],
+      "additionalProperties": false,
+      "properties": {
+        "q": { "type": "string", "minLength": 1, "description": "Въпросът, както го вижда детето." },
+        "answer": { "type": "string", "minLength": 1, "description": "Верният отговор; стои дословно в quote." },
+        "wrong": { "type": "array", "items": { "type": "string", "minLength": 1 }, "minItems": 2, "maxItems": 3, "uniqueItems": true, "description": "Грешните отговори." },
+        "quote": { "type": "string", "minLength": 1, "description": "Изречението от текста на пакета, в което е отговорът; показва се при грешка." }
+      }
+    },
     "lonLat": { "type": "array", "prefixItems": [{ "type": "number" }, { "type": "number" }], "minItems": 2, "maxItems": 2, "description": "[дължина, ширина]" },
     "url": { "type": "string", "pattern": "^https?://" },
     "image": {

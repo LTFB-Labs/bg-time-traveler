@@ -2,8 +2,8 @@
 const KEY = 'bgtt';
 
 // pins: the look of the map's markers, picked in the options menu; today: whether the map shows today's Bulgaria;
-// bar: whether a lesson's header bar (grade, number, Уроци, gear, trail) is open
-const defaults = () => ({ passed: {}, cards: [], position: {}, pins: 'seal', today: false, bar: false });
+// bar: whether a lesson's header bar (grade, number, Уроци, gear, trail) is open; quest: the best stars (1–3) won at each Quest stop
+const defaults = () => ({ passed: {}, cards: [], position: {}, pins: 'seal', today: false, bar: false, quest: {} });
 
 export function createStore(storage) {
     const loadProgress = () => {
@@ -34,6 +34,8 @@ export function createStore(storage) {
         setPins: (look) => update((p) => { p.pins = look; }),
         setToday: (isShown) => update((p) => { p.today = isShown; }),
         setBar: (isOpen) => update((p) => { p.bar = isOpen; }),
+        // a stop keeps its best result: winning again with fewer stars takes nothing away
+        setQuestStars: (id, stars) => update((p) => { p.quest[id] = Math.max(p.quest[id] ?? 0, stars); }),
         // everything the child did goes; the marker look, today's borders and the header bar are settings, so they stay
         resetProgress: () => {
             const { pins, today, bar } = loadProgress();
@@ -57,5 +59,6 @@ export const {
     setPins,
     setToday,
     setBar,
+    setQuestStars,
     resetProgress,
 } = createStore(lazyStorage);

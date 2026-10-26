@@ -115,6 +115,27 @@ test('reportsFieldsOutsideTheContract', () => {
     assert.match(problems[0].message, /must NOT have additional properties "colour"/);
 });
 
+test('checksThatEveryQuestionIsAnsweredByItsText', () => {
+    const question = (answer, quote, wrong = '[Ситалк, Котис]') => `questions:\n  - q: Кой?\n    answer: ${answer}\n    wrong: ${wrong}\n    quote: "${quote}"\naliases:`;
+    const build = (answer, quote, wrong) => buildContent(copyOkWith({ [CARD]: readFileSync(join(root, CARD), 'utf8').replace('aliases:', question(answer, quote, wrong)) }));
+    const good = build('Терес', 'Терес е първият');
+    assert.deepEqual(good.problems, []);
+    assert.equal(good.content.cards.teres.questions[0].answer, 'Терес');
+    assert.deepEqual(build('Терес', 'Терес е последният').problems.map((p) => p.message), ['question 1: its quote is not in the text']);
+    assert.deepEqual(build('Ситалк', 'Терес е първият', '[Терес, Котис]').problems.map((p) => p.message), ['question 1: its answer is not in its quote']);
+    assert.deepEqual(build('Терес', 'Терес е първият', '[терес, Котис]').problems.map((p) => p.message), ['question 1: a wrong answer is the right one']);
+});
+
+test('readsQuestSectionsAndReportsBadOnes', () => {
+    const section = (extra) => JSON.stringify([{ id: 'thracians', title: 'Траките', description: 'Царете.', photo: 'teres-mask', color: '#8a5a2b', grade: 5, lessons: [26], ...extra }]);
+    const good = buildContent(copyOkWith({ 'learning-materials/quest/sections.json': section({}) }));
+    assert.deepEqual(good.problems, []);
+    assert.equal(good.content.quest.sections[0].title, 'Траките');
+    const bad = buildContent(copyOkWith({ 'learning-materials/quest/sections.json': section({ photo: 'nope', lessons: [] }) }));
+    assert.deepEqual(bad.problems.map((p) => p.message), ['section 1: photo "nope" is not a photo of an info package', 'section 1: needs lesson numbers']);
+    assert.deepEqual(buildContent(root).content.quest, { sections: [] });
+});
+
 test('reportsUnlistedLessonsAndGradeWithoutIndex', () => {
     const { content, problems } = buildContent(copyOkWith({ 'learning-materials/lessons/5/draft.md': 'чернова', 'learning-materials/lessons/6/first.md': 'чернова' }));
     assert.deepEqual(problems.map((p) => p.file), ['lessons/5/draft.md', 'lessons/6/index.json', 'lessons/6/first.md']);
