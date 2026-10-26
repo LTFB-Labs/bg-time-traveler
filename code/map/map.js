@@ -71,16 +71,26 @@ const realmsG = el("g", { "clip-path": "url(#landClip)" }, world);
 el('image', { href: 'img/terrain.webp', x: 0, y: 0, width: GEO.W, height: GEO.H, preserveAspectRatio: 'none', opacity: .6, style: 'mix-blend-mode:multiply', 'pointer-events': 'none' }, world);
 el("path", { d: GEO.lakes, fill: SEA, stroke: "#6f8f86", style: `stroke-width:${ink(.8)}` }, world);
 el("path", { d: GEO.rivers, fill: "none", stroke: "#5c8fa3", style: `stroke-width:${ink(1.5)}`, "stroke-opacity": .85, "stroke-linecap": "round", "stroke-linejoin": "round" }, world);
-// the Danube twice as thick as the other rivers, so the border river stands out
-el("path", { d: GEO.danube, fill: "none", stroke: "#5c8fa3", style: `stroke-width:${ink(3)}`, "stroke-opacity": .85, "stroke-linecap": "round", "stroke-linejoin": "round" }, world);
+// the Danube three times as thick as the other rivers and a shade deeper, so the border river stands out
+el("path", { d: GEO.danube, fill: "none", stroke: "#3f7f9c", style: `stroke-width:${ink(4.5)}`, "stroke-opacity": .95, "stroke-linecap": "round", "stroke-linejoin": "round" }, world);
 el("path", { d: GEO.land, fill: "none", stroke: "#5b4a33", style: `stroke-width:${ink(1.1)}`, "stroke-opacity": .8 }, world);
 // today's Bulgaria, which the "Граници днес" button shows: a faint dashed line, soft blue where it runs along water and
 // soft brown along mountains; it lies under every name and marker, a quiet reference rather than a focus
 const todayG = el("g", { class: "today", display: "none" }, world);
-el("path", { d: GEO.today.mountains, class: "today-mountains", style: `stroke-width:${ink(9)}` }, todayG);
-el("path", { d: GEO.today.water, class: "today-water", style: `stroke-width:${ink(3)}` }, todayG);
-el("path", { d: GEO.today.line, class: "today-line", style: `stroke-width:${ink(1.8)};stroke-dasharray:${inkDashes("6 5")}` }, todayG);
+el("path", { d: GEO.today.mountains, class: "today-mountains", style: `stroke-width:${ink(14)}` }, todayG);
+el("path", { d: GEO.today.water, class: "today-water", style: `stroke-width:${ink(6)}` }, todayG);
+el("path", { d: GEO.today.line, class: "today-line", style: `stroke-width:${ink(3.6)};stroke-dasharray:${inkDashes("9 6")}` }, todayG);
 el("text", { x: GEO.today.label[0], y: GEO.today.label[1], class: "today-lab", style: `font-size:${ink(13)}` }, todayG).textContent = "България днес";
+// the big cities of today, with today's names
+const TODAY_CITIES = [["София", 23.32, 42.70], ["Пловдив", 24.75, 42.15], ["Варна", 27.91, 43.21], ["Бургас", 27.47, 42.50], ["Русе", 25.97, 43.85]];
+TODAY_CITIES.forEach(([name, lon, lat]) => {
+    const [x, y] = P(lon, lat);
+    const g = el("g", { class: "today-city" }, todayG);
+    // sizes in ink units go through CSS, which can scale them; SVG attributes only take plain numbers
+    el("circle", { cx: x, cy: y, style: `r:${ink(3.4)};stroke-width:${ink(1.5)}` }, g);
+    // under the point, so the old name of the same place, written to its right, stays readable
+    el("text", { x, y, style: `transform:translateY(${ink(15)});font-size:${ink(15)};stroke-width:${ink(3.5)}` }, g).textContent = name;
+});
 
 const labelsStatic = el("g", {}, world);
 SEAS.forEach((s) => { const [x, y] = P(s.at[0], s.at[1]); el("text", { x, y, class: "sea-lab", style: `font-size:${ink(s.s)}`, transform: s.r ? `rotate(${s.r} ${x} ${y})` : "" }, labelsStatic).textContent = s.n; });

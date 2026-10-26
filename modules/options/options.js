@@ -47,7 +47,7 @@ function showPins(look) {
     document.getElementById('ov').dataset.pins = look;
 }
 
-// one button in the free map's row and one on a lesson's map; each shows and hides today's Bulgaria, and both show the same state
+// the "!" button under the gear shows and hides today's Bulgaria, on the free map and in a lesson
 export function startTodayButtons(map) {
     const buttons = document.querySelectorAll('.today-btn');
     const show = (isShown) => {

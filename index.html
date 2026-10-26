@@ -91,7 +91,7 @@ button{font-family:inherit;cursor:pointer}
 
 /* HUD */
 #hud{position:fixed;z-index:12;left:max(16px,env(safe-area-inset-left));top:max(12px,env(safe-area-inset-top));pointer-events:none;max-width:calc(100vw - 32px)}
-#year{font-family:var(--title);font-size:clamp(52px,8vw,92px);line-height:.9;color:#5a2412;text-shadow:0 2px 0 var(--paper),0 0 18px var(--paper),0 0 30px var(--paper);letter-spacing:-.01em}
+#year{font-family:var(--title);font-size:clamp(39px,6vw,69px);line-height:.9;color:#5a2412;text-shadow:0 2px 0 var(--paper),0 0 18px var(--paper),0 0 30px var(--paper);letter-spacing:-.01em}
 #year small{font-size:.32em;margin-left:.15em;letter-spacing:0}
 #era{display:inline-flex;align-items:center;gap:8px;margin-top:6px;padding:5px 12px 5px 10px;border-radius:999px;background:rgba(251,244,226,.92);box-shadow:var(--shadow);font-weight:900;font-size:15px}
 #era i{width:12px;height:12px;border-radius:50%;flex:none}
@@ -119,11 +119,11 @@ button{font-family:inherit;cursor:pointer}
 /* the way into lessons sits in one row with the gear, as tall as it */
 #hudBtns{display:flex;gap:8px;margin-top:8px}
 #dock{width:110px;height:150px;margin-top:2px}
-.today-btn{height:36px;padding:0 14px;font-size:13px;pointer-events:auto;box-shadow:0 1px 4px rgba(60,40,15,.15)}
+
 /* "Граници днес" has a dashed line for an icon; pressed, the line darkens and a red ring shows it is on */
-.today-btn i{width:18px;border-top:2px dashed #a08a66}
-.today-btn[aria-pressed=true]{background:#fbefd0;box-shadow:0 0 0 2px #7a1e12}
-.today-btn[aria-pressed=true] i{border-top-color:#5a1d12}
+
+
+
 
 /* card */
 #card{position:fixed;right:16px;top:16px;bottom:calc(var(--tl) + 14px);width:var(--cardw);background:var(--card);border-radius:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line);transition:transform .45s cubic-bezier(.2,.9,.3,1),opacity .3s}
@@ -184,11 +184,13 @@ button{font-family:inherit;cursor:pointer}
 .ahead{animation:plant .12s backwards}
 @keyframes plant{from{opacity:0}}
 
-/* today's Bulgaria, shown by the "Граници днес" button: faint, so it never pulls the eye away from the history */
+/* today's Bulgaria, shown by the "!" button: clear lines and the big cities of today */
 .today path{fill:none;stroke-linejoin:round}
-.today-water{stroke:#2b78a4;stroke-linecap:round;opacity:.4}
-.today-mountains{stroke:#7b4a1e;stroke-linecap:round;opacity:.14}
-.today-line{stroke:#5a1d12;opacity:.48}
+.today-water{stroke:#2b78a4;stroke-linecap:round;opacity:.55}
+.today-mountains{stroke:#7b4a1e;stroke-linecap:round;opacity:.22}
+.today-line{stroke:#5a1d12;opacity:.8}
+.today-city circle{fill:#5a1d12;stroke:#f2e6c6}
+.today-city text{font-family:var(--map);font-style:italic;font-weight:700;fill:#7a1e12;text-anchor:middle;dominant-baseline:middle;paint-order:stroke;stroke:rgba(242,230,198,.92);stroke-linejoin:round}
 .today-lab{font-family:var(--map);font-style:italic;font-weight:700;fill:#5a1d12;opacity:.6;text-anchor:middle;dominant-baseline:middle;letter-spacing:.14em;paint-order:stroke;stroke:rgba(246,238,214,.9);stroke-width:calc(5px * var(--ink-scale,1));stroke-linejoin:round;pointer-events:none}
 
 /* intro */
@@ -219,7 +221,7 @@ a.btn{text-decoration:none}
   #card .nav{padding:8px 10px 10px}
   .btn{padding:9px 12px;font-size:14px}
   #card .more{display:inline-flex}
-  #year{font-size:48px}
+  #year{font-size:36px}
   #era{font-size:13px}
   #ruler{font-size:12.5px}
   #findBox{width:calc(100vw - 32px)}
@@ -251,7 +253,6 @@ a.btn{text-decoration:none}
     <ul id="findList" role="listbox" hidden></ul>
   </div>
   <button class="btn" id="wheelMode">Колелце: година</button>
-  <div id="hudBtns"><button class="btn today-btn" type="button" aria-pressed="false"><i aria-hidden="true"></i>Граници днес</button></div>
   <div id="dock" aria-hidden="true"></div>
 </div>
 
@@ -281,7 +282,6 @@ a.btn{text-decoration:none}
 <div id="lsMap">
   <div id="lsHud"><div id="lsYear"></div><div id="lsEra" hidden><i></i><span></span></div></div>
   <div id="lsDock" aria-hidden="true"></div>
-  <button class="btn today-btn" id="lsToday" type="button" aria-pressed="false"><i aria-hidden="true"></i>Граници днес</button>
   <div id="lsLegend"></div>
   <div id="lsTl">
     <div id="lsTrack">
@@ -342,6 +342,9 @@ a.btn{text-decoration:none}
 
 <!-- the settings: one gear on the year's row, at its right end beside the open panel, on the free map and in a lesson -->
 <button class="btn opt" id="optBtn" popovertarget="options" aria-label="Настройки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" stroke-width="4" stroke-dasharray="3.34 3.34"/><circle cx="12" cy="12" r="5.5" stroke-width="3"/></svg></button>
+
+<!-- today's Bulgaria: one round hint button under the gear, on the free map and in a lesson -->
+<button class="btn opt today-btn" id="todayBtn" type="button" aria-pressed="false" aria-label="Покажи съвременна България" data-hint="Покажи съвременна България">!</button>
 
 <!-- the way into the lesson hall: one round book button where the timeline meets the right panel, on the free map and in a lesson -->
 <a id="toHall" href="#lessons" aria-label="Уроци" title="Уроци"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10 5 7 4.5 4 5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5z"/><path d="M12 6.5v13"/></svg></a>

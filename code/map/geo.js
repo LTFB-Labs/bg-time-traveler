@@ -20,15 +20,13 @@ export function boxToViewBox([west, south, east, north], pane, free, P) {
 
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(v, hi));
 
+// The view never shows past the world's edge: it is no wider and no taller than the world, and it stays inside it.
 export function clampViewBox(vb, { minW, maxW, world: { W, H } }) {
-    const w = clamp(vb.w, minW, maxW);
-    const h = vb.h * w / vb.w;
-    return { x: place(vb.x, W - w), y: place(vb.y, H - h), w, h };
+    const aspect = vb.h / vb.w;
+    const w = clamp(vb.w, minW, Math.min(maxW, W, H / aspect));
+    const h = w * aspect;
+    return { x: clamp(vb.x, 0, W - w), y: clamp(vb.y, 0, H - h), w, h };
 }
-
-// A view may run past the world's edge by a quarter of the room it has left, so a view as wide as the world shows all of it;
-// a view bigger than the world is centred on it.
-const place = (v, room) => (room < 0 ? room / 2 : clamp(v, -room / 4, room * 1.25));
 
 // The window view is wider than what the kid sees: the limits apply to the part of it inside the pane, a rect in window pixels.
 export function clampViewInPane(vb, { pane, screenW, ...limits }) {

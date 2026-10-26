@@ -25,16 +25,17 @@ test('clampViewBoxLimits', () => {
     const small = clampViewBox({ x: 0, y: 0, w: 50, h: 25 }, limits);
     assert.deepEqual([small.w, small.h], [100, 50]);
     const far = clampViewBox({ x: 9000, y: -9000, w: 500, h: 250 }, limits);
-    assert.deepEqual([far.x, far.y], [1.25 * (2000 - 500), -(1000 - 250) / 4]);
+    assert.deepEqual([far.x, far.y], [2000 - 500, 0]);
     const wide = clampViewBox({ x: 0, y: 0, w: 5000, h: 2500 }, limits);
     assert.deepEqual([wide.w, wide.h], [1000, 500]);
 });
 
-test('clampViewBoxShowsTheWholeWorldWhenFullyOut', () => {
+test('clampViewBoxNeverShowsPastTheWorld', () => {
     const limits = { minW: 100, maxW: 2000, world: { W: 2000, H: 1000 } };
-    const out = clampViewBox({ x: 300, y: -900, w: 2000, h: 1800 }, limits);
-    assert.equal(out.x, 0);
-    assert.equal(out.y, (1000 - 1800) / 2);
+    const tall = clampViewBox({ x: 300, y: -900, w: 2000, h: 1800 }, limits);
+    assert.equal(tall.h, 1000);
+    assert.ok(Math.abs(tall.w - 1000 / 0.9) < 1e-9);
+    assert.deepEqual([tall.x, tall.y], [300, 0]);
 });
 
 // a phone: the window is 390 x 844 but the map pane is a short strip at its top
