@@ -64,6 +64,12 @@ const start = (app) => {
 .nar-bubble .who{display:flex;align-items:center;gap:8px;margin:0 0 6px;font-weight:900;font-size:13px;letter-spacing:.04em;color:#7a1e12;text-transform:uppercase}
 .nar-bubble .who i{width:9px;height:9px;border-radius:50%;background:conic-gradient(#5b8cff,#9b5cff,#ff5ea8,#ffae4d,#3fd3c4,#5b8cff)}
 .nar-bubble .who button{margin-left:auto;border:0;background:#efe0bc;color:#5b3d17;width:28px;height:28px;border-radius:50%;font:900 16px/1 Nunito,sans-serif;cursor:pointer}
+/* while it reads, the bubble is all words: no name, and the × waits faintly in the corner */
+.nar-bubble[data-mode=playing] .who{position:absolute;top:8px;right:8px;margin:0}
+.nar-bubble[data-mode=playing] .who :is(i,.lbl){display:none}
+.nar-bubble[data-mode=playing] .who button{opacity:.2;transition:opacity .2s}
+.nar-bubble[data-mode=playing] .who button:is(:hover,:focus-visible){opacity:1}
+.nar-bubble[data-mode=playing] .say{padding-right:30px}
 .nar-bubble .say{margin:0;font-size:19.5px;line-height:1.45;min-height:1.45em}
 .nar-bubble .say.dim{opacity:.55}
 .nar-bubble .note{margin:8px 0 0;font-size:14.5px;color:#8a7352}
@@ -267,7 +273,8 @@ const start = (app) => {
   /* ---------- bubble ---------- */
   function render() {
     if (mode === "dormant") { bubble.hidden = true; return; }
-    const head = `<p class="who"><i></i>Учителят<button type="button" class="x" aria-label="Спри урока">×</button></p>`;
+    const head = `<p class="who"><i></i><span class="lbl">Учителят</span><button type="button" class="x" aria-label="Спри урока">×</button></p>`;
+    bubble.dataset.mode = mode;
     if (mode === "asking") {
       const note = !synth || !voice ? `<p class="note">На това устройство няма български глас, затова ще пиша урока тук.</p>`
         : /natural|neural/i.test(voice.name) ? "" : `<p class="note">За по-хубав глас отвори играта в Microsoft Edge.</p>`;
