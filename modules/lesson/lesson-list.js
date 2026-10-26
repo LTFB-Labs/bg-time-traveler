@@ -1,7 +1,7 @@
 // The lesson list at #lessons: the textbook's lessons grade by grade, in book order; a ready one opens, an unready one is greyed out, a passed one has a gold ring.
 import { esc } from './lesson.js';
-import { loadProgress } from './store.js';
-import { fmtSpan } from './years.js';
+import { loadProgress } from '../../code/store.js';
+import { fmtSpan } from '../../code/timeline/years.js';
 
 // the grades the app is meant for; one without lessons in CONTENT.grades shows greyed out
 const GRADES = ['5', '6', '7'];

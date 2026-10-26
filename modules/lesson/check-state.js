@@ -1,5 +1,5 @@
 // The check's answers and the rules that mark them green or red. Pure: node imports it for the tests.
-import { haversineKm } from './geo.js';
+import { haversineKm } from '../../code/map/geo.js';
 
 // answers[i]: the latest answer to question i, { isCorrect, value }; greenOnce[i]: question i was green at least once this sitting
 export const initialState = () => ({ answers: {}, greenOnce: {} });

@@ -1,18 +1,18 @@
 // Entry point: builds the map, then routes by the address hash. Any hash change reloads the page.
 // '' or '#free' → the free timeline; '#free/<event id>' → the free timeline on that event; '#lessons' → the lesson list; '#album' → the album; '#lesson/<id>' or '#lesson/<id>/<n>' → the lesson player.
-import { createMap } from './map.js';
-import { startAlbum } from './album.js';
-import { startFree } from './free.js';
-import { startLessonList } from './lesson-list.js';
+import { createMap } from '../code/map/map.js';
+import { startAlbum } from './album/album.js';
+import { startFree } from './free/free.js';
+import { startLessonList } from './lesson/lesson-list.js';
 import {
     startOptions,
     startTodayButtons,
-} from './options.js';
-import { loadProgress } from './store.js';
+} from './options/options.js';
+import { loadProgress } from '../code/store.js';
 import {
     showNoLesson,
     startLesson,
-} from './lesson.js';
+} from './lesson/lesson.js';
 
 startOptions();
 const map = createMap(document.getElementById('map'), document.getElementById('ov'));

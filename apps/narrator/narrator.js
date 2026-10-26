@@ -88,7 +88,7 @@ const start = (app) => {
   const photo = document.createElement("figure"); photo.className = "nar-photo"; photo.setAttribute("aria-hidden", "true");
   document.body.append(photo, orb, bubble);
   // the monster is inline SVG so its mouth can move; it is a separate file to keep this one readable
-  fetch("teacher.svg").then((r) => (r.ok ? r.text() : "")).then((t) => { if (t) orb.querySelector(".mon").innerHTML = t; }).catch(() => {});
+  fetch("apps/narrator/teacher.svg").then((r) => (r.ok ? r.text() : "")).then((t) => { if (t) orb.querySelector(".mon").innerHTML = t; }).catch(() => {});
 
   /* ---------- voice ---------- */
   const synth = "speechSynthesis" in window ? window.speechSynthesis : null;

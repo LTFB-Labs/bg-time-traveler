@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { listRows } from '../../js/lesson-list.js';
+import { listRows } from '../../modules/lesson/lesson-list.js';
 
 const READY = { id: '5-odrisko-tsarstvo', state: 'ready', title: 'Древна Тракия. Царството на одрисите', number: 26, span: [-1300, -250], map: 'balkans' };
 const lessons = { '5-odrisko-tsarstvo': {} };

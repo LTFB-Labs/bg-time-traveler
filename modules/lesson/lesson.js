@@ -3,9 +3,9 @@
 import {
     cardIcon,
     clamp,
-} from './map.js';
-import { startAlive } from './alive.js';
-import { createCards } from './cards.js';
+} from '../../code/map/map.js';
+import { startAlive } from '../../code/map/alive.js';
+import { createCards } from '../cards/cards.js';
 import { renderCheck } from './check.js';
 import { lessonApi, teacherItem } from './lesson-teacher.js';
 import { renderPredict } from './predict.js';
@@ -14,18 +14,18 @@ import {
     loadProgress,
     setBar,
     setPosition,
-} from './store.js';
+} from '../../code/store.js';
 import {
     createTimeline,
     eraAt,
     isOnStrip,
     shortHeading,
     storyCount,
-} from './timeline.js';
+} from '../../code/timeline/timeline.js';
 import {
     fmtSpan,
     fmtYear,
-} from './years.js';
+} from '../../code/timeline/years.js';
 
 const $ = (id) => document.getElementById(id);
 

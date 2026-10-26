@@ -1,6 +1,6 @@
 // The free map's search box: as the child types, the list under it shows what search found, group by group; a pick goes to onPick.
-import { esc } from './lesson.js';
-import { MIN_QUERY } from './search.js';
+import { esc } from '../lesson/lesson.js';
+import { MIN_QUERY } from '../../code/search.js';
 
 const NOTHING = 'Нищо не намерих.';
 

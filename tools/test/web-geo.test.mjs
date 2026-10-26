@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { boxToViewBox, clampViewBox, clampViewInPane, haversineKm, letterSpots, pathPoints } from '../../js/geo.js';
+import { boxToViewBox, clampViewBox, clampViewInPane, haversineKm, letterSpots, pathPoints } from '../../code/map/geo.js';
 
 const P = (lon, lat) => [lon * 10, (50 - lat) * 10];
 

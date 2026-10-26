@@ -4,7 +4,7 @@ import {
     findResults,
     normalize,
     parseYear,
-} from '../../js/search.js';
+} from '../../code/search.js';
 
 const entry = (type, id, title, extra = {}) => ({ type, id, title, text: normalize(`${title} ${extra.body ?? ''}`), ...extra });
 const SIMEON = entry('ruler', 'ruler-0', 'цар Симеон Велики', { date: '893–927', year: 893 });

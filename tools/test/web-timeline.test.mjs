@@ -6,7 +6,7 @@ import {
     eraAt,
     stopScale,
     yearMarks,
-} from '../../js/timeline.js';
+} from '../../code/timeline/timeline.js';
 
 const ERAS = [
     [-1300, -480, 'Тракийски племена', 'tribes'],

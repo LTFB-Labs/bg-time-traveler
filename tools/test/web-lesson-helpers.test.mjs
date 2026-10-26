@@ -4,8 +4,8 @@ import {
     ghostFor,
     markersFromCards,
     photoBlock,
-} from '../../js/lesson.js';
-import { shortHeading } from '../../js/timeline.js';
+} from '../../modules/lesson/lesson.js';
+import { shortHeading } from '../../code/timeline/timeline.js';
 
 test('shortHeadingCutsAtDash', () => {
     assert.equal(shortHeading('Ситалк — царството в разцвет'), 'Ситалк');

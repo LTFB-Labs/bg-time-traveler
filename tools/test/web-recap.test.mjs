@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {
     nextLesson,
     replayBorders,
-} from '../../js/recap.js';
+} from '../../modules/lesson/recap.js';
 
 const story = (...borders) => ({ type: 'story', meta: { borders } });
 const isState = (id) => id.startsWith('s');

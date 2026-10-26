@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { albumGroups } from '../../js/album.js';
+import { albumGroups } from '../../modules/album/album.js';
 
 const part = (marks, html = '', factHtml = '') => ({ meta: { marks }, html, factHtml });
 const LESSON = {

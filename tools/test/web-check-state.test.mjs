@@ -10,7 +10,7 @@ import {
     retry,
     shuffle,
     tapIsCorrect,
-} from '../../js/check-state.js';
+} from '../../modules/lesson/check-state.js';
 
 const KM_PER_DEGREE_LAT = 6371 * Math.PI / 180;
 const kmNorthOf = ([lon, lat], km) => [lon, lat + km / KM_PER_DEGREE_LAT];

@@ -12,8 +12,8 @@ import {
 import {
     CHOICE_COLOURS,
     CHOICE_LETTERS,
-} from './map.js';
-import { markPassed } from './store.js';
+} from '../../code/map/map.js';
+import { markPassed } from '../../code/store.js';
 
 // each lesson's answers for this sitting, so leaving through "Виж отново" and coming back keeps them
 const sittings = new Map();

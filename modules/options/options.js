@@ -1,13 +1,13 @@
 // The options menu: the look of the map's markers, a small wax seal or a shield with a name ribbon, kept with the progress; and delete progress.
 // The menu is a native popover; the gear buttons open it and a click outside or Escape closes it.
 // Beside it, the "Граници днес" buttons, also kept with the progress.
-import { icon } from './map.js';
+import { icon } from '../../code/map/map.js';
 import {
     loadProgress,
     resetProgress,
     setPins,
     setToday,
-} from './store.js';
+} from '../../code/store.js';
 
 export function startOptions() {
     const menu = document.getElementById('options');

@@ -1,6 +1,6 @@
 // The card pop-over: opens from a bold term or a map marker, shows CONTENT.cards[id].
-import { photoBlock, swapForPlaceholderOnError } from './lesson.js';
-import { markCardOpened } from './store.js';
+import { photoBlock, swapForPlaceholderOnError } from '../lesson/lesson.js';
+import { markCardOpened } from '../../code/store.js';
 
 const KIND_LABEL = { person: 'Личност', place: 'Място', object: 'Предмет', people: 'Народ', idea: 'Понятие', event: 'Събитие', state: 'Държава' };
 

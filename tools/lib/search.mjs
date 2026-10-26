@@ -1,4 +1,4 @@
-import { normalize } from '../../js/search.js';
+import { normalize } from '../../code/search.js';
 
 export { normalize };
 

@@ -6,11 +6,11 @@ import {
     ease,
     icon,
     lerp,
-} from './map.js';
-import { createCards } from './cards.js';
+} from '../../code/map/map.js';
+import { createCards } from '../cards/cards.js';
 import { startSearch } from './free-search.js';
-import { findResults } from './search.js';
-import { markCardOpened } from './store.js';
+import { findResults } from '../../code/search.js';
+import { markCardOpened } from '../../code/store.js';
 
 // event: an event id from the address; the map opens on that event, past the start screen
 export function startFree(map, { event } = {}) {

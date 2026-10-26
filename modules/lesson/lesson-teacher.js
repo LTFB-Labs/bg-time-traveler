@@ -1,7 +1,7 @@
 // window.BGTT for a lesson: the contract of the free map (see the end of js/free.js), so narrator.js reads a lesson's
 // parts the way it reads the free map's events. It reads the summary and the story parts, then leads the child to the check.
 // The part's own picture is already on the sheet, so the teacher holds up no photo.
-import { fmtYear } from './years.js';
+import { fmtYear } from '../../code/timeline/years.js';
 
 // bus: the lesson's "focus" and "input" events; current: the open part's number; goTo: opens a part without counting as the child's input
 export function lessonApi(lesson, { bus, current, goTo, isHeld }) {

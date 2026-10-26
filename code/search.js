@@ -1,6 +1,6 @@
 // Search on the free map: a query is read as a year and as words, and what it finds in CONTENT.search comes back in groups.
 // The build normalizes the index with the same normalize function.
-import { fmtSpan } from './years.js';
+import { fmtSpan } from './timeline/years.js';
 
 const MIN_STEMMED_LENGTH = 5;
 const ENDINGS = ['ът', 'та', 'то', 'те', 'ят', 'ъ', 'а', 'я', 'о', 'е', 'и'];

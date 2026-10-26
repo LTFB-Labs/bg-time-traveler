@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createStore } from '../../js/store.js';
+import { createStore } from '../../code/store.js';
 
 const fakeStorage = (initial) => {
     const data = { ...initial };

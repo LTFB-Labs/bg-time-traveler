@@ -1,8 +1,8 @@
 // The album at #album: every card the child has opened, one group per lesson and one for the free map, with what is left; a tile opens the card.
-import { createCards } from './cards.js';
-import { esc } from './lesson.js';
-import { cardIcon } from './map.js';
-import { loadProgress } from './store.js';
+import { createCards } from '../cards/cards.js';
+import { esc } from '../lesson/lesson.js';
+import { cardIcon } from '../../code/map/map.js';
+import { loadProgress } from '../../code/store.js';
 
 const LESSON_EMPTY = 'Отвори картичка в урока и тя ще дойде тук.';
 const EVENTS_EMPTY = 'Спри годината на събитие на картата и то ще дойде тук.';

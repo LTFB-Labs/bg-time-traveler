@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { fmtSpan, fmtYear } from '../../js/years.js';
+import { fmtSpan, fmtYear } from '../../code/timeline/years.js';
 
 test('fmtYearBc', () => {
     assert.equal(fmtYear({ year: -480 }), '480 г. пр.Хр.');
