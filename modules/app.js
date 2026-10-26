@@ -1,5 +1,5 @@
 // Entry point: builds the map, then routes by the address hash. Any hash change reloads the page.
-// '#lessons' → the lesson list; '#album' → the album; '#quest' → the Quest; '#lesson/<id>' or '#lesson/<id>/<n>' → the lesson player; anything else → the start screen.
+// '#lessons' → the sections of the lesson hall; '#lessons/<section id>' → the lessons of one section; '#album' → the album; '#quest' → the Quest; '#lesson/<id>' or '#lesson/<id>/<n>' → the lesson player; anything else → the start screen.
 import { createMap } from '../code/map/map.js';
 import { startAlbum } from './album/album.js';
 import { startQuest } from '../apps/quest/quest.js';
@@ -20,7 +20,9 @@ startTodayButtons(map);
 const route = location.hash.match(/^#lesson\/([^/]*)\/?(\d*)/);
 // the pages over the map: the body class that hides the map's furniture, and what draws the page
 const page = { '#lessons': ['lessons', startLessonList], '#album': ['album', startAlbum], '#quest': ['quest', startQuest] }[location.hash];
+const hallSection = location.hash.match(/^#lessons\/([^/]+)$/);
 if (page) openPage(...page);
+else if (hallSection) openPage('lessons', () => startLessonList(hallSection[1]));
 else if (route) openLesson(route[1], route[2]);
 else openStart();
 addEventListener('hashchange', () => location.reload());

@@ -1,4 +1,5 @@
-// The lesson hall at #lessons: one tall card per lesson, side by side, scrolled left and right (no grade picker for now).
+// The lesson hall: #lessons shows the sections (CONTENT.quest.sections), #lessons/<section id> the lessons of one section over its
+// picture; both are tall cards side by side, scrolled left and right.
 // A card has the lesson's number and title, its summary photo as background, the lead as a short description and,
 // on hover or focus, its chapters. A ready lesson opens; a mock one (mock-lessons.js) shows as "скоро".
 import { esc } from './lesson.js';
@@ -29,25 +30,58 @@ export function hallCards({ grades, lessons, photos, passed }, mocks = []) {
     return [...real, ...made];
 }
 
+// a section's lessons, in the section's order; a number with no card is left out
+export function sectionLessons(section, cards) {
+    return section.lessons.map((number) => cards.find((card) => card.grade === section.grade && card.number === number)).filter(Boolean);
+}
+
 // the grades the dropdown offers; '' is every grade
 const GRADES = [5, 6, 7];
 
-export function startLessonList() {
+// sectionId: the section whose lessons to show; without it the hall shows the sections
+export function startLessonList(sectionId) {
     const root = document.getElementById('lessonList');
     const shelf = root.querySelector('.shelf');
-    const pick = root.querySelector('.grade');
     const cards = hallCards({ grades: CONTENT.grades, lessons: CONTENT.lessons, photos: CONTENT.photos, passed: loadProgress().passed }, MOCK_LESSONS);
-    pick.innerHTML = ['<option value="">Всички класове</option>', ...GRADES.map((g) => `<option value="${g}">${g}. клас${cards.some((c) => c.grade === g) ? '' : ' (скоро)'}</option>`)].join('');
+    const { sections } = CONTENT.quest;
+    const section = sections.find((s) => s.id === sectionId);
+    if (section) showSection(root, shelf, section, cards);
+    else showSections(root, shelf, sections, cards);
+    root.hidden = false;
+    wireScroll(root, shelf);
+}
+
+// the sections, for now only their names; the dropdown picks a grade
+function showSections(root, shelf, sections, cards) {
+    const pick = root.querySelector('.grade');
+    pick.innerHTML = ['<option value="">Всички класове</option>', ...GRADES.map((g) => `<option value="${g}">${g}. клас${sections.some((s) => s.grade === g) ? '' : ' (скоро)'}</option>`)].join('');
     const show = () => {
-        const shown = cards.filter((c) => !pick.value || c.grade === Number(pick.value));
-        shelf.innerHTML = shown.length ? shown.map(cardHtml).join('') : '<li class="empty">За този клас още няма уроци.</li>';
+        const shown = sections.filter((s) => !pick.value || s.grade === Number(pick.value));
+        shelf.innerHTML = shown.length ? shown.map((s) => sectionHtml(s, sectionLessons(s, cards).length)).join('') : '<li class="empty">За този клас още няма уроци.</li>';
         shelf.scrollLeft = 0;
         shelf.dispatchEvent(new Event('scroll'));
     };
     pick.addEventListener('change', show);
     show();
-    root.hidden = false;
-    wireScroll(root, shelf);
+}
+
+// one section's lessons over the section's picture; the way back leads to the sections
+function showSection(root, shelf, section, cards) {
+    const photo = CONTENT.photos[section.photo]?.f;
+    // a full address: a relative url() inside the variable would be read against lesson.css, not the page
+    if (photo) root.style.setProperty('--hall-bg', `url('${new URL(photo, location.href).href}')`);
+    root.classList.add('in-section');
+    root.querySelector('h1').textContent = section.title;
+    root.querySelector('.grade').hidden = true;
+    const back = root.querySelector('.back');
+    back.href = '#lessons';
+    back.lastChild.textContent = 'Към секциите';
+    const lessons = sectionLessons(section, cards);
+    shelf.innerHTML = lessons.length ? lessons.map(cardHtml).join('') : '<li class="empty">В тази секция още няма уроци.</li>';
+}
+
+function sectionHtml({ id, title }, count) {
+    return `<li class="lcard section"><a class="face" href="#lessons/${esc(id)}"><b>${esc(title)}</b><span class="meta">${count} ${count === 1 ? 'урок' : 'урока'}</span></a></li>`;
 }
 
 function cardHtml({ number, title, date, lead, chapters, photo, href, isPassed }) {

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { hallCards } from '../../modules/lesson/lesson-list.js';
+import { hallCards, sectionLessons } from '../../modules/lesson/lesson-list.js';
 
 const READY = { id: '5-odrisko-tsarstvo', state: 'ready', title: 'Древна Тракия. Царството на одрисите', number: 26, span: [-1300, -250], map: 'balkans' };
 const LESSON = {
@@ -47,4 +47,9 @@ test('mocksComeAfterTheRealLessonsAndDoNotOpen', () => {
     const cards = hallCards(data(), [mock]);
     assert.equal(cards.length, 2);
     assert.deepEqual(cards[1], { grade: 5, number: 27, title: 'Римляните', date: '250 г. пр.Хр. — 395 г. сл.Хр.', lead: 'Описание.', chapters: ['А'], photo: 'p.jpg', href: null, isPassed: false });
+});
+
+test('sectionLessonsFollowTheSectionsOrderAndGrade', () => {
+    const cards = [{ grade: 5, number: 27 }, { grade: 6, number: 26 }, { grade: 5, number: 26 }];
+    assert.deepEqual(sectionLessons({ grade: 5, lessons: [26, 27, 40] }, cards), [{ grade: 5, number: 26 }, { grade: 5, number: 27 }]);
 });
