@@ -72,6 +72,13 @@ el('image', { href: 'img/terrain.webp', x: 0, y: 0, width: GEO.W, height: GEO.H,
 el("path", { d: GEO.lakes, fill: SEA, stroke: "#6f8f86", style: `stroke-width:${ink(.8)}` }, world);
 el("path", { d: GEO.rivers, fill: "none", stroke: "#5c8fa3", style: `stroke-width:${ink(1.5)}`, "stroke-opacity": .85, "stroke-linecap": "round", "stroke-linejoin": "round" }, world);
 el("path", { d: GEO.land, fill: "none", stroke: "#5b4a33", style: `stroke-width:${ink(1.1)}`, "stroke-opacity": .8 }, world);
+// today's Bulgaria, which the "Граници днес" button shows: a faint dashed line, soft blue where it runs along water and
+// soft brown along mountains; it lies under every name and marker, a quiet reference rather than a focus
+const todayG = el("g", { class: "today", display: "none" }, world);
+el("path", { d: GEO.today.mountains, class: "today-mountains", style: `stroke-width:${ink(9)}` }, todayG);
+el("path", { d: GEO.today.water, class: "today-water", style: `stroke-width:${ink(3)}` }, todayG);
+el("path", { d: GEO.today.line, class: "today-line", style: `stroke-width:${ink(1.8)};stroke-dasharray:${inkDashes("6 5")}` }, todayG);
+el("text", { x: GEO.today.label[0], y: GEO.today.label[1], class: "today-lab", style: `font-size:${ink(13)}` }, todayG).textContent = "България днес";
 
 const labelsStatic = el("g", {}, world);
 SEAS.forEach((s) => { const [x, y] = P(s.at[0], s.at[1]); el("text", { x, y, class: "sea-lab", style: `font-size:${ink(s.s)}`, transform: s.r ? `rotate(${s.r} ${x} ${y})` : "" }, labelsStatic).textContent = s.n; });
@@ -585,6 +592,7 @@ return {
     setActiveMarker,
     markSeen,
     drawPath,
+    showToday: (isShown) => todayG.setAttribute("display", isShown ? "inline" : "none"),
     setMode: (m) => { mode = m; },
     setWheelZoom: (isOn) => { wheelZoom = isOn; },
     zoomsOnWheel,
