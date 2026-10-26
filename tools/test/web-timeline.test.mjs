@@ -36,10 +36,6 @@ test('bandLayoutWeighsErasByTheirShareOfTheStrip', () => {
     assert.deepEqual(bands.map((b) => b.color), ['#b07a3c', '#c8402f', '#5f84b5', '#d98c6a']);
 });
 
-test('bandLayoutHidesLabelUnderTenPercent', () => {
-    assert.deepEqual(bandLayout(ERAS, linear).map((b) => b.hideLabel), [false, false, true, true]);
-});
-
 test('stopScaleGivesEveryStopTheSameRoomAndALongGapTwice', () => {
     const at = stopScale(STOPS.map((s) => s.year), SPAN);
     const unit = 88 / 7;

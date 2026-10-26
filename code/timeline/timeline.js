@@ -15,9 +15,19 @@ export function createTimeline(rootEl, lesson, { onPick }) {
 
 function buildStrip(find, lesson, at, onPick) {
     const stops = lesson.parts.filter(isOnStrip).map((p) => p.meta);
-    find('lsBands').replaceChildren(...bandLayout(lesson.eras, at).map(bandEl));
-    find('lsTicks').replaceChildren(...yearMarks(stops, lesson.span, at).map(markEl));
-    find('lsDots').replaceChildren(...lesson.parts.flatMap((p, n) => (isOnStrip(p) ? [dotEl(lesson, n, at, onPick)] : [])));
+    // a stop's year is written on its tag; the row under the bands keeps only the long gaps between stops
+    const marks = yearMarks(stops, lesson.span, at);
+    const years = marks.filter((m) => !m.isGap).map((m) => m.text);
+    // a long gap between two stops is said in the name of the band it falls in
+    const bands = bandLayout(lesson.eras, at);
+    marks.filter((m) => m.isGap).forEach((gap) => {
+        let end = 0;
+        const band = bands.find((b) => (end += b.weight * 100) >= gap.left) ?? bands.at(-1);
+        band.name = `${band.name} · ${gap.text}`;
+    });
+    find('lsBands').replaceChildren(...bands.map(bandEl));
+    let k = 0;
+    find('lsDots').replaceChildren(...lesson.parts.flatMap((p, n) => (isOnStrip(p) ? [dotEl(lesson, n, at, onPick, years[k++])] : [])));
 }
 
 // a story part with a year sits on the strip; the summary, the check and label-only parts do not
@@ -66,22 +76,24 @@ export function shortHeading(heading) {
 
 /* ---------- lesson strip ---------- */
 const ERA_COLOR = { tribes: '#b07a3c', main: '#c8402f', other: '#5f84b5', main2: '#d98c6a' };
-const MIN_LABEL_SHARE = .1;
 
 // eras are [from, to, name, class]; weight is the era's share of the strip, measured on the stop scale
 export function bandLayout(eras, at) {
     return eras.map(([from, to, name, cls]) => {
         const weight = (at(to) - at(from)) / 100;
-        return { name, color: ERA_COLOR[cls], weight, hideLabel: weight < MIN_LABEL_SHARE };
+        return { name, color: ERA_COLOR[cls], weight };
     });
 }
 
-function bandEl({ name, color, weight, hideLabel }) {
+// a band shows its name, cut with … when narrow; on hover the whole name shows over it (lesson.css reads data-label)
+function bandEl({ name, color, weight }) {
     const d = document.createElement('div');
     d.style.flex = `${weight} 0 0`;
     d.style.background = color;
-    d.title = name;
-    d.textContent = hideLabel ? '' : name;
+    d.dataset.label = name;
+    const text = document.createElement('span');
+    text.textContent = name;
+    d.append(text);
     return d;
 }
 
@@ -123,16 +135,9 @@ export function yearMarks(stops, span, at) {
 
 const shortYear = ({ year, approx }) => `${approx ? 'ок. ' : ''}${Math.abs(year)}`;
 
-function markEl({ text, left, isGap }) {
-    const t = document.createElement('span');
-    t.textContent = text;
-    t.className = isGap ? 'gap' : '';
-    t.style.left = `${left}%`;
-    return t;
-}
 
-// a stop carries the number of its waypoint on the trail, where the summary is waypoint 0
-function dotEl(lesson, n, at, onPick) {
+// a stop is a tag with the number of its waypoint on the trail (the summary is waypoint 0) and its year; its left edge is the year
+function dotEl(lesson, n, at, onPick, year) {
     const { heading, meta } = lesson.parts[n];
     const d = document.createElement('button');
     d.type = 'button';
@@ -140,7 +145,9 @@ function dotEl(lesson, n, at, onPick) {
     d.dataset.n = n;
     d.title = `${fmtYear(meta)} — ${heading}`;
     d.setAttribute('aria-label', d.title);
-    d.textContent = n;
+    const num = document.createElement('b');
+    num.textContent = n;
+    d.append(num, year ?? '');
     d.style.left = `${at(meta.year)}%`;
     d.addEventListener('click', () => onPick(n));
     return d;

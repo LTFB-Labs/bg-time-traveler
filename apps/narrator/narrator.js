@@ -11,7 +11,7 @@ const start = (app) => {
 
   /* ---------- styles ---------- */
   const css = `
-.nar-orb{position:fixed;z-index:15;width:var(--nar-size,68px);height:var(--nar-size,68px);margin:0;padding:0;border:0;border-radius:50%;background:none;cursor:pointer;touch-action:none;transition:opacity .35s,filter .35s,transform .25s,scale .3s ease,top .45s cubic-bezier(.3,1.3,.5,1),left .45s cubic-bezier(.3,1.3,.5,1);transform-origin:100% 0;-webkit-tap-highlight-color:transparent}
+.nar-orb{position:fixed;z-index:15;width:var(--nar-size,68px);height:var(--nar-size,68px);margin:0;padding:0;border:0;border-radius:50%;background:none;cursor:pointer;touch-action:none;transition:opacity .35s,filter .35s,transform .25s,scale .3s ease,top .45s cubic-bezier(.3,1.3,.5,1),left .45s cubic-bezier(.3,1.3,.5,1);transform-origin:0 0;-webkit-tap-highlight-color:transparent}
 .nar-orb:focus-visible{outline:3px solid #7a1e12;outline-offset:4px}
 .nar-orb .core{position:absolute;inset:0;border-radius:50%;transition:transform .55s cubic-bezier(.3,1.35,.5,1)}
 .nar-orb .glow,.nar-orb .swirl,.nar-orb .blobs{position:absolute;border-radius:50%;animation:narSpin 7s linear infinite;animation-play-state:paused}
@@ -301,8 +301,8 @@ const start = (app) => {
     const size = orb.offsetWidth || 68;
     let x, y;
     if (custom && mode !== "dormant") { x = custom.x * innerWidth - size / 2; y = custom.y * innerHeight - size / 2; }
-    // at the slot's right edge; asleep at its top, awake lower down, so the teacher standing over the orb has room above it
-    else { const d = app.dock(); x = d.right - size; y = mode === "dormant" ? d.top + 4 : d.bottom - size - 8; }
+    // at the slot's left edge; asleep at its top, awake lower down, so the teacher standing over the orb has room above it
+    else { const d = app.dock(); x = d.left; y = mode === "dormant" ? d.top + 4 : d.bottom - size - 8; }
     x = Math.max(8, Math.min(innerWidth - size - 8, x)); y = Math.max(8, Math.min(innerHeight - size - 8, y));
     orb.style.left = Math.round(x) + "px"; orb.style.top = Math.round(y) + "px";
     orb.dataset.side = x + size / 2 > innerWidth / 2 ? "left" : "right"; // the hover question opens toward the middle

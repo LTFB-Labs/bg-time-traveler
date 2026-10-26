@@ -62,8 +62,8 @@ body.lesson #map.grabbing { cursor: grabbing; }
     font-size: 14px;
 }
 #lsEra i { width: 12px; height: 12px; border-radius: 50%; background: #b08a4a; }
-/* the AI teacher's slot in the map pane's top right corner; the orb sits at its bottom, the room above is for the teacher */
-#lsDock { position: absolute; right: 6px; top: 4px; width: 80px; height: 170px; }
+/* the AI teacher's slot in the top left corner, under the legend; asleep the orb sits at its top, awake lower down */
+#lsDock { position: absolute; left: 8px; top: 40px; width: 80px; height: 200px; }
 
 /* the legend's small pills in the top left corner, side by side, clear of the compass */
 #lsLegend { position: absolute; left: 8px; top: 8px; max-width: calc(100% - 200px); display: flex; flex-wrap: wrap; align-items: flex-start; gap: 5px; font-weight: 800; font-size: 12.5px; color: var(--ink2); }
@@ -91,48 +91,62 @@ body.lesson #map.grabbing { cursor: grabbing; }
 }
 /* top to bottom: the era bands, one numbered stop per story part hanging from their lower edge, the stops' years */
 #lsTrack { position: relative; height: 33px; }
-#lsBands { position: absolute; left: 0; right: 0; top: 0; height: 18px; border-radius: 9px; overflow: hidden; display: flex; box-shadow: inset 0 1px 3px rgba(0, 0, 0, .25); }
+#lsBands { position: absolute; left: 0; right: 0; top: 0; height: 18px; border-radius: 9px; display: flex; box-shadow: inset 0 1px 3px rgba(0, 0, 0, .25); }
 #lsBands div {
+    position: relative;
+    min-width: 0;
     line-height: 18px;
     text-align: center;
     font-weight: 900;
     font-size: 11px;
     color: rgba(255, 255, 255, .95);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     border-right: 1px solid rgba(255, 255, 255, .35);
     text-shadow: 0 1px 1px rgba(0, 0, 0, .25);
     transition: opacity .3s;
 }
+#lsBands div:first-child { border-radius: 9px 0 0 9px; }
+#lsBands div:last-child { border-radius: 0 9px 9px 0; border-right: 0; }
+/* a narrow band cuts its name with …; on hover the whole name shows over it */
+#lsBands span { display: block; padding: 0 4px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+#lsBands div:hover { z-index: 2; opacity: 1; }
+#lsBands div:hover::after { content: attr(data-label); position: absolute; left: 50%; bottom: calc(100% + 6px); translate: -50% 0; padding: 4px 10px; border-radius: 9px; background: #3f230f; color: #fff; white-space: nowrap; font-size: 12px; box-shadow: 0 4px 12px rgba(40, 20, 5, .35); pointer-events: none; }
 /* the era of the current stop stays bright, the others fade */
 #lsBands:has(.cur) div:not(.cur) { opacity: .5; }
 #lsDots { position: absolute; left: 0; right: 0; top: 13px; height: 18px; }
+/* a stop: a little tag with its number and year; its left edge stands at the year and a point at its top left corner reaches up
+   into the era band */
 #lsDots .dot {
-    top: 0;
-    width: 18px;
-    height: 18px;
-    margin-left: -9px;
-    padding: 0;
-    display: grid;
-    place-items: center;
+    --tag: polygon(0 0, 8px 5px, 100% 5px, 100% 100%, 0 100%);
+    top: -5px;
+    width: auto;
+    margin-left: 0;
+    height: 24px;
+    padding: 5px 7px 0 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    isolation: isolate;
     transform: none;
-    border-radius: 50%;
-    border: 2px solid #b08a4a;
-    background: #fffaf0;
-    color: #8a6a3a;
-    font-family: var(--title);
-    font-size: 11px;
+    border: 0;
+    border-radius: 0;
+    clip-path: var(--tag);
+    background: #b08a4a;
+    color: var(--ink2);
+    font: 800 11px var(--font);
     line-height: 1;
-    box-shadow: 0 1px 3px rgba(60, 40, 15, .25);
+    white-space: nowrap;
+    transition: transform .15s;
 }
-#lsDots .dot:hover { transform: scale(1.15); }
-#lsDots .dot.seen { background: var(--gold); border-color: var(--gold2); color: #fff; }
-#lsDots .dot.on { background: var(--red); border-color: #fff; color: #fff; transform: scale(1.25); box-shadow: 0 0 0 3px rgba(200, 64, 47, .3); }
-/* each year stands just right of its dot, on the dots' row */
-#lsTicks { position: absolute; left: 0; right: 0; top: 15px; height: 14px; }
-#lsTicks span { position: absolute; top: 0; transform: translateX(12px); font-weight: 800; font-size: 11px; color: var(--ink2); white-space: nowrap; }
-#lsTicks .gap { font-style: italic; font-weight: 700; color: #a08660; }
+#lsDots .dot b { font-family: var(--title); font-weight: 400; font-size: 12px; color: #8a6a3a; }
+/* the tag's paper inside its outline */
+#lsDots .dot::before { content: ''; position: absolute; inset: 1.5px; z-index: -1; clip-path: polygon(0 0, 7px 5px, 100% 5px, 100% 100%, 0 100%); background: #fffaf0; }
+#lsDots .dot:hover { transform: translateY(-2px); }
+#lsDots .dot.seen { background: var(--gold2); color: #fff; }
+#lsDots .dot.seen b { color: #fff; }
+#lsDots .dot.seen::before { background: var(--gold); }
+#lsDots .dot.on { background: #7a1e12; color: #fff; }
+#lsDots .dot.on b { color: #fff; }
+#lsDots .dot.on::before { background: var(--red); }
 
 /* the whole history: one thin line under the strip, its label on the left and today at its right end (on a wide screen it
    moves to the very top of the window, see below) */
@@ -415,7 +429,7 @@ body.lesson #compass { top: 6px; right: calc(var(--ls-w) + 2 * var(--gap) + 100p
     #lsTl { padding: 4px 12px 6px; }
     /* a phone keeps the map tall: the trail in the sheet already shows the stops */
     #lsTrack { height: 18px; margin-top: 4px; }
-    #lsDots, #lsTicks { display: none; }
+    #lsDots { display: none; }
     #lsBands div { font-size: 0; }
     /* a phone shows the whole-history bar only when the lesson has no strip */
     #lsTrack:not([hidden]) + #lsBig { display: none; }
@@ -750,7 +764,7 @@ body.album #freePop { top: 50%; right: auto; bottom: auto; left: 50%; transform:
     body.lesson #lesson { top: calc(var(--big-h) + var(--gap) + 44px); bottom: calc(var(--strip-h) + var(--gap)); }
     body.lesson :is(#optBtn, #todayBtn, #toHall, #toQuest) { top: calc(var(--big-h) + 8px); }
     #lsLegend { top: calc(var(--big-h) + 8px); }
-    #lsDock { top: calc(var(--big-h) + 4px); bottom: auto; }
+    #lsDock { top: calc(var(--big-h) + 40px); bottom: auto; }
     body.lesson #compass { top: calc(var(--big-h) + 6px); }
     /* next to the sheet, level with its top edge */
     #lsReturn { position: fixed; top: calc(var(--big-h) + var(--gap) + 44px); right: calc(var(--ls-w) + var(--gap) + 10px); }
