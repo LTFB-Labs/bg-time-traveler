@@ -72,16 +72,26 @@
 .stop.locked .castle, .stop.soon .castle { filter: grayscale(1) brightness(1.05) drop-shadow(0 3px 3px rgba(40, 15, 5, .3)); }
 .stop.locked .ribbon, .stop.soon .ribbon { filter: grayscale(.8); opacity: .85; }
 
-/* the fog of war: everything two stops past the front is under drifting cloud */
-.fog { position: absolute; top: 0; bottom: 0; right: 0; pointer-events: none; overflow: hidden;
-    background: linear-gradient(to right, transparent, rgba(232, 222, 200, .9) 200px);
-    backdrop-filter: blur(5px) grayscale(.7); -webkit-backdrop-filter: blur(5px) grayscale(.7);
-    mask-image: linear-gradient(to right, transparent, #000 220px); -webkit-mask-image: linear-gradient(to right, transparent, #000 220px); }
-.fog i { position: absolute; width: 520px; height: 260px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255, 255, 255, .75), transparent); animation: fogDrift 28s ease-in-out infinite alternate; }
-.fog i:nth-child(1) { left: 120px; top: 8%; }
-.fog i:nth-child(2) { left: 520px; top: 45%; animation-duration: 36s; }
-.fog i:nth-child(3) { left: 980px; top: 15%; animation-duration: 32s; }
-@keyframes fogDrift { to { translate: 140px 20px; } }
+/* the fog of war: soft clouds over the road two stops past the front, their edge ragged; the land still shows faintly through */
+.fog { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.fog i { position: absolute; border-radius: 50%; background: radial-gradient(closest-side, rgba(243, 236, 220, .95), rgba(243, 236, 220, .6) 55%, transparent);
+    backdrop-filter: blur(3px) grayscale(.5); -webkit-backdrop-filter: blur(3px) grayscale(.5);
+    mask-image: radial-gradient(closest-side, #000 45%, transparent); -webkit-mask-image: radial-gradient(closest-side, #000 45%, transparent);
+    animation: fogDrift 30s ease-in-out infinite alternate; }
+.fog i:nth-child(3n) { animation-duration: 38s; animation-direction: alternate-reverse; }
+.fog i:nth-child(4n) { animation-duration: 24s; }
+@keyframes fogDrift { to { translate: 26px 10px; } }
+
+/* the made-up land under the road (quest-terrain.js): ink mountains, rivers, lakes, forests and hills */
+.terrain { position: absolute; left: 0; top: 0; pointer-events: none; }
+.terrain .river { fill: none; stroke: #6f9fb5; stroke-width: 3.2; stroke-linecap: round; opacity: .85; }
+.terrain .lake { fill: #c6d9de; stroke: #5c8fa3; stroke-width: 1.5; }
+.terrain .peak { fill: #f1e4c2; stroke: #6b4a26; stroke-width: 1.4; stroke-linejoin: round; }
+.terrain .hatch { fill: none; stroke: #6b4a26; stroke-width: .9; opacity: .7; }
+.terrain .fir { fill: #9bb07a; stroke: #3f4f2a; stroke-width: 1.1; stroke-linejoin: round; }
+.terrain .crown { fill: #a9bb84; stroke: #3f4f2a; stroke-width: 1.1; }
+.terrain .trunk { stroke: #3f4f2a; stroke-width: 1.2; }
+.terrain .hill { fill: none; stroke: #8a6a40; stroke-width: 1.2; stroke-linecap: round; opacity: .75; }
 
 /* a fight: a parchment sheet over the map */
 .fight { position: fixed; inset: 0; z-index: 35; display: grid; place-items: center; padding: 16px; background: rgba(20, 12, 5, .62); }

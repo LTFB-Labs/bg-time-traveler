@@ -44,3 +44,18 @@ test('aFightShufflesAndABossAsksTen', () => {
     const one = fightQuestions({ kind: 'lesson', questions: [question(1)] })[0];
     assert.deepEqual([...one.choices].sort(), ['a1', 'w1', 'x1']);
 });
+
+test('theLandIsTheSameEveryTimeAndLeavesTheStopsFree', async () => {
+    const { roadPoints, terrainSvg } = await import('../../apps/quest/quest-terrain.js');
+    const stops = [{ x: 400, y: 380 }, { x: 610, y: 420 }, { x: 820, y: 360 }];
+    const args = { width: 1400, height: 600, stops, keepOut: [{ x0: 50, y0: 10, x1: 350, y1: 300 }] };
+    const svg = terrainSvg(args);
+    assert.equal(terrainSvg(args), svg);
+    assert.match(svg, /class="peak"/);
+    assert.match(svg, /class="river"/);
+    // no tree or peak inside the room of a stop (its picture above and its ribbon to the right)
+    const spots = [...svg.matchAll(/(?:cx="([\d.]+)" cy="([\d.]+)")|(?:class="peak" d="M([\d.]+) ([\d.]+))/g)].map((m) => [Number(m[1] ?? m[3]), Number(m[2] ?? m[4])]);
+    assert.ok(spots.length > 0);
+    assert.ok(spots.every(([x, y]) => stops.every((s) => x < s.x - 60 || x > s.x + 240 || y < s.y - 215 || y > s.y + 24)));
+    assert.equal(roadPoints(stops, 600, 1400).points.length, 5);
+});

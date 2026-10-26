@@ -3,6 +3,7 @@
 // rest of the road lies in the fog. A fight asks the questions of the info packages, and the third mistake loses it.
 // It reads only CONTENT and the progress store, so it stands apart from the lessons and can be removed on its own.
 import { LIVES, fightQuestions, questStops, starsFor } from './quest-path.js';
+import { fogClouds, terrainSvg } from './quest-terrain.js';
 import { esc } from '../../modules/lesson/lesson.js';
 import { MOCK_LESSONS } from '../../modules/lesson/mock-lessons.js';
 import { loadProgress, setQuestStars } from '../../code/store.js';
@@ -75,10 +76,13 @@ function draw(center, justWon) {
     const fogAt = placed.find((stop) => stop.isFog);
     const land = root.querySelector('.land');
     land.style.width = `${width}px`;
-    land.innerHTML = `${bands.map(bandHtml).join('')}
+    // the section cards: the land leaves them empty
+    const keepOut = bands.map(({ from }) => ({ x0: from + 10, y0: 10, x1: from + 315, y1: 300 }));
+    land.innerHTML = `<svg class="terrain" width="${width}" height="${H}" aria-hidden="true">${terrainSvg({ width, height: H, stops: placed, keepOut })}</svg>
+        ${bands.map(bandHtml).join('')}
         <svg class="road" width="${width}" height="${H}" aria-hidden="true"><path class="edge" d="${roadPath(placed, H, width)}"/><path class="stitch" d="${roadPath(placed, H, width)}"/></svg>
         ${placed.map((stop, i) => stopHtml(stop, i)).join('')}
-        ${fogAt ? `<div class="fog" style="left:${fogAt.x - 150}px"><i></i><i></i><i></i></div>` : ''}`;
+        ${fogAt ? `<div class="fog">${fogClouds({ from: fogAt.x - 110, width, height: H })}</div>` : ''}`;
     const total = stops.reduce((sum, stop) => sum + stop.stars, 0);
     root.querySelector('.total').innerHTML = `${STAR}<b>${total}</b> от ${stops.length * 3}`;
     land.querySelectorAll('.stop.open').forEach((el) => el.addEventListener('click', () => fight(placed.find((s) => s.id === el.dataset.id))));
