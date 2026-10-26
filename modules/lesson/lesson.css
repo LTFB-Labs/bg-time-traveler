@@ -62,8 +62,8 @@ body.lesson #map.grabbing { cursor: grabbing; }
     font-size: 14px;
 }
 #lsEra i { width: 12px; height: 12px; border-radius: 50%; background: #b08a4a; }
-/* the AI teacher's slot under the legend; fixed, so it stays put while the legend changes */
-#lsDock { position: absolute; left: 8px; top: 72px; width: 110px; height: 150px; }
+/* the AI teacher's slot in the map pane's top right corner; the orb sits at its bottom, the room above is for the teacher */
+#lsDock { position: absolute; right: 6px; top: 4px; width: 80px; height: 170px; }
 
 /* the legend's small pills in the top left corner, side by side, clear of the compass */
 #lsLegend { position: absolute; left: 8px; top: 8px; max-width: calc(100% - 200px); display: flex; flex-wrap: wrap; align-items: flex-start; gap: 5px; font-weight: 800; font-size: 12.5px; color: var(--ink2); }
@@ -144,9 +144,9 @@ body.lesson #map.grabbing { cursor: grabbing; }
 #lsBig .now { left: 100%; margin-left: 6px; }
 
 /* "Върни ме": the map pane's top right corner, after the kid moves the map; the pane box itself lets clicks through to the map */
-#lsReturn { position: absolute; top: 6px; right: 136px; pointer-events: auto; box-shadow: var(--shadow); }
+#lsReturn { position: absolute; top: 6px; right: 214px; pointer-events: auto; box-shadow: var(--shadow); }
 /* the compass takes the map pane's top right corner, so "Върни ме" stands to its left */
-body.lesson #compass { top: 6px; right: calc(var(--ls-w) + 2 * var(--gap) + 60px); }
+body.lesson #compass { top: 6px; right: calc(var(--ls-w) + 2 * var(--gap) + 100px); }
 
 /* ---- reading sheet: laid on the map, with the map showing above, below and to its right; above it is the row of gear, "?" and book ---- */
 #lesson {

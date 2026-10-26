@@ -11,7 +11,7 @@ const start = (app) => {
 
   /* ---------- styles ---------- */
   const css = `
-.nar-orb{position:fixed;z-index:15;width:var(--nar-size,68px);height:var(--nar-size,68px);margin:0;padding:0;border:0;border-radius:50%;background:none;cursor:pointer;touch-action:none;transition:opacity .35s,filter .35s,transform .25s,scale .3s ease;-webkit-tap-highlight-color:transparent}
+.nar-orb{position:fixed;z-index:15;width:var(--nar-size,68px);height:var(--nar-size,68px);margin:0;padding:0;border:0;border-radius:50%;background:none;cursor:pointer;touch-action:none;transition:opacity .35s,filter .35s,transform .25s,scale .3s ease,top .45s cubic-bezier(.3,1.3,.5,1),left .45s cubic-bezier(.3,1.3,.5,1);transform-origin:100% 0;-webkit-tap-highlight-color:transparent}
 .nar-orb:focus-visible{outline:3px solid #7a1e12;outline-offset:4px}
 .nar-orb .core{position:absolute;inset:0;border-radius:50%;transition:transform .55s cubic-bezier(.3,1.35,.5,1)}
 .nar-orb .glow,.nar-orb .swirl,.nar-orb .blobs{position:absolute;border-radius:50%;animation:narSpin 7s linear infinite;animation-play-state:paused}
@@ -36,7 +36,7 @@ const start = (app) => {
 .nar-orb[data-state=playing] .glow{opacity:.85}
 .nar-orb[data-state=paused]{filter:saturate(.75)}
 .nar-orb.beat .glow{opacity:1}
-.nar-orb.drag{cursor:grabbing;transform:scale(1.08)}
+.nar-orb.drag{cursor:grabbing;transform:scale(1.08);transition:none}
 @keyframes narSpin{to{transform:rotate(360deg)}}
 /* active: the orb lies down as a spinning disk, light rises from it and the monster stands on top */
 .nar-orb:not([data-state=dormant]) .core{transform:translateY(20px) scale(1.5,.54)}
@@ -68,15 +68,13 @@ const start = (app) => {
 .nar-bubble .acts button{flex:1;border:0;border-radius:12px;padding:10px 12px;font:900 15px Nunito,sans-serif;cursor:pointer;background:#efe0bc;color:#5b3d17}
 .nar-bubble .acts button.yes{background:#c8402f;color:#fff}
 .nar-bubble .acts button:focus-visible,.nar-bubble .who button:focus-visible{outline:3px solid #7a1e12;outline-offset:2px}
-.nar-bubble .keys{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:10px;padding-top:8px;border-top:1px dashed #d8c39a;font-size:12.5px;color:#8a7352;font-weight:700}
-.nar-bubble kbd{display:inline-block;min-width:22px;padding:1px 6px;border-radius:6px;border:1px solid #d1bb8f;border-bottom-width:2px;background:#fff8e8;font:800 12px Nunito,sans-serif;text-align:center;color:#5b3d17}
 .nar-photo{position:fixed;z-index:14;margin:0;padding:10px 10px 8px;background:#fffdf6;border-radius:6px;box-shadow:0 18px 50px rgba(40,25,10,.4),0 3px 8px rgba(40,25,10,.25);opacity:0;transform:translateY(18px) rotate(-3deg) scale(.92);transition:opacity .45s ease,transform .55s cubic-bezier(.2,1.2,.4,1);pointer-events:none}
 .nar-photo.show{opacity:1;transform:rotate(-1.2deg)}
 .nar-photo img{display:block;max-width:100%;max-height:calc(var(--nar-ph,60vh) - 44px);border-radius:2px;margin:0 auto}
 .nar-photo figcaption{margin-top:6px;font:400 17px/1.2 Kurale,Georgia,serif;color:#3f230f;text-align:center}
 .nar-photo figcaption small{display:block;margin-top:2px;font:600 10.5px Nunito,sans-serif;color:#8a7352}
 @keyframes narIn{from{opacity:0;transform:translateY(8px)}}
-@media (max-width:760px){.nar-orb{--nar-size:58px}.nar-orb:not([data-state=dormant]) .core{transform:translateY(17px) scale(1.5,.54)}.nar-orb .mon{width:98px;height:82px;margin-left:-49px;bottom:13px}.nar-orb .beam{width:78px;height:88px;margin-left:-39px;bottom:12px}.nar-bubble{font-size:15px}.nar-bubble .say{font-size:15.5px}.nar-bubble .keys{display:none}}
+@media (max-width:760px){.nar-orb{--nar-size:58px}.nar-orb:not([data-state=dormant]) .core{transform:translateY(17px) scale(1.5,.54)}.nar-orb .mon{width:98px;height:82px;margin-left:-49px;bottom:13px}.nar-orb .beam{width:78px;height:88px;margin-left:-39px;bottom:12px}.nar-bubble{font-size:15px}.nar-bubble .say{font-size:15.5px}}
 @media (prefers-reduced-motion:reduce){.nar-orb .glow,.nar-orb .swirl,.nar-orb .blobs,.nar-orb .beam,.nar-orb .mon img{animation:none!important}.nar-photo{transition:opacity .3s}}
 `;
   const style = document.createElement("style"); style.textContent = css; document.head.appendChild(style);
@@ -196,7 +194,7 @@ const start = (app) => {
     const n = items.findIndex((x) => x.year > cur.year);
     return n < 0 ? items.length - 1 : n;
   }
-  function setMode(m) { mode = m; orb.dataset.state = m; orb.setAttribute("aria-label", { dormant: "Учител: разкажи ми урока", asking: "Учител", playing: "Пауза", paused: "Продължи урока" }[m]); render(); }
+  function setMode(m) { const woke = (mode === "dormant") !== (m === "dormant"); mode = m; orb.dataset.state = m; if (woke) placeOrb(); orb.setAttribute("aria-label", { dormant: "Учител: разкажи ми урока", asking: "Учител", playing: "Пауза", paused: "Продължи урока" }[m]); render(); }
 
   function ask() {
     idx = indexFromTimeline();
@@ -251,7 +249,8 @@ const start = (app) => {
     if (end) app.goTo(end.id);
     speak(lastSay).then(() => { if (r === run) stop(); });
   }
-  function stop() { run++; stopSpeech(); hidePhoto(); setMode("dormant"); }
+  // switched off, the teacher goes home to its corner; a place the child dragged it to lasts only while it talks
+  function stop() { run++; stopSpeech(); hidePhoto(); setMode("dormant"); custom = null; try { localStorage.removeItem(KEY); } catch (e) {} placeOrb(); }
 
   // the viewer took the timeline into their own hands: pause and continue from wherever they leave it
   app.on("input", () => { if (mode === "playing") { pause(); moved = true; } else if (mode === "paused") { moved = true; waiting = false; } });
@@ -263,7 +262,6 @@ const start = (app) => {
   });
 
   /* ---------- bubble ---------- */
-  const KEYS = `<div class="keys"><span><kbd>Интервал</kbd> пауза</span><span><kbd>←</kbd> <kbd>→</kbd> назад / напред</span><span><kbd>Esc</kbd> край</span></div>`;
   function render() {
     if (mode === "dormant") { bubble.hidden = true; return; }
     const head = `<p class="who"><i></i>Учителят<button type="button" class="x" aria-label="Спри урока">×</button></p>`;
@@ -272,7 +270,7 @@ const start = (app) => {
         : /natural|neural/i.test(voice.name) ? "" : `<p class="note">За по-хубав глас отвори играта в Microsoft Edge.</p>`;
       bubble.innerHTML = `${head}<p class="say">${esc(lastSay)}</p>${note}<div class="acts"><button type="button" class="yes">Да, разкажи</button><button type="button" class="no">Не сега</button></div>`;
     } else if (mode === "playing") {
-      bubble.innerHTML = `${head}<p class="say">${esc(lastSay)}</p>${KEYS}`;
+      bubble.innerHTML = `${head}<p class="say">${esc(lastSay)}</p>`;
     } else {
       const note = waiting ? items[idx].wait.note : `Пауза. Натисни интервал или кълбото, за да продължа${moved ? " оттам, докъдето стигна" : ""}.`;
       bubble.innerHTML = `${head}<p class="say${waiting ? "" : " dim"}">${esc(lastSay)}</p><p class="note">${esc(note)}</p>`;
@@ -302,15 +300,16 @@ const start = (app) => {
   function placeOrb() {
     const size = orb.offsetWidth || 68;
     let x, y;
-    if (custom) { x = custom.x * innerWidth - size / 2; y = custom.y * innerHeight - size / 2; }
-    else { const d = app.dock(); x = d.left + (d.width - size) / 2; y = d.bottom - size - 8; } // bottom of the slot: the monster needs the room above
+    if (custom && mode !== "dormant") { x = custom.x * innerWidth - size / 2; y = custom.y * innerHeight - size / 2; }
+    // at the slot's right edge; asleep at its top, awake lower down, so the teacher standing over the orb has room above it
+    else { const d = app.dock(); x = d.right - size; y = mode === "dormant" ? d.top + 4 : d.bottom - size - 8; }
     x = Math.max(8, Math.min(innerWidth - size - 8, x)); y = Math.max(8, Math.min(innerHeight - size - 8, y));
     orb.style.left = Math.round(x) + "px"; orb.style.top = Math.round(y) + "px";
     orb.dataset.side = x + size / 2 > innerWidth / 2 ? "left" : "right"; // the hover question opens toward the middle
     if (!bubble.hidden) placeBubble();
   }
   let drag = null, justDragged = false;
-  orb.addEventListener("pointerdown", (e) => { drag = { x: e.clientX, y: e.clientY, ox: orb.offsetLeft, oy: orb.offsetTop, on: false }; orb.setPointerCapture(e.pointerId); });
+  orb.addEventListener("pointerdown", (e) => { if (mode === "dormant") return; drag = { x: e.clientX, y: e.clientY, ox: orb.offsetLeft, oy: orb.offsetTop, on: false }; orb.setPointerCapture(e.pointerId); });
   orb.addEventListener("pointermove", (e) => {
     if (!drag) return;
     const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
