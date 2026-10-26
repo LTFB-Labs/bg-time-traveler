@@ -1,0 +1,67 @@
+// The album at #album: every card the child has opened, one group per lesson and one for the free map, with what is left; a tile opens the card.
+import { createCards } from './cards.js';
+import { esc } from './lesson.js';
+import { cardIcon } from './map.js';
+import { loadProgress } from './store.js';
+
+const LESSON_EMPTY = 'Отвори картичка в урока и тя ще дойде тук.';
+const EVENTS_EMPTY = 'Спри годината на събитие на картата и то ще дойде тук.';
+const CARD_LINK = /data-card="([^"]+)"/g;
+
+// lessons: CONTENT.lessons in book order; events: EVENTS, by year; opened: the card ids in the progress store
+export function albumGroups({ lessons, events, opened }) {
+    const isOpened = new Set(opened);
+    const group = (name, ids, what, empty) => {
+        const found = ids.filter((id) => isOpened.has(id));
+        return { name, ids: found, count: `${found.length} от ${ids.length} ${what}`, empty };
+    };
+    return [
+        ...lessons.map((lesson) => group(`Урок ${lesson.number} · ${lesson.title}`, lessonCards(lesson), 'картички от този урок', LESSON_EMPTY)),
+        group('Свободната карта', events.map((event) => event.id), 'събития от картата', EVENTS_EMPTY),
+    ];
+}
+
+// the cards a lesson marks on its map or links from its text, in order of first appearance
+function lessonCards(lesson) {
+    const ids = lesson.parts.flatMap((part) => [...(part.meta.marks ?? []), ...linkedCards(part.html), ...linkedCards(part.factHtml)]);
+    return [...new Set(ids)];
+}
+
+const linkedCards = (html) => [...(html ?? '').matchAll(CARD_LINK)].map((match) => match[1]);
+
+export function startAlbum() {
+    const root = document.getElementById('album');
+    const groups = albumGroups({ lessons: Object.values(CONTENT.lessons), events: EVENTS, opened: loadProgress().cards });
+    root.querySelector('.groups').innerHTML = groups.map(groupHtml).join('');
+    // the free map's pop-over, placed above the album by css/lesson.css
+    const cards = createCards(document.getElementById('freePop'), { onOpen: () => {}, onClose: () => {}, footer: showOnMap });
+    root.addEventListener('click', (e) => {
+        const tile = e.target.closest('.tile');
+        if (tile) cards.open(tile.dataset.id);
+        else cards.close();
+    });
+    root.hidden = false;
+}
+
+function groupHtml({ name, ids, count, empty }) {
+    const body = ids.length > 0 ? `<div class="tiles">${ids.map(tileHtml).join('')}</div>` : `<p class="empty">${empty}</p>`;
+    return `<section class="group"><h3>${esc(name)}</h3><p class="count">${count}</p>${body}</section>`;
+}
+
+function tileHtml(id) {
+    const card = CONTENT.cards[id];
+    const photo = CONTENT.photos[card.photo];
+    const picture = photo ? `<img src="${esc(photo.f)}" alt="" loading="lazy">` : cardIcon(card.legacyKind ?? card.kind);
+    return `<button class="tile" type="button" data-id="${esc(id)}"><span class="thumb">${picture}</span><span class="name">${esc(card.title)}</span></button>`;
+}
+
+// an event shows on the free map; a lesson card at the lesson part where it first appears; a card with neither gets no button
+function showOnMap(id) {
+    const href = CONTENT.cards[id].legacyKind ? `#free/${id}` : partHref(id);
+    return href ? `<a class="btn pri" href="${esc(href)}">Покажи на картата</a>` : '';
+}
+
+function partHref(id) {
+    const entry = CONTENT.search.find((e) => e.type === 'card' && e.id === id);
+    return entry?.lesson ? `#lesson/${entry.lesson}/${entry.part}` : null;
+}

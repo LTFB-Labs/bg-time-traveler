@@ -1,3 +1,8 @@
-data-src/node_modules/
-data-src/*.geojson
+tools/node_modules/
+tools/ne_*.geojson
 inspect.mjs
+.playwright-mcp/
+spike/
+tools/.venv/
+tools/terrain-tiles/
+.superpowers/

@@ -1,0 +1,5 @@
+{
+  "type": "Feature",
+  "properties": { "name": "Триъгълник", "kind": "state", "colour": "#c8402f" },
+  "geometry": { "type": "Polygon", "coordinates": [[[24.0, 42.0], [25.5, 42.0], [24.7, 43.2], [24.0, 42.0]]] }
+}
