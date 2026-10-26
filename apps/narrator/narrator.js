@@ -51,6 +51,9 @@ const start = (app) => {
 .nar-orb .mon img{display:block;width:100%;height:100%;object-fit:contain;object-position:50% 100%;filter:drop-shadow(0 5px 7px rgba(120,150,255,.6))}
 .nar-orb .mon::after{content:"";position:absolute;inset:35% -12% -8%;background:radial-gradient(ellipse at 50% 100%,rgba(140,200,255,.65),rgba(255,120,210,.22) 45%,transparent 70%);mix-blend-mode:screen;pointer-events:none}
 .nar-orb:not([data-state=dormant]) .mon{opacity:1;transform:scale(1.3)}
+/* awake, the whole teacher can be taken and carried, not only the small orb under it */
+.nar-orb:not([data-state=dormant]){cursor:grab}
+.nar-orb:not([data-state=dormant]) .mon{pointer-events:auto}
 .nar-orb[data-state=asking] .mon img,.nar-orb[data-state=playing] .mon img{animation:narBob 2.2s ease-in-out infinite}
 .nar-orb.talk .mon img{transform-origin:50% 100%;animation:narBob 2.2s ease-in-out infinite,narTalk .2s ease-in-out infinite alternate}
 @keyframes narTalk{to{scale:1.035 .97}}
@@ -194,7 +197,7 @@ const start = (app) => {
     const n = items.findIndex((x) => x.year > cur.year);
     return n < 0 ? items.length - 1 : n;
   }
-  function setMode(m) { const woke = (mode === "dormant") !== (m === "dormant"); mode = m; orb.dataset.state = m; document.body.classList.toggle("teacher-on", m === "playing" || m === "paused"); if (woke) placeOrb(); orb.setAttribute("aria-label", { dormant: "Учител: разкажи ми урока", asking: "Учител", playing: "Пауза", paused: "Продължи урока" }[m]); render(); }
+  function setMode(m) { const woke = (mode === "dormant") !== (m === "dormant"); mode = m; orb.dataset.state = m; document.body.classList.toggle("teacher-on", m !== "dormant"); if (woke) placeOrb(); orb.setAttribute("aria-label", { dormant: "Учител: разкажи ми урока", asking: "Учител", playing: "Пауза", paused: "Продължи урока" }[m]); render(); }
 
   function ask() {
     idx = indexFromTimeline();
