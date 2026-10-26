@@ -18,6 +18,11 @@ const $ = (id) => document.getElementById(id);
 const PH = typeof PHOTOS !== "undefined" ? PHOTOS : {};
 const yInt = (y) => Math.floor(y + 1e-6);
 const EV = EVENTS.slice().sort((a, b) => a.y - b.y);
+
+/* ---------- events for add-ons (see window.BGTT at the end) ---------- */
+const bus = new EventTarget();
+const emit = (name, detail) => bus.dispatchEvent(new CustomEvent(name, { detail }));
+const userInput = () => emit("input", {});
 const frames = GEO.frames;
 const frameAt = (y) => { let i = 0; for (let k = 0; k < frames.length; k++) if (frames[k].y <= y + 1e-6) i = k; return i; };
 
@@ -43,10 +48,10 @@ function updateMarkers() {
   vis.sort((a, b) => (a === act) - (b === act)); // active last → on top
   map.setMarkers(vis.map((e) => { const age = (y - e.y) / SPAN(e); return toMarker(e, e === act ? 1 : (1 - age * .55).toFixed(2)); }), onMarkerClick);
   map.setActiveMarker(act ? act.id : null);
-  if (act !== activeEv) { activeEv = act; renderCard(); map.drawPath(act ? act.path : null); }
+  if (act !== activeEv) { activeEv = act; renderCard(); map.drawPath(act ? act.path : null); emit("focus", { item: act && lessonItem(act) }); }
 }
 const toMarker = (e, opacity) => ({ id: e.id, at: e.at, kind: e.kind, title: e.t, opacity });
-const onMarkerClick = (m) => { stopPlay(); goTo(EV.find((e) => e.id === m.id).y, 900); };
+const onMarkerClick = (m) => { userInput(); stopPlay(); goTo(EV.find((e) => e.id === m.id).y, 900); };
 
 /* ---------- card ---------- */
 const card = $("card");
@@ -125,7 +130,7 @@ function placeKnob() {
 let dragging = false;
 function yearFromEvent(e) { const r = track.getBoundingClientRect(); return xToY(e.clientX - r.left); }
 track.addEventListener("pointerdown", (e) => {
-  stopPlay(); stopMove(); dragging = true; map.setScrubbing(true); track.classList.add("drag"); track.setPointerCapture(e.pointerId);
+  userInput(); stopPlay(); stopMove(); dragging = true; map.setScrubbing(true); track.classList.add("drag"); track.setPointerCapture(e.pointerId);
   const dot = e.target.closest(".dot");
   if (dot) { const ev = EV.find((q) => q.id === dot.dataset.id); goTo(ev.y, 700); return; }
   setYear(yearFromEvent(e)); showTip(e);
@@ -156,17 +161,19 @@ function setYear(y) {
 }
 // the year tween runs on animation frames only while it lasts: goTo starts the frames when none run, tick stops at the end,
 // stopMove stops them early; a move started while the wheel still scrubs takes the year until the wheel rests
-function goTo(y, ms = 900) {
+// done: called once the move is over, whether it reached its year or something else took the year from it
+function goTo(y, ms = 900, done) {
   const from = state.year, t0 = performance.now();
   if (wheelStop) wheelYields = true;
   if (!tween) frame = requestAnimationFrame(tick);
-  tween = { from, to: y, t0, ms };
+  else if (tween.done) tween.done();
+  tween = { from, to: y, t0, ms, done };
 }
 function tick(now) {
   const t = clamp((now - tween.t0) / tween.ms, 0, 1);
   setYear(lerp(tween.from, tween.to, ease(t)));
   if (t < 1) { frame = requestAnimationFrame(tick); return; }
-  tween = null; setYear(state.year); markStop();
+  const done = tween.done; tween = null; setYear(state.year); markStop(); if (done) done();
 }
 // a free-map event counts as opened when the year stops on it with its card in the panel, never while the knob passes over it
 function markStop() {
@@ -175,7 +182,9 @@ function markStop() {
 // a drag or a wheel scrub takes the year from a move still running, so the move neither fights it nor counts its event
 function stopMove() {
     cancelAnimationFrame(frame);
+    const done = tween?.done;
     tween = null;
+    if (done) done();
 }
 
 /* ---------- play ---------- */
@@ -193,12 +202,13 @@ function playStep() {
 }
 const readTime = (e) => clamp(2600 + e.d.length * 28, 4500, 9000);
 $("play").addEventListener("click", () => {
+  userInput();
   if (playing) { stopPlay(); return; }
   if (state.year >= END - .01) setYear(START);
   playing = true; $("play").innerHTML = PAUSE_ICON; $("play").setAttribute("aria-label", "Пауза"); playStep();
 });
-const stepNext = () => { stopPlay(); const n = nextAfter(state.year); if (n) goTo(n.y, clamp(500 + Math.sqrt(n.y - state.year) * 220, 600, 2600)); };
-const stepPrev = () => { stopPlay(); const p = prevBefore(state.year); if (p) goTo(p.y, clamp(500 + Math.sqrt(state.year - p.y) * 220, 600, 2600)); };
+const stepNext = () => { userInput(); stopPlay(); const n = nextAfter(state.year); if (n) goTo(n.y, clamp(500 + Math.sqrt(n.y - state.year) * 220, 600, 2600)); };
+const stepPrev = () => { userInput(); stopPlay(); const p = prevBefore(state.year); if (p) goTo(p.y, clamp(500 + Math.sqrt(state.year - p.y) * 220, 600, 2600)); };
 $("next").addEventListener("click", stepNext); $("sNext").addEventListener("click", stepNext);
 $("prev").addEventListener("click", stepPrev); $("sPrev").addEventListener("click", stepPrev);
 $("more").addEventListener("click", () => { card.classList.toggle("open"); $("more").textContent = card.classList.contains("open") ? "По-малко" : "Още"; requestAnimationFrame(aimCamera); });
@@ -207,8 +217,8 @@ const intro = $("intro");
 addEventListener("keydown", (e) => {
   if (intro.isConnected && !intro.classList.contains("leave")) { if (e.key === "Enter" || e.key === " ") start(); return; }
   if (e.target.closest?.('input')) return; // keys typed in the search box stay in the box
-  if (e.key === "ArrowRight") { e.shiftKey ? (stopPlay(), goTo(state.year + 10, 300)) : stepNext(); e.preventDefault(); }
-  if (e.key === "ArrowLeft") { e.shiftKey ? (stopPlay(), goTo(state.year - 10, 300)) : stepPrev(); e.preventDefault(); }
+  if (e.key === "ArrowRight") { e.shiftKey ? (userInput(), stopPlay(), goTo(state.year + 10, 300)) : stepNext(); e.preventDefault(); }
+  if (e.key === "ArrowLeft") { e.shiftKey ? (userInput(), stopPlay(), goTo(state.year - 10, 300)) : stepPrev(); e.preventDefault(); }
   if (e.key === " ") { $("play").click(); e.preventDefault(); }
 });
 
@@ -229,6 +239,7 @@ $("map").addEventListener("wheel", (e) => {
     clearTimeout(wheelStop);
     wheelStop = setTimeout(endWheel, WHEEL_STOP_MS);
     if (wheelYields || dragging) return;
+    userInput();
     stopPlay();
     stopMove();
     setYear(state.year + (e.deltaY + e.deltaX) * .08);
@@ -251,6 +262,7 @@ $("go").addEventListener("click", start);
 
 /* ---------- search: a pick moves the map to its year, opens a lesson card over the map, or opens a lesson ---------- */
 function pickResult(item) {
+    userInput();
     stopPlay();
     freeCards.close();
     if (item.type === 'lesson' || item.type === 'part') {
@@ -290,5 +302,36 @@ const startYear = first ? first.y : START;
 setYear(startYear);
 map.setFreeRect(freeRect()); map.snapToYear(startYear);
 map.prebuildFrames();
-window.BGTT = { setYear: (y) => { stopPlay(); setYear(y); }, map };
+/* ---------- window.BGTT: the only way add-ons (narrator.js) talk to the free map ----------
+   items()      → the lesson: every event in time order, as plain data
+   current()    → { item, year, era } for what the timeline shows now (item is null between events)
+   goTo(id)     → moves the timeline to that event; resolves when the move has finished
+   stage()      → screen rect of the map that is not covered by the card and timeline
+   dock()       → screen rect of the free slot under the HUD, where an add-on may sit
+   on(name, cb) → "focus" (the shown event changed) and "input" (the viewer moved the timeline); returns an unsubscribe */
+function eraItem(era) { return { name: era.n, from: era.a, to: era.b > END ? null : era.b, text: era.d }; }
+function lessonItem(e) {
+  const p = PH[e.id];
+  return { id: e.id, year: yInt(e.y), title: e.t, text: e.d, kind: e.kind, kindName: KIND[e.kind].n,
+    photo: p ? { src: p.f, author: p.a, license: p.l, url: p.u } : null, era: eraItem(eraAt(e.y)) };
+}
+const LESSON = EV.map(lessonItem);
+window.BGTT = {
+  version: 1,
+  items: () => LESSON.slice(),
+  current: () => ({ item: activeEv && lessonItem(activeEv), year: yInt(state.year), era: eraItem(eraAt(state.year)) }),
+  goTo: (id) => new Promise((resolve) => {
+    const ev = EV.find((q) => q.id === id); if (!ev) { resolve(); return; }
+    stopPlay(); freeCards.close();
+    const gap = Math.abs(ev.y - state.year);
+    if (gap < 1e-6) { setYear(ev.y); markStop(); setTimeout(resolve, 150); return; }
+    goTo(ev.y, clamp(500 + Math.sqrt(gap) * 240, 600, 3000), () => setTimeout(resolve, 250));
+  }),
+  stage: () => freeRect(),
+  dock: () => $("dock").getBoundingClientRect(),
+  on: (name, cb) => { const h = (e) => cb(e.detail); bus.addEventListener(name, h); return () => bus.removeEventListener(name, h); },
+  setYear: (y) => { stopPlay(); setYear(y); },
+  map,
+};
+dispatchEvent(new Event("bgtt:ready"));
 }

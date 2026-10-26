@@ -1,4 +1,4 @@
-/* AI учител: разказва таймлайна като урок с гласа на браузъра (Web Speech API).
+/* AI учител: разказва свободната линия на времето като урок с гласа на браузъра (Web Speech API).
    Говори с играта само през window.BGTT (items, current, goTo, stage, dock, on), затова може да се махне,
    без играта да разбере. Всичко свое — кълбо, балонче, снимка, стилове — създава сам. */
 (() => {
@@ -253,8 +253,10 @@ const start = (app) => {
     const o = orb.getBoundingClientRect(), b = bubble.getBoundingClientRect(), W = innerWidth, H = innerHeight, m = 12;
     let left = o.left + o.width / 2 > W / 2 ? o.right - b.width : o.left;
     left = Math.max(16, Math.min(W - 16 - b.width, left));
-    const lift = mode === "dormant" ? 0 : 44; // the monster stands above the orb
-    let top = o.top - lift - b.height - m;
+    // below the orb while the free map has room for it there (above it are the game's own controls), otherwise above the monster
+    const st = app.stage(), lift = mode === "dormant" ? 0 : 44; // the monster stands above the orb
+    let top = o.bottom + m;
+    if (top + b.height > Math.min(H - 12, st.y + st.h)) top = o.top - lift - b.height - m;
     if (top < 12) top = Math.min(H - b.height - 12, o.bottom + m);
     bubble.style.left = Math.round(left) + "px"; bubble.style.top = Math.round(top) + "px";
   }
@@ -308,6 +310,7 @@ const start = (app) => {
   /* ---------- keyboard: while the teacher is on, its keys win over the timeline's ---------- */
   addEventListener("keydown", (e) => {
     if (mode === "dormant" || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.target.closest?.("input, textarea")) return; // keys typed in the search box stay in the box
     let used = true;
     if (e.key === " " || e.key === "Spacebar") { if (mode === "asking") begin(idx, true); else if (mode === "playing") pause(); else resume(); }
     else if (e.key === "Enter" && mode === "asking" && !e.target.closest?.(".nar-bubble button")) begin(idx, true);

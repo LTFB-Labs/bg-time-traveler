@@ -122,6 +122,7 @@ button{font-family:inherit;cursor:pointer}
 #hud .opt{display:flex}
 /* the way into lessons sits in one row with the gear, as tall as it */
 #hudBtns{display:flex;gap:8px;margin-top:8px}
+#dock{width:110px;height:150px;margin-top:2px}
 #toLessons{height:36px;padding:0 14px;font-size:13px;pointer-events:auto;box-shadow:0 1px 4px rgba(60,40,15,.15)}
 
 /* card */
@@ -217,6 +218,7 @@ a.btn{text-decoration:none}
   #findBox{width:calc(100vw - 32px)}
   #findList{left:-6px;width:calc(100vw - 20px);max-width:none;max-height:calc(100dvh - var(--tl) - 200px)}
   .step{display:none}
+  #dock{width:96px;height:128px}
   #play{width:48px;height:48px}
   #bands div{font-size:0}
   .city{font-size:13px}.city.cap{font-size:15px}
@@ -243,6 +245,7 @@ a.btn{text-decoration:none}
   </div>
   <button class="btn" id="wheelMode">Колелце: година</button>
   <div id="hudBtns"><a class="btn" id="toLessons" href="#lessons">Уроци</a><button class="btn opt" popovertarget="options" aria-label="Настройки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" stroke-width="4" stroke-dasharray="3.34 3.34"/><circle cx="12" cy="12" r="5.5" stroke-width="3"/></svg></button></div>
+  <div id="dock" aria-hidden="true"></div>
 </div>
 
 <aside id="card" aria-live="polite">
@@ -344,6 +347,7 @@ a.btn{text-decoration:none}
 
 <script src="geo.js"></script>
 <script src="content.js"></script>
+<script src="narrator.js" defer></script>
 <script type="module" src="js/app.js"></script>
 </body>
 </html>
