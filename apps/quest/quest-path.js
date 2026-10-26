@@ -1,6 +1,5 @@
 // The Quest's path as data: every stop in order (the lessons of each section, then the section's boss), what each stop asks,
 // how far the child has come and how much of the path still lies in the fog. Node imports this module, so it touches no DOM.
-import { lessonCards } from '../../modules/album/album.js';
 
 // a boss asks this many questions, picked from every section so far
 export const BOSS_SIZE = 10;
@@ -67,3 +66,12 @@ function shuffle(items, random) {
     }
     return out;
 }
+
+// the cards a lesson marks on its map or links from its text, in order of first appearance
+const CARD_LINK = /data-card="([^"]+)"/g;
+function lessonCards(lesson) {
+    const ids = lesson.parts.flatMap((part) => [...(part.meta.marks ?? []), ...linkedCards(part.html), ...linkedCards(part.factHtml)]);
+    return [...new Set(ids)];
+}
+
+const linkedCards = (html) => [...(html ?? '').matchAll(CARD_LINK)].map((match) => match[1]);

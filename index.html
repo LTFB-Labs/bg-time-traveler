@@ -159,7 +159,6 @@ a.btn{text-decoration:none}
 <div id="lsFog" aria-hidden="true"></div>
 <div id="lsFogTint" aria-hidden="true"></div>
 
-<div id="freePop" hidden></div>
 
 <div id="lsMap">
   <div id="lsHud"><div id="lsYear"></div><div id="lsEra" hidden><i></i><span></span></div></div>
@@ -212,7 +211,6 @@ a.btn{text-decoration:none}
     <a class="btn back" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Към началото</a>
     <span class="grow"></span>
     <a class="btn" href="#quest">Походът</a>
-    <a class="btn" href="#album">Албум</a>
     <div class="title"><h1>Уроци</h1><select class="grade" aria-label="Клас"></select></div>
   </header>
   <div class="hall">
@@ -233,7 +231,6 @@ a.btn{text-decoration:none}
 <!-- the way into the Quest: two swords crossed, left of the book -->
 <a id="toQuest" href="#quest" aria-label="Походът" title="Походът"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="3.8" cy="3.8" r="1.4"/><path d="M5 5l1.5 1.5M5.3 9.3l4-4"/><path class="blade" d="M8.6 6.6l10.9 10.9 1 3-3-1L6.6 8.6z"/><circle cx="20.2" cy="3.8" r="1.4"/><path d="M19 5l-1.5 1.5M18.7 9.3l-4-4"/><path class="blade" d="M15.4 6.6L4.5 17.5l-1 3 3-1L17.4 8.6z"/></svg></a>
 
-<!-- the album at #album; js/album.js fills the groups -->
 <!-- the Quest at #quest; apps/quest/quest.js draws the road and the fights -->
 <main id="quest" hidden>
   <header class="quest-top">
@@ -244,15 +241,6 @@ a.btn{text-decoration:none}
   </header>
   <div class="trail"><div class="land"></div></div>
   <div class="fight" hidden><div class="sheet" role="dialog" aria-modal="true" aria-label="Битка"></div></div>
-</main>
-
-<main id="album" hidden>
-  <div class="sheet">
-    <a class="btn back" href="#lessons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Към уроците</a>
-    <h1>Албум</h1>
-    <h2>Картички</h2>
-    <div class="groups"></div>
-  </div>
 </main>
 
 <div id="intro">

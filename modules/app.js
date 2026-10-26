@@ -1,7 +1,6 @@
 // Entry point: builds the map, then routes by the address hash. Any hash change reloads the page.
-// '#lessons' → the textbooks of the lesson hall; '#lessons/<textbook>' → its sections; '#lessons/<textbook>/<section>' → the section's lessons; '#album' → the album; '#quest' → the Quest; '#lesson/<id>' or '#lesson/<id>/<n>' → the lesson player; anything else → the start screen.
+// '#lessons' → the textbooks of the lesson hall; '#lessons/<textbook>' → its sections; '#lessons/<textbook>/<section>' → the section's lessons; '#quest' → the Quest; '#lesson/<id>' or '#lesson/<id>/<n>' → the lesson player; anything else → the start screen.
 import { createMap } from '../code/map/map.js';
-import { startAlbum } from './album/album.js';
 import { startQuest } from '../apps/quest/quest.js';
 import { startLessonList } from './lesson/lesson-list.js';
 import {
@@ -19,7 +18,7 @@ const map = createMap(document.getElementById('map'), document.getElementById('o
 startTodayButtons(map);
 const route = location.hash.match(/^#lesson\/([^/]*)\/?(\d*)/);
 // the pages over the map: the body class that hides the map's furniture, and what draws the page
-const page = { '#lessons': ['lessons', startLessonList], '#album': ['album', startAlbum], '#quest': ['quest', startQuest] }[location.hash];
+const page = { '#lessons': ['lessons', startLessonList], '#quest': ['quest', startQuest] }[location.hash];
 const hallFloor = location.hash.match(/^#lessons\/(.+)$/);
 if (page) openPage(...page);
 else if (hallFloor) openPage('lessons', () => startLessonList(hallFloor[1]));
