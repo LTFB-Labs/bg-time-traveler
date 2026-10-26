@@ -1,0 +1,34 @@
+---
+id: osmanli
+kind: event
+legacyKind: event
+title: Османците идват в Европа
+years:
+  - 1354
+  - 1354
+at:
+  - 26.67
+  - 40.41
+path:
+  - - 29.06
+    - 40.18
+  - - 27.6
+    - 40.35
+  - - 26.67
+    - 40.41
+  - - 26.56
+    - 41.68
+photo: osmanli
+aliases:
+  - Османците идват в Европа
+media:
+  images:
+    - id: osmanli
+      file: images/osmanli.jpg
+      author: K.K. (Kapıdağlı series)
+      license: Public domain
+      source: https://commons.wikimedia.org/wiki/File:Orhan_Gazi.jpg
+      width: 620
+      height: 900
+---
+Османските турци преминават от Мала Азия в Европа при Галиполи. Българските, сръбските и византийските владетели воюват помежду си и не успяват да ги спрат.

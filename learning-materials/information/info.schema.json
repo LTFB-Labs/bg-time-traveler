@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "info.schema.json",
+  "title": "Info",
+  "description": "Едно самостоятелно парче информация: папка information/<id>/ с info.md (тези полета в front matter + текст) и своите images/, audio/, videos/, maps/, texts/.",
+  "type": "object",
+  "required": ["id", "kind", "title"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "$ref": "#/$defs/id", "description": "Същото като името на папката." },
+    "kind": { "enum": ["person", "place", "object", "people", "idea", "event", "state"] },
+    "legacyKind": { "enum": ["battle", "building", "event", "person"], "description": "Видът на точката на свободната карта; само парчетата с него са на свободната линия на времето." },
+    "title": { "type": "string", "minLength": 1 },
+    "dates": { "type": "string", "description": "Датата, както се показва на детето." },
+    "years": { "type": "array", "prefixItems": [{ "type": "number" }, { "type": "number" }], "minItems": 2, "maxItems": 2, "description": "[от, до]; пр.Хр. е отрицателно; дробната част е частта от годината (1878.5 = средата на 1878), за да се подреждат събитията от една година." },
+    "at": { "$ref": "#/$defs/lonLat" },
+    "path": { "type": "array", "items": { "$ref": "#/$defs/lonLat" }, "minItems": 2, "description": "Маршрут по картата." },
+    "photo": { "type": "string", "minLength": 1, "description": "id на главната снимка: от media.images на този или на друг пакет." },
+    "aliases": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "tags": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true, "description": "Свободни етикети за търсене и групиране." },
+    "related": { "type": "array", "items": { "$ref": "#/$defs/id" }, "uniqueItems": true, "description": "id-та на свързани парчета; всяко трябва да съществува." },
+    "media": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "images": { "type": "array", "items": { "$ref": "#/$defs/image" } },
+        "audio": { "type": "array", "items": { "$ref": "#/$defs/audio" } },
+        "videos": { "type": "array", "items": { "$ref": "#/$defs/video" } },
+        "maps": { "type": "array", "items": { "$ref": "#/$defs/map" } },
+        "texts": { "type": "array", "items": { "$ref": "#/$defs/text" } }
+      }
+    }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "lonLat": { "type": "array", "prefixItems": [{ "type": "number" }, { "type": "number" }], "minItems": 2, "maxItems": 2, "description": "[дължина, ширина]" },
+    "url": { "type": "string", "pattern": "^https?://" },
+    "image": {
+      "type": "object",
+      "required": ["id", "file", "author", "license", "source"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "file": { "type": "string", "pattern": "^images/[^/]+\\.(jpg|jpeg|png|webp)$" },
+        "caption": { "type": "string" },
+        "author": { "type": "string", "minLength": 1 },
+        "license": { "type": "string", "minLength": 1 },
+        "source": { "$ref": "#/$defs/url" },
+        "commons": { "type": "string", "description": "Името на файла в Wikimedia Commons; npm run photos го сваля, ако липсва." },
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "audio": {
+      "type": "object",
+      "required": ["file"],
+      "additionalProperties": false,
+      "properties": {
+        "file": { "type": "string", "pattern": "^audio/[^/]+\\.(mp3|m4a|ogg|wav)$" },
+        "role": { "type": "string", "description": "Например narration (прочитане на текста)." },
+        "author": { "type": "string" },
+        "license": { "type": "string" },
+        "source": { "$ref": "#/$defs/url" },
+        "seconds": { "type": "number", "minimum": 0 }
+      }
+    },
+    "video": {
+      "type": "object",
+      "required": ["file", "author", "license", "source"],
+      "additionalProperties": false,
+      "properties": {
+        "file": { "type": "string", "pattern": "^videos/[^/]+\\.(mp4|webm)$" },
+        "caption": { "type": "string" },
+        "author": { "type": "string", "minLength": 1 },
+        "license": { "type": "string", "minLength": 1 },
+        "source": { "$ref": "#/$defs/url" },
+        "seconds": { "type": "number", "minimum": 0 }
+      }
+    },
+    "map": {
+      "type": "object",
+      "required": ["file"],
+      "additionalProperties": false,
+      "properties": {
+        "file": { "type": "string", "pattern": "^maps/[^/]+\\.geojson$" },
+        "title": { "type": "string" }
+      }
+    },
+    "text": {
+      "type": "object",
+      "required": ["file", "role"],
+      "additionalProperties": false,
+      "properties": {
+        "file": { "type": "string", "pattern": "^texts/[^/]+\\.md$" },
+        "role": { "type": "string", "description": "Например short или grade-4: друга версия на основния текст." }
+      }
+    }
+  }
+}

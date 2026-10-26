@@ -1,4 +1,4 @@
-import { basename } from 'node:path';
+import { basename, dirname } from 'node:path';
 import { splitFrontMatter, splitParagraphs } from './frontmatter.mjs';
 import { countWords } from './markdown.mjs';
 import { problem } from './problems.mjs';
@@ -88,9 +88,11 @@ function yearsRule(card) {
     return valid ? [] : ['"years" must be [a, b] with a <= b'];
 }
 
+// a package's info.md is named after its folder; a loose card file after itself
 function idRule(card) {
-    const name = basename(card.file, '.md');
-    return !card.id || card.id === name ? [] : [`id "${card.id}" does not match file name "${name}"`];
+    const isPackage = basename(card.file) === 'info.md';
+    const name = isPackage ? basename(dirname(card.file)) : basename(card.file, '.md');
+    return !card.id || card.id === name ? [] : [`id "${card.id}" does not match ${isPackage ? 'folder' : 'file'} name "${name}"`];
 }
 
 function idFormatRule(card) {

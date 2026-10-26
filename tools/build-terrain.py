@@ -1,5 +1,5 @@
 # Draws the map's relief layer, img/terrain.webp: ink mountains, hills, forests and reeds from the hand-made symbol sheet
-# content/terrain-symbols.jpg, placed on the real ground of the whole map and drawn into one transparent image in the
+# learning-materials/maps/terrain-symbols.jpg, placed on the real ground of the whole map and drawn into one transparent image in the
 # map's units. js/map.js lays it over the border fills, faint and blended like printed ink.
 # Where each kind stands comes from real elevation (AWS Terrain Tiles, credited in CREDITS.md): big peaks on the high
 # massifs, medium peaks on high ranges, hills on the lower mountain ground. There is no forest data, so forests grow in
@@ -18,7 +18,7 @@ from PIL import Image, ImageDraw
 from scipy import ndimage
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
-SHEET = os.path.join(ROOT, 'content/terrain-symbols.jpg')
+SHEET = os.path.join(ROOT, 'learning-materials/maps/terrain-symbols.jpg')
 OUT = os.path.join(ROOT, 'img/terrain.webp')
 TILES = os.path.join(ROOT, 'tools/terrain-tiles')
 SCALE = 2  # image pixels per map unit: about one screen pixel per pixel at the lesson zoom on a Retina screen

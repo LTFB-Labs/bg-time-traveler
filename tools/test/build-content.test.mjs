@@ -24,7 +24,7 @@ test('buildsCompatibilityGlobals', () => {
 
 test('reportsCardProblems', () => {
     const { problems } = buildContent(badRoot);
-    assert.deepEqual(problems.map((p) => p.file), ['cards/teres.md', 'lessons/5/test-lesson.md']);
+    assert.deepEqual(problems.map((p) => p.file), ['information/teres/info.md', 'lessons/5/test-lesson.md']);
 });
 
 test('buildsLessonWithLinkedTerms', () => {
@@ -43,7 +43,7 @@ test('buildsLessonWithLinkedTerms', () => {
 test('reportsIndexIdThatDiffersFromLesson', () => {
     const copy = mkdtempSync(join(tmpdir(), 'content-'));
     cpSync(root, copy, { recursive: true });
-    writeFileSync(join(copy, 'content/lessons/5/index.json'), '[{ "id": "5-other", "file": "test-lesson.md", "state": "ready" }]');
+    writeFileSync(join(copy, 'learning-materials/lessons/5/index.json'), '[{ "id": "5-other", "file": "test-lesson.md", "state": "ready" }]');
     const { problems } = buildContent(copy);
     assert.equal(problems.length, 1);
     assert.match(problems[0].message, /5-other/);
@@ -51,7 +51,7 @@ test('reportsIndexIdThatDiffersFromLesson', () => {
 
 test('passesUnreadyLessonToThePage', () => {
     const index = '[{ "number": 1, "title": "Какво е история" }, { "id": "5-test", "file": "test-lesson.md", "state": "ready" }]';
-    const { content, problems } = buildContent(copyOkWith({ 'content/lessons/5/index.json': index }));
+    const { content, problems } = buildContent(copyOkWith({ 'learning-materials/lessons/5/index.json': index }));
     assert.deepEqual(problems, []);
     assert.deepEqual(content.grades['5'][0], { number: 1, title: 'Какво е история' });
     assert.equal(content.grades['5'][1].id, '5-test');
@@ -59,7 +59,7 @@ test('passesUnreadyLessonToThePage', () => {
 
 test('reportsUnreadyLessonWithoutNumberOrTitle', () => {
     const index = '[{ "title": "Без номер" }, { "number": 2 }, { "id": "5-test", "file": "test-lesson.md", "state": "ready" }]';
-    const { problems } = buildContent(copyOkWith({ 'content/lessons/5/index.json': index }));
+    const { problems } = buildContent(copyOkWith({ 'learning-materials/lessons/5/index.json': index }));
     assert.deepEqual(problems.map((p) => p.file), ['lessons/5/index.json', 'lessons/5/index.json']);
     assert.match(problems[0].message, /number and a title/);
 });
@@ -72,34 +72,51 @@ test('cliExitsOnError', () => {
 });
 
 test('readsCardWithBomAndCrlf', () => {
-    const card = readFileSync(join(root, 'content/cards/teres.md'), 'utf8');
-    const { content, problems } = buildContent(copyOkWith({ 'content/cards/teres.md': '\uFEFF' + card.replaceAll('\n', '\r\n') }));
+    const card = readFileSync(join(root, 'learning-materials/information/teres/info.md'), 'utf8');
+    const { content, problems } = buildContent(copyOkWith({ 'learning-materials/information/teres/info.md': '\uFEFF' + card.replaceAll('\n', '\r\n') }));
     assert.deepEqual(problems, []);
     assert.deepEqual(content.cards.teres, buildContent(root).content.cards.teres);
 });
 
 test('readsLessonWithCrlf', () => {
-    const lesson = readFileSync(join(root, 'content/lessons/5/test-lesson.md'), 'utf8');
-    const { content, problems } = buildContent(copyOkWith({ 'content/lessons/5/test-lesson.md': lesson.replaceAll('\n', '\r\n') }));
+    const lesson = readFileSync(join(root, 'learning-materials/lessons/5/test-lesson.md'), 'utf8');
+    const { content, problems } = buildContent(copyOkWith({ 'learning-materials/lessons/5/test-lesson.md': lesson.replaceAll('\n', '\r\n') }));
     assert.deepEqual(problems, []);
     assert.deepEqual(content.lessons['5-test'], buildContent(root).content.lessons['5-test']);
 });
 
+const CARD = 'learning-materials/information/teres/info.md';
+
 test('reportsBadPhotoEntries', () => {
+    const card = readFileSync(join(root, CARD), 'utf8');
     const cases = [
-        [{ l: 'CC0' }, /no "f"/],
-        [{ f: 'photos/Teres-Mask.jpg', l: 'CC0' }, /"photos\/Teres-Mask\.jpg" is not in photos/],
-        [{ f: 'photos/teres-mask.jpg', l: 'CC BY-NC 4.0' }, /licence "CC BY-NC 4\.0"/],
+        [card.replace('file: images/teres-mask.jpg', 'file: images/Teres-Mask.jpg'), /images\/Teres-Mask\.jpg is listed in media but missing/],
+        [card.replace('license: CC0', 'license: CC BY-NC 4.0'), /licence "CC BY-NC 4\.0"/],
+        [card.replace('      license: CC0\n', ''), /must have required property 'license'/],
     ];
-    for (const [entry, expected] of cases) {
-        const { problems } = buildContent(copyOkWith({ 'content/photos.json': JSON.stringify({ 'teres-mask.jpg': entry }) }));
-        assert.deepEqual(problems.map((p) => p.file), ['photos.json']);
-        assert.match(problems[0].message, expected);
+    for (const [text, expected] of cases) {
+        const { problems } = buildContent(copyOkWith({ [CARD]: text }));
+        assert.ok(problems.length > 0);
+        assert.ok(problems.every((p) => p.file === 'information/teres/info.md'), JSON.stringify(problems));
+        assert.ok(problems.some((p) => expected.test(p.message)), JSON.stringify(problems));
     }
 });
 
+test('reportsUnlistedMediaAndBrokenRelated', () => {
+    const card = readFileSync(join(root, CARD), 'utf8').replace('aliases:', 'related: [ no-such-info ]\naliases:');
+    const { problems } = buildContent(copyOkWith({ [CARD]: card, 'learning-materials/information/teres/audio/extra.mp3': 'x' }));
+    assert.deepEqual(problems.map((p) => p.message).sort(), ['audio/extra.mp3 is in the package but not listed in media', 'related "no-such-info" is not an info package']);
+});
+
+test('reportsFieldsOutsideTheContract', () => {
+    const card = readFileSync(join(root, CARD), 'utf8').replace('kind: person', 'kind: person\ncolour: red');
+    const { problems } = buildContent(copyOkWith({ [CARD]: card }));
+    assert.equal(problems.length, 1);
+    assert.match(problems[0].message, /must NOT have additional properties "colour"/);
+});
+
 test('reportsUnlistedLessonsAndGradeWithoutIndex', () => {
-    const { content, problems } = buildContent(copyOkWith({ 'content/lessons/5/draft.md': 'чернова', 'content/lessons/6/first.md': 'чернова' }));
+    const { content, problems } = buildContent(copyOkWith({ 'learning-materials/lessons/5/draft.md': 'чернова', 'learning-materials/lessons/6/first.md': 'чернова' }));
     assert.deepEqual(problems.map((p) => p.file), ['lessons/5/draft.md', 'lessons/6/index.json', 'lessons/6/first.md']);
     assert.match(problems[0].message, /not listed in lessons\/5\/index\.json/);
     assert.match(problems[1].message, /missing/);
@@ -107,8 +124,8 @@ test('reportsUnlistedLessonsAndGradeWithoutIndex', () => {
 });
 
 test('reportsUnreadableJsonByFileName', () => {
-    const { problems } = buildContent(copyOkWith({ 'content/photos.json': '{ "teres-mask.jpg": { "f": "photos/teres-mask.jpg" "l": "CC0" } }' }));
-    assert.equal(problems[0].file, 'photos.json');
+    const { problems } = buildContent(copyOkWith({ 'learning-materials/maps/balkans.json': '{ "START": 600 "END": 2026 }' }));
+    assert.equal(problems[0].file, 'maps/balkans.json');
     assert.match(problems[0].message, /cannot read: .*JSON/);
 });
 

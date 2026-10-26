@@ -1,0 +1,24 @@
+/* The default theme: the old parchment atlas. A school makes its own theme as a copy of this file
+   (themes/<school>.css) and changes the values; the variable names are the contract between a theme and the game. */
+:root {
+    /* map */
+    --sea: #bdd2d8;
+    --sea-ink: #7f9a92;
+    /* paper and ink */
+    --paper: #f2e6c6;
+    --paper2: #e9d9b0;
+    --card: #fbf4e2;
+    --line: #d8c39a;
+    --ink: #4a3520;
+    --ink2: #6e5536;
+    --muted: #8a7352;
+    /* accents */
+    --gold: #d9a441;
+    --gold2: #b9832a;
+    --red: #c8402f;
+    --shadow: 0 10px 30px rgba(60, 40, 15, .25), 0 2px 6px rgba(60, 40, 15, .15);
+    /* fonts */
+    --font: 'Nunito', system-ui, sans-serif;
+    --title: 'Kurale', Georgia, serif;
+    --map: 'Cormorant Garamond', Georgia, serif;
+}

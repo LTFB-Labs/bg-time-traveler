@@ -24,17 +24,18 @@ export function isAllowedLicence(shortName) {
 }
 
 // Checks the photos.json entries that cards and lessons use. Files are matched against the folder listing, so the letter case must match too.
-export function photoProblems(keys, photos, files) {
-    return keys.filter((key) => Object.hasOwn(photos, key)).flatMap((key) => entryProblems(photos[key], files).map((message) => problem('photos.json', `"${key}": ${message}`)));
+// owners: photo id → the info.md that lists it, so a problem points at the package to fix
+export function photoProblems(keys, photos, files, owners = {}) {
+    return keys.filter((key) => Object.hasOwn(photos, key)).flatMap((key) => entryProblems(photos[key], files).map((message) => problem(owners[key] ?? 'photos.json', `"${key}": ${message}`)));
 }
 
 function entryProblems(entry, files) {
     if (!entry.f) return ['no "f" (file); run npm run photos'];
-    const fileProblems = files.has(entry.f) ? [] : [`file "${entry.f}" is not in photos/`];
+    const fileProblems = files.has(entry.f) ? [] : [`file "${entry.f}" is missing`];
     return isAllowedLicence(entry.l ?? '') ? fileProblems : [...fileProblems, `licence "${entry.l}" is not allowed`];
 }
 
-// icons: the content/icons.json credits of the drawings on the map, such as the ships
+// icons: the learning-materials/icons.json credits of the drawings on the map, such as the ships
 export function renderCredits(photos, icons = {}) {
     const rows = Object.keys(photos).filter((key) => photos[key].u).sort().map((key) => creditRow(key, photos[key]));
     return [
@@ -79,31 +80,33 @@ function iconCredits(icons) {
     ];
 }
 
-export async function fetchMissing(photos, io) {
+// folderOf(key): where a downloaded photo goes; the package's images/ folder, or photos/ for a loose photos.json
+export async function fetchMissing(photos, io, folderOf = () => 'photos') {
     const result = {};
     const problems = [];
     for (const [key, entry] of Object.entries(photos)) {
-        const missing = entry.src && !io.exists(entry.f ?? `photos/${key}.jpg`) && !io.exists(`photos/${key}.png`);
+        const folder = folderOf(key);
+        const missing = entry.src && !io.exists(entry.f ?? `${folder}/${key}.jpg`) && !io.exists(`${folder}/${key}.png`);
         if (!missing) {
             result[key] = entry;
             continue;
         }
-        const outcome = await fetchOne(key, entry, io);
+        const outcome = await fetchOne(key, entry, io, folder);
         result[key] = outcome.entry ?? entry;
         if (outcome.problem) problems.push(outcome.problem);
     }
     return { photos: result, problems };
 }
 
-async function fetchOne(key, entry, io) {
+async function fetchOne(key, entry, io, folder) {
     try {
-        return await downloadEntry(key, entry, io);
+        return await downloadEntry(key, entry, io, folder);
     } catch (error) {
         return failure(key, `request failed (${error.message})`);
     }
 }
 
-async function downloadEntry(key, entry, io) {
+async function downloadEntry(key, entry, io, folder) {
     const probe = await io.fetch(commonsInfoUrl(entry.src), { redirect: 'follow', headers: HEADERS });
     if (!probe.ok) return failure(key, `metadata request failed (${probe.status})`);
     const original = firstImageInfo(await probe.json());
@@ -115,7 +118,7 @@ async function downloadEntry(key, entry, io) {
     const bytes = Buffer.from(await response.arrayBuffer());
     const size = imageSize(bytes);
     if (!size) return failure(key, `downloaded file for ${entry.src} is not a readable JPEG or PNG`);
-    const f = `photos/${key}.${extensionFor(response.headers.get('content-type'))}`;
+    const f = `${folder}/${key}.${extensionFor(response.headers.get('content-type'))}`;
     await io.writeFile(f, bytes);
     return { entry: { ...entry, f, ...credit, ...size } };
 }
