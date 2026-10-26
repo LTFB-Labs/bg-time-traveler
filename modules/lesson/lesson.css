@@ -168,7 +168,8 @@ body.lesson #map.grabbing { cursor: grabbing; }
 #lsReturn .tip small { font-size: 11.5px; font-weight: 700; color: var(--muted); }
 #lsReturn:is(:hover, :focus-visible) .tip { opacity: 1; scale: 1; }
 /* the compass takes the map pane's top right corner, so "Върни ме" stands to its left */
-body.lesson #compass { top: 6px; right: calc(var(--ls-w) + 2 * var(--gap) + 100px); }
+/* the compass in the map's bottom left corner, over the fog */
+body.lesson #compass { z-index: 1; top: auto; right: auto; left: 10px; bottom: 10px; }
 
 /* ---- reading sheet: laid on the map, with the map showing above, below and to its right; above it is the row of gear, "?" and book ---- */
 #lesson {
@@ -765,7 +766,7 @@ body.album #freePop { top: 50%; right: auto; bottom: auto; left: 50%; transform:
     body.lesson :is(#optBtn, #todayBtn, #toHall, #toQuest) { top: calc(var(--big-h) + 8px); }
     #lsLegend { top: calc(var(--big-h) + 8px); }
     #lsDock { top: calc(var(--big-h) + 40px); bottom: auto; }
-    body.lesson #compass { top: calc(var(--big-h) + 6px); }
+    body.lesson #compass { bottom: calc(var(--strip-h) + 10px); }
     /* next to the sheet, level with its top edge */
     #lsReturn { position: fixed; top: calc(var(--big-h) + var(--gap) + 44px); right: calc(var(--ls-w) + var(--gap) + 10px); }
 }
