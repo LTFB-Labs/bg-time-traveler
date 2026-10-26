@@ -325,18 +325,22 @@ a.btn{text-decoration:none}
   <button class="btn" id="reset" type="button">Изтрий напредъка</button>
 </div>
 
-<!-- the lesson list at #lessons; js/lesson-list.js fills the grade tabs and the rows -->
+<!-- the lesson hall at #lessons; modules/lesson/lesson-list.js fills the cards -->
 <main id="lessonList" hidden>
-  <div class="sheet">
-    <div class="top">
-      <a class="btn back" href="#free"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Към началото</a>
-      <a class="btn" href="#album">Албум</a>
-    </div>
+  <header class="hall-top">
+    <a class="btn back" href="#free"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Към картата</a>
     <h1>Уроци</h1>
-    <div class="grades"></div>
-    <ol class="rows"></ol>
+    <a class="btn" href="#album">Албум</a>
+  </header>
+  <div class="hall">
+    <button class="nav prev" type="button" aria-label="Предишни уроци"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <ol class="shelf" aria-label="Уроци"></ol>
+    <button class="nav next" type="button" aria-label="Следващи уроци"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
   </div>
 </main>
+
+<!-- the way into the lesson hall: one round book button where the timeline meets the right panel, on the free map and in a lesson -->
+<a id="toHall" href="#lessons" aria-label="Уроци" title="Уроци"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10 5 7 4.5 4 5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5z"/><path d="M12 6.5v13"/></svg></a>
 
 <!-- the album at #album; js/album.js fills the groups -->
 <main id="album" hidden>
