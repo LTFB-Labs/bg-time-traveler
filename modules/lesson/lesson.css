@@ -14,8 +14,9 @@ body.lesson #lsFog {
     --pane: calc(100% - var(--ls-w) - 2 * var(--gap));
     --fog-ring: url(../../img/lesson-fog.svg) 0 0 / var(--pane) 100% no-repeat;
     --fog-side: linear-gradient(to right, transparent var(--pane), #000 var(--pane));
-    display: block; position: fixed; inset: 0; pointer-events: none; background: rgba(242, 232, 205, .35);
-    backdrop-filter: blur(2px) grayscale(.7) contrast(.82); -webkit-backdrop-filter: blur(2px) grayscale(.7) contrast(.82);
+    /* a warm dark beige, not grey: the colour of old paper round the edges */
+    display: block; position: fixed; inset: 0; pointer-events: none; background: rgba(176, 140, 88, .3);
+    backdrop-filter: blur(2px) sepia(.5) saturate(.85) contrast(.88); -webkit-backdrop-filter: blur(2px) sepia(.5) saturate(.85) contrast(.88);
     mask: var(--fog-ring), var(--fog-side); -webkit-mask: var(--fog-ring), var(--fog-side);
 }
 @media (max-width: 820px) { body.lesson #lsFog { display: none; } }

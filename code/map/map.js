@@ -375,7 +375,7 @@ let leanRest = 0;
 const setLean = (transform, transition) => [svg, ov].forEach((el) => { el.style.transition = `transform ${transition}`; el.style.transform = transform; });
 function leanWith(dx, dy) {
     if (calm.matches) return;
-    lean = { x: clamp(lean.x * 0.6 + dx * 0.3, -5, 5), y: clamp(lean.y * 0.6 + dy * 0.3, -5, 5) };
+    lean = { x: clamp(lean.x * 0.6 + dx * 0.375, -6.25, 6.25), y: clamp(lean.y * 0.6 + dy * 0.375, -6.25, 6.25) };
     setLean(`perspective(1600px) rotateY(${lean.x.toFixed(2)}deg) rotateX(${(-lean.y).toFixed(2)}deg) scale(1.04)`, '.15s ease-out');
     clearTimeout(leanRest);
     // a hand that stops but still holds lets the map settle back
