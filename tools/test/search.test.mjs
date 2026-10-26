@@ -82,6 +82,14 @@ test('cardEntryPointsToItsFirstStoryPart', () => {
     assert.equal(index.find((entry) => entry.type === 'part').date, 'Урок 26');
 });
 
+test('cardOnlyInAFactPointsToItsPart', () => {
+    const part = (type, factHtml = '') => ({ type, heading: 'Част', meta: {}, paragraphs: ['Текст.'], html: '<p>Текст.</p>', factHtml });
+    const lesson = { id: '5-test', number: 1, title: 'Урок', parts: [part('summary'), part('story'), part('story', '<b class="term" data-card="rhyton">Ритон</b>')] };
+    const rhyton = { id: 'rhyton', kind: 'object', title: 'Ритон', aliases: [], paragraphs: ['Съд.'] };
+    const [entry] = buildSearchIndex({ cards: { rhyton }, lessons: { [lesson.id]: lesson } });
+    assert.deepEqual([entry.lesson, entry.part], ['5-test', 2]);
+});
+
 test('rulerReigningTodayEndsToday', () => {
     const [entry] = buildSearchIndex({ cards: {}, lessons: {}, maps: balkans([[2026, 2027, 'президент', 'Илияна Йотова']], []) });
     assert.equal(entry.date, '2026–днес');

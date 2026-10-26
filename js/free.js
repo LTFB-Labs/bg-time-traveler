@@ -154,9 +154,11 @@ function setYear(y) {
   map.setCities(CITIES, state.year);
   updateMarkers(); updateHUD(); placeKnob();
 }
-// the year tween runs on animation frames only while it lasts: goTo starts the frames when none run, tick stops at the end
+// the year tween runs on animation frames only while it lasts: goTo starts the frames when none run, tick stops at the end,
+// stopMove stops them early; a move started while the wheel still scrubs takes the year until the wheel rests
 function goTo(y, ms = 900) {
   const from = state.year, t0 = performance.now();
+  if (wheelStop) wheelYields = true;
   if (!tween) frame = requestAnimationFrame(tick);
   tween = { from, to: y, t0, ms };
 }
@@ -217,10 +219,26 @@ $('wheelMode').addEventListener('click', () => {
     map.setWheelZoom(wheelZoom);
     $('wheelMode').textContent = wheelZoom ? 'Колелце: мащаб' : 'Колелце: година';
 });
-// a wheel scrub has no end event: it stops once the wheel rests this long
+// a wheel scrub has no end event: it ends once the wheel rests this long. A trackpad keeps sending wheel events for a moment
+// after the fingers lift, so a move or a drag started meanwhile keeps the year, and the wheel waits for its rest to scrub again.
 const WHEEL_STOP_MS = 300;
-let wheelStop = null;
-$("map").addEventListener("wheel", (e) => { if (map.zoomsOnWheel(e)) return; e.preventDefault(); stopPlay(); stopMove(); setYear(state.year + (e.deltaY + e.deltaX) * .08); clearTimeout(wheelStop); wheelStop = setTimeout(markStop, WHEEL_STOP_MS); }, { passive: false });
+let wheelStop = 0, wheelYields = false;
+$("map").addEventListener("wheel", (e) => {
+    if (map.zoomsOnWheel(e)) return;
+    e.preventDefault();
+    clearTimeout(wheelStop);
+    wheelStop = setTimeout(endWheel, WHEEL_STOP_MS);
+    if (wheelYields || dragging) return;
+    stopPlay();
+    stopMove();
+    setYear(state.year + (e.deltaY + e.deltaX) * .08);
+}, { passive: false });
+// the year stopped where the wheel left it, unless a move or a drag has it now
+function endWheel() {
+    wheelStop = 0;
+    wheelYields = false;
+    if (!tween && !dragging) markStop();
+}
 
 /* ---------- intro & boot ---------- */
 function start() {

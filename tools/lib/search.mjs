@@ -24,9 +24,10 @@ function eventYear({ years }) {
     return years ? { date: `${Math.floor(years[0])} г.`, year: years[0] } : {};
 }
 
-// the first story part, in lesson order, that marks or links the card; the summary only when no story part has it
+// the first story part, in lesson order, that marks the card or links it from its text or its fact box; the summary only when no story part has it
 function firstPartWith(id, lessons) {
-    const holds = (part) => (part.meta.marks ?? []).includes(id) || Boolean(part.html?.includes(`data-card="${id}"`));
+    const link = `data-card="${id}"`;
+    const holds = (part) => (part.meta.marks ?? []).includes(id) || Boolean(part.html?.includes(link) || part.factHtml?.includes(link));
     for (const type of ['story', 'summary']) {
         for (const lesson of lessons) {
             const part = lesson.parts.findIndex((p) => p.type === type && holds(p));
