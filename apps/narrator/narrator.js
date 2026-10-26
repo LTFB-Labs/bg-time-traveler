@@ -54,7 +54,6 @@ const start = (app) => {
 /* awake, the whole teacher can be taken and carried, not only the small orb under it */
 .nar-orb:not([data-state=dormant]){cursor:grab}
 .nar-orb:not([data-state=dormant]) .mon{pointer-events:auto}
-.nar-orb .mon img{transition:scale .35s ease}
 .nar-orb[data-side=left] .mon img{scale:-1 1}
 .nar-orb[data-state=asking] .mon img,.nar-orb[data-state=playing] .mon img{animation:narBob 2.2s ease-in-out infinite}
 .nar-orb.talk .mon img{transform-origin:50% 100%;animation:narBob 2.2s ease-in-out infinite,narTalk .2s ease-in-out infinite alternate}

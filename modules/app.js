@@ -23,11 +23,6 @@ const hallFloor = location.hash.match(/^#lessons\/(.+)$/);
 if (page) openPage(...page);
 else if (hallFloor) openPage('lessons', () => startLessonList(hallFloor[1]));
 else if (route) openLesson(route[1], route[2]);
-else if (lastLesson()) {
-    // a bare visit goes straight back into the last lesson, at the part the child reached; the lesson's back arrow leads out
-    history.replaceState(null, '', `#lesson/${lastLesson()}`);
-    openLesson(lastLesson(), '');
-}
 else openStart();
 addEventListener('hashchange', () => location.reload());
 
@@ -36,19 +31,15 @@ function openPage(bodyClass, start) {
     start();
 }
 
-// the start screen with the mascot; "Тръгваме!" (or Enter or space) goes on to the lesson hall
+// the start screen with the mascot; "Тръгваме!" (or Enter or space) goes back into the last lesson, at the part the child
+// reached, or to the lesson hall the first time
 function openStart() {
-    const go = () => { location.hash = '#lessons'; };
+    const { last } = loadProgress();
+    const go = () => { location.hash = last && Object.hasOwn(CONTENT.lessons, last) ? `#lesson/${last}` : '#lessons'; };
     document.getElementById('go').addEventListener('click', go);
     addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') go();
     });
-}
-
-// the last lesson, on a bare address only: "Към началото" (#) still shows the start screen
-function lastLesson() {
-    const { last } = loadProgress();
-    return !location.href.includes('#') && last && Object.hasOwn(CONTENT.lessons, last) ? last : null;
 }
 
 function openLesson(id, part) {

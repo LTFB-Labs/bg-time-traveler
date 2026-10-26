@@ -284,7 +284,10 @@ function applyVB() {
   viewListeners.forEach((cb) => cb());
 }
 function keepInkSize() {
-    const scale = Math.min(1, (INK_ZOOM * vb.w) / innerWidth).toFixed(3);
+    const ratio = Math.min(1, (INK_ZOOM * vb.w) / innerWidth);
+    // a window with no size yet (a hidden tab at load) has no scale; the next view change sets it
+    if (!Number.isFinite(ratio)) return;
+    const scale = ratio.toFixed(3);
     if (svg.style.getPropertyValue('--ink-scale') === scale) return;
     svg.style.setProperty('--ink-scale', scale);
     hatch.setAttribute('patternTransform', `rotate(35) scale(${scale})`);

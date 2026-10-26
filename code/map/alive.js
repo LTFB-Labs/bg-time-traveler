@@ -86,8 +86,10 @@ function slowDown(scene) {
     document.documentElement.classList.add('fx-slowing');
     const anims = [scene.layer, scene.clouds.sky].flatMap((e) => e.getAnimations({ subtree: true }));
     const now = performance.now();
-    scene.slowing = { anims, start: now, last: now, shipTime: scene.layer.getCurrentTime() };
-    requestAnimationFrame(() => stepSlowing(scene, scene.slowing));
+    // the frame gets this slowing itself: if the map wakes before it, scene.slowing is gone and the frame just stops
+    const slowing = { anims, start: now, last: now, shipTime: scene.layer.getCurrentTime() };
+    scene.slowing = slowing;
+    requestAnimationFrame(() => stepSlowing(scene, slowing));
 }
 
 function stepSlowing(scene, slowing) {
@@ -335,6 +337,8 @@ function sail(scene, { kind, px, seconds, lane }, i) {
 function followCamera(scene) {
     const view = scene.map.view();
     const zoom = innerWidth / view.w;
+    // a window with no size yet (a hidden tab at load) has no zoom; the next view change sets it
+    if (!(zoom > 0 && Number.isFinite(zoom))) return;
     scene.layer.setAttribute('viewBox', `${view.x} ${view.y} ${view.w} ${view.h}`);
     scene.ships.forEach(({ sized, mirror }) => sized.setAttribute('transform', `scale(${(mirror / zoom).toFixed(4)} ${(1 / zoom).toFixed(4)})`));
 }
