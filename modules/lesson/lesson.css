@@ -3,10 +3,9 @@
 :root { --ls-w: clamp(400px, 43vw, 620px); --gap: 28px; }
 [hidden] { display: none !important; }
 
-/* the free timeline's furniture stays out of a lesson */
-body.lesson :is(#hud, #card, #tl, #intro) { display: none; }
-/* and out of the lesson list and the album */
-:is(body.lessons, body.album) :is(#hud, #card, #tl, #intro) { display: none; }
+/* the start screen shows only on the bare address; the map's corner buttons and compass show only in a lesson */
+:is(body.lesson, body.lessons, body.album) #intro { display: none; }
+body:not(.lesson) :is(#compass, #optBtn, #todayBtn, #toHall) { display: none; }
 
 /* the SVG still fills the window; #lsMap marks the part the reading sheet leaves visible, the legend and the strip stack at its bottom */
 #lsMap {
@@ -417,13 +416,9 @@ body.lesson #compass { top: 12px; right: calc(var(--ls-w) + 2 * var(--gap) + 60p
 :is(#lsPop, #freePop) p:last-child { margin: 0; }
 :is(#lsPop, #freePop) .x { position: absolute; right: 10px; top: 10px; z-index: 1; width: 32px; height: 32px; border-radius: 50%; border: 0; background: rgba(255, 255, 255, .9); color: #5b3d17; font-weight: 900; font-size: 18px; box-shadow: 0 2px 6px rgba(0, 0, 0, .25); cursor: pointer; }
 :is(#lsPop, #freePop) .kind { display: inline-block; font-size: 11.5px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; color: #b9832a; margin-bottom: 4px; }
-/* the free map's pop-over: a lesson card picked in the search, over the map left of the card panel; these come after the
-   shared rules, which weigh the same */
-#freePop { position: fixed; top: 110px; right: auto; bottom: auto; left: max(16px, calc((100vw - var(--cardw) - 32px) / 2 - 210px)); width: min(420px, calc(100vw - 32px)); max-height: calc(100vh - var(--tl) - 130px); z-index: 15; }
+/* the album's card pop-over; body.album #freePop places it */
+#freePop { position: fixed; }
 #freePop .btn { margin-top: 12px; text-decoration: none; }
-@media (max-width: 760px) {
-    #freePop { top: auto; left: 10px; right: 10px; width: auto; bottom: calc(var(--tl) + env(safe-area-inset-bottom) + 10px); max-height: 60vh; }
-}
 
 /* ---------- prediction block ---------- */
 #lsBody .held { display: none; }
@@ -576,7 +571,7 @@ body.lesson #compass { top: 12px; right: calc(var(--ls-w) + 2 * var(--gap) + 60p
 /* read aloud, not shown */
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
-/* the album: a group per lesson and one for the free map, each a count and a grid of the opened cards */
+/* the album: a group per lesson, each a count and a grid of the opened cards */
 #album h2 { margin: 0 0 14px; font-family: var(--title); font-weight: 400; font-size: 26px; color: #7a1e12; }
 #album .group { margin-bottom: 26px; }
 #album .group h3 { margin: 0; font-size: 17px; font-weight: 900; color: var(--ink); }
@@ -652,41 +647,29 @@ body.album #freePop { top: 50%; right: auto; bottom: auto; left: 50%; transform:
     #lessonList .nav { display: none; }
 }
 
-/* ---- the round book button into the lesson hall: under the card at the bottom right on the free map, where the timeline meets the panel in a lesson ---- */
+/* ---- the round book button into the lesson hall: in the top-right row with the gear and "!", as small as they are ---- */
 #toHall {
-    position: fixed; z-index: 12; width: 56px; height: 56px; display: grid; place-items: center; border-radius: 50%;
-    right: 16px; bottom: calc(var(--tl) + 20px);
-    background: var(--red); color: #fff; box-shadow: 0 0 0 4px var(--card), 0 6px 16px rgba(60, 40, 15, .35); transition: transform .15s;
+    position: fixed; z-index: 12; top: 16px; right: calc(var(--gap) + 104px); width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%;
+    background: var(--red); color: #fff; box-shadow: 0 2px 6px rgba(60, 40, 15, .3); transition: transform .15s;
 }
 #toHall:hover { transform: scale(1.07); }
-#toHall svg { width: 28px; height: 28px; }
-/* in a lesson the book sits in the top-right row with the gear and "!", as small as they are */
-body.lesson #toHall { top: 16px; right: calc(var(--gap) + 104px); bottom: auto; width: 42px; height: 42px; box-shadow: 0 2px 6px rgba(60, 40, 15, .3); }
-body.lesson #toHall svg { width: 22px; height: 22px; }
-body:is(.lessons, .album) #toHall { display: none; }
+#toHall svg { width: 22px; height: 22px; }
 @media (max-width: 820px) {
-    #toHall { right: 12px; top: 12px; bottom: auto; width: 48px; height: 48px; }
-    body.lesson #toHall { right: 16px; top: calc(42vh - 24px); bottom: auto; }
+    #toHall { right: 16px; top: calc(42vh - 24px); }
 }
 
-/* ---- the settings gear: top right above the card on the free map, beside the open panel in a lesson ---- */
-#optBtn { position: fixed; z-index: 12; top: 16px; right: 16px; width: 42px; height: 42px; }
-body.lesson #optBtn { top: 16px; right: var(--gap); }
-body:is(.lessons, .album) #optBtn { display: none; }
+/* ---- the settings gear: the top-right corner, above the lesson sheet ---- */
+#optBtn { position: fixed; z-index: 12; top: 16px; right: var(--gap); width: 42px; height: 42px; }
 @media (max-width: 820px) {
-    #optBtn { top: 12px; right: 68px; }
-    body.lesson #optBtn { top: 12px; right: 16px; }
+    #optBtn { top: 12px; right: 16px; }
 }
 
-/* ---- today's Bulgaria: a round "!" left of the gear on the free map, under it in a lesson; its hint shows on hover, to the left ---- */
-#todayBtn { position: fixed; z-index: 12; top: 16px; right: 68px; width: 42px; height: 42px; font-family: var(--title); font-size: 22px; font-weight: 400; color: #7a1e12; }
-body.lesson #todayBtn { top: 16px; right: calc(var(--gap) + 52px); }
+/* ---- today's Bulgaria: a round "!" left of the gear; its hint shows on hover, to the left ---- */
+#todayBtn { position: fixed; z-index: 12; top: 16px; right: calc(var(--gap) + 52px); width: 42px; height: 42px; font-family: var(--title); font-size: 22px; font-weight: 400; color: #7a1e12; }
 #todayBtn[aria-pressed=true] { background: #7a1e12; color: #fff; box-shadow: 0 0 0 3px #fbefd0, 0 2px 6px rgba(60, 40, 15, .3); }
 #todayBtn::after { content: attr(data-hint); position: absolute; right: calc(100% + 10px); top: 50%; translate: 0 -50%; white-space: nowrap; padding: 8px 12px; border-radius: 14px 14px 4px 14px; background: #fbf4e2; color: #4b3722; font: 800 14px/1.2 var(--font); box-shadow: 0 0 0 1px #d8c39a, 0 6px 16px rgba(60, 40, 15, .25); opacity: 0; scale: .9; transform-origin: 100% 60%; transition: opacity .2s, scale .2s; pointer-events: none; }
 #todayBtn:hover::after, #todayBtn:focus-visible::after { opacity: 1; scale: 1; }
 #todayBtn[aria-pressed=true]::after { content: 'Скрий съвременна България'; }
-body:is(.lessons, .album) #todayBtn { display: none; }
 @media (max-width: 820px) {
-    #todayBtn { top: 12px; right: 124px; }
-    body.lesson #todayBtn { top: 12px; right: 68px; }
+    #todayBtn { top: 12px; right: 68px; }
 }

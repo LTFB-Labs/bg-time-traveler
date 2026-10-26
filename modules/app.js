@@ -1,8 +1,7 @@
 // Entry point: builds the map, then routes by the address hash. Any hash change reloads the page.
-// '' or '#free' → the free timeline; '#free/<event id>' → the free timeline on that event; '#lessons' → the lesson list; '#album' → the album; '#lesson/<id>' or '#lesson/<id>/<n>' → the lesson player.
+// '#lessons' → the lesson list; '#album' → the album; '#lesson/<id>' or '#lesson/<id>/<n>' → the lesson player; anything else → the start screen.
 import { createMap } from '../code/map/map.js';
 import { startAlbum } from './album/album.js';
-import { startFree } from './free/free.js';
 import { startLessonList } from './lesson/lesson-list.js';
 import {
     startOptions,
@@ -18,17 +17,25 @@ startOptions();
 const map = createMap(document.getElementById('map'), document.getElementById('ov'));
 startTodayButtons(map);
 const route = location.hash.match(/^#lesson\/([^/]*)\/?(\d*)/);
-const freeRoute = location.hash.match(/^#free\/(.+)$/);
-// the pages over the map: the body class that hides the free map's furniture, and what draws the page
+// the pages over the map: the body class that hides the map's furniture, and what draws the page
 const page = { '#lessons': ['lessons', startLessonList], '#album': ['album', startAlbum] }[location.hash];
 if (page) openPage(...page);
 else if (route) openLesson(route[1], route[2]);
-else startFree(map, { event: freeRoute?.[1] });
+else openStart();
 addEventListener('hashchange', () => location.reload());
 
 function openPage(bodyClass, start) {
     document.body.classList.add(bodyClass);
     start();
+}
+
+// the start screen with the mascot; "Тръгваме!" (or Enter or space) goes on to the lesson hall
+function openStart() {
+    const go = () => { location.hash = '#lessons'; };
+    document.getElementById('go').addEventListener('click', go);
+    addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') go();
+    });
 }
 
 function openLesson(id, part) {

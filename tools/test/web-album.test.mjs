@@ -9,8 +9,7 @@ const LESSON = {
     title: 'Древна Тракия',
     parts: [part(['teres'], '<b class="term" data-card="sitalces">Ситалк</b>'), part(['teres', 'kabyle'], '', '<b data-card="orpheus">Орфей</b>')],
 };
-const EVENTS = [{ id: 'asparuh' }, { id: 'krum' }, { id: 'simeon' }];
-const groups = (opened) => albumGroups({ lessons: [LESSON], events: EVENTS, opened });
+const groups = (opened) => albumGroups({ lessons: [LESSON], opened });
 
 test('groupsLessonCardsInLessonOrder', () => {
     assert.deepEqual(groups(['kabyle', 'teres'])[0], {
@@ -21,21 +20,11 @@ test('groupsLessonCardsInLessonOrder', () => {
     });
 });
 
-test('countsFreeMapEventsInTheirOrder', () => {
-    assert.deepEqual(groups(['simeon', 'asparuh'])[1], {
-        name: 'Свободната карта',
-        ids: ['asparuh', 'simeon'],
-        count: '2 от 3 събития от картата',
-        empty: 'Спри годината на събитие на картата и то ще дойде тук.',
-    });
-});
-
 test('ignoresOpenedCardsOutsideTheGroups', () => {
-    const [lesson, events] = groups(['athens', 'old-id', 'orpheus']);
+    const [lesson] = groups(['athens', 'old-id', 'orpheus']);
     assert.deepEqual(lesson.ids, ['orpheus']);
-    assert.deepEqual(events.ids, []);
 });
 
 test('emptyAlbumKeepsEveryGroup', () => {
-    assert.deepEqual(groups([]).map((g) => g.count), ['0 от 4 картички от този урок', '0 от 3 събития от картата']);
+    assert.deepEqual(groups([]).map((g) => g.count), ['0 от 4 картички от този урок']);
 });

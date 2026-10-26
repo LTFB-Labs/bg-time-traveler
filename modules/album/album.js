@@ -1,15 +1,14 @@
-// The album at #album: every card the child has opened, one group per lesson and one for the free map, with what is left; a tile opens the card.
+// The album at #album: every card the child has opened, one group per lesson, with what is left; a tile opens the card.
 import { createCards } from '../cards/cards.js';
 import { esc } from '../lesson/lesson.js';
 import { cardIcon } from '../../code/map/map.js';
 import { loadProgress } from '../../code/store.js';
 
 const LESSON_EMPTY = 'Отвори картичка в урока и тя ще дойде тук.';
-const EVENTS_EMPTY = 'Спри годината на събитие на картата и то ще дойде тук.';
 const CARD_LINK = /data-card="([^"]+)"/g;
 
-// lessons: CONTENT.lessons in book order; events: EVENTS, by year; opened: the card ids in the progress store
-export function albumGroups({ lessons, events, opened }) {
+// lessons: CONTENT.lessons in book order; opened: the card ids in the progress store
+export function albumGroups({ lessons, opened }) {
     const isOpened = new Set(opened);
     const group = (name, ids, what, empty) => {
         const found = ids.filter((id) => isOpened.has(id));
@@ -17,7 +16,6 @@ export function albumGroups({ lessons, events, opened }) {
     };
     return [
         ...lessons.map((lesson) => group(`Урок ${lesson.number} · ${lesson.title}`, lessonCards(lesson), 'картички от този урок', LESSON_EMPTY)),
-        group('Свободната карта', events.map((event) => event.id), 'събития от картата', EVENTS_EMPTY),
     ];
 }
 
@@ -31,9 +29,9 @@ const linkedCards = (html) => [...(html ?? '').matchAll(CARD_LINK)].map((match) 
 
 export function startAlbum() {
     const root = document.getElementById('album');
-    const groups = albumGroups({ lessons: Object.values(CONTENT.lessons), events: EVENTS, opened: loadProgress().cards });
+    const groups = albumGroups({ lessons: Object.values(CONTENT.lessons), opened: loadProgress().cards });
     root.querySelector('.groups').innerHTML = groups.map(groupHtml).join('');
-    // the free map's pop-over, placed above the album by css/lesson.css
+    // the card pop-over, placed above the album by modules/lesson/lesson.css
     const cards = createCards(document.getElementById('freePop'), { onOpen: () => {}, onClose: () => {}, footer: showOnMap });
     root.addEventListener('click', (e) => {
         const tile = e.target.closest('.tile');
@@ -55,9 +53,9 @@ function tileHtml(id) {
     return `<button class="tile" type="button" data-id="${esc(id)}"><span class="thumb">${picture}</span><span class="name">${esc(card.title)}</span></button>`;
 }
 
-// an event shows on the free map; a lesson card at the lesson part where it first appears; a card with neither gets no button
+// a card shows at the lesson part where it first appears; a card without one gets no button
 function showOnMap(id) {
-    const href = CONTENT.cards[id].legacyKind ? `#free/${id}` : partHref(id);
+    const href = partHref(id);
     return href ? `<a class="btn pri" href="${esc(href)}">Покажи на картата</a>` : '';
 }
 

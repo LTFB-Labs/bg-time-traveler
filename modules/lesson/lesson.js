@@ -122,7 +122,7 @@ export function showNoLesson() {
     showPane();
     $('lsHead').hidden = true;
     $('lsNav').hidden = true;
-    $('lsBody').innerHTML = '<p class="missing">Няма такъв урок. <a href="#free">Към началото</a></p>';
+    $('lsBody').innerHTML = '<p class="missing">Няма такъв урок. <a href="#lessons">Към уроците</a></p>';
 }
 
 function showPane() {

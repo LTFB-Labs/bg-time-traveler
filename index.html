@@ -11,7 +11,6 @@
 <!-- colours and fonts come from the theme; the layout sizes stay with the page -->
 <link rel="stylesheet" href="themes/default.css">
 <style>
-:root{--tl:118px;--cardw:min(390px,34vw)}
 *{box-sizing:border-box}
 html,body{height:100%}
 body{margin:0;overflow:hidden;background:var(--sea);color:var(--ink);font-family:var(--font);-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
@@ -86,103 +85,33 @@ button{font-family:inherit;cursor:pointer}
 .pv .mk{left:16px;top:26px}
 .pv[data-pins=banner] .mk{top:42px}
 
-/* the compass: an ink rose in the top right corner of the map, left of the card; still, and the same size at any zoom */
-#compass{position:fixed;top:16px;right:calc(var(--cardw) + 40px);width:104px;height:104px;pointer-events:none;opacity:.85;mix-blend-mode:multiply}
-
-/* HUD */
-#hud{position:fixed;z-index:12;left:max(16px,env(safe-area-inset-left));top:max(12px,env(safe-area-inset-top));pointer-events:none;max-width:calc(100vw - 32px)}
-#year{font-family:'Alice',Georgia,serif;font-size:clamp(39px,6vw,69px);line-height:.9;color:#5a2412;text-shadow:0 2px 0 var(--paper),0 0 18px var(--paper),0 0 30px var(--paper);letter-spacing:-.01em}
-#year small{font-size:.32em;margin-left:.15em;letter-spacing:0}
-#era{display:inline-flex;align-items:center;gap:8px;margin-top:6px;padding:5px 12px 5px 10px;border-radius:999px;background:rgba(251,244,226,.92);box-shadow:var(--shadow);font-weight:900;font-size:15px}
-#era i{width:12px;height:12px;border-radius:50%;flex:none}
-#ruler{margin-top:6px;font-weight:700;font-size:14px;color:var(--ink2);background:rgba(251,244,226,.85);display:inline-block;padding:3px 10px;border-radius:999px;box-shadow:0 1px 4px rgba(60,40,15,.15)}
-#ruler:empty{display:none}
-#ruler b{font-weight:900;color:var(--ink)}
-/* search: a pill under the ruler line; its list drops over the map's left side (js/free-search.js). The 16px text keeps
-   iPhone Safari from zooming in; #hud sits above the card panel so the open list does too */
-#find{position:relative;display:inline-block;vertical-align:top;margin:6px 0 0 8px;pointer-events:auto}
-#findBox{display:block;width:330px;max-width:100%;height:30.5px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:#fff;box-shadow:var(--shadow);font:700 16px var(--font);color:var(--ink);outline:none}
-#findBox::placeholder{font-size:13.5px;font-weight:700;color:var(--muted)}
-#findBox:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(200,64,47,.18)}
-#findList{position:absolute;left:0;top:calc(100% + 6px);width:360px;max-width:calc(100vw - 32px);max-height:55vh;overflow:auto;margin:0;padding:6px;list-style:none;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
-#findList .grp{padding:8px 10px 3px;font-size:11.5px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-#findList [role=option]{display:flex;align-items:center;gap:10px;min-height:40px;padding:6px 10px;border-radius:10px;cursor:pointer;font-weight:700;font-size:15px;line-height:1.25}
-#findList [role=option] span:first-child{flex:1;min-width:0}
-#findList [role=option] span:last-child{flex:none;font-size:13px;color:var(--muted)}
-#findList [role=option]:hover{background:#fff6dd}
-#findList [aria-selected=true]{background:#f1dfb2;box-shadow:inset 3px 0 0 var(--red)}
-#findList .none{padding:10px;font-weight:700;color:var(--muted)}
-#hudBr{display:block;height:0}
-#options fieldset + fieldset{margin-top:14px}
-@media (hover:none){#wheelMode{display:none}}
-#hud .opt{display:flex}
-/* the way into lessons sits in one row with the gear, as tall as it */
-#hudBtns{display:flex;gap:8px;margin-top:8px}
-#dock{width:110px;height:150px;margin-top:2px}
-/* on the wide layout the AI teacher's slot is under the card, just left of the book */
-@media (min-width:761px){#dock{position:fixed;right:96px;bottom:calc(var(--tl) + 6px);width:68px;height:76px;margin:0}}
-
-/* "Граници днес" has a dashed line for an icon; pressed, the line darkens and a red ring shows it is on */
+/* the compass: an ink rose in the top right corner of the map, left of the lesson sheet; still, and the same size at any zoom */
+#compass{position:fixed;width:104px;height:104px;pointer-events:none;opacity:.85;mix-blend-mode:multiply}
 
 
 
 
-/* card */
-#card{position:fixed;right:16px;top:72px;bottom:calc(var(--tl) + 96px);width:var(--cardw);background:var(--card);border-radius:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line);transition:transform .45s cubic-bezier(.2,.9,.3,1),opacity .3s}
-#card .ph{position:relative;flex:none;aspect-ratio:4/3;max-height:42%;background:#e6d5ad;overflow:hidden}
-#card .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;animation:fadein .6s ease}
-#card .ph .cr{position:absolute;left:0;right:0;bottom:0;padding:14px 10px 5px;font-size:10.5px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.55));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#card .ph .cr a{color:#fff}
-#card .ph .noimg{position:absolute;inset:0;display:grid;place-items:center;color:#a27a3c;background:#e6d5ad;animation:fadein .6s ease}
-#card .ph .noimg svg{width:30%;height:30%;opacity:.55}
-#card .body{padding:16px 20px 10px;overflow:auto;flex:1;min-height:0}
-#card .meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+
+
+/* chips and buttons */
 .chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-weight:900;font-size:12.5px;letter-spacing:.02em;background:#efe0bc;color:#6b4a1d}
 .chip svg{width:15px;height:15px}
 .chip.y{background:#7a1e12;color:#fff;font-family:var(--title);font-weight:400;font-size:15px;letter-spacing:0}
-#card h2{font-family:var(--title);font-weight:400;font-size:clamp(22px,2.2vw,28px);line-height:1.1;margin:2px 0 10px;color:#3f230f}
-#card p{margin:0;font-size:16.5px;line-height:1.5;font-weight:600;color:#4b3722}
-#card .next{margin-top:14px;font-size:14px;color:var(--muted);font-weight:700}
-#card .nav{display:flex;gap:8px;padding:10px 14px 14px;border-top:1px dashed var(--line);flex:none}
 .btn{border:0;border-radius:14px;padding:11px 14px;font-weight:900;font-size:15px;background:#efe0bc;color:#5b3d17;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:transform .12s,background .2s}
 .btn:hover{background:#e8d4a7}.btn:active{transform:scale(.96)}
 .btn.pri{background:var(--red);color:#fff;flex:1}.btn.pri:hover{background:#b23525}
 .btn svg{width:18px;height:18px}
 @keyframes fadein{from{opacity:0}}
-#card .x{display:none}
 
-/* timeline */
-#tl{position:fixed;left:0;right:0;bottom:0;height:calc(var(--tl) + env(safe-area-inset-bottom));padding:10px max(16px,env(safe-area-inset-right)) env(safe-area-inset-bottom) max(16px,env(safe-area-inset-left));display:flex;align-items:center;gap:12px;background:linear-gradient(180deg,rgba(242,230,198,0) 0,rgba(242,230,198,.92) 22%,#efe1bd 100%);user-select:none;-webkit-user-select:none}
-#play{flex:none;width:56px;height:56px;border-radius:50%;border:0;background:var(--red);color:#fff;display:grid;place-items:center;box-shadow:0 4px 12px rgba(122,30,18,.35);transition:transform .12s}
-#play:active{transform:scale(.94)}
-#play svg{width:24px;height:24px}
-.step{flex:none;width:40px;height:40px;border-radius:50%;border:0;background:#e5d1a4;color:#5b3d17;display:grid;place-items:center}
-.step svg{width:20px;height:20px}
-#track{position:relative;flex:1;height:84px;touch-action:none;cursor:pointer}
-#bands{position:absolute;left:0;right:0;top:12px;height:26px;border-radius:13px;overflow:hidden;display:flex;box-shadow:inset 0 1px 3px rgba(0,0,0,.25)}
-#bands div{height:100%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:11.5px;color:rgba(255,255,255,.95);white-space:nowrap;overflow:hidden;text-overflow:clip;border-right:1px solid rgba(255,255,255,.35);text-shadow:0 1px 1px rgba(0,0,0,.25);transition:filter .3s}
-#bands div.cur{filter:saturate(1.25) brightness(1.06)}
-#ticks{position:absolute;left:0;right:0;top:44px;height:30px}
-#ticks span{position:absolute;transform:translateX(-50%);font-weight:800;font-size:11.5px;color:var(--muted);top:12px}
-#ticks span::before{content:"";position:absolute;left:50%;top:-10px;width:1.5px;height:7px;background:#b59a6a}
-#dots{position:absolute;left:0;right:0;top:38px;height:12px}
 .dot{position:absolute;top:0;width:10px;height:10px;margin-left:-5px;transform:rotate(45deg);background:#7a1e12;border:2px solid #f5e7c7;border-radius:2px;cursor:pointer;transition:transform .2s,background .2s}
 .dot:hover{transform:rotate(45deg) scale(1.5)}
 .dot.seen{background:#c88f3a}
 .dot.on{background:var(--red);transform:rotate(45deg) scale(1.6)}
-#knob{position:absolute;top:-8px;width:0;height:92px;pointer-events:none}
-#knob::before{content:"";position:absolute;left:-1.5px;top:20px;width:3px;height:60px;background:#5a2412;border-radius:2px}
-#knob .head{position:absolute;left:-26px;top:-12px;width:52px;height:52px;border-radius:50%;background:#fff6dd;border:3px solid var(--gold);box-shadow:0 4px 10px rgba(60,40,15,.4);overflow:hidden;pointer-events:auto;cursor:grab}
-#knob .head img{width:100%;height:100%;display:block}
-#track.drag #knob .head{cursor:grabbing;transform:scale(1.08)}
-#tip{position:absolute;bottom:100%;left:0;transform:translate(-50%,-6px);background:#3f230f;color:#fff;font-weight:800;font-size:13px;padding:5px 10px;border-radius:9px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s}
-#tip.show{opacity:1}
 
 /* routes: a trail of footprints with an arrowhead, which map.js walks from its start to its end at a traveller's pace,
    then it holds still; the line itself is not painted, it only carries the arrowhead.
    A footprint still ahead of the walker stays hidden until its delay, then is planted quickly */
 .mig{fill:none;stroke:none;opacity:.9}
-.steps{fill:#7a1e12;opacity:.9}
 .ahead{animation:plant .12s backwards}
 @keyframes plant{from{opacity:0}}
 
@@ -209,29 +138,9 @@ a.btn{text-decoration:none}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}}
 @keyframes pulse{50%{box-shadow:0 0 0 10px rgba(200,64,47,.18)}}
 
-#card .more{display:none}
 @media (max-width:760px){
   #compass{display:none}
-  :root{--tl:104px}
-  #card{left:10px;right:10px;width:auto;top:auto;bottom:calc(var(--tl) + env(safe-area-inset-bottom) + 6px);max-height:44vh;border-radius:18px}
-  #card .ph{position:absolute;left:12px;top:12px;width:84px;height:84px;aspect-ratio:auto;border-radius:12px;max-height:none}
-  #card .ph .cr{display:none}
-  #card .body{padding:12px 14px 8px 108px;min-height:108px}
-  #card h2{font-size:20px;margin-bottom:6px}
-  #card p{font-size:15px;line-height:1.42}
-  #card:not(.open) p,#card:not(.open) .next{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  #card .nav{padding:8px 10px 10px}
   .btn{padding:9px 12px;font-size:14px}
-  #card .more{display:inline-flex}
-  #year{font-size:36px}
-  #era{font-size:13px}
-  #ruler{font-size:12.5px}
-  #findBox{width:calc(100vw - 32px)}
-  #findList{left:-6px;width:calc(100vw - 20px);max-width:none;max-height:calc(100dvh - var(--tl) - 200px)}
-  .step{display:none}
-  #dock{width:96px;height:128px}
-  #play{width:48px;height:48px}
-  #bands div{font-size:0}
   .city{font-size:13px}.city.cap{font-size:15px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -246,38 +155,7 @@ a.btn{text-decoration:none}
 <svg id="compass" viewBox="-72 -72 144 144" aria-hidden="true"><g fill="none" stroke="#5b4a33"><circle r="46" stroke-width="1.1"/><circle r="42" stroke-width=".6"/><circle r="24" stroke-width=".6"/><circle r="5" stroke-width=".8"/></g><path d="M0.0 -39.0L0.0 -46.0M3.7 -41.8L4.0 -45.8M7.3 -41.4L8.0 -45.3M10.9 -40.6L11.9 -44.4M14.4 -39.5L15.7 -43.2M17.7 -38.1L19.4 -41.7M21.0 -36.4L23.0 -39.8M24.1 -34.4L26.4 -37.7M27.0 -32.2L29.6 -35.2M27.6 -27.6L32.5 -32.5M32.2 -27.0L35.2 -29.6M34.4 -24.1L37.7 -26.4M36.4 -21.0L39.8 -23.0M38.1 -17.7L41.7 -19.4M39.5 -14.4L43.2 -15.7M40.6 -10.9L44.4 -11.9M41.4 -7.3L45.3 -8.0M41.8 -3.7L45.8 -4.0M39.0 -0.0L46.0 -0.0M41.8 3.7L45.8 4.0M41.4 7.3L45.3 8.0M40.6 10.9L44.4 11.9M39.5 14.4L43.2 15.7M38.1 17.7L41.7 19.4M36.4 21.0L39.8 23.0M34.4 24.1L37.7 26.4M32.2 27.0L35.2 29.6M27.6 27.6L32.5 32.5M27.0 32.2L29.6 35.2M24.1 34.4L26.4 37.7M21.0 36.4L23.0 39.8M17.7 38.1L19.4 41.7M14.4 39.5L15.7 43.2M10.9 40.6L11.9 44.4M7.3 41.4L8.0 45.3M3.7 41.8L4.0 45.8M0.0 39.0L0.0 46.0M-3.7 41.8L-4.0 45.8M-7.3 41.4L-8.0 45.3M-10.9 40.6L-11.9 44.4M-14.4 39.5L-15.7 43.2M-17.7 38.1L-19.4 41.7M-21.0 36.4L-23.0 39.8M-24.1 34.4L-26.4 37.7M-27.0 32.2L-29.6 35.2M-27.6 27.6L-32.5 32.5M-32.2 27.0L-35.2 29.6M-34.4 24.1L-37.7 26.4M-36.4 21.0L-39.8 23.0M-38.1 17.7L-41.7 19.4M-39.5 14.4L-43.2 15.7M-40.6 10.9L-44.4 11.9M-41.4 7.3L-45.3 8.0M-41.8 3.7L-45.8 4.0M-39.0 0.0L-46.0 0.0M-41.8 -3.7L-45.8 -4.0M-41.4 -7.3L-45.3 -8.0M-40.6 -10.9L-44.4 -11.9M-39.5 -14.4L-43.2 -15.7M-38.1 -17.7L-41.7 -19.4M-36.4 -21.0L-39.8 -23.0M-34.4 -24.1L-37.7 -26.4M-32.2 -27.0L-35.2 -29.6M-27.6 -27.6L-32.5 -32.5M-27.0 -32.2L-29.6 -35.2M-24.1 -34.4L-26.4 -37.7M-21.0 -36.4L-23.0 -39.8M-17.7 -38.1L-19.4 -41.7M-14.4 -39.5L-15.7 -43.2M-10.9 -40.6L-11.9 -44.4M-7.3 -41.4L-8.0 -45.3M-3.7 -41.8L-4.0 -45.8" stroke="#5b4a33" stroke-width=".5"/><path d="M0.0 -5.0L0.0 -42.0M1.0 -4.9L8.2 -41.2M1.9 -4.6L16.1 -38.8M2.8 -4.2L23.3 -34.9M3.5 -3.5L29.7 -29.7M4.2 -2.8L34.9 -23.3M4.6 -1.9L38.8 -16.1M4.9 -1.0L41.2 -8.2M5.0 -0.0L42.0 -0.0M4.9 1.0L41.2 8.2M4.6 1.9L38.8 16.1M4.2 2.8L34.9 23.3M3.5 3.5L29.7 29.7M2.8 4.2L23.3 34.9M1.9 4.6L16.1 38.8M1.0 4.9L8.2 41.2M0.0 5.0L0.0 42.0M-1.0 4.9L-8.2 41.2M-1.9 4.6L-16.1 38.8M-2.8 4.2L-23.3 34.9M-3.5 3.5L-29.7 29.7M-4.2 2.8L-34.9 23.3M-4.6 1.9L-38.8 16.1M-4.9 1.0L-41.2 8.2M-5.0 0.0L-42.0 0.0M-4.9 -1.0L-41.2 -8.2M-4.6 -1.9L-38.8 -16.1M-4.2 -2.8L-34.9 -23.3M-3.5 -3.5L-29.7 -29.7M-2.8 -4.2L-23.3 -34.9M-1.9 -4.6L-16.1 -38.8M-1.0 -4.9L-8.2 -41.2" stroke="#5b4a33" stroke-width=".25" opacity=".6"/><g transform="rotate(45)"><path d="M0 -32L-5 -5L0 0Z" fill="#5b4a33"/><path d="M0 -32L5 -5L0 0Z" fill="#efe0bc"/><path d="M0 -32L-5 -5L0 0L5 -5Z" fill="none" stroke="#5b4a33" stroke-width=".6" stroke-linejoin="round"/></g><g transform="rotate(135)"><path d="M0 -32L-5 -5L0 0Z" fill="#5b4a33"/><path d="M0 -32L5 -5L0 0Z" fill="#efe0bc"/><path d="M0 -32L-5 -5L0 0L5 -5Z" fill="none" stroke="#5b4a33" stroke-width=".6" stroke-linejoin="round"/></g><g transform="rotate(225)"><path d="M0 -32L-5 -5L0 0Z" fill="#5b4a33"/><path d="M0 -32L5 -5L0 0Z" fill="#efe0bc"/><path d="M0 -32L-5 -5L0 0L5 -5Z" fill="none" stroke="#5b4a33" stroke-width=".6" stroke-linejoin="round"/></g><g transform="rotate(315)"><path d="M0 -32L-5 -5L0 0Z" fill="#5b4a33"/><path d="M0 -32L5 -5L0 0Z" fill="#efe0bc"/><path d="M0 -32L-5 -5L0 0L5 -5Z" fill="none" stroke="#5b4a33" stroke-width=".6" stroke-linejoin="round"/></g><g transform="rotate(90)"><path d="M0 -54L-7 -7L0 0Z" fill="#5b4a33"/><path d="M0 -54L7 -7L0 0Z" fill="#efe0bc"/><path d="M0 -54L-7 -7L0 0L7 -7Z" fill="none" stroke="#5b4a33" stroke-width=".6" stroke-linejoin="round"/></g><g transform="rotate(180)"><path d="M0 -54L-7 -7L0 0Z" fill="#5b4a33"/><path d="M0 -54L7 -7L0 0Z" fill="#efe0bc"/><path d="M0 -54L-7 -7L0 0L7 -7Z" fill="none" stroke="#5b4a33" stroke-width=".6" stroke-linejoin="round"/></g><g transform="rotate(270)"><path d="M0 -54L-7 -7L0 0Z" fill="#5b4a33"/><path d="M0 -54L7 -7L0 0Z" fill="#efe0bc"/><path d="M0 -54L-7 -7L0 0L7 -7Z" fill="none" stroke="#5b4a33" stroke-width=".6" stroke-linejoin="round"/></g><g transform="rotate(0)"><path d="M0 -56L-7.5 -7.5L0 0Z" fill="#7a1e12"/><path d="M0 -56L7.5 -7.5L0 0Z" fill="#efe0bc"/><path d="M0 -56L-7.5 -7.5L0 0L7.5 -7.5Z" fill="none" stroke="#5b4a33" stroke-width=".6" stroke-linejoin="round"/></g><circle r="2.4" fill="#5b4a33"/><g fill="#5b4a33" font-family="'Cormorant Garamond',Georgia,serif" font-weight="700" font-size="12" text-anchor="middle"><text y="-60">С</text><text x="64" y="4">И</text><text y="70">Ю</text><text x="-64" y="4">З</text></g></svg>
 <div id="ov"></div>
 
-<div id="hud">
-  <div id="year">600</div>
-  <div id="era"><i></i><span></span></div><div id="find" role="search">
-    <input id="findBox" type="search" placeholder="Търси владетел, битка, място или година" autocomplete="off" spellcheck="false" aria-controls="findList" aria-expanded="false">
-    <ul id="findList" role="listbox" hidden></ul>
-  </div><span id="hudBr"></span>
-  <div id="ruler"></div>
-  <div id="dock" aria-hidden="true"></div>
-</div>
-
-<aside id="card" aria-live="polite">
-  <div class="ph"></div>
-  <div class="body"></div>
-  <div class="nav">
-    <button class="btn" id="prev" aria-label="Предишно събитие"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
-    <button class="btn more" id="more">Още</button>
-    <button class="btn pri" id="next">Напред <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
-  </div>
-</aside>
 <div id="freePop" hidden></div>
-
-<div id="tl">
-  <button id="play" aria-label="Пусни"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg></button>
-  <button class="step" id="sPrev" aria-label="Назад"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
-  <div id="track">
-    <div id="bands"></div>
-    <div id="dots"></div>
-    <div id="ticks"></div>
-    <div id="knob"><div id="tip"></div><div class="head"><img src="traveler-head.svg" alt=""></div></div>
-  </div>
-  <button class="step" id="sNext" aria-label="Напред"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
-</div>
 
 <div id="lsMap">
   <div id="lsHud"><div id="lsYear"></div><div id="lsEra" hidden><i></i><span></span></div></div>
@@ -321,18 +199,13 @@ a.btn{text-decoration:none}
     <label><input type="radio" name="pins" value="seal"><span class="pv" data-pins="seal"><span class="mk seen" aria-label="Перперикон"></span></span><span><b>Печат</b><small>Малък. Името се появява, щом отвориш картичката.</small></span></label>
     <label><input type="radio" name="pins" value="banner"><span class="pv" data-pins="banner"><span class="mk" aria-label="Перперикон"></span></span><span><b>Щит с име</b><small>Името винаги е на лента до щита.</small></span></label>
   </fieldset>
-  <fieldset id="wheelMode">
-    <legend>Колелцето на мишката над картата</legend>
-    <label><input type="radio" name="wheel" value="year" checked><span><b>Мести годината</b><small>Въртиш и времето тече напред или назад</small></span></label>
-    <label><input type="radio" name="wheel" value="zoom"><span><b>Приближава картата</b><small>Въртиш и картата се приближава или отдалечава</small></span></label>
-  </fieldset>
   <button class="btn" id="reset" type="button">Изтрий напредъка</button>
 </div>
 
 <!-- the lesson hall at #lessons; modules/lesson/lesson-list.js fills the cards -->
 <main id="lessonList" hidden>
   <header class="hall-top">
-    <a class="btn back" href="#free"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Към картата</a>
+    <a class="btn back" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Към началото</a>
     <span class="grow"></span>
     <a class="btn" href="#album">Албум</a>
     <div class="title"><h1>Уроци</h1><select class="grade" aria-label="Клас"></select></div>
@@ -344,19 +217,19 @@ a.btn{text-decoration:none}
   </div>
 </main>
 
-<!-- the settings: one gear on the year's row, at its right end beside the open panel, on the free map and in a lesson -->
+<!-- the settings: one gear in the top-right row of a lesson -->
 <button class="btn opt" id="optBtn" popovertarget="options" aria-label="Настройки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" stroke-width="4" stroke-dasharray="3.34 3.34"/><circle cx="12" cy="12" r="5.5" stroke-width="3"/></svg></button>
 
-<!-- today's Bulgaria: one round hint button under the gear, on the free map and in a lesson -->
+<!-- today's Bulgaria: one round hint button left of the gear in a lesson -->
 <button class="btn opt today-btn" id="todayBtn" type="button" aria-pressed="false" aria-label="Покажи съвременна България" data-hint="Покажи съвременна България">!</button>
 
-<!-- the way into the lesson hall: one round book button where the timeline meets the right panel, on the free map and in a lesson -->
+<!-- the way into the lesson hall: a round book button left of the "!" in a lesson -->
 <a id="toHall" href="#lessons" aria-label="Уроци" title="Уроци"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10 5 7 4.5 4 5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5z"/><path d="M12 6.5v13"/></svg></a>
 
 <!-- the album at #album; js/album.js fills the groups -->
 <main id="album" hidden>
   <div class="sheet">
-    <a class="btn back" href="#free"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Към началото</a>
+    <a class="btn back" href="#lessons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Към уроците</a>
     <h1>Албум</h1>
     <h2>Картички</h2>
     <div class="groups"></div>
@@ -367,9 +240,8 @@ a.btn{text-decoration:none}
   <div class="art"><img src="img/mascot.webp" alt="Пухчето с очила чете книга"></div>
   <h1>Пътешествие във времето</h1>
   <div class="years">600 — днес</div>
-  <p>Хвани ме и ме дърпай по линията на времето! Ще видим как се ражда България, кой я управлява и как се менят границите ѝ.</p>
+  <p>Ела с мен в уроците! Ще видим как се ражда България, кой я управлява и как се менят границите ѝ.</p>
   <button class="btn pri" id="go">Тръгваме!</button>
-  <a class="btn" href="#lessons">Уроци</a>
 </div>
 
 <script src="geo.js"></script>
