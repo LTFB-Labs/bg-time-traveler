@@ -87,7 +87,7 @@ const mtLabG = el("g", {}, world);
 });
 const frameG = el("g", {}, world);
 const migG = el("g", {}, world);
-let route = null, routeRun = null;
+let route = null;
 
 /* ---------- realm frames and lesson borders ---------- */
 const frames = GEO.frames;
@@ -502,7 +502,6 @@ function placeOverlay() {
 }
 // a route is a trail of footprints with an arrowhead at its end; the line itself is not drawn, it only carries the arrowhead
 function drawPath(points) {
-  routeRun?.cancel();
   migG.innerHTML = "";
   route = null;
   if (!points) return;
@@ -511,9 +510,8 @@ function drawPath(points) {
   for (let i = 1; i < pts.length; i++) { const [x0, y0] = pts[i - 1], [x1, y1] = pts[i]; d += `Q${x0 + (x1 - x0) * .5 + (y1 - y0) * .12} ${y0 + (y1 - y0) * .5 - (x1 - x0) * .12} ${x1} ${y1}`; }
   const trail = el("g", {}, migG);
   const path = el("path", { d, class: "mig", style: `stroke-width:${ink(5)}`, "marker-end": "url(#arrow)" }, trail);
-  route = { path, steps: el("g", { class: "steps" }, trail), scale: 0 };
+  route = { path, steps: el("g", { class: "steps" }, trail), scale: 0, walk: calm.matches ? null : { at: 0, t0: performance.now(), speed: 0 } };
   placeSteps();
-  if (!calm.matches) travel(trail, d);
 }
 // footprints along the route, toes the way it goes, left and right in turn and turned a little outward; their size and
 // spacing follow the ink scale, so keepInkSize has them laid again when a zoom changes it
@@ -523,31 +521,43 @@ function placeSteps() {
     if (!route || route.scale === scale) return;
     route.scale = scale;
     const len = route.path.getTotalLength();
+    pace(route.walk, STEP * scale);
     let prints = '';
-    for (let s = (STEP * scale) / 2, i = 0; s < len - ARROW_ROOM * scale; s += STEP * scale, i++) prints += footAt(route.path, s, i % 2 ? 1 : -1, scale);
+    for (let s = (STEP * scale) / 2, i = 0; s < len - ARROW_ROOM * scale; s += STEP * scale, i++) {
+        prints += `<use href="#foot" transform="${footTransform(route.path, s, i % 2 ? 1 : -1, scale)}"${plantLater(s)}/>`;
+    }
     route.steps.innerHTML = prints;
+    holdArrow(len);
 }
-function footAt(path, s, side, scale) {
+function footTransform(path, s, side, scale) {
     const p = path.getPointAtLength(s), q = path.getPointAtLength(s + 1);
     const deg = (Math.atan2(q.y - p.y, q.x - p.x) * 180) / Math.PI + 90 + side * TOE_OUT;
-    return `<use href="#foot" transform="translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) rotate(${deg.toFixed(1)}) translate(${(side * STRIDE * scale).toFixed(2)} 0) scale(${scale})"/>`;
+    return `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) rotate(${deg.toFixed(1)}) translate(${(side * STRIDE * scale).toFixed(2)} 0) scale(${scale})`;
 }
-// a route draws itself from its start to its end at a traveller's pace, the arrowhead arriving last: a wide white pen
-// grows along the same line inside a mask over the trail. Once it arrives the mask goes, so a still map runs nothing.
-const ROUTE_SPEED = 35; // map units a second
-const ROUTE_MS = [8000, 10000];
-function travel(trail, d) {
-    const mask = el('mask', { id: 'routeMask', maskUnits: 'userSpaceOnUse', x: -3000, y: -3000, width: GEO.W + 6000, height: GEO.H + 6000 }, migG);
-    const pen = el('path', { d, fill: 'none', stroke: '#fff', 'stroke-linecap': 'round', style: `stroke-width:${ink(30)}` }, mask);
-    trail.setAttribute('mask', 'url(#routeMask)');
-    const len = pen.getTotalLength();
-    const duration = clamp((len / ROUTE_SPEED) * 1000, ...ROUTE_MS);
-    routeRun = pen.animate([{ strokeDasharray: len, strokeDashoffset: len }, { strokeDasharray: len, strokeDashoffset: 0 }], { duration, easing: 'ease-in-out', fill: 'forwards' });
-    routeRun.finished.then(() => {
-        trail.removeAttribute('mask');
-        mask.remove();
-        routeRun = null;
-    }, () => {});
+// a route is walked from its start to its end at a steady count of steps a second: each footprint is planted when the walker
+// reaches it, and the arrowhead comes with the last step. A zoom changes how long a step is on the map, so a zoomed-in walk
+// takes longer. Each plant is a short animation, so once the walk ends a still map runs nothing.
+const STEPS_A_SECOND = 2.5;
+// the walker keeps the ground it has covered and goes on with steps of the new length
+function pace(walk, stepLength) {
+    if (!walk) return;
+    const now = performance.now();
+    walk.at += ((now - walk.t0) / 1000) * walk.speed;
+    walk.t0 = now;
+    walk.speed = STEPS_A_SECOND * stepLength;
+}
+// how long, from now, until the walker reaches s along the route; 0 once it has passed s, or when nothing walks
+const waitFor = (s) => (route.walk ? Math.max(0, ((s - route.walk.at) / route.walk.speed) * 1000) : 0);
+// a print still ahead of the walker stays hidden until the walker reaches it; one the walker has passed shows at once
+function plantLater(s) {
+    const wait = waitFor(s);
+    return wait > 0 ? ` class="ahead" style="animation-delay:${wait.toFixed(0)}ms"` : '';
+}
+// the arrowhead stays hidden until the walker arrives
+function holdArrow(len) {
+    route.arrowWait?.cancel();
+    const wait = waitFor(len);
+    if (wait > 0) route.arrowWait = route.path.animate({ opacity: [0, 0] }, wait);
 }
 
 /* ---------- paper grain ---------- */

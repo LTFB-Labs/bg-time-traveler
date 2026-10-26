@@ -175,10 +175,13 @@ button{font-family:inherit;cursor:pointer}
 #tip{position:absolute;bottom:100%;left:0;transform:translate(-50%,-6px);background:#3f230f;color:#fff;font-weight:800;font-size:13px;padding:5px 10px;border-radius:9px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s}
 #tip.show{opacity:1}
 
-/* routes: a trail of footprints with an arrowhead, which map.js draws from its start to its end at a traveller's pace,
-   then it holds still; the line itself is not painted, it only carries the arrowhead */
+/* routes: a trail of footprints with an arrowhead, which map.js walks from its start to its end at a traveller's pace,
+   then it holds still; the line itself is not painted, it only carries the arrowhead.
+   A footprint still ahead of the walker stays hidden until its delay, then is planted quickly */
 .mig{fill:none;stroke:none;opacity:.9}
 .steps{fill:#7a1e12;opacity:.9}
+.ahead{animation:plant .12s backwards}
+@keyframes plant{from{opacity:0}}
 
 /* intro */
 #intro{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px;background:radial-gradient(ellipse at 50% 40%,#f8eed4 0,#efdfb6 60%,#e0c995 100%);transition:opacity .6s,transform .6s;text-align:center}
