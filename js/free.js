@@ -12,7 +12,8 @@ import { startSearch } from './free-search.js';
 import { findResults } from './search.js';
 import { markCardOpened } from './store.js';
 
-export function startFree(map) {
+// event: an event id from the address; the map opens on that event, past the start screen
+export function startFree(map, { event } = {}) {
 const $ = (id) => document.getElementById(id);
 const PH = typeof PHOTOS !== "undefined" ? PHOTOS : {};
 const yInt = (y) => Math.floor(y + 1e-6);
@@ -265,8 +266,11 @@ startSearch($('find'), { find: (query) => findResults(query, { index: CONTENT.se
 
 addEventListener("resize", () => { buildTimeline(); aimCamera(); });
 buildTimeline();
-setYear(START);
-map.setFreeRect(freeRect()); map.snapToYear(START);
+const first = EV.find((e) => e.id === event);
+if (first) intro.remove();
+const startYear = first ? first.y : START;
+setYear(startYear);
+map.setFreeRect(freeRect()); map.snapToYear(startYear);
 map.prebuildFrames();
 window.BGTT = { setYear: (y) => { stopPlay(); setYear(y); }, map };
 }
