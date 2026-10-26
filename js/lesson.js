@@ -7,6 +7,7 @@ import {
 import { startAlive } from './alive.js';
 import { createCards } from './cards.js';
 import { renderCheck } from './check.js';
+import { lessonApi, teacherItem } from './lesson-teacher.js';
 import { renderPredict } from './predict.js';
 import { renderRecap } from './recap.js';
 import {
@@ -35,6 +36,11 @@ export function startLesson(map, lesson, { part = 0 } = {}) {
     // the recap is the virtual part after the check; it opens once the check was passed in this sitting or the lesson is stored as passed
     const canRecap = () => isCheckPassed || Boolean(loadProgress().passed[lesson.id]);
     const cards = createCards($('lsPop'), { onOpen: (id) => map.markSeen(id), onClose: () => map.setActiveMarker(null) });
+    // add-ons (narrator.js) hear "input" when the child moves to another part and "focus" when the part on screen changes
+    const bus = new EventTarget();
+    const emit = (name, detail) => bus.dispatchEvent(new CustomEvent(name, { detail }));
+    const emitFocus = () => emit('focus', { item: current < recapAt && lesson.parts[current].type !== 'check' ? teacherItem(lesson, current, isHeld(lesson, current)) : null });
+    let isTeacherMove = false;
     const goTo = (n) => {
         const target = clamp(n, 0, canRecap() ? recapAt : recapAt - 1);
         if (target === current) return;
@@ -47,11 +53,16 @@ export function startLesson(map, lesson, { part = 0 } = {}) {
         updateNav(lesson, current, canRecap());
         setPosition(lesson.id, current);
         history.replaceState(null, '', `#lesson/${lesson.id}/${current}`);
+        if (!isTeacherMove) emit('input', {});
+        emitFocus();
     };
     const openPart = () => {
         renderPart(lesson, current, cards);
         showScene(isHeld(lesson, current) ? sceneBefore(lesson, current) : current);
-        wirePredict(lesson, current, () => showScene(current));
+        wirePredict(lesson, current, () => {
+            showScene(current);
+            emitFocus();
+        });
         wireCheck(map, lesson, current, { onPassed, goTo });
     };
     // the recap shows the summary's area with no markers, arrow or legend, and replays the borders over it
@@ -91,6 +102,17 @@ export function startLesson(map, lesson, { part = 0 } = {}) {
     fitMapPane(map);
     addEventListener('resize', () => fitMapPane(map));
     goTo(part);
+    window.BGTT = lessonApi(lesson, {
+        bus,
+        current: () => current,
+        goTo: (n) => {
+            isTeacherMove = true;
+            goTo(n);
+            isTeacherMove = false;
+        },
+        isHeld: (n) => isHeld(lesson, n),
+    });
+    dispatchEvent(new Event('bgtt:ready'));
     return player;
 }
 

@@ -1,6 +1,8 @@
-/* AI учител: разказва свободната линия на времето като урок с гласа на браузъра (Web Speech API).
+/* AI учител: разказва свободната линия на времето или урока с гласа на браузъра (Web Speech API).
    Говори с играта само през window.BGTT (items, current, goTo, stage, dock, on), затова може да се махне,
-   без играта да разбере. Всичко свое — кълбо, балонче, снимка, стилове — създава сам. */
+   без играта да разбере. Всичко свое — кълбо, балонче, снимка, стилове — създава сам.
+   Урокът дава и незадължителни полета: title (името му), end ({ say, id }: накъде води след последната част),
+   item.when (годината, както се казва) и item.wait ({ say, note }: въпрос, на който детето отговаря, преди да продължи). */
 (() => {
 "use strict";
 
@@ -126,17 +128,26 @@ const start = (app) => {
   const spoken = (s) => s
     .replace(/(\d+)\s*[–-]\s*(\d+)\s*г\./g, "$1 до $2 година")
     .replace(/(\d+)\s*г\./g, "$1 година")
+    .replace(/\s*пр\.\s?Хр\./g, " преди Христа")
+    .replace(/\s*сл\.\s?Хр\./g, "")
+    .replace(/(?<![\p{L}])ок\.\s/gu, "около ")
     .replace(/(\p{Lu}\p{Ll}+)\s+(IV|V|III|II|I)(?![\p{L}])/gu, (m, w, r) => `${w} ${ROMAN[r]}`)
     .replace(/(?<![\p{L}])ЕС(?![\p{L}])/gu, "Европейския съюз")
     .replace(/\s+—\s+/g, ", ");
   const sentences = (s) => spoken(s).split(/(?<=[.!?…])\s+(?=[„"(\p{Lu}\d])/u).filter(Boolean);
   const yearWord = (y) => `${y} година`;
   function eraLines(era, opening) {
-    const span = `от ${era.from} ${era.to ? `до ${era.to} година` : "година до днес"}`;
+    const span = era.when ?? `от ${era.from} ${era.to ? `до ${era.to} година` : "година до днес"}`;
     const head = opening ? `Сега сме в епохата „${era.name}“, ${span}.` : `Започва нова епоха: „${era.name}“, ${span}.`;
     return [head, ...sentences(era.text)];
   }
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
   function yearLine(it, prev, opening) {
+    if (it.year == null) return "";
+    if (it.when) { // a lesson says its own years, before Christ too
+      const gap = prev && prev.year != null ? it.year - prev.year : 0;
+      return !opening && gap >= 100 ? `Прескачаме цели ${gap} години напред: ${it.when}.` : `${cap(it.when)}.`;
+    }
     if (opening || !prev) return `Започваме през ${yearWord(it.year)}.`;
     const gap = it.year - prev.year;
     if (gap === 0) return `Пак през ${yearWord(it.year)}.`;
@@ -146,12 +157,15 @@ const start = (app) => {
   // one lesson step = a list of sentences; the photo shows with the title and hides halfway through the text
   function script(i, opening) {
     const it = items[i], prev = items[i - 1], out = [];
-    if (opening || !prev || prev.era.name !== it.era.name) eraLines(it.era, opening).forEach((say) => out.push({ say }));
-    out.push({ say: yearLine(it, prev, opening) });
+    if (it.era && (opening || !prev || prev.era?.name !== it.era.name)) eraLines(it.era, opening).forEach((say) => out.push({ say }));
+    const year = yearLine(it, prev, opening); if (year) out.push({ say: year });
     out.push({ say: spoken(it.title) + ".", photo: it.photo ? "show" : null });
+    if (it.wait) { it.wait.say.forEach((say) => out.push({ say: spoken(say) })); out.push({ wait: true }); return out; }
+    return out.concat(bodyScript(it));
+  }
+  function bodyScript(it) {
     const body = sentences(it.text), cut = Math.max(1, Math.ceil(body.length / 2));
-    body.forEach((say, k) => out.push({ say, photo: k === cut && it.photo ? "hide" : null }));
-    return out;
+    return body.map((say, k) => ({ say, photo: k === cut && it.photo ? "hide" : null }));
   }
 
   /* ---------- photo the teacher holds up ---------- */
@@ -169,8 +183,9 @@ const start = (app) => {
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
   /* ---------- lesson state ---------- */
-  const items = app.items();
-  let mode = "dormant", idx = 0, seg = 0, segs = [], run = 0, moved = false, lastSay = "";
+  let items = app.items();
+  // waiting: the part asked the child a question on screen; its answer brings a "focus" with the rest of the part
+  let mode = "dormant", idx = 0, seg = 0, segs = [], run = 0, moved = false, waiting = false, lastSay = "";
   const indexOf = (id) => items.findIndex((x) => x.id === id);
   function indexFromTimeline() {
     const cur = app.current();
@@ -184,7 +199,11 @@ const start = (app) => {
     idx = indexFromTimeline();
     const cur = app.current();
     let q;
-    if (cur.item && idx === items.length - 1) { idx = 0; q = "Здравей! Аз съм твоят учител по история. Стигнали сме до днес. Да ти разкажа ли урока от самото начало?"; }
+    if (app.title) {
+      if (!cur.item) idx = 0;
+      q = `Здравей! Аз съм твоят учител по история. Да ти разкажа ли урока „${app.title}“${idx > 0 ? ` от частта „${items[idx].title}“` : ""}?`;
+    }
+    else if (cur.item && idx === items.length - 1) { idx = 0; q = "Здравей! Аз съм твоят учител по история. Стигнали сме до днес. Да ти разкажа ли урока от самото начало?"; }
     else if (cur.item) q = `Здравей! Аз съм твоят учител по история. Да ти разкажа ли урока от ${yearWord(items[idx].year)} — „${items[idx].title}“?`;
     else q = `Здравей! Аз съм твоят учител по история. Да ти разкажа ли урока от ${yearWord(cur.year)} нататък?`;
     lastSay = q; setMode("asking");
@@ -192,7 +211,8 @@ const start = (app) => {
   }
   function begin(i, opening) {
     run++; const r = run; stopSpeech(); hidePhoto();
-    idx = i; seg = 0; segs = script(i, opening); moved = false; setMode("playing");
+    items = app.items(); // a lesson part that was guessed since is read in full now
+    idx = i; seg = 0; segs = script(i, opening); moved = false; waiting = false; setMode("playing");
     app.goTo(items[i].id).then(() => { if (r === run && mode === "playing") step(r); });
   }
   function step(r) {
@@ -206,6 +226,7 @@ const start = (app) => {
       return;
     }
     const s = segs[seg];
+    if (s.wait) { run++; waiting = true; setMode("paused"); return; }
     if (s.photo === "show") showPhoto(items[idx]);
     if (s.photo === "hide") hidePhoto();
     lastSay = s.say; render();
@@ -214,6 +235,7 @@ const start = (app) => {
   function pause() { if (mode !== "playing") return; run++; stopSpeech(); setMode("paused"); }
   function resume() {
     if (mode !== "paused") return;
+    if (waiting) { render(); return; } // only the child's answer goes on
     if (moved) { begin(indexFromTimeline(), true); return; } // the viewer moved the timeline: continue from there
     run++; setMode("playing"); step(run);
   }
@@ -221,13 +243,21 @@ const start = (app) => {
   const prev = () => { if (idx > 0) begin(idx - 1, false); };
   function finish() {
     run++; const r = run; hidePhoto();
-    lastSay = "Това беше нашият урок по история на България. Браво, че слуша до края!"; render();
+    const end = app.end;
+    lastSay = end ? end.say : "Това беше нашият урок по история на България. Браво, че слуша до края!"; render();
+    if (end) app.goTo(end.id);
     speak(lastSay).then(() => { if (r === run) stop(); });
   }
   function stop() { run++; stopSpeech(); hidePhoto(); setMode("dormant"); }
 
   // the viewer took the timeline into their own hands: pause and continue from wherever they leave it
-  app.on("input", () => { if (mode === "playing") { pause(); moved = true; } else if (mode === "paused") moved = true; });
+  app.on("input", () => { if (mode === "playing") { pause(); moved = true; } else if (mode === "paused") { moved = true; waiting = false; } });
+  // the child answered the question the teacher waits on: read the rest of that part
+  app.on("focus", ({ item }) => {
+    if (!waiting || mode !== "paused" || !item || item.id !== items[idx].id || item.wait) return;
+    items[idx] = item; waiting = false; segs = bodyScript(item); seg = 0;
+    run++; setMode("playing"); step(run);
+  });
 
   /* ---------- bubble ---------- */
   const KEYS = `<div class="keys"><span><kbd>Интервал</kbd> пауза</span><span><kbd>←</kbd> <kbd>→</kbd> назад / напред</span><span><kbd>Esc</kbd> край</span></div>`;
@@ -241,7 +271,8 @@ const start = (app) => {
     } else if (mode === "playing") {
       bubble.innerHTML = `${head}<p class="say">${esc(lastSay)}</p>${KEYS}`;
     } else {
-      bubble.innerHTML = `${head}<p class="say dim">${esc(lastSay)}</p><p class="note">Пауза. Натисни интервал или кълбото, за да продължа${moved ? " оттам, докъдето стигна" : ""}.</p>`;
+      const note = waiting ? items[idx].wait.note : `Пауза. Натисни интервал или кълбото, за да продължа${moved ? " оттам, докъдето стигна" : ""}.`;
+      bubble.innerHTML = `${head}<p class="say${waiting ? "" : " dim"}">${esc(lastSay)}</p><p class="note">${esc(note)}</p>`;
     }
     bubble.hidden = false; placeBubble();
   }
