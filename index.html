@@ -2,6 +2,8 @@
 <html lang="bg">
 <head>
 <meta charset="utf-8">
+<!-- an address that names a page (a lesson, the hall, the Quest) never shows the start screen, not even while the scripts load -->
+<script>if (location.hash.length > 1) document.documentElement.classList.add('deep-link');</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Пътешествие във времето</title>
 <meta name="description" content="Дърпай слайдъра и виж как се променя България от 600 г. до днес.">
@@ -126,6 +128,7 @@ button{font-family:inherit;cursor:pointer}
 
 /* intro */
 #intro{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px;background:radial-gradient(ellipse at 50% 40%,#f8eed4 0,#efdfb6 60%,#e0c995 100%);transition:opacity .6s,transform .6s;text-align:center}
+.deep-link #intro{display:none}
 #intro.leave{opacity:0;transform:scale(1.05);pointer-events:none}
 #intro .art{width:min(430px,78vw);max-height:52vh;aspect-ratio:1}
 #intro .art svg,#intro .art img{width:100%;height:100%;display:block;object-fit:contain}
