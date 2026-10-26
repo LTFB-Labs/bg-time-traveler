@@ -6,7 +6,7 @@ const fakeStorage = (initial) => {
     const data = { ...initial };
     return { getItem: (k) => data[k] ?? null, setItem: (k, v) => { data[k] = String(v); } };
 };
-const EMPTY = { passed: {}, cards: [], position: {}, pins: 'seal', today: false, bar: false, quest: {} };
+const EMPTY = { passed: {}, cards: [], position: {}, pins: 'seal', today: false, bar: false, quest: {}, last: null };
 
 test('loadsDefaultsWhenEmpty', () => {
     assert.deepEqual(createStore(fakeStorage()).loadProgress(), EMPTY);
@@ -89,4 +89,13 @@ test('questStarsKeepTheBestAndGoWithTheProgress', () => {
     assert.deepEqual(store.loadProgress().quest, { l1: 2, 'boss-a': 3 });
     store.resetProgress();
     assert.deepEqual(store.loadProgress().quest, {});
+});
+
+test('theLastLessonIsRememberedAndGoesWithTheProgress', () => {
+    const store = createStore(fakeStorage());
+    store.setLast('5-a');
+    store.setLast('5-b');
+    assert.equal(store.loadProgress().last, '5-b');
+    store.resetProgress();
+    assert.equal(store.loadProgress().last, null);
 });

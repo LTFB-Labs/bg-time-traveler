@@ -2,8 +2,9 @@
 const KEY = 'bgtt';
 
 // pins: the look of the map's markers, picked in the options menu; today: whether the map shows today's Bulgaria;
-// bar: whether a lesson's header bar (grade, number, Уроци, gear, trail) is open; quest: the best stars (1–3) won at each Quest stop
-const defaults = () => ({ passed: {}, cards: [], position: {}, pins: 'seal', today: false, bar: false, quest: {} });
+// bar: whether a lesson's header bar (grade, number, Уроци, gear, trail) is open; quest: the best stars (1–3) won at each Quest stop;
+// last: the lesson opened last, where a bare visit to the app goes back to
+const defaults = () => ({ passed: {}, cards: [], position: {}, pins: 'seal', today: false, bar: false, quest: {}, last: null });
 
 export function createStore(storage) {
     const loadProgress = () => {
@@ -31,6 +32,7 @@ export function createStore(storage) {
         markCardOpened: (id) => update((p) => { if (!p.cards.includes(id)) p.cards.push(id); }),
         markPassed: (lessonId) => update((p) => { p.passed[lessonId] = new Date().toISOString(); }),
         setPosition: (lessonId, n) => update((p) => { p.position[lessonId] = n; }),
+        setLast: (lessonId) => update((p) => { p.last = lessonId; }),
         setPins: (look) => update((p) => { p.pins = look; }),
         setToday: (isShown) => update((p) => { p.today = isShown; }),
         setBar: (isOpen) => update((p) => { p.bar = isOpen; }),
@@ -56,6 +58,7 @@ export const {
     markCardOpened,
     markPassed,
     setPosition,
+    setLast,
     setPins,
     setToday,
     setBar,

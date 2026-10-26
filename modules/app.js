@@ -7,7 +7,7 @@ import {
     startOptions,
     startTodayButtons,
 } from './options/options.js';
-import { loadProgress } from '../code/store.js';
+import { loadProgress, setLast } from '../code/store.js';
 import {
     showNoLesson,
     startLesson,
@@ -23,6 +23,11 @@ const hallFloor = location.hash.match(/^#lessons\/(.+)$/);
 if (page) openPage(...page);
 else if (hallFloor) openPage('lessons', () => startLessonList(hallFloor[1]));
 else if (route) openLesson(route[1], route[2]);
+else if (lastLesson()) {
+    // a bare visit goes straight back into the last lesson, at the part the child reached; the lesson's back arrow leads out
+    history.replaceState(null, '', `#lesson/${lastLesson()}`);
+    openLesson(lastLesson(), '');
+}
 else openStart();
 addEventListener('hashchange', () => location.reload());
 
@@ -40,12 +45,19 @@ function openStart() {
     });
 }
 
+// the last lesson, on a bare address only: "Към началото" (#) still shows the start screen
+function lastLesson() {
+    const { last } = loadProgress();
+    return !location.href.includes('#') && last && Object.hasOwn(CONTENT.lessons, last) ? last : null;
+}
+
 function openLesson(id, part) {
     document.body.classList.add('lesson');
     if (!Object.hasOwn(CONTENT.lessons, id)) {
         showNoLesson();
         return;
     }
+    setLast(id);
     const saved = loadProgress().position[id] ?? 0;
     startLesson(map, CONTENT.lessons[id], { part: part === '' ? saved : Number(part) });
 }
