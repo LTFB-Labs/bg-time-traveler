@@ -23,6 +23,7 @@
     border-left: 2px dashed color-mix(in srgb, var(--c) 45%, transparent); }
 .band .head { position: absolute; left: 22px; top: 22px; width: 280px; padding: 14px 16px 12px; background: rgba(251, 244, 226, .93); border-radius: 14px; border-top: 5px solid var(--c); box-shadow: var(--shadow); }
 .band .head img { display: block; width: 100%; height: 110px; object-fit: cover; border-radius: 9px; margin-bottom: 10px; box-shadow: 0 0 0 3px #fff, 0 2px 6px rgba(60, 40, 15, .3); }
+.band h2 .icon { width: 24px; height: 24px; margin-right: 8px; vertical-align: -3px; }
 .band h2 { margin: 0 0 4px; font-family: var(--title); font-weight: 400; font-size: 23px; line-height: 1.1; color: var(--c); }
 .band p { margin: 0 0 8px; font-size: 14px; line-height: 1.4; font-weight: 700; color: var(--ink2); }
 .band .meta { font-size: 12px; font-weight: 900; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
@@ -40,8 +41,11 @@
 .stop .castle .wall { fill: #f8eed6; }
 .stop .castle .line { fill: none; }
 .stop .castle .flag { fill: var(--c); stroke-width: 1.2; }
-.stop .ribbon { position: absolute; left: 36px; top: -56px; display: flex; flex-direction: column; gap: 1px; width: max-content; max-width: 190px; padding: 6px 18px 6px 12px; white-space: normal; text-align: left;
+.stop .ribbon { position: absolute; left: 36px; top: -56px; display: flex; align-items: center; gap: 8px; width: max-content; max-width: 190px; padding: 6px 18px 6px 12px; white-space: normal; text-align: left;
     background: #f3dca6; color: #4a3520; font-weight: 700; font-size: 12.5px; line-height: 1.2; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); box-shadow: inset 0 0 0 1px #c9a868; }
+/* the stop's icon at the ribbon's start, its name beside it */
+.stop .ribbon .icon { flex: none; width: 26px; height: 26px; color: #7a1e12; }
+.stop .ribbon .txt { display: flex; flex-direction: column; gap: 1px; }
 .stop .ribbon b { font-family: var(--title); font-weight: 400; font-size: 15px; color: #7a1e12; }
 .stop .ribbon em { font-style: normal; font-weight: 900; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--red); }
 .stop .pic { position: absolute; left: -32px; top: -134px; width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 3px solid #fbefd0; box-shadow: 0 0 0 2px var(--gold2), 0 4px 10px rgba(40, 15, 5, .4); }
@@ -99,6 +103,7 @@
 .fight .sheet { width: min(640px, 100%); max-height: calc(100vh - 32px); overflow: auto; padding: 18px 24px 22px; background: var(--card); border-radius: 18px; border: 1px solid #b89a63;
     box-shadow: inset 0 0 0 6px var(--card), inset 0 0 0 7px #d5bd8c, 0 24px 60px rgba(0, 0, 0, .5); animation: rise .35s ease-out; }
 .fight header { display: flex; align-items: center; gap: 12px; }
+.fight header > .icon { flex: none; width: 30px; height: 30px; color: #7a1e12; }
 .fight h2 { flex: 1; margin: 0; font-family: var(--title); font-weight: 400; font-size: 20px; color: #5a2412; }
 .fight .lives { display: flex; gap: 2px; }
 .fight .lives i { width: 26px; height: 26px; transition: transform .3s; }

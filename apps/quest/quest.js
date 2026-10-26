@@ -5,6 +5,7 @@
 import { LIVES, fightQuestions, questStops, starsFor } from './quest-path.js';
 import { fogClouds, terrainSvg } from './quest-terrain.js';
 import { esc } from '../../modules/lesson/lesson.js';
+import { iconHtml } from '../../modules/lesson/lesson-list.js';
 import { MOCK_LESSONS } from '../../modules/lesson/mock-lessons.js';
 import { loadProgress, setQuestStars } from '../../code/store.js';
 
@@ -99,7 +100,7 @@ function bandHtml({ section, from, to }) {
     const count = section.lessons.length;
     return `<section class="band" style="left:${from}px;width:${to - from}px;--c:${section.color}">
         <div class="head">${photo ? `<img src="${esc(photo)}" alt="">` : ''}
-        <h2>${esc(section.title)}</h2><p>${esc(section.description)}</p>
+        <h2>${iconHtml(section.icon)}${esc(section.title)}</h2><p>${esc(section.description)}</p>
         <span class="meta">${count} ${count === 1 ? 'урок' : 'урока'} и бос</span></div></section>`;
 }
 
@@ -127,7 +128,7 @@ function stopHtml(stop, i) {
     const tag = stop.state === 'open' ? 'button' : 'div';
     return `<${tag} class="stop ${stop.state}${isBoss ? ' boss' : ''}${stop.isFog ? ' fogged' : ''}" data-id="${esc(stop.id)}" style="left:${stop.x}px;top:${stop.y}px;--c:${stop.color}"${tag === 'button' ? ' type="button"' : ''}>
         ${stars}${picture}${castle}
-        <span class="ribbon">${label}${note ? `<em>${note}</em>` : ''}</span></${tag}>`;
+        <span class="ribbon">${iconHtml(stop.icon)}<span class="txt">${label}${note ? `<em>${note}</em>` : ''}</span></span></${tag}>`;
 }
 
 /* ---------- a fight: the questions one by one, three lives; a wrong answer shows where the answer is written ---------- */
@@ -143,7 +144,7 @@ function fight(stop) {
     closeFight = close;
     // the stars still to win: each mistake puts one out
     const lives = () => Array.from({ length: LIVES }, (_, k) => `<i class="${k < LIVES - mistakes ? 'on' : ''}">${STAR}</i>`).join('');
-    const top = () => `<header><h2>${stop.kind === 'boss' ? `Бос · ${esc(stop.title)}` : `Урок ${stop.number} · ${esc(stop.title)}`}</h2>
+    const top = () => `<header>${iconHtml(stop.icon)}<h2>${stop.kind === 'boss' ? `Бос · ${esc(stop.title)}` : `Урок ${stop.number} · ${esc(stop.title)}`}</h2>
         <span class="lives stars" aria-label="Още ${LIVES - mistakes} звезди">${lives()}</span><button class="x" type="button" aria-label="Затвори">×</button></header>
         <div class="bar"><i style="width:${(i / questions.length) * 100}%"></i></div>`;
     const ask = () => {

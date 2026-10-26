@@ -17,7 +17,7 @@ export function questStops({ sections, lessons, grades, cards, photos, stars }, 
     const stops = sections.flatMap((section) => {
         const own = section.lessons.map((number) => lessonStop(section, number, { lessons, grades, cards, photos }, mocks));
         pool.push(...own.flatMap((stop) => stop.questions));
-        const boss = { id: `boss-${section.id}`, kind: 'boss', section: section.id, color: section.color, title: section.title, photo: photos[section.photo]?.f ?? null, questions: [...pool] };
+        const boss = { id: `boss-${section.id}`, kind: 'boss', section: section.id, color: section.color, title: section.title, icon: section.icon ?? null, photo: photos[section.photo]?.f ?? null, questions: [...pool] };
         return [...own, boss];
     });
     const front = stops.findIndex((stop) => !(stars[stop.id] > 0));
@@ -42,6 +42,7 @@ function lessonStop(section, number, { lessons, grades, cards, photos }, mocks) 
         color: section.color,
         number,
         title: entry?.title ?? mock?.title ?? `Урок ${number}`,
+        icon: lesson?.icon ?? mock?.icon ?? null,
         photo: photos[summary?.meta.photo ?? mock?.photo]?.f ?? null,
         questions: lesson ? lessonQuestions(lesson, cards) : [],
     };
