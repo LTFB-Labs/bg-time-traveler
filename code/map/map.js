@@ -365,6 +365,23 @@ svg.addEventListener('pointerdown', (e) => {
     pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
     dragged = pointers.size > 1;
 });
+// while the hand carries the map it leans a little toward the move, like a sheet of paper on the table; let go and it springs flat
+let lean = { x: 0, y: 0 };
+let leanRest = 0;
+const setLean = (transform, transition) => [svg, ov].forEach((el) => { el.style.transition = `transform ${transition}`; el.style.transform = transform; });
+function leanWith(dx, dy) {
+    if (calm.matches) return;
+    lean = { x: clamp(lean.x * 0.6 + dx * 0.3, -5, 5), y: clamp(lean.y * 0.6 + dy * 0.3, -5, 5) };
+    setLean(`perspective(1600px) rotateY(${lean.x.toFixed(2)}deg) rotateX(${(-lean.y).toFixed(2)}deg) scale(1.04)`, '.15s ease-out');
+    clearTimeout(leanRest);
+    // a hand that stops but still holds lets the map settle back
+    if (Math.abs(lean.x) + Math.abs(lean.y) > 0.1) leanRest = setTimeout(() => leanWith(0, 0), 120);
+}
+function unlean() {
+    clearTimeout(leanRest);
+    lean = { x: 0, y: 0 };
+    setLean('', '.6s cubic-bezier(.3, 1.6, .5, 1)');
+}
 svg.addEventListener('pointermove', (e) => {
     const p = pointers.get(e.pointerId);
     if (!p) return;
@@ -376,10 +393,14 @@ svg.addEventListener('pointermove', (e) => {
     Object.assign(p, { x: e.clientX, y: e.clientY });
     const after = spread();
     if (movesWithPointers()) moveByHand(zoomed(panned(vb, after.x - before.x, after.y - before.y), before.d / after.d, after.x, after.y));
+    if (movesWithPointers() && pointers.size === 1) leanWith(after.x - before.x, after.y - before.y);
 });
 const lift = (e) => {
     pointers.delete(e.pointerId);
-    if (pointers.size === 0) svg.classList.remove('grabbing');
+    if (pointers.size === 0) {
+        svg.classList.remove('grabbing');
+        if (svg.style.transform) unlean();
+    }
 };
 svg.addEventListener('pointerup', lift);
 svg.addEventListener('pointercancel', lift);

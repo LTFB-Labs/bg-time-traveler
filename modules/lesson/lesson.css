@@ -310,7 +310,7 @@ body.lesson #compass { top: 6px; right: calc(var(--ls-w) + 2 * var(--gap) + 60px
 /* part text */
 #lsBody .meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 16px 0 6px; }
 #lsBody h2 { font-family: var(--title); font-weight: 400; font-size: clamp(24px, 2.3vw, 30px); line-height: 1.1; margin: 2px 0 12px; color: #3f230f; }
-#lsBody p { margin: 0 0 14px; font-size: 17px; line-height: 24px; font-weight: 600; color: #4b3722; }
+#lsBody p { margin: 0 0 14px; font-size: 17px; line-height: 23px; font-weight: 600; color: #4b3722; }
 #lsBody p b { color: #7a1e12; font-weight: 900; }
 #lsBody p.lead { font-size: 18px; line-height: 1.38; color: #3f230f; }
 
@@ -387,8 +387,11 @@ body.lesson #compass { top: 6px; right: calc(var(--ls-w) + 2 * var(--gap) + 60px
 #lsNav { display: flex; gap: 8px; align-items: center; padding: 10px 16px max(14px, env(safe-area-inset-bottom)); border-top: 1px dashed var(--line); flex: none; }
 #lsNav .btn:disabled { opacity: .45; cursor: default; }
 #lsNav .hint { order: 1; font-size: 12.5px; color: var(--muted); font-weight: 700; margin-left: 4px; }
-#lsPrev { width: 40px; height: 40px; padding: 0; border-radius: 50%; }
-#lsNext.btn.pri { order: 2; flex: none; margin-left: auto; padding: 9px 16px 9px 20px; border-radius: 999px; box-shadow: 0 2px 0 #8e2a1e; }
+/* the footer's back and forward buttons, a quarter smaller than the app's buttons */
+#lsPrev { width: 30px; height: 30px; padding: 0; border-radius: 50%; }
+#lsPrev svg { width: 14px; height: 14px; }
+#lsNext.btn.pri { order: 2; flex: none; margin-left: auto; padding: 7px 12px 7px 15px; border-radius: 999px; box-shadow: 0 2px 0 #8e2a1e; font-size: 11.5px; }
+#lsNext.btn.pri svg { width: 14px; height: 14px; }
 
 /* phones: the map on top, the reading sheet below */
 @media (max-width: 820px) {
