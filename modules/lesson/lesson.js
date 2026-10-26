@@ -231,6 +231,8 @@ function wireHandCamera(map) {
     map.setMode('lesson');
     map.onUserMove((moved) => { $('lsReturn').hidden = !moved; });
     $('lsReturn').addEventListener('click', map.resetCamera);
+    // a double click on the moved map takes it back too
+    $('map').addEventListener('dblclick', () => { if (!$('lsReturn').hidden) map.resetCamera(); });
 }
 
 // on the check Next stays disabled until the check is passed, then it names the recap; the recap is the last part
