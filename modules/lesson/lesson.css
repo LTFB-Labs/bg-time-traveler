@@ -600,8 +600,11 @@ body.album #freePop { top: 50%; right: auto; bottom: auto; left: 50%; transform:
    A card is dressed like the reading sheet: paper, the brown frame, the title font, the red lesson chip. ---- */
 #lessonList {
     position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; color: var(--ink);
-    background: radial-gradient(ellipse at 50% 40%, #f8eed4 0, #efdfb6 60%, #e0c995 100%);
+    isolation: isolate; background: #e9d9b0;
 }
+/* behind the cards, a library: shelves of books (img/library.svg, tools/build-library.mjs), softened and washed with the parchment */
+#lessonList::before { content: ''; position: absolute; inset: -8px; z-index: -2; background: url('../../img/library.svg') 0 0 / 520px auto repeat; filter: blur(1.5px) sepia(.3); }
+#lessonList::after { content: ''; position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at 50% 45%, rgba(248, 238, 212, .84) 0, rgba(239, 223, 182, .72) 55%, rgba(224, 201, 149, .58) 100%); }
 #lessonList .hall-top { display: flex; align-items: center; gap: 16px; padding: 20px 24px 4px; }
 #lessonList .hall-top h1 { flex: 1; margin: 0; font-family: var(--title); font-weight: 400; font-size: clamp(32px, 5vw, 48px); line-height: 1; color: #5a2412; }
 #lessonList .hall-top .back { padding: 8px 14px 8px 10px; }
