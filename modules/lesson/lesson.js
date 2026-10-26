@@ -31,7 +31,7 @@ const $ = (id) => document.getElementById(id);
 
 export function startLesson(map, lesson, { part = 0 } = {}) {
     // the small back arrow leads to the lessons of this lesson's section in the hall
-    const section = CONTENT.quest.sections.find((sec) => sec.grade === lesson.grade && sec.lessons.includes(lesson.number));
+    const { section } = placeOf(lesson);
     if (section) document.getElementById('lsBack').href = `#lessons/${section.textbook}/${section.id}`;
     let current = -1;
     let isCheckPassed = false;
@@ -142,10 +142,21 @@ function fitMapPane(map) {
 }
 
 /* ---------- header ---------- */
+// the textbook and the section that hold the lesson, from CONTENT.quest; either may be missing
+function placeOf(lesson) {
+    const section = CONTENT.quest.sections.find((s) => s.grade === lesson.grade && s.lessons.includes(lesson.number));
+    return { section, book: section && CONTENT.quest.textbooks.find((b) => b.id === section.textbook) };
+}
+
+// the header's path: textbook › section › lesson, the first two leading back into the hall
 function renderHead(lesson, goTo) {
-    const [grade, position] = $('lsCrumbs').children;
-    grade.textContent = `${lesson.grade}. клас`;
-    position.textContent = `Урок ${lesson.number}`;
+    const { book, section } = placeOf(lesson);
+    const sep = '<span class="sep" aria-hidden="true">›</span>';
+    $('lsCrumbs').innerHTML = [
+        book && `<a class="chip" href="#lessons/${esc(book.id)}">${esc(book.title)}</a>`,
+        book && section && `<a class="chip" href="#lessons/${esc(book.id)}/${esc(section.id)}">${esc(section.title)}</a>`,
+        `<span class="chip grade">Урок ${lesson.number}</span>`,
+    ].filter(Boolean).join(sep);
     $('lsTitle').textContent = lesson.title;
     $('lsSteps').replaceChildren(...[...lesson.parts.map((p, n) => stepChip(p, n, goTo)), stepChip({ type: 'recap', heading: 'Обобщение' }, lesson.parts.length, goTo)]);
 }
@@ -246,7 +257,8 @@ function updateNav(lesson, current, canRecap) {
     $('lsNext').disabled = current === lesson.parts.length || (isCheck && !canRecap);
     $('lsNext').firstChild.textContent = isPassedCheck ? 'Към обобщението ' : 'Напред ';
     // the parts plus the recap
-    $('lsCount').textContent = `Урок ${lesson.number} · ${current + 1}/${lesson.parts.length + 1}`;
+    const { section } = placeOf(lesson);
+    $('lsCount').textContent = `${section ? `${section.title} / ` : ''}Урок ${lesson.number} · ${current + 1}/${lesson.parts.length + 1}`;
 }
 
 /* ---------- map pane ---------- */

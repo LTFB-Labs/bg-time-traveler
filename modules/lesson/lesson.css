@@ -200,9 +200,11 @@ body.lesson #compass { z-index: 1; top: auto; right: auto; left: 10px; bottom: 1
 #lsFold[aria-expanded="true"] svg { rotate: 180deg; }
 #lsBar { position: relative; padding: 8px 0 6px; }
 /* the way back to the lesson list, at the right end of the bar */
-#lsLessons { position: absolute; top: 8px; right: -8px; height: 36px; padding: 0 14px; font-size: 13px; box-shadow: 0 1px 4px rgba(60, 40, 15, .15); }
 /* as tall as the buttons beside it */
-#lsCrumbs { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; min-height: 36px; padding-right: 90px; }
+#lsCrumbs { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; min-height: 36px; }
+#lsCrumbs a.chip { text-decoration: none; color: inherit; }
+#lsCrumbs a.chip:hover { background: #e8d4a7; }
+#lsCrumbs .sep { font-weight: 900; color: var(--muted); }
 #lsCrumbs .chip.grade { background: #7a1e12; color: #fff; }
 #lsTitle { font-family: var(--title); font-weight: 400; font-size: clamp(22px, 2vw, 28px); margin: 8px 0 2px; color: #3f230f; line-height: 1.1; }
 /* the parts as a quest trail: waypoints on a dashed route, a flag at the start, a question mark for the check, a star at the end;
