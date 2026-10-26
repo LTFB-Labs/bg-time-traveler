@@ -1,5 +1,5 @@
 // shared projection and path helpers for build-geo.mjs and lib/borders.mjs
-export const LON0 = 6, LON1 = 48, LAT0 = 31, LAT1 = 53, K = 100, CX = Math.cos((42 * Math.PI) / 180);
+export const LON0 = 6, LON1 = 56, LAT0 = 31, LAT1 = 53, K = 100, CX = Math.cos((42 * Math.PI) / 180);
 export const W = Math.round((LON1 - LON0) * CX * K), H = Math.round((LAT1 - LAT0) * K);
 export const P = ([lon, lat]) => [(lon - LON0) * CX * K, (LAT1 - lat) * K];
 export const BOX = [[[[LON0 - 0.6, LAT0 - 0.6], [LON1 + 0.6, LAT0 - 0.6], [LON1 + 0.6, LAT1 + 0.6], [LON0 - 0.6, LAT1 + 0.6], [LON0 - 0.6, LAT0 - 0.6]]]];
