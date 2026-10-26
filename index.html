@@ -115,7 +115,7 @@ button{font-family:inherit;cursor:pointer}
 .ahead{animation:plant .12s backwards}
 @keyframes plant{from{opacity:0}}
 
-/* today's Bulgaria, shown by the "!" button: clear lines and the big cities of today */
+/* today's Bulgaria, shown by the "?" button: clear lines and the big cities of today */
 .today path{fill:none;stroke-linejoin:round}
 .today-water{stroke:#2b78a4;stroke-linecap:round;opacity:.55}
 .today-mountains{stroke:#7b4a1e;stroke-linecap:round;opacity:.22}
@@ -224,10 +224,10 @@ a.btn{text-decoration:none}
 <!-- the settings: one gear in the top-right row of a lesson -->
 <button class="btn opt" id="optBtn" popovertarget="options" aria-label="Настройки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" stroke-width="4" stroke-dasharray="3.34 3.34"/><circle cx="12" cy="12" r="5.5" stroke-width="3"/></svg></button>
 
-<!-- today's Bulgaria: one round hint button left of the gear in a lesson -->
-<button class="btn opt today-btn" id="todayBtn" type="button" aria-pressed="false" aria-label="Покажи съвременна България" data-hint="Покажи съвременна България">!</button>
+<!-- today's Bulgaria: one round "?" button left of the gear in a lesson -->
+<button class="btn opt today-btn" id="todayBtn" type="button" aria-pressed="false" aria-label="Покажи съвременна България" data-hint="Покажи съвременна България">?</button>
 
-<!-- the way into the lesson hall: a round book button left of the "!" in a lesson -->
+<!-- the way into the lesson hall: a round book button left of the "?" in a lesson -->
 <a id="toHall" href="#lessons" aria-label="Уроци" title="Уроци"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10 5 7 4.5 4 5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5z"/><path d="M12 6.5v13"/></svg></a>
 <!-- the way into the Quest: two swords crossed, left of the book -->
 <a id="toQuest" href="#quest" aria-label="Походът" title="Походът"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="3.8" cy="3.8" r="1.4"/><path d="M5 5l1.5 1.5M5.3 9.3l4-4"/><path class="blade" d="M8.6 6.6l10.9 10.9 1 3-3-1L6.6 8.6z"/><circle cx="20.2" cy="3.8" r="1.4"/><path d="M19 5l-1.5 1.5M18.7 9.3l-4-4"/><path class="blade" d="M15.4 6.6L4.5 17.5l-1 3 3-1L17.4 8.6z"/></svg></a>

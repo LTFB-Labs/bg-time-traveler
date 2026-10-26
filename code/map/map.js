@@ -370,12 +370,17 @@ svg.addEventListener('pointermove', (e) => {
     if (!p) return;
     if (!dragged && Math.hypot(e.clientX - p.x, e.clientY - p.y) < SLOP) return;
     dragged = true;
+    // the hand closes on the map while it carries it
+    if (movesWithPointers()) svg.classList.add('grabbing');
     const before = spread();
     Object.assign(p, { x: e.clientX, y: e.clientY });
     const after = spread();
     if (movesWithPointers()) moveByHand(zoomed(panned(vb, after.x - before.x, after.y - before.y), before.d / after.d, after.x, after.y));
 });
-const lift = (e) => pointers.delete(e.pointerId);
+const lift = (e) => {
+    pointers.delete(e.pointerId);
+    if (pointers.size === 0) svg.classList.remove('grabbing');
+};
 svg.addEventListener('pointerup', lift);
 svg.addEventListener('pointercancel', lift);
 // a drag is not a tap: click listeners on the map only hear presses that stayed put
@@ -410,8 +415,9 @@ function zoomed(v, f, sx, sy) {
     return { x: v.x + sx * s * (1 - k), y: v.y + sy * s * (1 - k), w: v.w * k, h: v.h * k };
 }
 // a hand move replaces the view and drops the tween's target, so nothing pulls the view back
+// the map never ends inside the window: the whole screen, also behind the lesson sheet, stays on the map
 function moveByHand(next) {
-    vb = clampViewInPane(next, { pane: paneRect(), screenW: innerWidth, ...LIMITS });
+    vb = clampViewInPane(next, { pane: { x: 0, y: 0, w: innerWidth, h: innerHeight }, screenW: innerWidth, ...LIMITS });
     vbT = null;
     applyVB();
     onUserMoveCb(true);
