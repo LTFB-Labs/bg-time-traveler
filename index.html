@@ -300,18 +300,21 @@ a.btn{text-decoration:none}
 
 <aside id="lesson" hidden>
   <div id="lsHead">
-    <a class="btn" id="lsLessons" href="#lessons">Уроци</a>
-    <button class="btn opt" popovertarget="options" aria-label="Настройки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" stroke-width="4" stroke-dasharray="3.34 3.34"/><circle cx="12" cy="12" r="5.5" stroke-width="3"/></svg></button>
-    <div id="lsCrumbs"><span class="chip grade"></span><span class="chip"></span></div>
+    <button id="lsFold" type="button" aria-controls="lsBar" aria-expanded="false" aria-label="Покажи частите на урока"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+    <div id="lsBar" hidden>
+      <a class="btn" id="lsLessons" href="#lessons">Уроци</a>
+      <button class="btn opt" popovertarget="options" aria-label="Настройки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" stroke-width="4" stroke-dasharray="3.34 3.34"/><circle cx="12" cy="12" r="5.5" stroke-width="3"/></svg></button>
+      <div id="lsCrumbs"><span class="chip grade"></span><span class="chip"></span></div>
+      <div id="lsSteps"></div>
+    </div>
     <h1 id="lsTitle"></h1>
-    <div id="lsSteps"></div>
   </div>
   <div id="lsBody"></div>
   <div id="lsPop" hidden></div>
   <div id="lsNav">
-    <button class="btn" id="lsPrev" aria-label="Назад"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
-    <button class="btn pri" id="lsNext">Напред <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
-    <span class="hint">← → на клавиатурата</span>
+    <button class="btn" id="lsPrev" aria-label="Назад" title="Назад (← на клавиатурата)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button class="btn pri" id="lsNext" title="Напред (→ на клавиатурата)">Напред <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    <span class="hint" id="lsCount"></span>
   </div>
 </aside>
 

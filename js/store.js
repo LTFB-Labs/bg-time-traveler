@@ -1,8 +1,9 @@
 // Progress in localStorage under one key. Every storage access is guarded: a private window or a full disk must not break a lesson.
 const KEY = 'bgtt';
 
-// pins: the look of the map's markers, picked in the options menu; today: whether the map shows today's Bulgaria
-const defaults = () => ({ passed: {}, cards: [], position: {}, pins: 'seal', today: false });
+// pins: the look of the map's markers, picked in the options menu; today: whether the map shows today's Bulgaria;
+// bar: whether a lesson's header bar (grade, number, Уроци, gear, trail) is open
+const defaults = () => ({ passed: {}, cards: [], position: {}, pins: 'seal', today: false, bar: false });
 
 export function createStore(storage) {
     const loadProgress = () => {
@@ -32,10 +33,11 @@ export function createStore(storage) {
         setPosition: (lessonId, n) => update((p) => { p.position[lessonId] = n; }),
         setPins: (look) => update((p) => { p.pins = look; }),
         setToday: (isShown) => update((p) => { p.today = isShown; }),
-        // everything the child did goes; the marker look and today's borders are settings, so they stay
+        setBar: (isOpen) => update((p) => { p.bar = isOpen; }),
+        // everything the child did goes; the marker look, today's borders and the header bar are settings, so they stay
         resetProgress: () => {
-            const { pins, today } = loadProgress();
-            saveProgress({ ...defaults(), pins, today });
+            const { pins, today, bar } = loadProgress();
+            saveProgress({ ...defaults(), pins, today, bar });
         },
     };
 }
@@ -54,5 +56,6 @@ export const {
     setPosition,
     setPins,
     setToday,
+    setBar,
     resetProgress,
 } = createStore(lazyStorage);

@@ -12,6 +12,7 @@ import { renderPredict } from './predict.js';
 import { renderRecap } from './recap.js';
 import {
     loadProgress,
+    setBar,
     setPosition,
 } from './store.js';
 import {
@@ -94,6 +95,7 @@ export function startLesson(map, lesson, { part = 0 } = {}) {
     const player = { goTo, next: () => goTo(current + 1), prev: () => goTo(current - 1), current: () => current };
     showPane();
     renderHead(lesson, goTo);
+    wireBar();
     const timeline = createTimeline($('lsTl'), lesson, { onPick: goTo });
     const alive = startAlive(map);
     wireNav(player);
@@ -143,6 +145,22 @@ function renderHead(lesson, goTo) {
     position.textContent = `Урок ${lesson.number}`;
     $('lsTitle').textContent = lesson.title;
     $('lsSteps').replaceChildren(...[...lesson.parts.map((p, n) => stepChip(p, n, goTo)), stepChip({ type: 'recap', heading: 'Обобщение' }, lesson.parts.length, goTo)]);
+}
+
+// the header bar folds away above the title and stays the way the child left it
+function wireBar() {
+    const fold = $('lsFold');
+    const show = (isOpen) => {
+        $('lsBar').hidden = !isOpen;
+        fold.setAttribute('aria-expanded', isOpen);
+        fold.setAttribute('aria-label', isOpen ? 'Скрий частите на урока' : 'Покажи частите на урока');
+    };
+    fold.onclick = () => {
+        const isOpen = $('lsBar').hidden;
+        show(isOpen);
+        setBar(isOpen);
+    };
+    show(loadProgress().bar);
 }
 
 const STEP_LABEL = {
@@ -222,6 +240,8 @@ function updateNav(lesson, current, canRecap) {
     $('lsPrev').disabled = current === 0;
     $('lsNext').disabled = current === lesson.parts.length || (isCheck && !canRecap);
     $('lsNext').firstChild.textContent = isPassedCheck ? 'Към обобщението ' : 'Напред ';
+    // the parts plus the recap
+    $('lsCount').textContent = `Урок ${lesson.number} · ${current + 1}/${lesson.parts.length + 1}`;
 }
 
 /* ---------- map pane ---------- */

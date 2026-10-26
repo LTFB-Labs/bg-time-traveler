@@ -6,7 +6,7 @@ const fakeStorage = (initial) => {
     const data = { ...initial };
     return { getItem: (k) => data[k] ?? null, setItem: (k, v) => { data[k] = String(v); } };
 };
-const EMPTY = { passed: {}, cards: [], position: {}, pins: 'seal', today: false };
+const EMPTY = { passed: {}, cards: [], position: {}, pins: 'seal', today: false, bar: false };
 
 test('loadsDefaultsWhenEmpty', () => {
     assert.deepEqual(createStore(fakeStorage()).loadProgress(), EMPTY);
@@ -65,4 +65,18 @@ test('resetProgressKeepsTodaysBorders', () => {
     store.markCardOpened('troy');
     store.resetProgress();
     assert.deepEqual(store.loadProgress(), { ...EMPTY, today: true });
+});
+
+test('setBarRemembersTheHeaderBar', () => {
+    const store = createStore(fakeStorage());
+    store.setBar(true);
+    assert.equal(store.loadProgress().bar, true);
+});
+
+test('resetProgressKeepsTheHeaderBar', () => {
+    const store = createStore(fakeStorage());
+    store.setBar(true);
+    store.markCardOpened('troy');
+    store.resetProgress();
+    assert.deepEqual(store.loadProgress(), { ...EMPTY, bar: true });
 });
