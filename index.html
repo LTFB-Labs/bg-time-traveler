@@ -194,8 +194,8 @@ button{font-family:inherit;cursor:pointer}
 /* intro */
 #intro{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px;background:radial-gradient(ellipse at 50% 40%,#f8eed4 0,#efdfb6 60%,#e0c995 100%);transition:opacity .6s,transform .6s;text-align:center}
 #intro.leave{opacity:0;transform:scale(1.05);pointer-events:none}
-#intro .art{width:min(430px,78vw);max-height:52vh;aspect-ratio:1;animation:bob 3.2s ease-in-out infinite}
-#intro .art svg,#intro .art img{width:100%;height:100%;display:block}
+#intro .art{width:min(430px,78vw);max-height:52vh;aspect-ratio:1}
+#intro .art svg,#intro .art img{width:100%;height:100%;display:block;object-fit:contain}
 @keyframes bob{50%{transform:translateY(-8px) rotate(-1deg)}}
 #intro h1{font-family:var(--title);font-weight:400;font-size:clamp(34px,6vw,60px);margin:0;color:#5a2412;line-height:1;animation:rise .6s ease-out .3s both}
 #intro p{margin:0;max-width:34ch;font-weight:700;font-size:clamp(16px,2vw,19px);color:var(--ink2);animation:rise .6s ease-out .5s both}
@@ -349,7 +349,7 @@ a.btn{text-decoration:none}
 </main>
 
 <div id="intro">
-  <div class="art"><img src="traveler.svg" alt="Чудовището пътешественик във времето"></div>
+  <div class="art"><img src="img/mascot.webp" alt="Пухчето с очила чете книга"></div>
   <h1>Пътешествие във времето</h1>
   <div class="years">600 — днес</div>
   <p>Хвани ме и ме дърпай по линията на времето! Ще видим как се ражда България, кой я управлява и как се менят границите ѝ.</p>
