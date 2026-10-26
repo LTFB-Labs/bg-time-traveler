@@ -33,15 +33,13 @@
 .road .edge { stroke: #5b3a1c; stroke-width: 10; opacity: .85; }
 .road .stitch { stroke: #f0d9a2; stroke-width: 4; stroke-dasharray: 11 8; }
 
-/* a stop: a castle standing on the road; the ribbon carries its name, won stops show the lesson's picture and stars above */
+/* a stop: a castle in thin ink standing on the road; the ribbon carries its name, won stops show the lesson's picture and stars above */
 .stop { position: absolute; width: 0; height: 0; padding: 0; border: 0; background: none; font: inherit; color: inherit; }
-.stop .castle { position: absolute; left: -32px; top: -61px; width: 64px; height: 64px; overflow: visible; filter: drop-shadow(0 4px 3px rgba(40, 15, 5, .45)); transition: transform .25s cubic-bezier(.3, 1.6, .5, 1); transform-origin: 50% 100%; }
-.stop .castle .wall { fill: #e3cf9f; stroke: #6b4a26; stroke-width: 1.6; stroke-linejoin: round; }
-.stop .castle .gate { fill: #5b3a1c; }
-.stop .castle .shield { fill: #fbefd0; stroke: #6b4a26; stroke-width: 1.4; }
-.stop .castle .flag { fill: var(--c); stroke: #4a2e14; stroke-width: 1.2; stroke-linejoin: round; }
-.stop .face { position: absolute; left: -12px; top: -32px; width: 24px; height: 24px; display: grid; place-items: center; font-family: var(--title); font-size: 15px; color: #7a1e12; pointer-events: none; transition: transform .25s cubic-bezier(.3, 1.6, .5, 1); transform-origin: 50% 120%; }
-.stop .crown { width: 17px; height: 17px; fill: var(--gold2); }
+.stop .castle { position: absolute; left: -32px; top: -61px; width: 64px; height: 64px; overflow: visible; filter: drop-shadow(0 3px 2px rgba(40, 15, 5, .3)); transition: transform .25s cubic-bezier(.3, 1.6, .5, 1); transform-origin: 50% 100%; }
+.stop .castle path { stroke: #3d2610; stroke-width: 1.7; stroke-linejoin: miter; stroke-linecap: square; }
+.stop .castle .wall { fill: #f8eed6; }
+.stop .castle .line { fill: none; }
+.stop .castle .flag { fill: var(--c); stroke-width: 1.2; }
 .stop .ribbon { position: absolute; left: 36px; top: -56px; display: flex; flex-direction: column; gap: 1px; width: max-content; max-width: 190px; padding: 6px 18px 6px 12px; white-space: normal; text-align: left;
     background: #f3dca6; color: #4a3520; font-weight: 700; font-size: 12.5px; line-height: 1.2; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); box-shadow: inset 0 0 0 1px #c9a868; }
 .stop .ribbon b { font-family: var(--title); font-weight: 400; font-size: 15px; color: #7a1e12; }
@@ -52,11 +50,9 @@
 .stars i { width: 24px; height: 24px; }
 .stars i svg { width: 100%; height: 100%; fill: rgba(90, 60, 25, .3); }
 .stars i.on svg { fill: var(--gold); stroke: #8a5a1b; stroke-width: 1; filter: drop-shadow(0 1px 2px rgba(80, 50, 0, .45)); }
-/* a boss: a bigger, darker fortress with a crown on its shield */
+/* a boss: the big fortress with two towers and flags */
 .stop.boss .castle { left: -44px; top: -84px; width: 88px; height: 88px; }
-.stop.boss .castle .wall { fill: #b9a27a; stroke: #4a2e14; }
-.stop.boss .face { left: -15px; top: -42px; width: 30px; height: 30px; }
-.stop.boss .crown { width: 22px; height: 22px; }
+.stop.won .castle .wall { fill: #f3dca6; }
 .stop.boss .ribbon { top: -78px; left: 48px; }
 .stop.boss .pic { top: -168px; left: -40px; width: 80px; height: 80px; }
 .stop.boss .stars { top: -194px; }
@@ -64,18 +60,17 @@
 /* the stop to fight now: it calls for a click */
 .stop.open { cursor: pointer; }
 .stop.open::before { content: ""; position: absolute; left: -44px; top: -16px; width: 88px; height: 32px; border-radius: 50%; border: 3px solid var(--red); animation: questCall 1.6s ease-out infinite; pointer-events: none; }
-.stop.open .castle, .stop.open .face { animation: questBob 1.4s ease-in-out infinite; }
-.stop.open:hover .castle, .stop.open:hover .face, .stop.open:focus-visible .castle { transform: scale(1.15); animation: none; }
+.stop.open .castle { animation: questBob 1.4s ease-in-out infinite; }
+.stop.open:hover .castle, .stop.open:focus-visible .castle { transform: scale(1.15); animation: none; }
 .stop.open .ribbon { background: #fff3cf; box-shadow: inset 0 0 0 2px var(--red); }
 @keyframes questCall { from { opacity: .9; transform: scale(.5); } to { opacity: 0; transform: scale(1.6); } }
 @keyframes questBob { 50% { translate: 0 -6px; } }
 /* a stop that just opened after a win pops in */
-.stop.fresh .castle, .stop.fresh .face { animation: questFresh .7s cubic-bezier(.3, 1.6, .5, 1) both, questBob 1.4s ease-in-out .7s infinite; }
+.stop.fresh .castle { animation: questFresh .7s cubic-bezier(.3, 1.6, .5, 1) both, questBob 1.4s ease-in-out .7s infinite; }
 @keyframes questFresh { from { transform: scale(0); } }
 /* locked and not-yet-written stops wait in grey */
 .stop.locked .castle, .stop.soon .castle { filter: grayscale(1) brightness(1.05) drop-shadow(0 3px 3px rgba(40, 15, 5, .3)); }
 .stop.locked .ribbon, .stop.soon .ribbon { filter: grayscale(.8); opacity: .85; }
-.stop.locked .face, .stop.soon .face { color: #6b6156; }
 
 /* the fog of war: everything two stops past the front is under drifting cloud */
 .fog { position: absolute; top: 0; bottom: 0; right: 0; pointer-events: none; overflow: hidden;

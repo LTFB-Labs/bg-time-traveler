@@ -9,11 +9,22 @@ import { loadProgress, setQuestStars } from '../../code/store.js';
 
 const STEP = 210; // road length between two stops, in pixels
 const SECTION_HEAD = 350; // room for a section's picture and description before its first stop
-// a small castle: two towers and a keep with a flag; the stop's number sits on the round shield over the gate
-const CASTLE = '<svg class="castle" viewBox="0 0 48 48" aria-hidden="true"><path class="flag" d="M24 18V5h10l-3 3 3 3H24"/>'
-    + '<path class="wall" d="M3 46V14h3v-4h3v4h3v-4h3v36zM33 46V14h3v-4h3v4h3v-4h3v36zM14 46V21h3v-4h4v4h4v-4h4v4h4v25z"/>'
-    + '<path class="gate" d="M21 46v-5a3 3 0 0 1 6 0v5z"/><circle class="shield" cx="24" cy="31" r="6.5"/></svg>';
-const CROWN = '<svg class="crown" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h18l-1.6-10-4.9 4.2L12 5l-2.5 7.2L4.6 8z"/></svg>';
+// castles drawn as thin ink lines, like the icons of an old map; lessons take the four small ones in turn, a boss the big fortress.
+// .wall shapes are filled with paper so the road does not show through, .line strokes stay open, .flag takes the section's colour
+const svg = (body) => `<svg class="castle" viewBox="0 0 48 48" aria-hidden="true">${body}</svg>`;
+const CASTLES = [
+    // a tower with battlements, a window and a door
+    svg('<path class="wall" d="M14 46V18l-3-3V5h5v4h4V5h8v4h4V5h5v10l-3 3v28z"/><path class="line" d="M14 18h20M21.5 30v-4.5a2.5 2.5 0 0 1 5 0V30zM20 46v-6a4 4 0 0 1 8 0v6M8 46h32"/>'),
+    // a keep between two low walls
+    svg('<path class="wall" d="M6 46V22h3v3h3v-3h3v3h2v21zM31 46V25h2v-3h3v3h3v-3h3v24z"/><path class="wall" d="M17 46V15l-2-2V4h4v3h3V4h4v3h3V4h4v9l-2 2v31z"/><path class="line" d="M17 15h14M21.5 28v-4a2.5 2.5 0 0 1 5 0v4zM4 46h40"/>'),
+    // two towers with a gate between them
+    svg('<path class="wall" d="M19 46V27h2v-3h2v3h2v-3h2v3h2v19z"/><path class="wall" d="M6 46V18l-2-2V7h4v3h3V7h3v3h3V7h4v9l-2 2v28zM42 46V18l2-2V7h-4v3h-3V7h-3v3h-3V7h-4v9l2 2v28z"/><path class="line" d="M6 18h13M29 18h13M10.5 29v-3.5a2 2 0 0 1 4 0V29zM33.5 29v-3.5a2 2 0 0 1 4 0V29zM20.5 46v-6a3.5 3.5 0 0 1 7 0v6M3 46h42"/>'),
+    // a round tower with a pointed roof and a flag
+    svg('<path class="flag" d="M24 3h6l-1.8 1.6L30 6.2h-6z"/><path class="line" d="M24 10V3"/><path class="wall" d="M16 46V24h16v22z"/><path class="wall" d="M13 24h22L24 10z"/><path class="line" d="M21.5 36v-4.5a2.5 2.5 0 0 1 5 0V36zM10 46h28"/>'),
+];
+const FORTRESS = svg('<path class="flag" d="M11 3h5l-1.4 1.3L16 5.6h-5zM37 3h5l-1.4 1.3L42 5.6h-5z"/><path class="line" d="M11 9V3M37 9V3"/>'
+    + '<path class="wall" d="M17 46V30h2v-3h3v3h4v-3h3v3h2v16z"/><path class="wall" d="M5 46V22h12v24zM31 46V22h12v24z"/><path class="wall" d="M3 22h16L11 9zM29 22h16L37 9z"/>'
+    + '<path class="line" d="M9 35v-3.5a2 2 0 0 1 4 0V35zM35 35v-3.5a2 2 0 0 1 4 0V35zM20.5 46v-6a3.5 3.5 0 0 1 7 0v6M1 46h46"/>');
 const STAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6L12 17.2l-5.9 3.3 1.3-6.6-4.9-4.5 6.6-.8z"/></svg>';
 
 let root;
@@ -66,7 +77,7 @@ function draw(center, justWon) {
     land.style.width = `${width}px`;
     land.innerHTML = `${bands.map(bandHtml).join('')}
         <svg class="road" width="${width}" height="${H}" aria-hidden="true"><path class="edge" d="${roadPath(placed, H, width)}"/><path class="stitch" d="${roadPath(placed, H, width)}"/></svg>
-        ${placed.map(stopHtml).join('')}
+        ${placed.map((stop, i) => stopHtml(stop, i)).join('')}
         ${fogAt ? `<div class="fog" style="left:${fogAt.x - 150}px"><i></i><i></i><i></i></div>` : ''}`;
     const total = stops.reduce((sum, stop) => sum + stop.stars, 0);
     root.querySelector('.total').innerHTML = `${STAR}<b>${total}</b> от ${stops.length * 3}`;
@@ -101,9 +112,9 @@ function roadPath(stops, H, width) {
     return d;
 }
 
-function stopHtml(stop) {
+function stopHtml(stop, i) {
     const isBoss = stop.kind === 'boss';
-    const face = isBoss ? CROWN : `<span class="num">${stop.number}</span>`;
+    const castle = isBoss ? FORTRESS : CASTLES[i % CASTLES.length];
     const won = stop.state === 'won';
     const label = isBoss ? `<b>Бос</b><span>${esc(stop.title)}</span>` : `<b>Урок ${stop.number}</b><span>${esc(stop.title)}</span>`;
     const stars = won ? `<span class="stars">${[1, 2, 3].map((n) => `<i class="${n <= stop.stars ? 'on' : ''}">${STAR}</i>`).join('')}</span>` : '';
@@ -111,7 +122,7 @@ function stopHtml(stop) {
     const note = { open: 'Битка!', soon: 'Скоро', locked: '' }[stop.state] ?? '';
     const tag = stop.state === 'open' ? 'button' : 'div';
     return `<${tag} class="stop ${stop.state}${isBoss ? ' boss' : ''}${stop.isFog ? ' fogged' : ''}" data-id="${esc(stop.id)}" style="left:${stop.x}px;top:${stop.y}px;--c:${stop.color}"${tag === 'button' ? ' type="button"' : ''}>
-        ${stars}${picture}${CASTLE}<span class="face">${face}</span>
+        ${stars}${picture}${castle}
         <span class="ribbon">${label}${note ? `<em>${note}</em>` : ''}</span></${tag}>`;
 }
 
