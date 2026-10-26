@@ -48,6 +48,8 @@ body.lesson #lsMap { display: flex; }
 }
 #lsEra i { width: 12px; height: 12px; border-radius: 50%; background: #b08a4a; }
 
+/* the "Граници днес" button stands above the legend, and stays on phones, where the legend hides */
+#lsToday { align-self: flex-start; margin: 0 16px 8px calc(var(--gap) + 4px); }
 #lsLegend { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; margin: 0 16px 8px calc(var(--gap) + 4px); font-weight: 800; font-size: 12.5px; color: var(--ink2); }
 #lsLegend span {
     display: inline-flex;
@@ -378,6 +380,7 @@ body.lesson #compass { top: 12px; right: calc(var(--ls-w) + 2 * var(--gap) + 16p
     #lsYear { font-size: 36px; }
     #lsYear.span { font-size: 20px; }
     #lsLegend { display: none; }
+    #lsToday { height: 30px; padding: 0 10px; font-size: 12px; margin-bottom: 6px; }
     #lsTl { padding: 4px 12px 6px; }
     /* a phone keeps the map tall: the trail in the sheet already shows the stops */
     #lsTrack { height: 18px; margin-top: 4px; }

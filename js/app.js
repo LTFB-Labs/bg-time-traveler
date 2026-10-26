@@ -4,7 +4,10 @@ import { createMap } from './map.js';
 import { startAlbum } from './album.js';
 import { startFree } from './free.js';
 import { startLessonList } from './lesson-list.js';
-import { startOptions } from './options.js';
+import {
+    startOptions,
+    startTodayButtons,
+} from './options.js';
 import { loadProgress } from './store.js';
 import {
     showNoLesson,
@@ -13,6 +16,7 @@ import {
 
 startOptions();
 const map = createMap(document.getElementById('map'), document.getElementById('ov'));
+startTodayButtons(map);
 const route = location.hash.match(/^#lesson\/([^/]*)\/?(\d*)/);
 const freeRoute = location.hash.match(/^#free\/(.+)$/);
 // the pages over the map: the body class that hides the free map's furniture, and what draws the page

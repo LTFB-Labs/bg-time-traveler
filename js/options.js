@@ -1,10 +1,12 @@
 // The options menu: the look of the map's markers, a small wax seal or a shield with a name ribbon, kept with the progress; and delete progress.
 // The menu is a native popover; the gear buttons open it and a click outside or Escape closes it.
+// Beside it, the "Граници днес" buttons, also kept with the progress.
 import { icon } from './map.js';
 import {
     loadProgress,
     resetProgress,
     setPins,
+    setToday,
 } from './store.js';
 
 export function startOptions() {
@@ -43,4 +45,19 @@ function startReset(menu, button) {
 
 function showPins(look) {
     document.getElementById('ov').dataset.pins = look;
+}
+
+// one button in the free map's row and one on a lesson's map; each shows and hides today's Bulgaria, and both show the same state
+export function startTodayButtons(map) {
+    const buttons = document.querySelectorAll('.today-btn');
+    const show = (isShown) => {
+        map.showToday(isShown);
+        buttons.forEach((b) => b.setAttribute('aria-pressed', String(isShown)));
+    };
+    show(loadProgress().today);
+    buttons.forEach((b) => b.addEventListener('click', () => {
+        const isShown = b.getAttribute('aria-pressed') !== 'true';
+        setToday(isShown);
+        show(isShown);
+    }));
 }
