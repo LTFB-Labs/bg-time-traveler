@@ -67,7 +67,7 @@ body.lesson #map.grabbing { cursor: grabbing; }
 }
 #lsEra i { width: 12px; height: 12px; border-radius: 50%; background: #b08a4a; }
 /* the AI teacher's slot in the top left corner, under the legend; asleep the orb sits at its top, awake lower down */
-#lsDock { position: absolute; left: 8px; top: 40px; width: 80px; height: 200px; }
+#lsDock { position: absolute; left: 8px; top: 40px; width: 80px; height: 250px; }
 
 /* a small back arrow in the top left corner, the legend's pills right of it */
 #lsBack { position: absolute; left: 8px; top: 8px; width: 23px; height: 23px; pointer-events: auto; }

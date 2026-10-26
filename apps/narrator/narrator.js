@@ -309,7 +309,7 @@ const start = (app) => {
     if (custom && mode !== "dormant") { x = custom.x * innerWidth - size / 2; y = custom.y * innerHeight - size / 2; }
     // at the slot's left edge; asleep at its top, awake lower down, so the teacher standing over the orb has room above it
     // awake it steps a little right, so the teacher standing over it stays on screen
-    else { const d = app.dock(); x = mode === "dormant" ? d.left : d.left + 42; y = mode === "dormant" ? d.top + 4 : d.bottom - size - 8; }
+    else { const d = app.dock(); x = mode === "dormant" ? d.left : d.left + 78; y = mode === "dormant" ? d.top + 4 : d.bottom - size - 8; }
     x = Math.max(8, Math.min(innerWidth - size - 8, x)); y = Math.max(8, Math.min(innerHeight - size - 8, y));
     orb.style.left = Math.round(x) + "px"; orb.style.top = Math.round(y) + "px";
     orb.dataset.side = x + size / 2 > innerWidth / 2 ? "left" : "right"; // the hover question opens toward the middle
