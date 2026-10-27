@@ -3,8 +3,8 @@ const KEY = 'bgtt';
 
 // pins: the look of the map's markers, picked in the options menu; today: whether the map shows today's Bulgaria;
 // bar: whether a lesson's header bar (grade, number, Уроци, gear, trail) is open; quest: the best stars (1–3) won at each Quest stop;
-// last: the lesson opened last, where a bare visit to the app goes back to
-const defaults = () => ({ passed: {}, cards: [], position: {}, pins: 'seal', today: false, bar: false, quest: {}, last: null });
+// last: the lesson opened last, where a bare visit to the app goes back to; blur: the blur on the lesson map's edges, on or off and its size in px
+const defaults = () => ({ passed: {}, cards: [], position: {}, pins: 'seal', today: false, bar: false, quest: {}, last: null, blur: { on: true, px: 1.5 } });
 
 export function createStore(storage) {
     const loadProgress = () => {
@@ -36,12 +36,13 @@ export function createStore(storage) {
         setPins: (look) => update((p) => { p.pins = look; }),
         setToday: (isShown) => update((p) => { p.today = isShown; }),
         setBar: (isOpen) => update((p) => { p.bar = isOpen; }),
+        setBlur: (blur) => update((p) => { p.blur = { ...p.blur, ...blur }; }),
         // a stop keeps its best result: winning again with fewer stars takes nothing away
         setQuestStars: (id, stars) => update((p) => { p.quest[id] = Math.max(p.quest[id] ?? 0, stars); }),
-        // everything the child did goes; the marker look, today's borders and the header bar are settings, so they stay
+        // everything the child did goes; the marker look, today's borders, the header bar and the blur are settings, so they stay
         resetProgress: () => {
-            const { pins, today, bar } = loadProgress();
-            saveProgress({ ...defaults(), pins, today, bar });
+            const { pins, today, bar, blur } = loadProgress();
+            saveProgress({ ...defaults(), pins, today, bar, blur });
         },
     };
 }
@@ -62,6 +63,7 @@ export const {
     setPins,
     setToday,
     setBar,
+    setBlur,
     setQuestStars,
     resetProgress,
 } = createStore(lazyStorage);

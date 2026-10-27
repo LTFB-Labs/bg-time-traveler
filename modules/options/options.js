@@ -1,10 +1,12 @@
 // The options menu: the look of the map's markers, a small wax seal or a shield with a name ribbon, kept with the progress; and delete progress.
+// The developer tab holds the blur on the lesson map's edges: on or off, and its size. The tabs are radios; the CSS shows the chosen pane.
 // The menu is a native popover; the gear buttons open it and a click outside or Escape closes it.
 // Beside it, the "Граници днес" buttons, also kept with the progress.
 import { icon } from '../../code/map/map.js';
 import {
     loadProgress,
     resetProgress,
+    setBlur,
     setPins,
     setToday,
 } from '../../code/store.js';
@@ -16,10 +18,33 @@ export function startOptions() {
     menu.querySelector(`input[value="${pins}"]`).checked = true;
     showPins(pins);
     menu.addEventListener('change', (e) => {
+        if (e.target.name !== 'pins') return;
         setPins(e.target.value);
         showPins(e.target.value);
     });
     startReset(menu, document.getElementById('reset'));
+    startBlur(menu);
+}
+
+// the blur layer is #lsFog; off hides it, the size goes into its --blur (modules/lesson/lesson.css)
+function startBlur(menu) {
+    const fog = document.getElementById('lsFog');
+    const isOn = menu.querySelector('#blurOn');
+    const px = menu.querySelector('#blurPx');
+    const show = () => {
+        fog.hidden = !isOn.checked;
+        fog.style.setProperty('--blur', `${px.value}px`);
+        menu.querySelector('#blurOut').value = px.value;
+    };
+    const { blur } = loadProgress();
+    isOn.checked = blur.on;
+    px.value = blur.px;
+    show();
+    menu.addEventListener('input', (e) => {
+        if (e.target !== isOn && e.target !== px) return;
+        setBlur({ on: isOn.checked, px: Number(px.value) });
+        show();
+    });
 }
 
 // no browser dialog: the first click asks on the button itself, the second deletes and reloads, so every screen reads the empty progress

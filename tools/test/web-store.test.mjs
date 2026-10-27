@@ -6,7 +6,7 @@ const fakeStorage = (initial) => {
     const data = { ...initial };
     return { getItem: (k) => data[k] ?? null, setItem: (k, v) => { data[k] = String(v); } };
 };
-const EMPTY = { passed: {}, cards: [], position: {}, pins: 'seal', today: false, bar: false, quest: {}, last: null };
+const EMPTY = { passed: {}, cards: [], position: {}, pins: 'seal', today: false, bar: false, quest: {}, last: null, blur: { on: true, px: 1.5 } };
 
 test('loadsDefaultsWhenEmpty', () => {
     assert.deepEqual(createStore(fakeStorage()).loadProgress(), EMPTY);
@@ -98,4 +98,14 @@ test('theLastLessonIsRememberedAndGoesWithTheProgress', () => {
     assert.equal(store.loadProgress().last, '5-b');
     store.resetProgress();
     assert.equal(store.loadProgress().last, null);
+});
+
+test('setBlurChangesOnlyWhatIsGivenAndStays', () => {
+    const store = createStore(fakeStorage());
+    store.setBlur({ px: 3 });
+    store.setBlur({ on: false });
+    assert.deepEqual(store.loadProgress().blur, { on: false, px: 3 });
+    store.markCardOpened('troy');
+    store.resetProgress();
+    assert.deepEqual(store.loadProgress(), { ...EMPTY, blur: { on: false, px: 3 } });
 });

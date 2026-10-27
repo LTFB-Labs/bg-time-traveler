@@ -19,8 +19,9 @@ body.lesson :is(#lsFog, #lsFogTint) {
 }
 /* with the sheet slid away (the AI teacher talks) the fog rings the whole window */
 body.lesson.teacher-on :is(#lsFog, #lsFogTint) { --pane: 100%; }
-/* the fog itself softens and quiets the map; the tint over it warms it like old paper, multiplied into the map's own colours */
-body.lesson #lsFog { backdrop-filter: blur(1.5px) saturate(.8) contrast(.94); -webkit-backdrop-filter: blur(1.5px) saturate(.8) contrast(.94); }
+/* the fog itself softens and quiets the map; the tint over it warms it like old paper, multiplied into the map's own colours.
+   --blur and the hidden attribute come from the developer tab of the settings (modules/options/options.js) */
+body.lesson #lsFog { backdrop-filter: blur(var(--blur, 1.5px)) saturate(.8) contrast(.94); -webkit-backdrop-filter: blur(var(--blur, 1.5px)) saturate(.8) contrast(.94); }
 body.lesson #lsFogTint { background: #dcc596; mix-blend-mode: multiply; opacity: .4; }
 @media (max-width: 820px) { body.lesson :is(#lsFog, #lsFogTint) { display: none; } }
 

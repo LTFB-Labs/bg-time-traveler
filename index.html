@@ -70,9 +70,19 @@ button{font-family:inherit;cursor:pointer}
 /* options: the gear buttons and the menu they open */
 .btn.opt{width:36px;height:36px;padding:0;border-radius:50%;pointer-events:auto;box-shadow:0 1px 4px rgba(60,40,15,.15)}
 .btn.opt svg{width:20px;height:20px}
-#options{max-width:calc(100vw - 24px);border:1px solid #b89a63;border-radius:16px;padding:18px 20px 20px;background:var(--card);color:var(--ink);font-family:var(--font);box-shadow:var(--shadow)}
+#options{width:min(680px,100vw - 24px);box-sizing:border-box;border:1px solid #b89a63;border-radius:16px;padding:18px 20px 20px;background:var(--card);color:var(--ink);font-family:var(--font);box-shadow:var(--shadow)}
 #options::backdrop{background:rgba(40,25,10,.25)}
-#options h2{margin:0 0 12px;font-family:var(--title);font-weight:400;font-size:26px;color:#5a2412}
+#options:popover-open{display:grid;grid-template-columns:170px 1fr;gap:0 18px}
+#options h2{grid-column:1/-1;margin:0 0 12px;font-family:var(--title);font-weight:400;font-size:26px;color:#5a2412}
+/* the tabs: a list down the left side, like the macOS settings; the radios are the tabs and CSS shows the chosen pane */
+#options .tabs{display:flex;flex-direction:column;gap:4px;padding-right:18px;border-right:1px solid var(--line)}
+#options .tab{padding:7px 10px;border:0;border-radius:8px;font-weight:800;font-size:14px}
+#options .tab input{position:absolute;width:0;height:0;opacity:0}
+#options .tab:has(:checked){background:var(--red);color:#fff}
+#options .tab:has(:focus-visible){outline:2px solid var(--red);outline-offset:2px}
+#options .pane{display:none}
+#options:has([name=tab][value=general]:checked) [data-tab=general],#options:has([name=tab][value=dev]:checked) [data-tab=dev]{display:block}
+#options input[type=range]{flex:1;min-width:120px}
 #options fieldset{display:grid;gap:8px;margin:0;padding:0;border:0}
 #options legend{margin-bottom:8px;padding:0;font-weight:800;font-size:14px;color:var(--ink2)}
 #options label{display:flex;align-items:center;gap:12px;padding:8px 14px 8px 10px;border:2px solid var(--line);border-radius:12px;cursor:pointer}
@@ -200,12 +210,25 @@ a.btn{text-decoration:none}
 <!-- the options menu; js/options.js fills the previews' icons and keeps the choice -->
 <div id="options" popover>
   <h2>Настройки</h2>
-  <fieldset>
-    <legend>Знаци на картата</legend>
-    <label><input type="radio" name="pins" value="seal"><span class="pv" data-pins="seal"><span class="mk seen" aria-label="Перперикон"></span></span><span><b>Печат</b><small>Малък. Името се появява, щом отвориш картичката.</small></span></label>
-    <label><input type="radio" name="pins" value="banner"><span class="pv" data-pins="banner"><span class="mk" aria-label="Перперикон"></span></span><span><b>Щит с име</b><small>Името винаги е на лента до щита.</small></span></label>
-  </fieldset>
-  <button class="btn" id="reset" type="button">Изтрий напредъка</button>
+  <nav class="tabs" aria-label="Раздели">
+    <label class="tab"><input type="radio" name="tab" value="general" checked>Общи</label>
+    <label class="tab"><input type="radio" name="tab" value="dev">За разработчици</label>
+  </nav>
+  <section class="pane" data-tab="general">
+    <fieldset>
+      <legend>Знаци на картата</legend>
+      <label><input type="radio" name="pins" value="seal"><span class="pv" data-pins="seal"><span class="mk seen" aria-label="Перперикон"></span></span><span><b>Печат</b><small>Малък. Името се появява, щом отвориш картичката.</small></span></label>
+      <label><input type="radio" name="pins" value="banner"><span class="pv" data-pins="banner"><span class="mk" aria-label="Перперикон"></span></span><span><b>Щит с име</b><small>Името винаги е на лента до щита.</small></span></label>
+    </fieldset>
+    <button class="btn" id="reset" type="button">Изтрий напредъка</button>
+  </section>
+  <section class="pane" data-tab="dev">
+    <fieldset>
+      <legend>Мъгла по краищата на картата</legend>
+      <label><input type="checkbox" id="blurOn"><span><b>Замъгляване</b><small>Размива картата под мъглата по краищата.</small></span></label>
+      <label><span><b>Сила</b><small><output for="blurPx" id="blurOut"></output> px</small></span><input type="range" id="blurPx" min="0" max="6" step="0.5" aria-label="Сила на замъгляването"></label>
+    </fieldset>
+  </section>
 </div>
 
 <!-- the lesson hall at #lessons; modules/lesson/lesson-list.js fills the cards -->
