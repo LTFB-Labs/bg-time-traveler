@@ -647,7 +647,7 @@ body.lesson.teacher-on #lesson { transform: translateX(calc(100% + var(--gap) + 
 #lessonList .shelf.dragging { cursor: grabbing; scroll-snap-type: none; }
 #lessonList .lcard { flex: none; width: clamp(240px, 24vw, 320px); height: min(72vh, 560px); scroll-snap-align: start; }
 #lessonList .face {
-    position: relative; display: flex; flex-direction: column; height: 100%; overflow: hidden; border-radius: 16px; color: inherit; text-decoration: none;
+    position: relative; isolation: isolate; display: flex; flex-direction: column; height: 100%; overflow: hidden; border-radius: 16px; color: inherit; text-decoration: none;
     background: var(--card); border: 1px solid #b89a63;
     box-shadow: inset 0 0 0 6px var(--card), inset 0 0 0 7px #d5bd8c, 0 14px 30px rgba(60, 40, 15, .25), 0 3px 8px rgba(60, 40, 15, .15);
     transition: transform .2s, box-shadow .2s;

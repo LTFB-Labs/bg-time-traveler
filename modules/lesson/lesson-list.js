@@ -166,5 +166,6 @@ function wireScroll(root, shelf) {
         root.querySelector('.nav.next').disabled = shelf.scrollLeft + shelf.clientWidth > shelf.scrollWidth - 4;
     };
     shelf.addEventListener('scroll', edges, { passive: true });
+    addEventListener('resize', edges);
     edges();
 }
