@@ -457,17 +457,122 @@ body.lesson #compass { z-index: 1; top: auto; right: auto; left: 10px; bottom: 1
 #lsBody p b.term { cursor: pointer; border-bottom: 2px dotted #c8402f; padding: 0 2px; border-radius: 4px; transition: background .15s; }
 #lsBody p b.term:hover { background: #f6dfc9; }
 #lsBody p b.term::after { content: ' ⓘ'; font-size: .7em; vertical-align: super; color: #b9832a; }
-#lsPop { position: absolute; left: 14px; right: 14px; bottom: 90px; z-index: 6; background: #fff8e8; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 16px 40px rgba(60, 40, 15, .35); max-height: 68%; overflow: auto; animation: fadein .3s ease-out; }
+/* the card is a postcard over the dimmed screen: the photo on the left, the writing on the right (modules/cards/cards.js) */
+#lsPop { position: fixed; inset: 0; z-index: 30; display: grid; place-items: center; padding: 24px; background: rgba(30, 20, 10, .7); animation: fadein .25s ease-out; }
 #lsPop[hidden] { display: none; }
-#lsPop .pic { position: relative; }
-#lsPop .ph { margin: 0; border-radius: 18px 18px 0 0; }
-#lsPop .pb { padding: 14px 18px 16px; }
-#lsPop h3 { font-family: var(--title); font-weight: 400; font-size: 22px; margin: 0 0 6px; color: #3f230f; }
-#lsPop .dates { font-size: 13px; font-weight: 800; color: #7a4f1a; margin-bottom: 8px; }
-#lsPop p { margin: 0 0 8px; font-size: 15px; line-height: 1.5; font-weight: 600; color: #4b3722; }
-#lsPop p:last-child { margin: 0; }
-#lsPop .x { position: absolute; right: 10px; top: 10px; z-index: 1; width: 32px; height: 32px; border-radius: 50%; border: 0; background: rgba(255, 255, 255, .9); color: #5b3d17; font-weight: 900; font-size: 18px; box-shadow: 0 2px 6px rgba(0, 0, 0, .25); cursor: pointer; }
-#lsPop .kind { display: inline-block; font-size: 11.5px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; color: #b9832a; margin-bottom: 4px; }
+/* --half: one half of the postcard; each half stays exactly half, whatever is in it */
+#lsPop .pc {
+    --half: calc(min(940px, 100vw - 48px) / 2);
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    width: min(940px, 100%);
+    height: min(650px, 100%);
+    color: #4b3722;
+    filter: drop-shadow(0 18px 30px rgba(0, 0, 0, .45));
+}
+/* the paper is a photo of an old folded sheet (img/postcard-paper.webp), stretched to the postcard; its fold runs between the photo and the writing */
+#lsPop .pc::before { content: ''; position: absolute; z-index: -1; inset: 0; background: url('../../img/postcard-paper.webp') 0 0 / 100% 100% no-repeat; }
+#lsPop .x { position: absolute; z-index: 5; right: -16px; top: -16px; width: 38px; height: 38px; border-radius: 50%; border: 0; background: #fffaf0; color: #5b3d17; font-weight: 900; font-size: 20px; box-shadow: 0 2px 8px rgba(0, 0, 0, .35); cursor: pointer; }
+
+/* the photo side: the photo as a taped print, its handwritten caption and its credit */
+#lsPop .pp { position: relative; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 34px 24px 18px 30px; }
+#lsPop .print { position: relative; padding: 9px; background: #fffdf7; box-shadow: 0 6px 14px rgba(60, 40, 15, .28), 0 1px 3px rgba(60, 40, 15, .2); transform: rotate(-1.5deg); cursor: zoom-in; transition: transform .3s ease, box-shadow .3s ease; }
+#lsPop .print img { display: block; max-width: min(380px, var(--half) - 72px); max-height: min(420px, calc(100vh - 300px)); }
+/* a hover, or a click or tap, lifts the photo off the card and enlarges it over the writing; the hover counts only once the mouse
+   has moved (.moved), since a postcard opened from a seal often opens with its photo under the still mouse */
+#lsPop .print.big { z-index: 3; transform: scale(1.6); box-shadow: 0 24px 60px rgba(0, 0, 0, .55); cursor: zoom-out; }
+@media (hover: hover) { #lsPop.moved .print:hover { z-index: 3; transform: scale(1.6); box-shadow: 0 24px 60px rgba(0, 0, 0, .55); } }
+#lsPop .tape { position: absolute; z-index: 1; left: 50%; top: -12px; width: 90px; height: 24px; margin-left: -45px; background: rgba(233, 217, 176, .85); box-shadow: 0 1px 2px rgba(60, 40, 15, .15); transform: rotate(-4deg); }
+#lsPop .cap { font: 700 30px/1 'Caveat', cursive; color: #2b3f6b; text-align: center; }
+#lsPop .cr { max-width: 380px; font-size: 10.5px; color: #8a7458; text-align: center; overflow-wrap: anywhere; }
+#lsPop .cr a { color: inherit; }
+#lsPop .emblem { width: 220px; height: 220px; display: grid; place-items: center; border-radius: 50%; background: radial-gradient(circle at 38% 32%, #f1d58e, #c99a45 70%, #a8782c); box-shadow: inset 0 0 0 6px rgba(255, 245, 220, .45), 0 6px 16px rgba(60, 40, 15, .3); color: #5a3517; }
+#lsPop .emblem svg { width: 110px; height: 110px; }
+/* a card with no photo shows its place on the game's map instead, as a taped print in the big map's colours */
+#lsPop .atlas { position: relative; box-sizing: content-box; width: min(400px, var(--half) - 74px); aspect-ratio: 4 / 3; border: 10px solid #fffdf7; box-shadow: 0 6px 14px rgba(60, 40, 15, .28), 0 1px 3px rgba(60, 40, 15, .2); transform: rotate(-1.5deg); }
+#lsPop .atlas svg { display: block; width: 100%; height: 100%; }
+#lsPop .atlas .sea { fill: var(--sea); }
+#lsPop .atlas .land { fill: var(--paper); }
+#lsPop .atlas :is(.riv, .dan, .now, .coast) { fill: none; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-linejoin: round; }
+#lsPop .atlas .riv { stroke: #5c8fa3; stroke-width: .7; stroke-opacity: .7; }
+#lsPop .atlas .dan { stroke: #3f7f9c; stroke-width: 2.2; }
+#lsPop .atlas .now { stroke: #5a1d12; stroke-width: 1.3; stroke-dasharray: 4 3; stroke-opacity: .7; }
+#lsPop .atlas .coast { stroke: #5b4a33; stroke-width: .8; stroke-opacity: .8; }
+#lsPop .atlas .seal { width: 22px; height: 22px; margin: -11px 0 0 -11px; }
+
+/* the writing side: the stamp and the postmark in its corner, the handwritten title and the text */
+#lsPop .tp { position: relative; container-type: inline-size; min-height: 0; display: flex; flex-direction: column; padding: 26px 32px 22px 44px; }
+/* the title shrinks from --biggest until its longest word (--letters, from cards.js) fits in the room left beside the postmark (--beside);
+   a letter is up to about .42em wide */
+#lsPop h3 {
+    --beside: 214px;
+    --biggest: 44px;
+    min-height: 124px;
+    margin: 10px var(--beside) 0 0;
+    font: 700 clamp(22px, (100cqw - var(--beside)) / (var(--letters, 10) * .42), var(--biggest))/.95 'Caveat', cursive;
+    color: #2b3f6b;
+}
+#lsPop .body { flex: 1; min-height: 0; overflow: auto; margin-top: 14px; font-size: 15px; font-weight: 600; line-height: 23px; }
+#lsPop .body p { margin: 0 0 12px; }
+#lsPop .body p:last-child { margin: 0; }
+#lsPop .post { position: absolute; top: 18px; right: 28px; width: 206px; height: 160px; pointer-events: none; }
+#lsPop .stamp-w { position: absolute; right: 0; top: 0; filter: drop-shadow(0 1px 1.5px rgba(60, 40, 15, .4)); transform: rotate(3deg); }
+/* the stamp's perforated edge: a solid middle, and a row of round holes all around it */
+#lsPop .stamp {
+    width: 80px;
+    height: 96px;
+    padding: 7px;
+    background: #fffdf6;
+    -webkit-mask: linear-gradient(#000 0 0) center / calc(100% - 8px) calc(100% - 8px) no-repeat, radial-gradient(circle, #0000 2.2px, #000 2.6px) -4px -4px / 8px 8px round;
+    mask: linear-gradient(#000 0 0) center / calc(100% - 8px) calc(100% - 8px) no-repeat, radial-gradient(circle, #0000 2.2px, #000 2.6px) -4px -4px / 8px 8px round;
+}
+#lsPop .stamp .sf { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; background: linear-gradient(160deg, #c2533c, #8f2a19); color: #fbecd0; }
+#lsPop .stamp svg { width: 36px; height: 36px; }
+#lsPop .stamp span { font-size: 9px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+#lsPop .waves { position: absolute; right: -6px; top: 50px; width: 96px; fill: none; stroke: rgba(43, 63, 107, .55); stroke-width: 2; transform: rotate(-8deg); }
+/* the postmark: the card's time around its ring and the card's place in its middle */
+#lsPop .pm { position: absolute; left: 0; top: 20px; width: 136px; height: 136px; transform: rotate(-10deg); color: rgba(43, 63, 107, .8); mix-blend-mode: multiply; }
+#lsPop .pm > svg { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2; }
+#lsPop .pm text { fill: currentColor; stroke: none; font-family: var(--font); font-weight: 900; letter-spacing: .12em; }
+#lsPop .pm b { position: absolute; inset: 0; display: grid; place-items: center; font-size: 18px; }
+/* the map inside the inner ring, printed in the postmark's ink: the land, the coast, the Danube and today's Bulgaria; only the seal is red */
+#lsPop .mini { position: absolute; inset: 19%; overflow: hidden; border-radius: 50%; }
+#lsPop .mini svg { display: block; width: 100%; height: 100%; }
+#lsPop .mini .sea { fill: none; }
+#lsPop .mini .land { fill: rgba(43, 63, 107, .14); }
+#lsPop .mini :is(.dan, .now, .coast) { fill: none; stroke: currentColor; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+#lsPop .mini .coast { stroke-width: .9; }
+#lsPop .mini .dan { stroke-width: 1.5; }
+#lsPop .mini .now { stroke-width: 1; stroke-dasharray: 2.5 2; }
+/* the red seal on the card's place, on either map */
+#lsPop .seal { position: absolute; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 48% 52% 46% 54% / 53% 47% 53% 47%; background: radial-gradient(circle at 36% 30%, #e0644c 0, #b3321f 40%, #7f1d10 100%); box-shadow: 0 1px 2px rgba(50, 20, 5, .5); }
+
+/* narrow windows, like an upright tablet: a smaller stamp and postmark leave the title more room */
+@media (max-width: 900px) {
+    #lsPop .post { transform: scale(.8); transform-origin: top right; }
+    #lsPop h3 { --beside: 172px; }
+}
+
+/* phones: the photo on the top half and the writing on the bottom half, on the paper turned so its fold runs across between them */
+@media (max-width: 820px) {
+    #lsPop { padding: 20px 14px; }
+    #lsPop .pc { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); height: 100%; }
+    #lsPop .pc::before { background-image: url('../../img/postcard-paper-tall.webp'); }
+    #lsPop .x { right: -8px; top: -14px; }
+    #lsPop .pp { padding: 26px 16px 8px; }
+    #lsPop .print img { max-width: min(300px, calc(100vw - 90px)); max-height: min(196px, 24vh); }
+    #lsPop .print.big { transform: scale(1.18); }
+    #lsPop .cap { font-size: 24px; }
+    #lsPop .cr { font-size: 9.5px; }
+    #lsPop .emblem { width: 150px; height: 150px; }
+    #lsPop .emblem svg { width: 76px; height: 76px; }
+    #lsPop .atlas { width: min(280px, calc(100vw - 110px)); border-width: 7px; }
+    #lsPop .tp { padding: 10px 18px 16px 30px; }
+    #lsPop .post { transform: scale(.7); transform-origin: top right; top: 4px; right: 8px; }
+    #lsPop h3 { --beside: 150px; --biggest: 34px; min-height: 92px; }
+    #lsPop .body { font-size: 14.5px; line-height: 21px; }
+}
 
 /* ---------- prediction block ---------- */
 #lsBody .held { display: none; }

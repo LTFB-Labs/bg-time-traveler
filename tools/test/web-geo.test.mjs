@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { boxToViewBox, clampViewBox, clampViewInPane, haversineKm, letterSpots, pathPoints } from '../../code/map/geo.js';
+import { boxToViewBox, clampViewBox, clampViewInPane, haversineKm, letterSpots, pathPoints, windowAround } from '../../code/map/geo.js';
 
 const P = (lon, lat) => [lon * 10, (50 - lat) * 10];
 
@@ -55,6 +55,18 @@ test('clampViewInPaneMeasuresWidthInThePane', () => {
     assert.ok(Math.abs(close.h / close.w - 10.8 / 5) < 1e-9);
     const far = clampViewInPane({ x: 0, y: 0, w: 2000, h: 4328 }, { ...phone, ...paneLimits });
     assert.ok(Math.abs(paneWidth(far) - 400) < 1e-9, `got ${paneWidth(far)}`);
+});
+
+test('windowAroundCentresThePlace', () => {
+    const { vb, at } = windowAround([200, 150], { span: 100, aspect: 2 }, { W: 400, H: 300 });
+    assert.deepEqual(vb, { x: 150, y: 125, w: 100, h: 50 });
+    assert.deepEqual(at, [.5, .5]);
+});
+
+test('windowAroundStaysInsideTheWorldNearItsEdge', () => {
+    const { vb, at } = windowAround([10, 290], { span: 100, aspect: 2 }, { W: 400, H: 300 });
+    assert.deepEqual(vb, { x: 0, y: 250, w: 100, h: 50 });
+    assert.deepEqual(at, [.1, .8]);
 });
 
 test('pathPointsReadsCorners', () => {

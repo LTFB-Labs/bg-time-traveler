@@ -28,6 +28,14 @@ export function clampViewBox(vb, { minW, maxW, world: { W, H } }) {
     return { x: clamp(vb.x, 0, W - w), y: clamp(vb.y, 0, H - h), w, h };
 }
 
+// A small map's view: span map units wide, centred on the point [x, y] and kept inside the world.
+// at: where the point falls in it, as fractions of its width and height.
+export function windowAround([x, y], { span, aspect }, world) {
+    const h = span / aspect;
+    const vb = clampViewBox({ x: x - span / 2, y: y - h / 2, w: span, h }, { minW: span, maxW: span, world });
+    return { vb, at: [(x - vb.x) / vb.w, (y - vb.y) / vb.h] };
+}
+
 // The window view is wider than what the kid sees: the limits apply to the part of it inside the pane, a rect in window pixels.
 export function clampViewInPane(vb, { pane, screenW, ...limits }) {
     const s = vb.w / screenW;
