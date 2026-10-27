@@ -10,6 +10,18 @@ questions:
     answer: "десетте каменни жени"
     wrong: ["златната маска", "бронзовата глава на царя"]
     quote: "Най-прочутото в гробницата са десетте каменни жени."
+photo: sveshtari-caryatids
+media:
+  images:
+    - id: sveshtari-caryatids
+      file: images/sveshtari-caryatids.jpg
+      caption: Каменните жени в Свещарската гробница
+      commons: Sveshtari Thracian Тomb.jpg
+      author: Николай Генов
+      license: CC BY 3.0
+      source: https://commons.wikimedia.org/wiki/File:Sveshtari_Thracian_Тomb.jpg
+      width: 663
+      height: 900
 ---
 Свещарската гробница е близо до село Свещари, край град Исперих. Тя е построена в началото на III век пр.Хр. за гетски владетел и съпругата му. Открита е през 1982 г. Вътре има три стаи с каменни врати. От 1985 г. тя е в списъка на световното наследство на ЮНЕСКО. Гробницата е под голяма могила.
 

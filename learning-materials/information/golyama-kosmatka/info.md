@@ -2,7 +2,7 @@
 id: golyama-kosmatka
 kind: place
 title: Голяма Косматка
-at: [25.33, 42.7]
+at: [ 25.33, 42.7 ]
 photo: seuthes-iii-head
 aliases: [Голяма Косматка]
 questions:
@@ -10,6 +10,17 @@ questions:
     answer: "Севт III"
     wrong: ["Терес", "Ситалк"]
     quote: "Вътре той открива гробницата на цар Севт III."
+media:
+  images:
+    - id: kosmatka-mound
+      file: images/kosmatka-mound.jpg
+      caption: Входът на могилата Голяма Косматка
+      commons: The Thracian tomb Goliama Kosmatka, Bulgaria 01.jpg
+      author: Vladislav Nedelev
+      license: CC BY 4.0
+      source: https://commons.wikimedia.org/wiki/File:The_Thracian_tomb_Goliama_Kosmatka,_Bulgaria_01.jpg
+      width: 900
+      height: 600
 ---
 Голяма Косматка е голяма могила край град Шипка. Тя е висока около 20 метра. През 2004 г. археологът Георги Китов я разкопава. Вътре той открива гробницата на цар Севт III. Гробницата има коридор и три стаи. Последната е издълбана в един огромен каменен блок. Той тежи около 60 тона, колкото десет слона.
 

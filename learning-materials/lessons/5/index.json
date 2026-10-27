@@ -1,1 +1,4 @@
-[{ "id": "5-odrisko-tsarstvo", "file": "odrisko-tsarstvo.md", "state": "ready" }]
+[
+    { "id": "5-odrisko-tsarstvo", "file": "odrisko-tsarstvo.md", "state": "ready" },
+    { "id": "5-svetat-na-trakite", "file": "svetat-na-trakite.md", "state": "ready" }
+]

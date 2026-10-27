@@ -9,6 +9,18 @@ questions:
     answer: "лира"
     wrong: ["гайда", "барабан"]
     quote: "Той живее в Родопите и свири на лира."
+photo: orpheus-vase
+media:
+  images:
+    - id: orpheus-vase
+      file: images/orpheus-vase.jpg
+      caption: Орфей сред траките, гръцка ваза
+      commons: Terracotta bell-krater (bowl for mixing wine and water) MET DT5486.jpg
+      author: Creator:Painter of London E 497
+      license: CC0
+      source: https://commons.wikimedia.org/wiki/File:Terracotta_bell-krater_(bowl_for_mixing_wine_and_water)_MET_DT5486.jpg
+      width: 900
+      height: 720
 ---
 Според мита Орфей е син на тракийски цар и на музата Калиопа. Той живее в Родопите и свири на лира. Когато свири, реките спират, дърветата се навеждат, а дивите зверове лягат в краката му. Орфей плава с героите аргонавти. С песента си той надвива сирените, които примамват моряците. Лирата е струнен инструмент, който се държи в ръце.
 
