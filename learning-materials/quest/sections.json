@@ -8,7 +8,7 @@
     "icon": "laurel-crown",
     "color": "#8a5a2b",
     "grade": 5,
-    "lessons": [37]
+    "lessons": [37, 38]
   },
   {
     "id": "new-peoples",
@@ -19,7 +19,7 @@
     "icon": "roman-shield",
     "color": "#5f6f3a",
     "grade": 5,
-    "lessons": [27, 28]
+    "lessons": [48, 52, 28]
   },
   {
     "id": "first-kingdom",

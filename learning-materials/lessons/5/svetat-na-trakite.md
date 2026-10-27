@@ -4,6 +4,7 @@ grade: 5
 number: 38
 title: Светът на траките
 textbook: Булвест 2000, урок 38
+icon: laurel-crown
 map: balkans
 span: [-1500, 300]
 eras:

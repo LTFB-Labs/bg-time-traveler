@@ -4,6 +4,7 @@ grade: 5
 number: 48
 title: Древна Тракия в римския свят
 textbook: Булвест 2000, урок 48
+icon: centurion-helmet
 map: balkans
 span: [-200, 400]
 eras:

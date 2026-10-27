@@ -1,7 +1,6 @@
 // TEMPORARY: made-up lessons, only so the lesson hall has enough cards to try scrolling left and right.
 // They show as "скоро" and do not open. Delete this file once there are real lessons.
 export const MOCK_LESSONS = [
-    { grade: 5, number: 27, icon: 'centurion-helmet', title: 'Римляните по нашите земи', span: [-250, 395], photo: 'vizantia', lead: 'Как Римската империя стига до Дунав, строи пътища и градове и какво остава от тях.', chapters: ['Римляните идват', 'Пътища и крепости', 'Градовете', 'Краят на империята'] },
     { grade: 5, number: 28, icon: 'horse-head', title: 'Славяни и прабългари', span: [400, 680], photo: 'slavs', lead: 'Кои са славяните и прабългарите, откъде идват и как живеят преди да се срещнат.', chapters: ['Славяните', 'Стара Велика България', 'Хан Кубрат', 'Пътят на запад'] },
     { grade: 5, number: 29, icon: 'cavalry', title: 'Хан Аспарух основава България', span: [680, 701], photo: 'asparuh', lead: 'Битката при Онгъла, договорът с Византия и раждането на новата държава.', chapters: ['Онгъла', 'Договорът от 681 г.', 'Плиска', 'Седемте славянски племена'] },
     { grade: 5, number: 30, icon: 'viking-shield', title: 'Хан Тервел спасява Европа', span: [700, 721], photo: 'tervel', lead: 'Как Тервел помага на Византия и спира арабите пред Константинопол.', chapters: ['Тервел и Юстиниан II', 'Титлата кесар', 'Обсадата на Константинопол'] },
