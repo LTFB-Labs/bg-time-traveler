@@ -206,6 +206,14 @@ a.btn{text-decoration:none}
 </aside>
 <!-- the card postcard: outside the lesson sheet, so it covers the corner buttons too (modules/cards/cards.js) -->
 <div id="lsPop" hidden></div>
+<!-- the ink filter for the postcard's writing: fine noise eats speckles out of the letters and roughens their edges, like old print on paper -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="ink" color-interpolation-filters="sRGB">
+  <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3" seed="7" result="grain"/>
+  <feColorMatrix in="grain" type="luminanceToAlpha" result="lum"/>
+  <feColorMatrix in="lum" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 2.2 .05" result="worn"/>
+  <feDisplacementMap in="SourceGraphic" in2="grain" scale=".8" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feComposite in="rough" in2="worn" operator="in"/>
+</filter></svg>
 
 <!-- the options menu; js/options.js fills the previews' icons and keeps the choice -->
 <div id="options" popover>

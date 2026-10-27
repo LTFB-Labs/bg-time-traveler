@@ -480,10 +480,8 @@ body.lesson #compass { z-index: 1; top: auto; right: auto; left: 10px; bottom: 1
 #lsPop .pp { position: relative; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 34px 24px 18px 30px; }
 #lsPop .print { position: relative; padding: 9px; background: #fffdf7; box-shadow: 0 6px 14px rgba(60, 40, 15, .28), 0 1px 3px rgba(60, 40, 15, .2); transform: rotate(-1.5deg); cursor: zoom-in; transition: transform .3s ease, box-shadow .3s ease; }
 #lsPop .print img { display: block; max-width: min(380px, var(--half) - 72px); max-height: min(420px, calc(100vh - 300px)); }
-/* a hover, or a click or tap, lifts the photo off the card and enlarges it over the writing; the hover counts only once the mouse
-   has moved (.moved), since a postcard opened from a seal often opens with its photo under the still mouse */
+/* a click or tap lifts the photo off the card and enlarges it over the writing; a second one puts it back */
 #lsPop .print.big { z-index: 3; transform: scale(1.6); box-shadow: 0 24px 60px rgba(0, 0, 0, .55); cursor: zoom-out; }
-@media (hover: hover) { #lsPop.moved .print:hover { z-index: 3; transform: scale(1.6); box-shadow: 0 24px 60px rgba(0, 0, 0, .55); } }
 #lsPop .tape { position: absolute; z-index: 1; left: 50%; top: -12px; width: 90px; height: 24px; margin-left: -45px; background: rgba(233, 217, 176, .85); box-shadow: 0 1px 2px rgba(60, 40, 15, .15); transform: rotate(-4deg); }
 #lsPop .cap { font: 700 30px/1 'Caveat', cursive; color: #2b3f6b; text-align: center; }
 #lsPop .cr { max-width: 380px; font-size: 10.5px; color: #8a7458; text-align: center; overflow-wrap: anywhere; }
@@ -502,8 +500,10 @@ body.lesson #compass { z-index: 1; top: auto; right: auto; left: 10px; bottom: 1
 #lsPop .atlas .coast { stroke: #5b4a33; stroke-width: .8; stroke-opacity: .8; }
 #lsPop .atlas .seal { width: 22px; height: 22px; margin: -11px 0 0 -11px; }
 
-/* the writing side: the stamp and the postmark in its corner, the handwritten title and the text */
+/* the writing side: the stamp and the postmark in its corner, the handwritten title and the text.
+   The writing is ink on the paper, not over it: worn and roughened by the #ink filter (index.html), multiplied into the paper's grain and faded */
 #lsPop .tp { position: relative; container-type: inline-size; min-height: 0; display: flex; flex-direction: column; padding: 26px 32px 22px 44px; }
+#lsPop :is(h3, .body, .cap) { filter: url(#ink); mix-blend-mode: multiply; opacity: .85; }
 /* the title shrinks from --biggest until its longest word (--letters, from cards.js) fits in the room left beside the postmark (--beside);
    a letter is up to about .42em wide */
 #lsPop h3 {

@@ -34,8 +34,6 @@ export function createCards(popEl, { onOpen, onClose, footer = () => '' }) {
         if (!card) return;
         popEl.innerHTML = postcardHtml(card, footer(id));
         popEl.hidden = false;
-        popEl.classList.remove('moved');
-        popEl.addEventListener('pointermove', () => popEl.classList.add('moved'), { once: true });
         popEl.querySelectorAll('.print img').forEach((img) => swapForPlaceholderOnError(img, card.kind));
         popEl.querySelector('.print')?.addEventListener('click', (e) => e.currentTarget.classList.toggle('big'));
         popEl.querySelector('.x').addEventListener('click', close);
