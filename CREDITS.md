@@ -76,6 +76,7 @@
 | riben | Petar Beron | Public domain | [File:Riben-bukvar.jpg](https://commons.wikimedia.org/wiki/File:Riben-bukvar.jpg) |
 | rogozen-goddess | Adam Jones | CC BY-SA 2.0 | [File:Thracian gilt silver pitcher Rogozen Treasure Vratsa Bulgaria MH.jpg](https://commons.wikimedia.org/wiki/File:Thracian_gilt_silver_pitcher_Rogozen_Treasure_Vratsa_Bulgaria_MH.jpg) |
 | roman-soldiers | Jastrow (photo, 2007), cropped by Gog the Mild | Public domain | [File:Altar Domitius Ahenobarbus Louvre n3 (cropped).jpg](https://commons.wikimedia.org/wiki/File:Altar_Domitius_Ahenobarbus_Louvre_n3_(cropped).jpg) |
+| romulus-solidus | ANS | CC0 | [File:Gold Solidus of Romulus Augustulus.jpg](https://commons.wikimedia.org/wiki/File:Gold_Solidus_of_Romulus_Augustulus.jpg) |
 | saedinenie | Nikolai Pavlovich | Public domain | [File:Syedinena Bylgaria - Litografia na N.Pavlovich.JPG](https://commons.wikimedia.org/wiki/File:Syedinena_Bylgaria_-_Litografia_na_N.Pavlovich.JPG) |
 | samuil | kallerna | CC BY-SA 4.0 | [File:Samuel's Fortress Ohrid 1.jpg](https://commons.wikimedia.org/wiki/File:Samuel's_Fortress_Ohrid_1.jpg) |
 | serdica-ruins | Hans Birger Nilsen | CC BY-SA 2.0 | [File:Ancient Serdica Archaeological Complex (37705784811).jpg](https://commons.wikimedia.org/wiki/File:Ancient_Serdica_Archaeological_Complex_(37705784811).jpg) |

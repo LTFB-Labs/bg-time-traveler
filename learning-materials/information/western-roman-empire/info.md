@@ -3,8 +3,20 @@ id: western-roman-empire
 kind: state
 title: Западната Римска империя
 dates: 395–476 г.
-aliases: [Западната Римска империя]
-related: [rome, eastern-roman-empire, roman-empire, theodosius]
+photo: romulus-solidus
+aliases: [ Западната Римска империя ]
+related: [ rome, eastern-roman-empire, roman-empire, theodosius ]
+media:
+  images:
+    - id: romulus-solidus
+      file: images/romulus-solidus.jpg
+      caption: Ромул Августул на златна монета
+      commons: Gold Solidus of Romulus Augustulus.jpg
+      author: ANS
+      license: CC0
+      source: https://commons.wikimedia.org/wiki/File:Gold_Solidus_of_Romulus_Augustulus.jpg
+      width: 900
+      height: 874
 ---
 Западната Римска империя е западната половина на империята след 395 г. Първият ѝ владетел е Хонорий, по-малкият син на Теодосий. Тогава той е само на десет години. Империята владее Италия, Галия, Испания, Британия и Северна Африка. На Балканите са нейни Далмация и земите по река Сава. Тук хората говорят латински.
 
