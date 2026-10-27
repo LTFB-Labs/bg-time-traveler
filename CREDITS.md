@@ -5,11 +5,13 @@
 | Снимка | Автор | Лиценз | Файл |
 |---|---|---|---|
 | 1300 | Спасимир | CC BY-SA 3.0 | [File:Monument to 1300 Years of Bulgaria 10.jpg](https://commons.wikimedia.org/wiki/File:Monument_to_1300_Years_of_Bulgaria_10.jpg) |
+| abritus-ruins | ANUBIS76 | CC BY-SA 4.0 | [File:Abritus- Razgrad.jpg](https://commons.wikimedia.org/wiki/File:Abritus-_Razgrad.jpg) |
 | aheloy | Unknown 12th-century illuminator (Madrid Skylitzes) | Public domain | [File:Bulgarians defeat the Byzantines at Anchialos.jpg](https://commons.wikimedia.org/wiki/File:Bulgarians_defeat_the_Byzantines_at_Anchialos.jpg) |
 | april | Esther Westerveld from Haarlemmermeer, Nederland | CC BY 2.0 | [File:Brug van het eerste schot - Koprivshtitsa (4759742960).jpg](https://commons.wikimedia.org/wiki/File:Brug_van_het_eerste_schot_-_Koprivshtitsa_(4759742960).jpg) |
 | armira-mosaic | Klearchos Kapoutsis from Paleo Faliro, Athens, Greece. | CC BY 2.0 | [File:Villa Armira, the Mosaics 2.jpg](https://commons.wikimedia.org/wiki/File:Villa_Armira,_the_Mosaics_2.jpg) |
 | asen | MrPanyGoff | CC BY-SA 3.0 | [File:Tsarevets - Veliko Tarnovo - 2.jpg](https://commons.wikimedia.org/wiki/File:Tsarevets_-_Veliko_Tarnovo_-_2.jpg) |
 | asparuh | Nikolai Pavlovich | Public domain | [File:Аспарух с дружината - Павлович.jpg](https://commons.wikimedia.org/wiki/File:%D0%90%D1%81%D0%BF%D0%B0%D1%80%D1%83%D1%85_%D1%81_%D0%B4%D1%80%D1%83%D0%B6%D0%B8%D0%BD%D0%B0%D1%82%D0%B0_-_%D0%9F%D0%B0%D0%B2%D0%BB%D0%BE%D0%B2%D0%B8%D1%87.jpg) |
+| attila-feast | Mór Than | Public domain | [File:Than Mór - Attila lakomája (1870).jpg](https://commons.wikimedia.org/wiki/File:Than_Mór_-_Attila_lakomája_(1870).jpg) |
 | augustus-statue | Till Niermann | Public domain | [File:Statue-Augustus.jpg](https://commons.wikimedia.org/wiki/File:Statue-Augustus.jpg) |
 | berlin | Anton von Werner | Public domain | [File:Congress of Berlin, 13 July 1878, by Anton von Werner.jpg](https://commons.wikimedia.org/wiki/File:Congress_of_Berlin,_13_July_1878,_by_Anton_von_Werner.jpg) |
 | boris | Nikolai Pavlovich | Public domain | [File:Baptism of the Preslav Court.jpg](https://commons.wikimedia.org/wiki/File:Baptism_of_the_Preslav_Court.jpg) |
@@ -17,6 +19,8 @@
 | boyana | Todor Bozhinov / Тодор Божинов | CC BY-SA 3.0 | [File:Boyana Church 2 TB.JPG](https://commons.wikimedia.org/wiki/File:Boyana_Church_2_TB.JPG) |
 | carigrad | Fausto Zonaro | Public domain | [File:Zonaro GatesofConst.jpg](https://commons.wikimedia.org/wiki/File:Zonaro_GatesofConst.jpg) |
 | chiprovtsi | Unknown author | Public domain | [File:BASA-2072K-1-339-4-Chiprovtsi-carpet.jpg](https://commons.wikimedia.org/wiki/File:BASA-2072K-1-339-4-Chiprovtsi-carpet.jpg) |
+| constantine-head | Camille King from Toronto, Canada | CC BY-SA 2.0 | [File:Constantine's head at capitoline - Flickr - cking (cropped).jpg](https://commons.wikimedia.org/wiki/File:Constantine's_head_at_capitoline_-_Flickr_-_cking_(cropped).jpg) |
+| constantinople-walls | Carole Raddato from FRANKFURT, Germany | CC BY-SA 2.0 | [File:Theodosian Walls of Constantinople, Istanbul (24053561188).jpg](https://commons.wikimedia.org/wiki/File:Theodosian_Walls_of_Constantinople,_Istanbul_(24053561188).jpg) |
 | delyan | Unknown 12th-century illuminator (Madrid Skylitzes) | Public domain | [File:PetarDelyanIsProclaimedTsarOfBulgaria.jpg](https://commons.wikimedia.org/wiki/File:PetarDelyanIsProclaimedTsarOfBulgaria.jpg) |
 | demokracia | Anefo | CC0 | [File:Todor Zhivkov , eerste secretaris Communistische Partij en president van Bulgari, Bestanddeelnr 924-8077 (cropped).jpg](https://commons.wikimedia.org/wiki/File:Todor_Zhivkov_,_eerste_secretaris_Communistische_Partij_en_president_van_Bulgari,_Bestanddeelnr_924-8077_(cropped).jpg) |
 | dobrudzha | Unknown author | Public domain | [File:BASA-3K-7-436-50-Photo of South Dobruja, 1940.JPG](https://commons.wikimedia.org/wiki/File:BASA-3K-7-436-50-Photo_of_South_Dobruja,_1940.JPG) |
@@ -83,12 +87,16 @@
 | slivnitsa | Antoni Piotrowski | Public domain | [File:Antoni Piotrowski. Główna pozycja w Slivnicy.jpg](https://commons.wikimedia.org/wiki/File:Antoni_Piotrowski._G%C5%82%C3%B3wna_pozycja_w_Slivnicy.jpg) |
 | sozopol | Nenko Lazarov | CC BY 2.5 | [File:Sozopol2.jpg](https://commons.wikimedia.org/wiki/File:Sozopol2.jpg) |
 | spartacus-statue | Gautier Poupeau from Paris, France | CC BY 2.0 | [File:Spartacus, Denis Foyatier, 1830 (18024747306).jpg](https://commons.wikimedia.org/wiki/File:Spartacus,_Denis_Foyatier,_1830_(18024747306).jpg) |
+| st-george-rotunda | Ann Wuyts | CC BY 2.0 | [File:Rotunda Sveti Georgi, Sofia.jpg](https://commons.wikimedia.org/wiki/File:Rotunda_Sveti_Georgi,_Sofia.jpg) |
 | sveshtari-caryatids | Николай Генов | CC BY 3.0 | [File:Sveshtari Thracian Тomb.jpg](https://commons.wikimedia.org/wiki/File:Sveshtari_Thracian_Тomb.jpg) |
 | tarnovo1393 | AlexFilipov85 | CC BY-SA 4.0 | [File:Патриаршеската катедрала "Св. Възнесение Господне".jpg](https://commons.wikimedia.org/wiki/File:%D0%9F%D0%B0%D1%82%D1%80%D0%B8%D0%B0%D1%80%D1%88%D0%B5%D1%81%D0%BA%D0%B0%D1%82%D0%B0_%D0%BA%D0%B0%D1%82%D0%B5%D0%B4%D1%80%D0%B0%D0%BB%D0%B0_%22%D0%A1%D0%B2._%D0%92%D1%8A%D0%B7%D0%BD%D0%B5%D1%81%D0%B5%D0%BD%D0%B8%D0%B5_%D0%93%D0%BE%D1%81%D0%BF%D0%BE%D0%B4%D0%BD%D0%B5%22.jpg) |
 | tatul | Иванка Вълчанова | CC BY-SA 4.0 | [File:Гробницата край Татул.jpg](https://commons.wikimedia.org/wiki/File:Гробницата_край_Татул.jpg) |
 | teres-mask | ChernorizetsHrabar | CC BY-SA 4.0 | [File:The golden life-size mask of Teres I found in his tomb in the Valley of the Thracian Kings.png](https://commons.wikimedia.org/wiki/File:The_golden_life-size_mask_of_Teres_I_found_in_his_tomb_in_the_Valley_of_the_Thracian_Kings.png) |
 | tervel | Unknown 14th-century illuminator (Manasses Chronicle) | Public domain | [File:47-cropped-manasses-chronicle.jpg](https://commons.wikimedia.org/wiki/File:47-cropped-manasses-chronicle.jpg) |
+| tetrarchs | Nino Barbieri | Public domain | [File:Venice – The Tetrarchs 03.jpg](https://commons.wikimedia.org/wiki/File:Venice_–_The_Tetrarchs_03.jpg) |
+| theodosius-missorium | Italica Res | CC0 | [File:Disc of Theodosius.png](https://commons.wikimedia.org/wiki/File:Disc_of_Theodosius.png) |
 | thracian-horseman | Scroch | CC BY-SA 4.0 | [File:Marble votive tablet of a Thracian horseman.jpg](https://commons.wikimedia.org/wiki/File:Marble_votive_tablet_of_a_Thracian_horseman.jpg) |
+| valens-solidus | ANS | CC0 | [File:Gold Solidus of Valens.jpg](https://commons.wikimedia.org/wiki/File:Gold_Solidus_of_Valens.jpg) |
 | varbitsa | Unknown 14th-century illuminator (Manasses Chronicle) | Public domain | [File:50-manasses-chronicle.jpg](https://commons.wikimedia.org/wiki/File:50-manasses-chronicle.jpg) |
 | varna-baths | vedyteam | CC BY 3.0 | [File:Roman Thermal Baths, Varna - panoramio.jpg](https://commons.wikimedia.org/wiki/File:Roman_Thermal_Baths,_Varna_-_panoramio.jpg) |
 | varna1444 | Jan Matejko | Public domain | [File:Battle of Varna, Jan Matejko.jpg](https://commons.wikimedia.org/wiki/File:Battle_of_Varna,_Jan_Matejko.jpg) |

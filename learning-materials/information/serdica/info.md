@@ -6,7 +6,7 @@ dates: римски град, днес София
 at: [ 23.32, 42.70 ]
 photo: serdica-ruins
 aliases: [ Сердика ]
-related: [ via-militaris, serdica-amphitheatre, trajan, thracia ]
+related: [ via-militaris, serdica-amphitheatre, trajan, thracia, edict-of-serdica, st-george-rotunda ]
 media:
   images:
     - id: serdica-ruins

@@ -5,7 +5,7 @@ title: Римската империя
 dates: 27 г. пр.Хр. – 476 г. сл.Хр.
 photo: roman-soldiers
 aliases: [ Римската империя, Римската република ]
-related: [ rome, augustus, trajan, moesia, thracia, dacia ]
+related: [ rome, augustus, trajan, moesia, thracia, dacia, constantinople, eastern-roman-empire, western-roman-empire ]
 media:
   images:
     - id: roman-soldiers
