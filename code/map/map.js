@@ -12,7 +12,7 @@ const el = (tag, attrs = {}, parent) => { const e = document.createElementNS(NS,
 export const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 export const lerp = (a, b, t) => a + (b - a) * t;
 export const ease = (t) => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-const P = (lon, lat) => [(lon - GEO.lon0) * GEO.cx * GEO.k, (GEO.lat1 - lat) * GEO.k];
+export const P = (lon, lat) => [(lon - GEO.lon0) * GEO.cx * GEO.k, (GEO.lat1 - lat) * GEO.k];
 // the inverse of P: map units back to [lon, lat]
 const unP = (x, y) => [x / (GEO.cx * GEO.k) + GEO.lon0, GEO.lat1 - y / GEO.k];
 // text and lines are drawn in map units, so they grow with the zoom; past INK_ZOOM (screen pixels per map unit) they keep

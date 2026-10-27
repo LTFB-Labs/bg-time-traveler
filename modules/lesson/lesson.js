@@ -460,9 +460,10 @@ function printBlock(photo) {
 // the picture of a part or a card: the photo with its credit, or the icon of the card kind when there is none
 export function photoBlock(photo, kind = 'event') {
     if (!photo) return `<div class="ph"><div class="noimg">${cardIcon(kind)}</div></div>`;
-    const credit = `Снимка: <a href="${esc(photo.u)}" target="_blank" rel="noopener">${esc(photo.a)}</a>, ${esc(photo.l)}`;
-    return `<div class="ph"><img src="${esc(photo.f)}" alt=""><div class="cr">${credit}</div></div>`;
+    return `<div class="ph"><img src="${esc(photo.f)}" alt=""><div class="cr">${photoCredit(photo)}</div></div>`;
 }
+
+export const photoCredit = (photo) => `Снимка: <a href="${esc(photo.u)}" target="_blank" rel="noopener">${esc(photo.a)}</a>, ${esc(photo.l)}`;
 
 const ESC = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' };
 export const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ESC[c]);
