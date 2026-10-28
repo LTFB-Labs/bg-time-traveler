@@ -1,0 +1,10 @@
+{
+  "id": "bg-time-traveler",
+  "name": "Пътешествие във времето",
+  "description": "Дърпай слайдъра и виж как се променя България от 600 г. до днес.",
+  "icon": "img/mascot.webp",
+  "route": "history",
+  "contract": 2,
+  "permissions": ["user", "storage", "badges"],
+  "entry": "academy-app.js"
+}

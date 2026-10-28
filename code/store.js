@@ -47,10 +47,12 @@ export function createStore(storage) {
     };
 }
 
-// window.localStorage is read when a function runs, never at import time
+// window.localStorage is read when a function runs, never at import time. Inside LevAcademy, academy-app.js puts
+// the shell's storage in window.BGTT_STORAGE, so the progress is the child's on every device.
+const storage = () => window.BGTT_STORAGE ?? window.localStorage;
 const lazyStorage = {
-    getItem: (k) => window.localStorage.getItem(k),
-    setItem: (k, v) => window.localStorage.setItem(k, v),
+    getItem: (k) => storage().getItem(k),
+    setItem: (k, v) => storage().setItem(k, v),
 };
 
 export const {
