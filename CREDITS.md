@@ -32,6 +32,7 @@
 | devetashka-cave | Vislupus | CC BY-SA 4.0 | [File:Devetashka cave 006.jpg](https://commons.wikimedia.org/wiki/File:Devetashka_cave_006.jpg) |
 | dobrudzha | Unknown author | Public domain | [File:BASA-3K-7-436-50-Photo of South Dobruja, 1940.JPG](https://commons.wikimedia.org/wiki/File:BASA-3K-7-436-50-Photo_of_South_Dobruja,_1940.JPG) |
 | doyran | Unknown author (U.S. National Archives) | Public domain | [File:Doiran Front.jpg](https://commons.wikimedia.org/wiki/File:Doiran_Front.jpg) |
+| egypt-from-space | Jacques Descloitres, MODIS Rapid Response Team, NASA | Public domain | [File:Nile River and delta from orbit.jpg](https://commons.wikimedia.org/wiki/File:Nile_River_and_delta_from_orbit.jpg) |
 | einkorn-wheat | Unknown author | CC BY-SA 3.0 | [File:Triticum-monococcum-ear.JPG](https://commons.wikimedia.org/wiki/File:Triticum-monococcum-ear.JPG) |
 | ekzarhia | Nikolai Pavlovich | Public domain | [File:Memorial of the liberation of the Bulgarian Church.jpg](https://commons.wikimedia.org/wiki/File:Memorial_of_the_liberation_of_the_Bulgarian_Church.jpg) |
 | es | Tiia Monto | CC BY-SA 4.0 | [File:European Union and Bulgarian flag.jpg](https://commons.wikimedia.org/wiki/File:European_Union_and_Bulgarian_flag.jpg) |
@@ -40,9 +41,12 @@
 | fall1018 | Unknown 11th-century illuminator (Psalter of Basil II) | Public domain | [File:Basileios II, BNM, MS. gr. 17 Fol. 3r.jpg](https://commons.wikimedia.org/wiki/File:Basileios_II,_BNM,_MS._gr._17_Fol._3r.jpg) |
 | futbol | Wasted Time R | CC BY-SA 3.0 | [File:WorldCup1994BulgariaOverGermany.jpg](https://commons.wikimedia.org/wiki/File:WorldCup1994BulgariaOverGermany.jpg) |
 | gabrovo | Михал Орела | CC BY 3.0 | [File:National Aprilovski gymnasium, Gabrovo.jpg](https://commons.wikimedia.org/wiki/File:National_Aprilovski_gymnasium,_Gabrovo.jpg) |
+| giza-pyramids | Ricardo Liberato | CC BY-SA 2.0 | [File:All Gizah Pyramids.jpg](https://commons.wikimedia.org/wiki/File:All_Gizah_Pyramids.jpg) |
 | gobekli-tepe-pillar | Teomancimit | CC BY-SA 3.0 | [File:Gobekli Tepe 2.jpg](https://commons.wikimedia.org/wiki/File:Gobekli_Tepe_2.jpg) |
 | goldenchurch | Nikolov2010 | CC0 | [File:Preslav Round Church.JPG](https://commons.wikimedia.org/wiki/File:Preslav_Round_Church.JPG) |
 | gradeshnitsa-tablet | Николай Генов (по надписа на снимката), чрез Europeana | CC BY 3.0 | [File:Gradeshnitsa Tablet.jpg](https://commons.wikimedia.org/wiki/File:Gradeshnitsa_Tablet.jpg) |
+| great-sphinx | kallerna | CC BY-SA 4.0 | [File:The Sphinx and Pyramid of Khafre.jpg](https://commons.wikimedia.org/wiki/File:The_Sphinx_and_Pyramid_of_Khafre.jpg) |
+| hatshepsut-statue | Metropolitan Museum of Art | CC0 | [File:Seated Statue of Hatshepsut MET Hatshepsut2012.jpg](https://commons.wikimedia.org/wiki/File:Seated_Statue_of_Hatshepsut_MET_Hatshepsut2012.jpg) |
 | horseman-madara | Klearchos Kapoutsis | CC BY 2.0 | [File:The Thracian Rider God.jpg](https://commons.wikimedia.org/wiki/File:The_Thracian_Rider_God.jpg) |
 | ivanaleksandar | Unknown 14th-century illuminator (Tetraevangelia of Ivan Alexander) | Public domain | [File:Ivan ALexander and his family Tetraevangelia.jpg](https://commons.wikimedia.org/wiki/File:Ivan_ALexander_and_his_family_Tetraevangelia.jpg) |
 | ivanasen | Pudelek (Marcin Szala) | CC BY-SA 3.0 | [File:Veliko Tarnovo (Велико Търново) - SS.Forty Martyrs Church.JPG](https://commons.wikimedia.org/wiki/File:Veliko_Tarnovo_(%D0%92%D0%B5%D0%BB%D0%B8%D0%BA%D0%BE_%D0%A2%D1%8A%D1%80%D0%BD%D0%BE%D0%B2%D0%BE)_-_SS.Forty_Martyrs_Church.JPG) |
@@ -63,10 +67,14 @@
 | letnitsa-rider | Апликация за конска амуниция - Institute of Balkan Studies with Center for Thracology, Bulgaria - CC BY. https://www.europeana.eu/item/2021502/jspui_handle_pub_245 | CC BY 3.0 | [File:Letnitsa rider.jpg](https://commons.wikimedia.org/wiki/File:Letnitsa_rider.jpg) |
 | levski | Nikola Hitrov (attributed) | Public domain | [File:Vasil Levski-05.1A 1870 V1.jpg](https://commons.wikimedia.org/wiki/File:Vasil_Levski-05.1A_1870_V1.jpg) |
 | longinus-stone | Udimu | CC BY-SA 4.0 | [File:RIB 201.jpg](https://commons.wikimedia.org/wiki/File:RIB_201.jpg) |
+| luxor-avenue | Gary Todd from Xinzheng, China | CC0 | [File:Luxor Temple Avenue of Sphinxes (9794899133).jpg](https://commons.wikimedia.org/wiki/File:Luxor_Temple_Avenue_of_Sphinxes_(9794899133).jpg) |
 | madara | Diego Delso | CC BY-SA 4.0 | [File:Caballero de Madara, reserva histórico-arqueológica Nacional de Madara, Bulgaria, 2016-05-27, DD 41.jpg](https://commons.wikimedia.org/wiki/File:Caballero_de_Madara,_reserva_hist%C3%B3rico-arqueol%C3%B3gica_Nacional_de_Madara,_Bulgaria,_2016-05-27,_DD_41.jpg) |
 | magura-paintings | Daznaempoveche | CC BY-SA 3.0 | [File:Magura-cave-pictographs.jpg](https://commons.wikimedia.org/wiki/File:Magura-cave-pictographs.jpg) |
 | malachite | JJ Harrison (https://www.jjharrison.com.au/) | CC BY-SA 3.0 | [File:Malachite, Zaire.jpg](https://commons.wikimedia.org/wiki/File:Malachite,_Zaire.jpg) |
+| meketre-bakery | Metropolitan Museum of Art | CC0 | [File:Bakers and Brewers from Meketre's Model Bakery and Brewery MET DT234925.jpg](https://commons.wikimedia.org/wiki/File:Bakers_and_Brewers_from_Meketre's_Model_Bakery_and_Brewery_MET_DT234925.jpg) |
+| meketre-granary | Metropolitan Museum of Art | CC0 | [File:Model of a Granary with Scribes MET DT344940.jpg](https://commons.wikimedia.org/wiki/File:Model_of_a_Granary_with_Scribes_MET_DT344940.jpg) |
 | mezhdusayuznicheska | Unknown author | Public domain | [File:Bulgarian Army in Radomir, June 1913.jpg](https://commons.wikimedia.org/wiki/File:Bulgarian_Army_in_Radomir,_June_1913.jpg) |
+| narmer-palette | anonymous | Public domain | [File:Narmer Palette.jpg](https://commons.wikimedia.org/wiki/File:Narmer_Palette.jpg) |
 | nato | Brejnev | CC0 | [File:Flags of Nato, Bulgaria, European Union - Military club, Plovdiv, Bulgaria.JPG](https://commons.wikimedia.org/wiki/File:Flags_of_Nato,_Bulgaria,_European_Union_-_Military_club,_Plovdiv,_Bulgaria.JPG) |
 | neanderthal | Werner Ustorf | CC BY-SA 2.0 | [File:Neanderthal man reconstruction, Natural History Museum, London.jpg](https://commons.wikimedia.org/wiki/File:Neanderthal_man_reconstruction,_Natural_History_Museum,_London.jpg) |
 | neolithic-pottery | Mpb eu | CC BY-SA 3.0 | [File:Tulip-shaped ceramic vase, Karanovo culture, Bulgaria, 6th millennium BC.jpg](https://commons.wikimedia.org/wiki/File:Tulip-shaped_ceramic_vase,_Karanovo_culture,_Bulgaria,_6th_millennium_BC.jpg) |
@@ -84,6 +92,7 @@
 | paisiy | Unknown 18th-century copyist | Public domain | [File:Istoriya Slavyanobolgarskaya Fair Copy.jpg](https://commons.wikimedia.org/wiki/File:Istoriya_Slavyanobolgarskaya_Fair_Copy.jpg) |
 | panagyurishte | Ann Wuyts | CC BY 2.0 | [File:Sofia - Panagyurishte Thracian Gold Treasure.jpg](https://commons.wikimedia.org/wiki/File:Sofia_-_Panagyurishte_Thracian_Gold_Treasure.jpg) |
 | petar | Unknown 14th-century illuminator (Manasses Chronicle) | Public domain | [File:62-manasses-chronicle.jpg](https://commons.wikimedia.org/wiki/File:62-manasses-chronicle.jpg) |
+| pharaoh-double-crown | Gary Todd from Xinzheng, China | CC0 | [File:Diorite Head of Statue of Pharaoh Amenhotep III wearing the Double Crown (Pschent) of Egypt, New Kingdom, 18th Dynasty, c. 1360 BC (28672873061).jpg](https://commons.wikimedia.org/wiki/File:Diorite_Head_of_Statue_of_Pharaoh_Amenhotep_III_wearing_the_Double_Crown_(Pschent)_of_Egypt,_New_Kingdom,_18th_Dynasty,_c._1360_BC_(28672873061).jpg) |
 | philip-ii | Richard Mortel from Riyadh, Saudi Arabia | CC BY 2.0 | [File:Phillip II, king of Macedonia, Roman copy of Greek original, Ny Carlsberg Glyptotek, Copenhagen (36420294055).jpg](https://commons.wikimedia.org/wiki/File:Phillip_II,_king_of_Macedonia,_Roman_copy_of_Greek_original,_Ny_Carlsberg_Glyptotek,_Copenhagen_(36420294055).jpg) |
 | plovdiv-theatre | MrPanyGoff | CC BY-SA 3.0 | [File:Roman Theatre Plovdiv.jpg](https://commons.wikimedia.org/wiki/File:Roman_Theatre_Plovdiv.jpg) |
 | preslav | Izvora | Public domain | [File:Preslav fortress 11.jpg](https://commons.wikimedia.org/wiki/File:Preslav_fortress_11.jpg) |
@@ -151,6 +160,7 @@
 | mammoth | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/mammoth.html |
 | medieval-gate | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/medieval-gate.html |
 | open-book | Lorc | CC BY 3.0 | https://game-icons.net/1x1/lorc/open-book.html |
+| pschent-double-crown | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/pschent-double-crown.html |
 | quill-ink | Lorc | CC BY 3.0 | https://game-icons.net/1x1/lorc/quill-ink.html |
 | roman-shield | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/roman-shield.html |
 | sailboat | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/sailboat.html |
