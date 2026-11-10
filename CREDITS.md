@@ -7,22 +7,27 @@
 | 1300 | Спасимир | CC BY-SA 3.0 | [File:Monument to 1300 Years of Bulgaria 10.jpg](https://commons.wikimedia.org/wiki/File:Monument_to_1300_Years_of_Bulgaria_10.jpg) |
 | abritus-ruins | ANUBIS76 | CC BY-SA 4.0 | [File:Abritus- Razgrad.jpg](https://commons.wikimedia.org/wiki/File:Abritus-_Razgrad.jpg) |
 | aheloy | Unknown 12th-century illuminator (Madrid Skylitzes) | Public domain | [File:Bulgarians defeat the Byzantines at Anchialos.jpg](https://commons.wikimedia.org/wiki/File:Bulgarians_defeat_the_Byzantines_at_Anchialos.jpg) |
+| altamira-bison | unknown prehistoric artist | Public domain | [File:Altamira, bison.jpg](https://commons.wikimedia.org/wiki/File:Altamira,_bison.jpg) |
 | april | Esther Westerveld from Haarlemmermeer, Nederland | CC BY 2.0 | [File:Brug van het eerste schot - Koprivshtitsa (4759742960).jpg](https://commons.wikimedia.org/wiki/File:Brug_van_het_eerste_schot_-_Koprivshtitsa_(4759742960).jpg) |
 | armira-mosaic | Klearchos Kapoutsis from Paleo Faliro, Athens, Greece. | CC BY 2.0 | [File:Villa Armira, the Mosaics 2.jpg](https://commons.wikimedia.org/wiki/File:Villa_Armira,_the_Mosaics_2.jpg) |
 | asen | MrPanyGoff | CC BY-SA 3.0 | [File:Tsarevets - Veliko Tarnovo - 2.jpg](https://commons.wikimedia.org/wiki/File:Tsarevets_-_Veliko_Tarnovo_-_2.jpg) |
 | asparuh | Nikolai Pavlovich | Public domain | [File:Аспарух с дружината - Павлович.jpg](https://commons.wikimedia.org/wiki/File:%D0%90%D1%81%D0%BF%D0%B0%D1%80%D1%83%D1%85_%D1%81_%D0%B4%D1%80%D1%83%D0%B6%D0%B8%D0%BD%D0%B0%D1%82%D0%B0_-_%D0%9F%D0%B0%D0%B2%D0%BB%D0%BE%D0%B2%D0%B8%D1%87.jpg) |
 | attila-feast | Mór Than | Public domain | [File:Than Mór - Attila lakomája (1870).jpg](https://commons.wikimedia.org/wiki/File:Than_Mór_-_Attila_lakomája_(1870).jpg) |
 | augustus-statue | Till Niermann | Public domain | [File:Statue-Augustus.jpg](https://commons.wikimedia.org/wiki/File:Statue-Augustus.jpg) |
+| bacho-kiro | Izvora | Public domain | [File:Bacho Kiro Out.jpg](https://commons.wikimedia.org/wiki/File:Bacho_Kiro_Out.jpg) |
 | berlin | Anton von Werner | Public domain | [File:Congress of Berlin, 13 July 1878, by Anton von Werner.jpg](https://commons.wikimedia.org/wiki/File:Congress_of_Berlin,_13_July_1878,_by_Anton_von_Werner.jpg) |
 | boris | Nikolai Pavlovich | Public domain | [File:Baptism of the Preslav Court.jpg](https://commons.wikimedia.org/wiki/File:Baptism_of_the_Preslav_Court.jpg) |
 | botev | Unknown author | Public domain | [File:BASA-713K-1-52-1-Hristo Botev.JPG](https://commons.wikimedia.org/wiki/File:BASA-713K-1-52-1-Hristo_Botev.JPG) |
 | boyana | Todor Bozhinov / Тодор Божинов | CC BY-SA 3.0 | [File:Boyana Church 2 TB.JPG](https://commons.wikimedia.org/wiki/File:Boyana_Church_2_TB.JPG) |
+| brassempouy | BastienM | CC BY-SA 3.0 | [File:Dame de Brassempouy.jpg](https://commons.wikimedia.org/wiki/File:Dame_de_Brassempouy.jpg) |
 | carigrad | Fausto Zonaro | Public domain | [File:Zonaro GatesofConst.jpg](https://commons.wikimedia.org/wiki/File:Zonaro_GatesofConst.jpg) |
 | chiprovtsi | Unknown author | Public domain | [File:BASA-2072K-1-339-4-Chiprovtsi-carpet.jpg](https://commons.wikimedia.org/wiki/File:BASA-2072K-1-339-4-Chiprovtsi-carpet.jpg) |
 | constantine-head | Camille King from Toronto, Canada | CC BY-SA 2.0 | [File:Constantine's head at capitoline - Flickr - cking (cropped).jpg](https://commons.wikimedia.org/wiki/File:Constantine's_head_at_capitoline_-_Flickr_-_cking_(cropped).jpg) |
 | constantinople-walls | Carole Raddato from FRANKFURT, Germany | CC BY-SA 2.0 | [File:Theodosian Walls of Constantinople, Istanbul (24053561188).jpg](https://commons.wikimedia.org/wiki/File:Theodosian_Walls_of_Constantinople,_Istanbul_(24053561188).jpg) |
+| cro-magnon | Wolfgang Sauber | CC BY-SA 4.0 | [File:NHM - Homo sapiens Modell 1.jpg](https://commons.wikimedia.org/wiki/File:NHM_-_Homo_sapiens_Modell_1.jpg) |
 | delyan | Unknown 12th-century illuminator (Madrid Skylitzes) | Public domain | [File:PetarDelyanIsProclaimedTsarOfBulgaria.jpg](https://commons.wikimedia.org/wiki/File:PetarDelyanIsProclaimedTsarOfBulgaria.jpg) |
 | demokracia | Anefo | CC0 | [File:Todor Zhivkov , eerste secretaris Communistische Partij en president van Bulgari, Bestanddeelnr 924-8077 (cropped).jpg](https://commons.wikimedia.org/wiki/File:Todor_Zhivkov_,_eerste_secretaris_Communistische_Partij_en_president_van_Bulgari,_Bestanddeelnr_924-8077_(cropped).jpg) |
+| devetashka-cave | Vislupus | CC BY-SA 4.0 | [File:Devetashka cave 006.jpg](https://commons.wikimedia.org/wiki/File:Devetashka_cave_006.jpg) |
 | dobrudzha | Unknown author | Public domain | [File:BASA-3K-7-436-50-Photo of South Dobruja, 1940.JPG](https://commons.wikimedia.org/wiki/File:BASA-3K-7-436-50-Photo_of_South_Dobruja,_1940.JPG) |
 | doyran | Unknown author (U.S. National Archives) | Public domain | [File:Doiran Front.jpg](https://commons.wikimedia.org/wiki/File:Doiran_Front.jpg) |
 | ekzarhia | Nikolai Pavlovich | Public domain | [File:Memorial of the liberation of the Bulgarian Church.jpg](https://commons.wikimedia.org/wiki/File:Memorial_of_the_liberation_of_the_Bulgarian_Church.jpg) |
@@ -45,14 +50,17 @@
 | konstitucia | Unknown author | Public domain | [File:Bulgarian-Constituent-Assembly-1879.jpg](https://commons.wikimedia.org/wiki/File:Bulgarian-Constituent-Assembly-1879.jpg) |
 | kosmatka-mound | Vladislav Nedelev | CC BY 4.0 | [File:The Thracian tomb Goliama Kosmatka, Bulgaria 01.jpg](https://commons.wikimedia.org/wiki/File:The_Thracian_tomb_Goliama_Kosmatka,_Bulgaria_01.jpg) |
 | kosmos | Radoslav Radoslavov | Public domain | [File:S georgi ivanov.jpg](https://commons.wikimedia.org/wiki/File:S_georgi_ivanov.jpg) |
+| kozarnika | Vassia Atanassova - Spiritia | CC BY-SA 4.0 | [File:Kozarnika cave - entrance.jpg](https://commons.wikimedia.org/wiki/File:Kozarnika_cave_-_entrance.jpg) |
 | krum | Unknown 12th-century illuminator (Madrid Skylitzes) | Public domain | [File:Krum gathers his people The Chronikon of Ioannis Skylitzes..jpg](https://commons.wikimedia.org/wiki/File:Krum_gathers_his_people_The_Chronikon_of_Ioannis_Skylitzes..jpg) |
 | kubrat | Vassia Atanassova - Spiritia | CC BY-SA 4.0 | [File:Mala-Pereshchepina-treasure-3.jpg](https://commons.wikimedia.org/wiki/File:Mala-Pereshchepina-treasure-3.jpg) |
+| lascaux-painting | EU | Public domain | [File:Lascaux painting.jpg](https://commons.wikimedia.org/wiki/File:Lascaux_painting.jpg) |
 | letnitsa-rider | Апликация за конска амуниция - Institute of Balkan Studies with Center for Thracology, Bulgaria - CC BY. https://www.europeana.eu/item/2021502/jspui_handle_pub_245 | CC BY 3.0 | [File:Letnitsa rider.jpg](https://commons.wikimedia.org/wiki/File:Letnitsa_rider.jpg) |
 | levski | Nikola Hitrov (attributed) | Public domain | [File:Vasil Levski-05.1A 1870 V1.jpg](https://commons.wikimedia.org/wiki/File:Vasil_Levski-05.1A_1870_V1.jpg) |
 | longinus-stone | Udimu | CC BY-SA 4.0 | [File:RIB 201.jpg](https://commons.wikimedia.org/wiki/File:RIB_201.jpg) |
 | madara | Diego Delso | CC BY-SA 4.0 | [File:Caballero de Madara, reserva histórico-arqueológica Nacional de Madara, Bulgaria, 2016-05-27, DD 41.jpg](https://commons.wikimedia.org/wiki/File:Caballero_de_Madara,_reserva_hist%C3%B3rico-arqueol%C3%B3gica_Nacional_de_Madara,_Bulgaria,_2016-05-27,_DD_41.jpg) |
 | mezhdusayuznicheska | Unknown author | Public domain | [File:Bulgarian Army in Radomir, June 1913.jpg](https://commons.wikimedia.org/wiki/File:Bulgarian_Army_in_Radomir,_June_1913.jpg) |
 | nato | Brejnev | CC0 | [File:Flags of Nato, Bulgaria, European Union - Military club, Plovdiv, Bulgaria.JPG](https://commons.wikimedia.org/wiki/File:Flags_of_Nato,_Bulgaria,_European_Union_-_Military_club,_Plovdiv,_Bulgaria.JPG) |
+| neanderthal | Werner Ustorf | CC BY-SA 2.0 | [File:Neanderthal man reconstruction, Natural History Museum, London.jpg](https://commons.wikimedia.org/wiki/File:Neanderthal_man_reconstruction,_Natural_History_Museum,_London.jpg) |
 | neuilly | Agence Rol | Public domain | [File:19-9-19, remise du traité de paix aux Bulgares (au ministère des Affaires étrangères, Théodore Théodoroff, délégué bulgare) - btv1b53030380k.jpg](https://commons.wikimedia.org/wiki/File:19-9-19,_remise_du_trait%C3%A9_de_paix_aux_Bulgares_(au_minist%C3%A8re_des_Affaires_%C3%A9trang%C3%A8res,_Th%C3%A9odore_Th%C3%A9odoroff,_d%C3%A9l%C3%A9gu%C3%A9_bulgare)_-_btv1b53030380k.jpg) |
 | nevski | Plamen Agov (user:MrPanyGoff) | CC BY-SA 4.0 | [File:AlexanderNevskyCathedral-Sofia-6.jpg](https://commons.wikimedia.org/wiki/File:AlexanderNevskyCathedral-Sofia-6.jpg) |
 | nezavisimost | Unknown author | Public domain | [File:Le Petit Journal Balkan Crisis (1908).jpg](https://commons.wikimedia.org/wiki/File:Le_Petit_Journal_Balkan_Crisis_(1908).jpg) |
@@ -103,6 +111,7 @@
 | varna1444 | Jan Matejko | Public domain | [File:Battle of Varna, Jan Matejko.jpg](https://commons.wikimedia.org/wiki/File:Battle_of_Varna,_Jan_Matejko.jpg) |
 | vizantia | Arild Vågen | CC BY-SA 3.0 | [File:Hagia Sophia Mars 2013.jpg](https://commons.wikimedia.org/wiki/File:Hagia_Sophia_Mars_2013.jpg) |
 | vratsa-greave | Ann Wuyts | CC BY 2.0 | [File:Sofia - Mogilanska Mogila Funeral Offering.jpg](https://commons.wikimedia.org/wiki/File:Sofia_-_Mogilanska_Mogila_Funeral_Offering.jpg) |
+| willendorf | User:MatthiasKabel | CC BY 2.5 | [File:Venus von Willendorf 01.jpg](https://commons.wikimedia.org/wiki/File:Venus_von_Willendorf_01.jpg) |
 
 ## Рисунки
 
