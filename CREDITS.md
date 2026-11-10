@@ -18,6 +18,7 @@
 | botev | Unknown author | Public domain | [File:BASA-713K-1-52-1-Hristo Botev.JPG](https://commons.wikimedia.org/wiki/File:BASA-713K-1-52-1-Hristo_Botev.JPG) |
 | boyana | Todor Bozhinov / Тодор Божинов | CC BY-SA 3.0 | [File:Boyana Church 2 TB.JPG](https://commons.wikimedia.org/wiki/File:Boyana_Church_2_TB.JPG) |
 | carigrad | Fausto Zonaro | Public domain | [File:Zonaro GatesofConst.jpg](https://commons.wikimedia.org/wiki/File:Zonaro_GatesofConst.jpg) |
+| catalhoyuk-horns | Verity Cridland | CC BY 2.0 | [File:Çatalhöyük view 5.jpg](https://commons.wikimedia.org/wiki/File:Çatalhöyük_view_5.jpg) |
 | chiprovtsi | Unknown author | Public domain | [File:BASA-2072K-1-339-4-Chiprovtsi-carpet.jpg](https://commons.wikimedia.org/wiki/File:BASA-2072K-1-339-4-Chiprovtsi-carpet.jpg) |
 | constantine-head | Camille King from Toronto, Canada | CC BY-SA 2.0 | [File:Constantine's head at capitoline - Flickr - cking (cropped).jpg](https://commons.wikimedia.org/wiki/File:Constantine's_head_at_capitoline_-_Flickr_-_cking_(cropped).jpg) |
 | constantinople-walls | Carole Raddato from FRANKFURT, Germany | CC BY-SA 2.0 | [File:Theodosian Walls of Constantinople, Istanbul (24053561188).jpg](https://commons.wikimedia.org/wiki/File:Theodosian_Walls_of_Constantinople,_Istanbul_(24053561188).jpg) |
@@ -25,6 +26,7 @@
 | demokracia | Anefo | CC0 | [File:Todor Zhivkov , eerste secretaris Communistische Partij en president van Bulgari, Bestanddeelnr 924-8077 (cropped).jpg](https://commons.wikimedia.org/wiki/File:Todor_Zhivkov_,_eerste_secretaris_Communistische_Partij_en_president_van_Bulgari,_Bestanddeelnr_924-8077_(cropped).jpg) |
 | dobrudzha | Unknown author | Public domain | [File:BASA-3K-7-436-50-Photo of South Dobruja, 1940.JPG](https://commons.wikimedia.org/wiki/File:BASA-3K-7-436-50-Photo_of_South_Dobruja,_1940.JPG) |
 | doyran | Unknown author (U.S. National Archives) | Public domain | [File:Doiran Front.jpg](https://commons.wikimedia.org/wiki/File:Doiran_Front.jpg) |
+| einkorn-wheat | Unknown author | CC BY-SA 3.0 | [File:Triticum-monococcum-ear.JPG](https://commons.wikimedia.org/wiki/File:Triticum-monococcum-ear.JPG) |
 | ekzarhia | Nikolai Pavlovich | Public domain | [File:Memorial of the liberation of the Bulgarian Church.jpg](https://commons.wikimedia.org/wiki/File:Memorial_of_the_liberation_of_the_Bulgarian_Church.jpg) |
 | es | Tiia Monto | CC BY-SA 4.0 | [File:European Union and Bulgarian flag.jpg](https://commons.wikimedia.org/wiki/File:European_Union_and_Bulgarian_flag.jpg) |
 | evrei | Unknown author | Public domain | [File:Dimitar Peshev 2.jpg](https://commons.wikimedia.org/wiki/File:Dimitar_Peshev_2.jpg) |
@@ -32,12 +34,14 @@
 | fall1018 | Unknown 11th-century illuminator (Psalter of Basil II) | Public domain | [File:Basileios II, BNM, MS. gr. 17 Fol. 3r.jpg](https://commons.wikimedia.org/wiki/File:Basileios_II,_BNM,_MS._gr._17_Fol._3r.jpg) |
 | futbol | Wasted Time R | CC BY-SA 3.0 | [File:WorldCup1994BulgariaOverGermany.jpg](https://commons.wikimedia.org/wiki/File:WorldCup1994BulgariaOverGermany.jpg) |
 | gabrovo | Михал Орела | CC BY 3.0 | [File:National Aprilovski gymnasium, Gabrovo.jpg](https://commons.wikimedia.org/wiki/File:National_Aprilovski_gymnasium,_Gabrovo.jpg) |
+| gobekli-tepe-pillar | Teomancimit | CC BY-SA 3.0 | [File:Gobekli Tepe 2.jpg](https://commons.wikimedia.org/wiki/File:Gobekli_Tepe_2.jpg) |
 | goldenchurch | Nikolov2010 | CC0 | [File:Preslav Round Church.JPG](https://commons.wikimedia.org/wiki/File:Preslav_Round_Church.JPG) |
 | horseman-madara | Klearchos Kapoutsis | CC BY 2.0 | [File:The Thracian Rider God.jpg](https://commons.wikimedia.org/wiki/File:The_Thracian_Rider_God.jpg) |
 | ivanaleksandar | Unknown 14th-century illuminator (Tetraevangelia of Ivan Alexander) | Public domain | [File:Ivan ALexander and his family Tetraevangelia.jpg](https://commons.wikimedia.org/wiki/File:Ivan_ALexander_and_his_family_Tetraevangelia.jpg) |
 | ivanasen | Pudelek (Marcin Szala) | CC BY-SA 3.0 | [File:Veliko Tarnovo (Велико Търново) - SS.Forty Martyrs Church.JPG](https://commons.wikimedia.org/wiki/File:Veliko_Tarnovo_(%D0%92%D0%B5%D0%BB%D0%B8%D0%BA%D0%BE_%D0%A2%D1%8A%D1%80%D0%BD%D0%BE%D0%B2%D0%BE)_-_SS.Forty_Martyrs_Church.JPG) |
 | ivanrilski | Pudelek (Marcin Szala) | CC BY-SA 3.0 | [File:Rila Monastery (Рилски манастир) - by Pudelek.JPG](https://commons.wikimedia.org/wiki/File:Rila_Monastery_(%D0%A0%D0%B8%D0%BB%D1%81%D0%BA%D0%B8_%D0%BC%D0%B0%D0%BD%D0%B0%D1%81%D1%82%D0%B8%D1%80)_-_by_Pudelek.JPG) |
 | kaloyan | Vassia Atanassova - Spiritia | CC BY-SA 3.0 | [File:NHMB-Anthrolopogical-reconstruction-of-the-head-of-Tsar-Kaloyan-by-Prof.Yordan-Yordanov.jpg](https://commons.wikimedia.org/wiki/File:NHMB-Anthrolopogical-reconstruction-of-the-head-of-Tsar-Kaloyan-by-Prof.Yordan-Yordanov.jpg) |
+| karanovo-layers | Vassia Atanassova - Spiritia | CC BY-SA 4.0 | [File:Karanovo-culture-scale-1.jpg](https://commons.wikimedia.org/wiki/File:Karanovo-culture-scale-1.jpg) |
 | kazanlak-tomb | Kmrakmra | CC BY-SA 3.0 | [File:Kazanluk 1.jpg](https://commons.wikimedia.org/wiki/File:Kazanluk_1.jpg) |
 | kirilimetodii | Jan Matejko | Public domain | [File:Cyril and Methodius.jpg](https://commons.wikimedia.org/wiki/File:Cyril_and_Methodius.jpg) |
 | kleidion | Ttaanya | CC BY-SA 4.0 | [File:Samuil 01.jpg](https://commons.wikimedia.org/wiki/File:Samuil_01.jpg) |
@@ -51,8 +55,10 @@
 | levski | Nikola Hitrov (attributed) | Public domain | [File:Vasil Levski-05.1A 1870 V1.jpg](https://commons.wikimedia.org/wiki/File:Vasil_Levski-05.1A_1870_V1.jpg) |
 | longinus-stone | Udimu | CC BY-SA 4.0 | [File:RIB 201.jpg](https://commons.wikimedia.org/wiki/File:RIB_201.jpg) |
 | madara | Diego Delso | CC BY-SA 4.0 | [File:Caballero de Madara, reserva histórico-arqueológica Nacional de Madara, Bulgaria, 2016-05-27, DD 41.jpg](https://commons.wikimedia.org/wiki/File:Caballero_de_Madara,_reserva_hist%C3%B3rico-arqueol%C3%B3gica_Nacional_de_Madara,_Bulgaria,_2016-05-27,_DD_41.jpg) |
+| magura-paintings | Daznaempoveche | CC BY-SA 3.0 | [File:Magura-cave-pictographs.jpg](https://commons.wikimedia.org/wiki/File:Magura-cave-pictographs.jpg) |
 | mezhdusayuznicheska | Unknown author | Public domain | [File:Bulgarian Army in Radomir, June 1913.jpg](https://commons.wikimedia.org/wiki/File:Bulgarian_Army_in_Radomir,_June_1913.jpg) |
 | nato | Brejnev | CC0 | [File:Flags of Nato, Bulgaria, European Union - Military club, Plovdiv, Bulgaria.JPG](https://commons.wikimedia.org/wiki/File:Flags_of_Nato,_Bulgaria,_European_Union_-_Military_club,_Plovdiv,_Bulgaria.JPG) |
+| neolithic-pottery | Mpb eu | CC BY-SA 3.0 | [File:Tulip-shaped ceramic vase, Karanovo culture, Bulgaria, 6th millennium BC.jpg](https://commons.wikimedia.org/wiki/File:Tulip-shaped_ceramic_vase,_Karanovo_culture,_Bulgaria,_6th_millennium_BC.jpg) |
 | neuilly | Agence Rol | Public domain | [File:19-9-19, remise du traité de paix aux Bulgares (au ministère des Affaires étrangères, Théodore Théodoroff, délégué bulgare) - btv1b53030380k.jpg](https://commons.wikimedia.org/wiki/File:19-9-19,_remise_du_trait%C3%A9_de_paix_aux_Bulgares_(au_minist%C3%A8re_des_Affaires_%C3%A9trang%C3%A8res,_Th%C3%A9odore_Th%C3%A9odoroff,_d%C3%A9l%C3%A9gu%C3%A9_bulgare)_-_btv1b53030380k.jpg) |
 | nevski | Plamen Agov (user:MrPanyGoff) | CC BY-SA 4.0 | [File:AlexanderNevskyCathedral-Sofia-6.jpg](https://commons.wikimedia.org/wiki/File:AlexanderNevskyCathedral-Sofia-6.jpg) |
 | nezavisimost | Unknown author | Public domain | [File:Le Petit Journal Balkan Crisis (1908).jpg](https://commons.wikimedia.org/wiki/File:Le_Petit_Journal_Balkan_Crisis_(1908).jpg) |
@@ -84,11 +90,13 @@
 | shengen | Gonzosft | CC BY 3.0 | [File:Most-druschba.jpg](https://commons.wikimedia.org/wiki/File:Most-druschba.jpg) |
 | shipka | Pudelek (Marcin Szala) | CC BY-SA 3.0 | [File:Shipka pass (Шипка) - Monument of the Russian emperor Alexander II (by Pudelek) 2.JPG](https://commons.wikimedia.org/wiki/File:Shipka_pass_(%D0%A8%D0%B8%D0%BF%D0%BA%D0%B0)_-_Monument_of_the_Russian_emperor_Alexander_II_(by_Pudelek)_2.JPG) |
 | simeon | Alphonse Mucha | Public domain | [File:Car Simeon Bulharsky - Alfons Mucha.jpg](https://commons.wikimedia.org/wiki/File:Car_Simeon_Bulharsky_-_Alfons_Mucha.jpg) |
+| slatina-finds | Edal Anton Leftwerov | CC BY-SA 3.0 | [File:Neolithic Settlement of Slatina 04.JPG](https://commons.wikimedia.org/wiki/File:Neolithic_Settlement_of_Slatina_04.JPG) |
 | slavs | Alphonse Mucha | Public domain | [File:Slovane v pravlasti 81x61m.jpg](https://commons.wikimedia.org/wiki/File:Slovane_v_pravlasti_81x61m.jpg) |
 | slivnitsa | Antoni Piotrowski | Public domain | [File:Antoni Piotrowski. Główna pozycja w Slivnicy.jpg](https://commons.wikimedia.org/wiki/File:Antoni_Piotrowski._G%C5%82%C3%B3wna_pozycja_w_Slivnicy.jpg) |
 | sozopol | Nenko Lazarov | CC BY 2.5 | [File:Sozopol2.jpg](https://commons.wikimedia.org/wiki/File:Sozopol2.jpg) |
 | spartacus-statue | Gautier Poupeau from Paris, France | CC BY 2.0 | [File:Spartacus, Denis Foyatier, 1830 (18024747306).jpg](https://commons.wikimedia.org/wiki/File:Spartacus,_Denis_Foyatier,_1830_(18024747306).jpg) |
 | st-george-rotunda | Ann Wuyts | CC BY 2.0 | [File:Rotunda Sveti Georgi, Sofia.jpg](https://commons.wikimedia.org/wiki/File:Rotunda_Sveti_Georgi,_Sofia.jpg) |
+| stara-zagora-museum | Svik at Bulgarian Wikipedia | CC BY-SA 3.0 | [File:Neolith-dwellings-Stara-Zagora.jpg](https://commons.wikimedia.org/wiki/File:Neolith-dwellings-Stara-Zagora.jpg) |
 | sveshtari-caryatids | Николай Генов | CC BY 3.0 | [File:Sveshtari Thracian Тomb.jpg](https://commons.wikimedia.org/wiki/File:Sveshtari_Thracian_Тomb.jpg) |
 | tarnovo1393 | AlexFilipov85 | CC BY-SA 4.0 | [File:Патриаршеската катедрала "Св. Възнесение Господне".jpg](https://commons.wikimedia.org/wiki/File:%D0%9F%D0%B0%D1%82%D1%80%D0%B8%D0%B0%D1%80%D1%88%D0%B5%D1%81%D0%BA%D0%B0%D1%82%D0%B0_%D0%BA%D0%B0%D1%82%D0%B5%D0%B4%D1%80%D0%B0%D0%BB%D0%B0_%22%D0%A1%D0%B2._%D0%92%D1%8A%D0%B7%D0%BD%D0%B5%D1%81%D0%B5%D0%BD%D0%B8%D0%B5_%D0%93%D0%BE%D1%81%D0%BF%D0%BE%D0%B4%D0%BD%D0%B5%22.jpg) |
 | tatul | Иванка Вълчанова | CC BY-SA 4.0 | [File:Гробницата край Татул.jpg](https://commons.wikimedia.org/wiki/File:Гробницата_край_Татул.jpg) |
@@ -103,6 +111,7 @@
 | varna1444 | Jan Matejko | Public domain | [File:Battle of Varna, Jan Matejko.jpg](https://commons.wikimedia.org/wiki/File:Battle_of_Varna,_Jan_Matejko.jpg) |
 | vizantia | Arild Vågen | CC BY-SA 3.0 | [File:Hagia Sophia Mars 2013.jpg](https://commons.wikimedia.org/wiki/File:Hagia_Sophia_Mars_2013.jpg) |
 | vratsa-greave | Ann Wuyts | CC BY 2.0 | [File:Sofia - Mogilanska Mogila Funeral Offering.jpg](https://commons.wikimedia.org/wiki/File:Sofia_-_Mogilanska_Mogila_Funeral_Offering.jpg) |
+| wild-goat | gailhampshire | CC BY 2.0 | [File:Bezoar ibex are a subspecies of the wild goat, and native to Armenia.jpg](https://commons.wikimedia.org/wiki/File:Bezoar_ibex_are_a_subspecies_of_the_wild_goat,_and_native_to_Armenia.jpg) |
 
 ## Рисунки
 
