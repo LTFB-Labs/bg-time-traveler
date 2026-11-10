@@ -7,6 +7,7 @@
 | 1300 | Спасимир | CC BY-SA 3.0 | [File:Monument to 1300 Years of Bulgaria 10.jpg](https://commons.wikimedia.org/wiki/File:Monument_to_1300_Years_of_Bulgaria_10.jpg) |
 | abritus-ruins | ANUBIS76 | CC BY-SA 4.0 | [File:Abritus- Razgrad.jpg](https://commons.wikimedia.org/wiki/File:Abritus-_Razgrad.jpg) |
 | aheloy | Unknown 12th-century illuminator (Madrid Skylitzes) | Public domain | [File:Bulgarians defeat the Byzantines at Anchialos.jpg](https://commons.wikimedia.org/wiki/File:Bulgarians_defeat_the_Byzantines_at_Anchialos.jpg) |
+| akkad-ruler-head | Eric de Redelijkheid from Utrecht, Netherlands | CC BY-SA 2.0 | [File:Bronze head of an Akkadian ruler, discovered in Nineveh in 1931, presumably depicting either Sargon or Sargon's grandson Naram-Sin (Rijksmuseum van Oudheden).jpg](https://commons.wikimedia.org/wiki/File:Bronze_head_of_an_Akkadian_ruler,_discovered_in_Nineveh_in_1931,_presumably_depicting_either_Sargon_or_Sargon's_grandson_Naram-Sin_(Rijksmuseum_van_Oudheden).jpg) |
 | altamira-bison | unknown prehistoric artist | Public domain | [File:Altamira, bison.jpg](https://commons.wikimedia.org/wiki/File:Altamira,_bison.jpg) |
 | april | Esther Westerveld from Haarlemmermeer, Nederland | CC BY 2.0 | [File:Brug van het eerste schot - Koprivshtitsa (4759742960).jpg](https://commons.wikimedia.org/wiki/File:Brug_van_het_eerste_schot_-_Koprivshtitsa_(4759742960).jpg) |
 | armira-mosaic | Klearchos Kapoutsis from Paleo Faliro, Athens, Greece. | CC BY 2.0 | [File:Villa Armira, the Mosaics 2.jpg](https://commons.wikimedia.org/wiki/File:Villa_Armira,_the_Mosaics_2.jpg) |
@@ -43,7 +44,10 @@
 | gobekli-tepe-pillar | Teomancimit | CC BY-SA 3.0 | [File:Gobekli Tepe 2.jpg](https://commons.wikimedia.org/wiki/File:Gobekli_Tepe_2.jpg) |
 | goldenchurch | Nikolov2010 | CC0 | [File:Preslav Round Church.JPG](https://commons.wikimedia.org/wiki/File:Preslav_Round_Church.JPG) |
 | gradeshnitsa-tablet | Николай Генов (по надписа на снимката), чрез Europeana | CC BY 3.0 | [File:Gradeshnitsa Tablet.jpg](https://commons.wikimedia.org/wiki/File:Gradeshnitsa_Tablet.jpg) |
+| hammurabi-relief | Mbzt | CC BY 3.0 | [File:P1050771 Louvre code Hammurabi bas relief rwk.JPG](https://commons.wikimedia.org/wiki/File:P1050771_Louvre_code_Hammurabi_bas_relief_rwk.JPG) |
+| hammurabi-stele | Mbzt | CC BY 3.0 | [File:P1050763 Louvre code Hammurabi face rwk.JPG](https://commons.wikimedia.org/wiki/File:P1050763_Louvre_code_Hammurabi_face_rwk.JPG) |
 | horseman-madara | Klearchos Kapoutsis | CC BY 2.0 | [File:The Thracian Rider God.jpg](https://commons.wikimedia.org/wiki/File:The_Thracian_Rider_God.jpg) |
+| ishtar-gate | Kurt Kaiser | CC0 | [File:Ishtar Gate in the Pergamon Museum -.jpg](https://commons.wikimedia.org/wiki/File:Ishtar_Gate_in_the_Pergamon_Museum_-.jpg) |
 | ivanaleksandar | Unknown 14th-century illuminator (Tetraevangelia of Ivan Alexander) | Public domain | [File:Ivan ALexander and his family Tetraevangelia.jpg](https://commons.wikimedia.org/wiki/File:Ivan_ALexander_and_his_family_Tetraevangelia.jpg) |
 | ivanasen | Pudelek (Marcin Szala) | CC BY-SA 3.0 | [File:Veliko Tarnovo (Велико Търново) - SS.Forty Martyrs Church.JPG](https://commons.wikimedia.org/wiki/File:Veliko_Tarnovo_(%D0%92%D0%B5%D0%BB%D0%B8%D0%BA%D0%BE_%D0%A2%D1%8A%D1%80%D0%BD%D0%BE%D0%B2%D0%BE)_-_SS.Forty_Martyrs_Church.JPG) |
 | ivanrilski | Pudelek (Marcin Szala) | CC BY-SA 3.0 | [File:Rila Monastery (Рилски манастир) - by Pudelek.JPG](https://commons.wikimedia.org/wiki/File:Rila_Monastery_(%D0%A0%D0%B8%D0%BB%D1%81%D0%BA%D0%B8_%D0%BC%D0%B0%D0%BD%D0%B0%D1%81%D1%82%D0%B8%D1%80)_-_by_Pudelek.JPG) |
@@ -60,6 +64,7 @@
 | kozarnika | Vassia Atanassova - Spiritia | CC BY-SA 4.0 | [File:Kozarnika cave - entrance.jpg](https://commons.wikimedia.org/wiki/File:Kozarnika_cave_-_entrance.jpg) |
 | krum | Unknown 12th-century illuminator (Madrid Skylitzes) | Public domain | [File:Krum gathers his people The Chronikon of Ioannis Skylitzes..jpg](https://commons.wikimedia.org/wiki/File:Krum_gathers_his_people_The_Chronikon_of_Ioannis_Skylitzes..jpg) |
 | kubrat | Vassia Atanassova - Spiritia | CC BY-SA 4.0 | [File:Mala-Pereshchepina-treasure-3.jpg](https://commons.wikimedia.org/wiki/File:Mala-Pereshchepina-treasure-3.jpg) |
+| lagash-phalanx | Ernest de Sarzec - Choquin de Sarzec, Ernest (1832-1901) | Public domain | [File:Stele of the vultures (phalanx).jpg](https://commons.wikimedia.org/wiki/File:Stele_of_the_vultures_(phalanx).jpg) |
 | lascaux-painting | EU | Public domain | [File:Lascaux painting.jpg](https://commons.wikimedia.org/wiki/File:Lascaux_painting.jpg) |
 | letnitsa-rider | Апликация за конска амуниция - Institute of Balkan Studies with Center for Thracology, Bulgaria - CC BY. https://www.europeana.eu/item/2021502/jspui_handle_pub_245 | CC BY 3.0 | [File:Letnitsa rider.jpg](https://commons.wikimedia.org/wiki/File:Letnitsa_rider.jpg) |
 | levski | Nikola Hitrov (attributed) | Public domain | [File:Vasil Levski-05.1A 1870 V1.jpg](https://commons.wikimedia.org/wiki/File:Vasil_Levski-05.1A_1870_V1.jpg) |
@@ -87,6 +92,7 @@
 | panagyurishte | Ann Wuyts | CC BY 2.0 | [File:Sofia - Panagyurishte Thracian Gold Treasure.jpg](https://commons.wikimedia.org/wiki/File:Sofia_-_Panagyurishte_Thracian_Gold_Treasure.jpg) |
 | petar | Unknown 14th-century illuminator (Manasses Chronicle) | Public domain | [File:62-manasses-chronicle.jpg](https://commons.wikimedia.org/wiki/File:62-manasses-chronicle.jpg) |
 | philip-ii | Richard Mortel from Riyadh, Saudi Arabia | CC BY 2.0 | [File:Phillip II, king of Macedonia, Roman copy of Greek original, Ny Carlsberg Glyptotek, Copenhagen (36420294055).jpg](https://commons.wikimedia.org/wiki/File:Phillip_II,_king_of_Macedonia,_Roman_copy_of_Greek_original,_Ny_Carlsberg_Glyptotek,_Copenhagen_(36420294055).jpg) |
+| phoenician-ship | Bukvoed | CC BY 4.0 | [File:Haifa-maritime-museum-Phoenician-merchant-ship-1.jpg](https://commons.wikimedia.org/wiki/File:Haifa-maritime-museum-Phoenician-merchant-ship-1.jpg) |
 | plovdiv-theatre | MrPanyGoff | CC BY-SA 3.0 | [File:Roman Theatre Plovdiv.jpg](https://commons.wikimedia.org/wiki/File:Roman_Theatre_Plovdiv.jpg) |
 | preslav | Izvora | Public domain | [File:Preslav fortress 11.jpg](https://commons.wikimedia.org/wiki/File:Preslav_fortress_11.jpg) |
 | preslav971 | Unknown 14th-century illuminator (Manasses Chronicle) | Public domain | [File:65-manasses-chronicle.jpg](https://commons.wikimedia.org/wiki/File:65-manasses-chronicle.jpg) |
@@ -120,6 +126,8 @@
 | tetrarchs | Nino Barbieri | Public domain | [File:Venice – The Tetrarchs 03.jpg](https://commons.wikimedia.org/wiki/File:Venice_–_The_Tetrarchs_03.jpg) |
 | theodosius-missorium | Italica Res | CC0 | [File:Disc of Theodosius.png](https://commons.wikimedia.org/wiki/File:Disc_of_Theodosius.png) |
 | thracian-horseman | Scroch | CC BY-SA 4.0 | [File:Marble votive tablet of a Thracian horseman.jpg](https://commons.wikimedia.org/wiki/File:Marble_votive_tablet_of_a_Thracian_horseman.jpg) |
+| ur-ziggurat | Alli Khalil | CC BY-SA 4.0 | [File:Ziggurat of Ur Site in Nasiriyah 03.jpg](https://commons.wikimedia.org/wiki/File:Ziggurat_of_Ur_Site_in_Nasiriyah_03.jpg) |
+| uruk-vase | Osama Shukir Muhammed Amin FRCP(Glasg) | CC BY-SA 4.0 | [File:Warka Vase, Top Register.jpg](https://commons.wikimedia.org/wiki/File:Warka_Vase,_Top_Register.jpg) |
 | valens-solidus | ANS | CC0 | [File:Gold Solidus of Valens.jpg](https://commons.wikimedia.org/wiki/File:Gold_Solidus_of_Valens.jpg) |
 | varbitsa | Unknown 14th-century illuminator (Manasses Chronicle) | Public domain | [File:50-manasses-chronicle.jpg](https://commons.wikimedia.org/wiki/File:50-manasses-chronicle.jpg) |
 | varna-axes | Philip Kromer from Austin, TX, USA | CC BY-SA 2.0 | [File:201705 - Balkans - Stone Age king with Earliest Wrought-Gold Artifacts - 39 of 101 - Varna - Varna, May 25, 2017 (41675092201).jpg](https://commons.wikimedia.org/wiki/File:201705_-_Balkans_-_Stone_Age_king_with_Earliest_Wrought-Gold_Artifacts_-_39_of_101_-_Varna_-_Varna,_May_25,_2017_(41675092201).jpg) |
@@ -156,6 +164,7 @@
 | quill-ink | Lorc | CC BY 3.0 | https://game-icons.net/1x1/lorc/quill-ink.html |
 | roman-shield | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/roman-shield.html |
 | sailboat | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/sailboat.html |
+| stone-tower | Lorc | CC BY 3.0 | https://game-icons.net/1x1/lorc/stone-tower.html |
 | throne-king | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/throne-king.html |
 | tower-flag | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/tower-flag.html |
 | trireme | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/trireme.html |
