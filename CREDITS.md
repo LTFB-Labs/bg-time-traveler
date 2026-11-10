@@ -17,6 +17,7 @@
 | boris | Nikolai Pavlovich | Public domain | [File:Baptism of the Preslav Court.jpg](https://commons.wikimedia.org/wiki/File:Baptism_of_the_Preslav_Court.jpg) |
 | botev | Unknown author | Public domain | [File:BASA-713K-1-52-1-Hristo Botev.JPG](https://commons.wikimedia.org/wiki/File:BASA-713K-1-52-1-Hristo_Botev.JPG) |
 | boyana | Todor Bozhinov / Тодор Божинов | CC BY-SA 3.0 | [File:Boyana Church 2 TB.JPG](https://commons.wikimedia.org/wiki/File:Boyana_Church_2_TB.JPG) |
+| bronze-finds | Ivano Giambattista | CC0 | [File:Bronze Age artefacts in Bulgaria.jpg](https://commons.wikimedia.org/wiki/File:Bronze_Age_artefacts_in_Bulgaria.jpg) |
 | carigrad | Fausto Zonaro | Public domain | [File:Zonaro GatesofConst.jpg](https://commons.wikimedia.org/wiki/File:Zonaro_GatesofConst.jpg) |
 | chiprovtsi | Unknown author | Public domain | [File:BASA-2072K-1-339-4-Chiprovtsi-carpet.jpg](https://commons.wikimedia.org/wiki/File:BASA-2072K-1-339-4-Chiprovtsi-carpet.jpg) |
 | constantine-head | Camille King from Toronto, Canada | CC BY-SA 2.0 | [File:Constantine's head at capitoline - Flickr - cking (cropped).jpg](https://commons.wikimedia.org/wiki/File:Constantine's_head_at_capitoline_-_Flickr_-_cking_(cropped).jpg) |
@@ -33,6 +34,7 @@
 | futbol | Wasted Time R | CC BY-SA 3.0 | [File:WorldCup1994BulgariaOverGermany.jpg](https://commons.wikimedia.org/wiki/File:WorldCup1994BulgariaOverGermany.jpg) |
 | gabrovo | Михал Орела | CC BY 3.0 | [File:National Aprilovski gymnasium, Gabrovo.jpg](https://commons.wikimedia.org/wiki/File:National_Aprilovski_gymnasium,_Gabrovo.jpg) |
 | goldenchurch | Nikolov2010 | CC0 | [File:Preslav Round Church.JPG](https://commons.wikimedia.org/wiki/File:Preslav_Round_Church.JPG) |
+| gradeshnitsa-tablet | Николай Генов (по надписа на снимката), чрез Europeana | CC BY 3.0 | [File:Gradeshnitsa Tablet.jpg](https://commons.wikimedia.org/wiki/File:Gradeshnitsa_Tablet.jpg) |
 | horseman-madara | Klearchos Kapoutsis | CC BY 2.0 | [File:The Thracian Rider God.jpg](https://commons.wikimedia.org/wiki/File:The_Thracian_Rider_God.jpg) |
 | ivanaleksandar | Unknown 14th-century illuminator (Tetraevangelia of Ivan Alexander) | Public domain | [File:Ivan ALexander and his family Tetraevangelia.jpg](https://commons.wikimedia.org/wiki/File:Ivan_ALexander_and_his_family_Tetraevangelia.jpg) |
 | ivanasen | Pudelek (Marcin Szala) | CC BY-SA 3.0 | [File:Veliko Tarnovo (Велико Търново) - SS.Forty Martyrs Church.JPG](https://commons.wikimedia.org/wiki/File:Veliko_Tarnovo_(%D0%92%D0%B5%D0%BB%D0%B8%D0%BA%D0%BE_%D0%A2%D1%8A%D1%80%D0%BD%D0%BE%D0%B2%D0%BE)_-_SS.Forty_Martyrs_Church.JPG) |
@@ -51,6 +53,7 @@
 | levski | Nikola Hitrov (attributed) | Public domain | [File:Vasil Levski-05.1A 1870 V1.jpg](https://commons.wikimedia.org/wiki/File:Vasil_Levski-05.1A_1870_V1.jpg) |
 | longinus-stone | Udimu | CC BY-SA 4.0 | [File:RIB 201.jpg](https://commons.wikimedia.org/wiki/File:RIB_201.jpg) |
 | madara | Diego Delso | CC BY-SA 4.0 | [File:Caballero de Madara, reserva histórico-arqueológica Nacional de Madara, Bulgaria, 2016-05-27, DD 41.jpg](https://commons.wikimedia.org/wiki/File:Caballero_de_Madara,_reserva_hist%C3%B3rico-arqueol%C3%B3gica_Nacional_de_Madara,_Bulgaria,_2016-05-27,_DD_41.jpg) |
+| malachite | JJ Harrison (https://www.jjharrison.com.au/) | CC BY-SA 3.0 | [File:Malachite, Zaire.jpg](https://commons.wikimedia.org/wiki/File:Malachite,_Zaire.jpg) |
 | mezhdusayuznicheska | Unknown author | Public domain | [File:Bulgarian Army in Radomir, June 1913.jpg](https://commons.wikimedia.org/wiki/File:Bulgarian_Army_in_Radomir,_June_1913.jpg) |
 | nato | Brejnev | CC0 | [File:Flags of Nato, Bulgaria, European Union - Military club, Plovdiv, Bulgaria.JPG](https://commons.wikimedia.org/wiki/File:Flags_of_Nato,_Bulgaria,_European_Union_-_Military_club,_Plovdiv,_Bulgaria.JPG) |
 | neuilly | Agence Rol | Public domain | [File:19-9-19, remise du traité de paix aux Bulgares (au ministère des Affaires étrangères, Théodore Théodoroff, délégué bulgare) - btv1b53030380k.jpg](https://commons.wikimedia.org/wiki/File:19-9-19,_remise_du_trait%C3%A9_de_paix_aux_Bulgares_(au_minist%C3%A8re_des_Affaires_%C3%A9trang%C3%A8res,_Th%C3%A9odore_Th%C3%A9odoroff,_d%C3%A9l%C3%A9gu%C3%A9_bulgare)_-_btv1b53030380k.jpg) |
@@ -86,9 +89,11 @@
 | simeon | Alphonse Mucha | Public domain | [File:Car Simeon Bulharsky - Alfons Mucha.jpg](https://commons.wikimedia.org/wiki/File:Car_Simeon_Bulharsky_-_Alfons_Mucha.jpg) |
 | slavs | Alphonse Mucha | Public domain | [File:Slovane v pravlasti 81x61m.jpg](https://commons.wikimedia.org/wiki/File:Slovane_v_pravlasti_81x61m.jpg) |
 | slivnitsa | Antoni Piotrowski | Public domain | [File:Antoni Piotrowski. Główna pozycja w Slivnicy.jpg](https://commons.wikimedia.org/wiki/File:Antoni_Piotrowski._G%C5%82%C3%B3wna_pozycja_w_Slivnicy.jpg) |
+| solnitsata-salt | Wikipek | CC0 | [File:Solnitsata, prehistoric salt production, 5500 - 4200 B.C. 1.jpg](https://commons.wikimedia.org/wiki/File:Solnitsata,_prehistoric_salt_production,_5500_-_4200_B.C._1.jpg) |
 | sozopol | Nenko Lazarov | CC BY 2.5 | [File:Sozopol2.jpg](https://commons.wikimedia.org/wiki/File:Sozopol2.jpg) |
 | spartacus-statue | Gautier Poupeau from Paris, France | CC BY 2.0 | [File:Spartacus, Denis Foyatier, 1830 (18024747306).jpg](https://commons.wikimedia.org/wiki/File:Spartacus,_Denis_Foyatier,_1830_(18024747306).jpg) |
 | st-george-rotunda | Ann Wuyts | CC BY 2.0 | [File:Rotunda Sveti Georgi, Sofia.jpg](https://commons.wikimedia.org/wiki/File:Rotunda_Sveti_Georgi,_Sofia.jpg) |
+| steppe-horses | Дядя Саша | CC BY-SA 3.0 | [File:Khomutovsky Step 06.jpg](https://commons.wikimedia.org/wiki/File:Khomutovsky_Step_06.jpg) |
 | sveshtari-caryatids | Николай Генов | CC BY 3.0 | [File:Sveshtari Thracian Тomb.jpg](https://commons.wikimedia.org/wiki/File:Sveshtari_Thracian_Тomb.jpg) |
 | tarnovo1393 | AlexFilipov85 | CC BY-SA 4.0 | [File:Патриаршеската катедрала "Св. Възнесение Господне".jpg](https://commons.wikimedia.org/wiki/File:%D0%9F%D0%B0%D1%82%D1%80%D0%B8%D0%B0%D1%80%D1%88%D0%B5%D1%81%D0%BA%D0%B0%D1%82%D0%B0_%D0%BA%D0%B0%D1%82%D0%B5%D0%B4%D1%80%D0%B0%D0%BB%D0%B0_%22%D0%A1%D0%B2._%D0%92%D1%8A%D0%B7%D0%BD%D0%B5%D1%81%D0%B5%D0%BD%D0%B8%D0%B5_%D0%93%D0%BE%D1%81%D0%BF%D0%BE%D0%B4%D0%BD%D0%B5%22.jpg) |
 | tatul | Иванка Вълчанова | CC BY-SA 4.0 | [File:Гробницата край Татул.jpg](https://commons.wikimedia.org/wiki/File:Гробницата_край_Татул.jpg) |
@@ -99,7 +104,10 @@
 | thracian-horseman | Scroch | CC BY-SA 4.0 | [File:Marble votive tablet of a Thracian horseman.jpg](https://commons.wikimedia.org/wiki/File:Marble_votive_tablet_of_a_Thracian_horseman.jpg) |
 | valens-solidus | ANS | CC0 | [File:Gold Solidus of Valens.jpg](https://commons.wikimedia.org/wiki/File:Gold_Solidus_of_Valens.jpg) |
 | varbitsa | Unknown 14th-century illuminator (Manasses Chronicle) | Public domain | [File:50-manasses-chronicle.jpg](https://commons.wikimedia.org/wiki/File:50-manasses-chronicle.jpg) |
+| varna-axes | Philip Kromer from Austin, TX, USA | CC BY-SA 2.0 | [File:201705 - Balkans - Stone Age king with Earliest Wrought-Gold Artifacts - 39 of 101 - Varna - Varna, May 25, 2017 (41675092201).jpg](https://commons.wikimedia.org/wiki/File:201705_-_Balkans_-_Stone_Age_king_with_Earliest_Wrought-Gold_Artifacts_-_39_of_101_-_Varna_-_Varna,_May_25,_2017_(41675092201).jpg) |
 | varna-baths | vedyteam | CC BY 3.0 | [File:Roman Thermal Baths, Varna - panoramio.jpg](https://commons.wikimedia.org/wiki/File:Roman_Thermal_Baths,_Varna_-_panoramio.jpg) |
+| varna-gold | Zde | CC BY-SA 4.0 | [File:Gold treasure, 4600-4200 BC, AM Varna, Varm24.jpg](https://commons.wikimedia.org/wiki/File:Gold_treasure,_4600-4200_BC,_AM_Varna,_Varm24.jpg) |
+| varna-grave | Zde | CC BY-SA 4.0 | [File:Burial with gold treasure, 4600-4200 BC, AM Varna, Varm25.jpg](https://commons.wikimedia.org/wiki/File:Burial_with_gold_treasure,_4600-4200_BC,_AM_Varna,_Varm25.jpg) |
 | varna1444 | Jan Matejko | Public domain | [File:Battle of Varna, Jan Matejko.jpg](https://commons.wikimedia.org/wiki/File:Battle_of_Varna,_Jan_Matejko.jpg) |
 | vizantia | Arild Vågen | CC BY-SA 3.0 | [File:Hagia Sophia Mars 2013.jpg](https://commons.wikimedia.org/wiki/File:Hagia_Sophia_Mars_2013.jpg) |
 | vratsa-greave | Ann Wuyts | CC BY 2.0 | [File:Sofia - Mogilanska Mogila Funeral Offering.jpg](https://commons.wikimedia.org/wiki/File:Sofia_-_Mogilanska_Mogila_Funeral_Offering.jpg) |
