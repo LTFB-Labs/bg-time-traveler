@@ -6,13 +6,16 @@
 |---|---|---|---|
 | 1300 | Спасимир | CC BY-SA 3.0 | [File:Monument to 1300 Years of Bulgaria 10.jpg](https://commons.wikimedia.org/wiki/File:Monument_to_1300_Years_of_Bulgaria_10.jpg) |
 | abritus-ruins | ANUBIS76 | CC BY-SA 4.0 | [File:Abritus- Razgrad.jpg](https://commons.wikimedia.org/wiki/File:Abritus-_Razgrad.jpg) |
+| abu-simbel-temple | Than217 at English Wikipedia | Public domain | [File:Abu Simbel Temple May 30 2007.jpg](https://commons.wikimedia.org/wiki/File:Abu_Simbel_Temple_May_30_2007.jpg) |
 | aheloy | Unknown 12th-century illuminator (Madrid Skylitzes) | Public domain | [File:Bulgarians defeat the Byzantines at Anchialos.jpg](https://commons.wikimedia.org/wiki/File:Bulgarians_defeat_the_Byzantines_at_Anchialos.jpg) |
 | akkad-ruler-head | Eric de Redelijkheid from Utrecht, Netherlands | CC BY-SA 2.0 | [File:Bronze head of an Akkadian ruler, discovered in Nineveh in 1931, presumably depicting either Sargon or Sargon's grandson Naram-Sin (Rijksmuseum van Oudheden).jpg](https://commons.wikimedia.org/wiki/File:Bronze_head_of_an_Akkadian_ruler,_discovered_in_Nineveh_in_1931,_presumably_depicting_either_Sargon_or_Sargon's_grandson_Naram-Sin_(Rijksmuseum_van_Oudheden).jpg) |
 | altamira-bison | unknown prehistoric artist | Public domain | [File:Altamira, bison.jpg](https://commons.wikimedia.org/wiki/File:Altamira,_bison.jpg) |
 | april | Esther Westerveld from Haarlemmermeer, Nederland | CC BY 2.0 | [File:Brug van het eerste schot - Koprivshtitsa (4759742960).jpg](https://commons.wikimedia.org/wiki/File:Brug_van_het_eerste_schot_-_Koprivshtitsa_(4759742960).jpg) |
 | armira-mosaic | Klearchos Kapoutsis from Paleo Faliro, Athens, Greece. | CC BY 2.0 | [File:Villa Armira, the Mosaics 2.jpg](https://commons.wikimedia.org/wiki/File:Villa_Armira,_the_Mosaics_2.jpg) |
 | asen | MrPanyGoff | CC BY-SA 3.0 | [File:Tsarevets - Veliko Tarnovo - 2.jpg](https://commons.wikimedia.org/wiki/File:Tsarevets_-_Veliko_Tarnovo_-_2.jpg) |
+| ashurbanipal-hunt | Carole Raddato from FRANKFURT, Germany | CC BY-SA 2.0 | [File:Relief detail of King Ashurbanipal hunting a lion on horseback, North Palace, Nineveh, 645–635 BC, Exhibition I am Ashurbanipal king of the world, king of Assyria, British Museum (45972457881).jpg](https://commons.wikimedia.org/wiki/File:Relief_detail_of_King_Ashurbanipal_hunting_a_lion_on_horseback,_North_Palace,_Nineveh,_645–635_BC,_Exhibition_I_am_Ashurbanipal_king_of_the_world,_king_of_Assyria,_British_Museum_(45972457881).jpg) |
 | asparuh | Nikolai Pavlovich | Public domain | [File:Аспарух с дружината - Павлович.jpg](https://commons.wikimedia.org/wiki/File:%D0%90%D1%81%D0%BF%D0%B0%D1%80%D1%83%D1%85_%D1%81_%D0%B4%D1%80%D1%83%D0%B6%D0%B8%D0%BD%D0%B0%D1%82%D0%B0_-_%D0%9F%D0%B0%D0%B2%D0%BB%D0%BE%D0%B2%D0%B8%D1%87.jpg) |
+| assyrian-siege-engine | ChrisO (Own work) | Public domain | [File:Assyrian battering ram.jpg](https://commons.wikimedia.org/wiki/File:Assyrian_battering_ram.jpg) |
 | attila-feast | Mór Than | Public domain | [File:Than Mór - Attila lakomája (1870).jpg](https://commons.wikimedia.org/wiki/File:Than_Mór_-_Attila_lakomája_(1870).jpg) |
 | augustus-statue | Till Niermann | Public domain | [File:Statue-Augustus.jpg](https://commons.wikimedia.org/wiki/File:Statue-Augustus.jpg) |
 | bacho-kiro | Izvora | Public domain | [File:Bacho Kiro Out.jpg](https://commons.wikimedia.org/wiki/File:Bacho_Kiro_Out.jpg) |
@@ -28,11 +31,13 @@
 | constantine-head | Camille King from Toronto, Canada | CC BY-SA 2.0 | [File:Constantine's head at capitoline - Flickr - cking (cropped).jpg](https://commons.wikimedia.org/wiki/File:Constantine's_head_at_capitoline_-_Flickr_-_cking_(cropped).jpg) |
 | constantinople-walls | Carole Raddato from FRANKFURT, Germany | CC BY-SA 2.0 | [File:Theodosian Walls of Constantinople, Istanbul (24053561188).jpg](https://commons.wikimedia.org/wiki/File:Theodosian_Walls_of_Constantinople,_Istanbul_(24053561188).jpg) |
 | cro-magnon | Wolfgang Sauber | CC BY-SA 4.0 | [File:NHM - Homo sapiens Modell 1.jpg](https://commons.wikimedia.org/wiki/File:NHM_-_Homo_sapiens_Modell_1.jpg) |
+| darius-audience | Philippe Chavin (Simorg) | CC BY-SA 3.0 | [File:Persepolis - Royal audience low-relief.jpg](https://commons.wikimedia.org/wiki/File:Persepolis_-_Royal_audience_low-relief.jpg) |
 | delyan | Unknown 12th-century illuminator (Madrid Skylitzes) | Public domain | [File:PetarDelyanIsProclaimedTsarOfBulgaria.jpg](https://commons.wikimedia.org/wiki/File:PetarDelyanIsProclaimedTsarOfBulgaria.jpg) |
 | demokracia | Anefo | CC0 | [File:Todor Zhivkov , eerste secretaris Communistische Partij en president van Bulgari, Bestanddeelnr 924-8077 (cropped).jpg](https://commons.wikimedia.org/wiki/File:Todor_Zhivkov_,_eerste_secretaris_Communistische_Partij_en_president_van_Bulgari,_Bestanddeelnr_924-8077_(cropped).jpg) |
 | devetashka-cave | Vislupus | CC BY-SA 4.0 | [File:Devetashka cave 006.jpg](https://commons.wikimedia.org/wiki/File:Devetashka_cave_006.jpg) |
 | dobrudzha | Unknown author | Public domain | [File:BASA-3K-7-436-50-Photo of South Dobruja, 1940.JPG](https://commons.wikimedia.org/wiki/File:BASA-3K-7-436-50-Photo_of_South_Dobruja,_1940.JPG) |
 | doyran | Unknown author (U.S. National Archives) | Public domain | [File:Doiran Front.jpg](https://commons.wikimedia.org/wiki/File:Doiran_Front.jpg) |
+| dur-sharrukin-lamassu | Gary Todd from Xinzheng, China | CC0 | [File:Lamassu (Winged Bull) of Throne Room of Palace of Sargon II, Khorsabad, Assyria (27681700183).jpg](https://commons.wikimedia.org/wiki/File:Lamassu_(Winged_Bull)_of_Throne_Room_of_Palace_of_Sargon_II,_Khorsabad,_Assyria_(27681700183).jpg) |
 | einkorn-wheat | Unknown author | CC BY-SA 3.0 | [File:Triticum-monococcum-ear.JPG](https://commons.wikimedia.org/wiki/File:Triticum-monococcum-ear.JPG) |
 | ekzarhia | Nikolai Pavlovich | Public domain | [File:Memorial of the liberation of the Bulgarian Church.jpg](https://commons.wikimedia.org/wiki/File:Memorial_of_the_liberation_of_the_Bulgarian_Church.jpg) |
 | es | Tiia Monto | CC BY-SA 4.0 | [File:European Union and Bulgarian flag.jpg](https://commons.wikimedia.org/wiki/File:European_Union_and_Bulgarian_flag.jpg) |
@@ -95,6 +100,7 @@
 | osvobozhdenie | Unknown author | Public domain | [File:Treaty of San Stefano.jpg](https://commons.wikimedia.org/wiki/File:Treaty_of_San_Stefano.jpg) |
 | paisiy | Unknown 18th-century copyist | Public domain | [File:Istoriya Slavyanobolgarskaya Fair Copy.jpg](https://commons.wikimedia.org/wiki/File:Istoriya_Slavyanobolgarskaya_Fair_Copy.jpg) |
 | panagyurishte | Ann Wuyts | CC BY 2.0 | [File:Sofia - Panagyurishte Thracian Gold Treasure.jpg](https://commons.wikimedia.org/wiki/File:Sofia_-_Panagyurishte_Thracian_Gold_Treasure.jpg) |
+| persepolis-gate | Skot | CC BY-SA 4.0 | [File:Persepolis – Gate of All Nations 01.jpg](https://commons.wikimedia.org/wiki/File:Persepolis_–_Gate_of_All_Nations_01.jpg) |
 | petar | Unknown 14th-century illuminator (Manasses Chronicle) | Public domain | [File:62-manasses-chronicle.jpg](https://commons.wikimedia.org/wiki/File:62-manasses-chronicle.jpg) |
 | philip-ii | Richard Mortel from Riyadh, Saudi Arabia | CC BY 2.0 | [File:Phillip II, king of Macedonia, Roman copy of Greek original, Ny Carlsberg Glyptotek, Copenhagen (36420294055).jpg](https://commons.wikimedia.org/wiki/File:Phillip_II,_king_of_Macedonia,_Roman_copy_of_Greek_original,_Ny_Carlsberg_Glyptotek,_Copenhagen_(36420294055).jpg) |
 | phoenician-ship | Bukvoed | CC BY 4.0 | [File:Haifa-maritime-museum-Phoenician-merchant-ship-1.jpg](https://commons.wikimedia.org/wiki/File:Haifa-maritime-museum-Phoenician-merchant-ship-1.jpg) |
@@ -102,6 +108,8 @@
 | preslav | Izvora | Public domain | [File:Preslav fortress 11.jpg](https://commons.wikimedia.org/wiki/File:Preslav_fortress_11.jpg) |
 | preslav971 | Unknown 14th-century illuminator (Manasses Chronicle) | Public domain | [File:65-manasses-chronicle.jpg](https://commons.wikimedia.org/wiki/File:65-manasses-chronicle.jpg) |
 | rakovski | Georgi Danchov | Public domain | [File:Georgi-Rakovski.jpg](https://commons.wikimedia.org/wiki/File:Georgi-Rakovski.jpg) |
+| ramesses-chariot | Diego Delso | CC BY-SA 4.0 | [File:Templo de Ramsés II, Abu Simbel, Egipto, 2022-04-02, DD 74-76 HDR.jpg](https://commons.wikimedia.org/wiki/File:Templo_de_Ramsés_II,_Abu_Simbel,_Egipto,_2022-04-02,_DD_74-76_HDR.jpg) |
+| rekhmire-tribute | Nina M. Davies | CC0 | [File:Nubians with a Giraffe and a Monkey, Tomb of Rekhmire MET 31.6.40 EGDP013027.jpg](https://commons.wikimedia.org/wiki/File:Nubians_with_a_Giraffe_and_a_Monkey,_Tomb_of_Rekhmire_MET_31.6.40_EGDP013027.jpg) |
 | republika46 | Unknown author | Public domain | [File:BASA-3K-15-302-29-Simeon-The Prince of Turnovo.jpeg](https://commons.wikimedia.org/wiki/File:BASA-3K-15-302-29-Simeon-The_Prince_of_Turnovo.jpeg) |
 | riben | Petar Beron | Public domain | [File:Riben-bukvar.jpg](https://commons.wikimedia.org/wiki/File:Riben-bukvar.jpg) |
 | rogozen-goddess | Adam Jones | CC BY-SA 2.0 | [File:Thracian gilt silver pitcher Rogozen Treasure Vratsa Bulgaria MH.jpg](https://commons.wikimedia.org/wiki/File:Thracian_gilt_silver_pitcher_Rogozen_Treasure_Vratsa_Bulgaria_MH.jpg) |
@@ -136,6 +144,7 @@
 | ur-ziggurat | Alli Khalil | CC BY-SA 4.0 | [File:Ziggurat of Ur Site in Nasiriyah 03.jpg](https://commons.wikimedia.org/wiki/File:Ziggurat_of_Ur_Site_in_Nasiriyah_03.jpg) |
 | uruk-vase | Osama Shukir Muhammed Amin FRCP(Glasg) | CC BY-SA 4.0 | [File:Warka Vase, Top Register.jpg](https://commons.wikimedia.org/wiki/File:Warka_Vase,_Top_Register.jpg) |
 | tigris-hills | Dûrzan cîrano | CC BY-SA 3.0 | [File:Tigris 2015.jpg](https://commons.wikimedia.org/wiki/File:Tigris_2015.jpg) |
+| thutmose-iii-statue | Marsupium | CC BY 4.0 | [File:Statue of the Thutmosis III CG 42054-JE 36927 - greywacke - Luxor Museum 01.jpg](https://commons.wikimedia.org/wiki/File:Statue_of_the_Thutmosis_III_CG_42054-JE_36927_-_greywacke_-_Luxor_Museum_01.jpg) |
 | valens-solidus | ANS | CC0 | [File:Gold Solidus of Valens.jpg](https://commons.wikimedia.org/wiki/File:Gold_Solidus_of_Valens.jpg) |
 | varbitsa | Unknown 14th-century illuminator (Manasses Chronicle) | Public domain | [File:50-manasses-chronicle.jpg](https://commons.wikimedia.org/wiki/File:50-manasses-chronicle.jpg) |
 | varna-axes | Philip Kromer from Austin, TX, USA | CC BY-SA 2.0 | [File:201705 - Balkans - Stone Age king with Earliest Wrought-Gold Artifacts - 39 of 101 - Varna - Varna, May 25, 2017 (41675092201).jpg](https://commons.wikimedia.org/wiki/File:201705_-_Balkans_-_Stone_Age_king_with_Earliest_Wrought-Gold_Artifacts_-_39_of_101_-_Varna_-_Varna,_May_25,_2017_(41675092201).jpg) |
