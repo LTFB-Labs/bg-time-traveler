@@ -14,9 +14,9 @@ test('fmtYearAd', () => {
 });
 
 test('fmtYearDeepTime', () => {
-    assert.equal(fmtYear({ year: -40000 }), 'преди 42000 години');
-    assert.equal(fmtYear({ year: -1400000 }), 'преди 1400000 години');
-    assert.equal(fmtYear({ year: -1403000 }), 'преди 1410000 години');
+    assert.equal(fmtYear({ year: -40000 }), 'преди 42 000 години');
+    assert.equal(fmtYear({ year: -1400000 }), 'преди 1 400 000 години');
+    assert.equal(fmtYear({ year: -1403000 }), 'преди 1 410 000 години');
 });
 
 test('fmtYearPrefersLabel', () => {
