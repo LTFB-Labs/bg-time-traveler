@@ -129,12 +129,20 @@ function interpolate(points, year) {
 // and between two stops far apart, how many years lie between them
 export function yearMarks(stops, span, at) {
     const isOneEra = span[0] >= 0 || span[1] <= 0;
+    const isNamedGap = namedGapTest(stops);
     return stops.flatMap((meta, i) => {
         const mark = { text: isOneEra ? shortYear(meta) : fmtYear(meta), left: at(meta.year), isGap: false };
         const next = stops[i + 1];
-        if (!next || next.year - meta.year < LONG_GAP) return [mark];
+        if (!next || !isNamedGap(next.year - meta.year)) return [mark];
         return [mark, { text: `← ${grouped(next.year - meta.year)} години →`, left: (at(meta.year) + at(next.year)) / 2, isGap: true }];
     });
+}
+
+// a long gap is named only when it stands out among short ones; when every gap is long, as in prehistory, none is
+function namedGapTest(stops) {
+    const gaps = stops.slice(1).map((s, i) => s.year - stops[i].year);
+    const hasShortGap = gaps.some((gap) => gap < LONG_GAP);
+    return (gap) => hasShortGap && gap >= LONG_GAP;
 }
 
 // a deep year keeps its "преди N години": its number counts back from today, not from Christ
