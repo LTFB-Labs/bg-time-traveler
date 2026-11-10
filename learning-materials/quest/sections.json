@@ -1,5 +1,16 @@
 [
   {
+    "id": "prehistory",
+    "textbook": "history-5",
+    "title": "Праистория",
+    "description": "Първите хора по нашите земи: ловците от пещерите, първите земеделци и най-старото обработено злато.",
+    "photo": "magura-paintings",
+    "icon": "cave-entrance",
+    "color": "#5d5470",
+    "grade": 5,
+    "lessons": [5, 6, 7]
+  },
+  {
     "id": "thracians",
     "textbook": "history-5",
     "title": "Траките",
