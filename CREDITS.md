@@ -49,6 +49,7 @@
 | ivanrilski | Pudelek (Marcin Szala) | CC BY-SA 3.0 | [File:Rila Monastery (Рилски манастир) - by Pudelek.JPG](https://commons.wikimedia.org/wiki/File:Rila_Monastery_(%D0%A0%D0%B8%D0%BB%D1%81%D0%BA%D0%B8_%D0%BC%D0%B0%D0%BD%D0%B0%D1%81%D1%82%D0%B8%D1%80)_-_by_Pudelek.JPG) |
 | kaloyan | Vassia Atanassova - Spiritia | CC BY-SA 3.0 | [File:NHMB-Anthrolopogical-reconstruction-of-the-head-of-Tsar-Kaloyan-by-Prof.Yordan-Yordanov.jpg](https://commons.wikimedia.org/wiki/File:NHMB-Anthrolopogical-reconstruction-of-the-head-of-Tsar-Kaloyan-by-Prof.Yordan-Yordanov.jpg) |
 | karanovo-layers | Vassia Atanassova - Spiritia | CC BY-SA 4.0 | [File:Karanovo-culture-scale-1.jpg](https://commons.wikimedia.org/wiki/File:Karanovo-culture-scale-1.jpg) |
+| karanovo-seal | Unknown author (uploaded by Vajsov) | CC BY 3.0 | [File:Karanovo-sramp.jpg](https://commons.wikimedia.org/wiki/File:Karanovo-sramp.jpg) |
 | kazanlak-tomb | Kmrakmra | CC BY-SA 3.0 | [File:Kazanluk 1.jpg](https://commons.wikimedia.org/wiki/File:Kazanluk_1.jpg) |
 | kirilimetodii | Jan Matejko | Public domain | [File:Cyril and Methodius.jpg](https://commons.wikimedia.org/wiki/File:Cyril_and_Methodius.jpg) |
 | kleidion | Ttaanya | CC BY-SA 4.0 | [File:Samuil 01.jpg](https://commons.wikimedia.org/wiki/File:Samuil_01.jpg) |
@@ -76,6 +77,7 @@
 | nicopolis-ruins | Nk | Public domain | [File:Nicopolis ad Istrum - central part.jpg](https://commons.wikimedia.org/wiki/File:Nicopolis_ad_Istrum_-_central_part.jpg) |
 | nikopol | Unknown Ottoman miniaturist (Hünernâme) | Public domain | [File:Battle of Nicopolis.jpg](https://commons.wikimedia.org/wiki/File:Battle_of_Nicopolis.jpg) |
 | odrin | Bain News Service | Public domain | [File:Bulgarian Czar Ferdinand at Adrianople.jpg](https://commons.wikimedia.org/wiki/File:Bulgarian_Czar_Ferdinand_at_Adrianople.jpg) |
+| olduvai-handaxe | BabelStone (Own work) | CC0 | [File:British Museum Olduvai handaxe.jpg](https://commons.wikimedia.org/wiki/File:British_Museum_Olduvai_handaxe.jpg) |
 | omurtag | Unknown 12th-century illuminator (Madrid Skylitzes) | Public domain | [File:Bulgarian king Omurtag sends delegation to Byzantine emperor Michael II from the Chronicle of John Skylitzes.jpg](https://commons.wikimedia.org/wiki/File:Bulgarian_king_Omurtag_sends_delegation_to_Byzantine_emperor_Michael_II_from_the_Chronicle_of_John_Skylitzes.jpg) |
 | ongal | Nikolai Pavlovich | Public domain | [File:Аспарух преминава Дунава и се установява в Мизия Н. Павлович.jpg](https://commons.wikimedia.org/wiki/File:%D0%90%D1%81%D0%BF%D0%B0%D1%80%D1%83%D1%85_%D0%BF%D1%80%D0%B5%D0%BC%D0%B8%D0%BD%D0%B0%D0%B2%D0%B0_%D0%94%D1%83%D0%BD%D0%B0%D0%B2%D0%B0_%D0%B8_%D1%81%D0%B5_%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D1%8F%D0%B2%D0%B0_%D0%B2_%D0%9C%D0%B8%D0%B7%D0%B8%D1%8F_%D0%9D._%D0%9F%D0%B0%D0%B2%D0%BB%D0%BE%D0%B2%D0%B8%D1%87.jpg) |
 | orpheus-vase | Creator:Painter of London E 497 | CC0 | [File:Terracotta bell-krater (bowl for mixing wine and water) MET DT5486.jpg](https://commons.wikimedia.org/wiki/File:Terracotta_bell-krater_(bowl_for_mixing_wine_and_water)_MET_DT5486.jpg) |

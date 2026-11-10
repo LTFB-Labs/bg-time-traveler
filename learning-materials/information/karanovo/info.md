@@ -24,6 +24,15 @@ media:
       source: https://commons.wikimedia.org/wiki/File:Karanovo-culture-scale-1.jpg
       width: 900
       height: 675
+    - id: karanovo-seal
+      file: images/karanovo-seal.jpg
+      caption: Кръглата глинена плочка от Караново със загадъчни знаци
+      commons: Karanovo-sramp.jpg
+      author: Unknown author (uploaded by Vajsov)
+      license: CC BY 3.0
+      source: https://commons.wikimedia.org/wiki/File:Karanovo-sramp.jpg
+      width: 875
+      height: 868
 ---
 Карановската могила е в края на село Караново, край Нова Загора. Тя не е гроб, а селищна могила. Първо хората строят тук село. Когато къщите се срутят или изгорят, те строят нови върху развалините. Така хиляди години селищата растат едно върху друго. Пластовете им са дебели над 12 метра. Първите жители идват тук преди повече от 8000 години.
 
