@@ -203,8 +203,7 @@ let curLayer = -1;
 function showFrame(i) {
     showLayer(i, () => buildFrame(i));
 }
-// a part may have no borders at all, as in prehistory
-function showBorders(ids = [], ghostId) {
+function showBorders(ids, ghostId) {
     assertKnownBorders('showBorders', ids.concat(ghostId || []));
     showLayer(`${ids.join(' ')}|${ghostId ?? ''}`, () => buildBorders(ids, ghostId));
 }
