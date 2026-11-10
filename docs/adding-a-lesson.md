@@ -37,6 +37,8 @@ The file formats are described in the README section "Как се добавя �
    - Aliases are the exact bold forms the lesson uses. No alias may repeat another card's alias.
    - Two paragraphs of 50 to 90 words; an `event` card may have one. `at` lies inside the map bounds.
    - Never add `legacyKind`. It puts the card on the free map, which starts at 600.
+   - At most 6 new cards per lesson. Reuse an existing card where it fits. A place the text names only once needs no card.
+   - Give each new card one question for the quest (`questions` in the README). A quest fight asks a lesson the questions of every card it marks or links, and a lesson with none stops the quest path at "скоро". Aim for at least 5 per lesson.
    - 6 to 9 photos per lesson, from Wikimedia Commons, free licences only (public domain, CC0, CC BY, CC BY-SA). Add each with a `commons:` name, then run `npm --prefix tools run photos`.
 5. **Write the lesson.** Copy the closest existing lesson in `learning-materials/lessons/5/`.
    - Front matter: `id: <grade>-<file name>`, `grade`, `number` and `title` as in the book, `textbook: Булвест 2000, урок <number>`, `icon`, `map: balkans`, `span`, `eras` inside the span, and `big` as in the other lessons.
