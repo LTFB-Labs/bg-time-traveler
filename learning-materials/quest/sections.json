@@ -8,7 +8,18 @@
     "icon": "cave-entrance",
     "color": "#5d5470",
     "grade": 5,
-    "lessons": [5, 6, 7]
+    "lessons": [5, 6, 7, 8]
+  },
+  {
+    "id": "ancient-east",
+    "textbook": "history-5",
+    "title": "Древният Изток",
+    "description": "Първите държави край големите реки: фараоните на Египет, градовете на Месопотамия и великите империи.",
+    "photo": "giza-pyramids",
+    "icon": "pschent-double-crown",
+    "color": "#b07a3c",
+    "grade": 5,
+    "lessons": [9, 10, 11, 12]
   },
   {
     "id": "thracians",

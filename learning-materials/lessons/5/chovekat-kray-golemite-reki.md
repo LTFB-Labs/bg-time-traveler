@@ -164,7 +164,7 @@ next: Накрая цялата власт се събира в ръцете н�
 year: -3200
 approx: true
 box: [29.5, 23.0, 35.5, 28.8]
-marks: [scorpion-macehead]
+marks: [scorpion-macehead, ancient-egypt]
 photo: scorpion-macehead
 words:
   - власт: правото да заповядваш на другите
