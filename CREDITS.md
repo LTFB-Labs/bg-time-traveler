@@ -35,6 +35,7 @@
 | einkorn-wheat | Unknown author | CC BY-SA 3.0 | [File:Triticum-monococcum-ear.JPG](https://commons.wikimedia.org/wiki/File:Triticum-monococcum-ear.JPG) |
 | ekzarhia | Nikolai Pavlovich | Public domain | [File:Memorial of the liberation of the Bulgarian Church.jpg](https://commons.wikimedia.org/wiki/File:Memorial_of_the_liberation_of_the_Bulgarian_Church.jpg) |
 | es | Tiia Monto | CC BY-SA 4.0 | [File:European Union and Bulgarian flag.jpg](https://commons.wikimedia.org/wiki/File:European_Union_and_Bulgarian_flag.jpg) |
+| euphrates-dura | Institute for the Study of the Ancient World from New York, United States of America | CC BY 2.0 | [File:Euphrates River by Dura-Europus, Syria. (I) (5532410535).jpg](https://commons.wikimedia.org/wiki/File:Euphrates_River_by_Dura-Europus,_Syria._(I)_(5532410535).jpg) |
 | evrei | Unknown author | Public domain | [File:Dimitar Peshev 2.jpg](https://commons.wikimedia.org/wiki/File:Dimitar_Peshev_2.jpg) |
 | evro | Unknown author | CC0 | [File:Back of Bulgarian 1 euro coin.png](https://commons.wikimedia.org/wiki/File:Back_of_Bulgarian_1_euro_coin.png) |
 | fall1018 | Unknown 11th-century illuminator (Psalter of Basil II) | Public domain | [File:Basileios II, BNM, MS. gr. 17 Fol. 3r.jpg](https://commons.wikimedia.org/wiki/File:Basileios_II,_BNM,_MS._gr._17_Fol._3r.jpg) |
@@ -44,6 +45,7 @@
 | goldenchurch | Nikolov2010 | CC0 | [File:Preslav Round Church.JPG](https://commons.wikimedia.org/wiki/File:Preslav_Round_Church.JPG) |
 | gradeshnitsa-tablet | Николай Генов (по надписа на снимката), чрез Europeana | CC BY 3.0 | [File:Gradeshnitsa Tablet.jpg](https://commons.wikimedia.org/wiki/File:Gradeshnitsa_Tablet.jpg) |
 | horseman-madara | Klearchos Kapoutsis | CC BY 2.0 | [File:The Thracian Rider God.jpg](https://commons.wikimedia.org/wiki/File:The_Thracian_Rider_God.jpg) |
+| ipuy-shaduf | Norman de Garis Davies | Public domain | [File:Ipuy shaduf.jpg](https://commons.wikimedia.org/wiki/File:Ipuy_shaduf.jpg) |
 | ivanaleksandar | Unknown 14th-century illuminator (Tetraevangelia of Ivan Alexander) | Public domain | [File:Ivan ALexander and his family Tetraevangelia.jpg](https://commons.wikimedia.org/wiki/File:Ivan_ALexander_and_his_family_Tetraevangelia.jpg) |
 | ivanasen | Pudelek (Marcin Szala) | CC BY-SA 3.0 | [File:Veliko Tarnovo (Велико Търново) - SS.Forty Martyrs Church.JPG](https://commons.wikimedia.org/wiki/File:Veliko_Tarnovo_(%D0%92%D0%B5%D0%BB%D0%B8%D0%BA%D0%BE_%D0%A2%D1%8A%D1%80%D0%BD%D0%BE%D0%B2%D0%BE)_-_SS.Forty_Martyrs_Church.JPG) |
 | ivanrilski | Pudelek (Marcin Szala) | CC BY-SA 3.0 | [File:Rila Monastery (Рилски манастир) - by Pudelek.JPG](https://commons.wikimedia.org/wiki/File:Rila_Monastery_(%D0%A0%D0%B8%D0%BB%D1%81%D0%BA%D0%B8_%D0%BC%D0%B0%D0%BD%D0%B0%D1%81%D1%82%D0%B8%D1%80)_-_by_Pudelek.JPG) |
@@ -66,6 +68,7 @@
 | madara | Diego Delso | CC BY-SA 4.0 | [File:Caballero de Madara, reserva histórico-arqueológica Nacional de Madara, Bulgaria, 2016-05-27, DD 41.jpg](https://commons.wikimedia.org/wiki/File:Caballero_de_Madara,_reserva_hist%C3%B3rico-arqueol%C3%B3gica_Nacional_de_Madara,_Bulgaria,_2016-05-27,_DD_41.jpg) |
 | magura-paintings | Daznaempoveche | CC BY-SA 3.0 | [File:Magura-cave-pictographs.jpg](https://commons.wikimedia.org/wiki/File:Magura-cave-pictographs.jpg) |
 | malachite | JJ Harrison (https://www.jjharrison.com.au/) | CC BY-SA 3.0 | [File:Malachite, Zaire.jpg](https://commons.wikimedia.org/wiki/File:Malachite,_Zaire.jpg) |
+| menna-rope | Charles Wilkinson | CC0 | [File:Rope stretching.jpg](https://commons.wikimedia.org/wiki/File:Rope_stretching.jpg) |
 | mezhdusayuznicheska | Unknown author | Public domain | [File:Bulgarian Army in Radomir, June 1913.jpg](https://commons.wikimedia.org/wiki/File:Bulgarian_Army_in_Radomir,_June_1913.jpg) |
 | nato | Brejnev | CC0 | [File:Flags of Nato, Bulgaria, European Union - Military club, Plovdiv, Bulgaria.JPG](https://commons.wikimedia.org/wiki/File:Flags_of_Nato,_Bulgaria,_European_Union_-_Military_club,_Plovdiv,_Bulgaria.JPG) |
 | neanderthal | Werner Ustorf | CC BY-SA 2.0 | [File:Neanderthal man reconstruction, Natural History Museum, London.jpg](https://commons.wikimedia.org/wiki/File:Neanderthal_man_reconstruction,_Natural_History_Museum,_London.jpg) |
@@ -75,6 +78,8 @@
 | nezavisimost | Unknown author | Public domain | [File:Le Petit Journal Balkan Crisis (1908).jpg](https://commons.wikimedia.org/wiki/File:Le_Petit_Journal_Balkan_Crisis_(1908).jpg) |
 | nicopolis-ruins | Nk | Public domain | [File:Nicopolis ad Istrum - central part.jpg](https://commons.wikimedia.org/wiki/File:Nicopolis_ad_Istrum_-_central_part.jpg) |
 | nikopol | Unknown Ottoman miniaturist (Hünernâme) | Public domain | [File:Battle of Nicopolis.jpg](https://commons.wikimedia.org/wiki/File:Battle_of_Nicopolis.jpg) |
+| nile-from-space | Expedition 35 Crew Image courtesy of the NASA Johnson Space Center, Image Science &amp; Analysis Laboratory Derivative work including grading, noise reduction, lens distortion and vignetting correction and dust spot removal: Julian Herzog | Public domain | [File:ISS035-E-007148 Nile - Sinai - Dead Sea - Wide Angle View.jpg](https://commons.wikimedia.org/wiki/File:ISS035-E-007148_Nile_-_Sinai_-_Dead_Sea_-_Wide_Angle_View.jpg) |
+| nilometer-elephantine | Olaf Tausch | CC BY 3.0 | [File:Assuan Elephantine Nilometer 03.JPG](https://commons.wikimedia.org/wiki/File:Assuan_Elephantine_Nilometer_03.JPG) |
 | odrin | Bain News Service | Public domain | [File:Bulgarian Czar Ferdinand at Adrianople.jpg](https://commons.wikimedia.org/wiki/File:Bulgarian_Czar_Ferdinand_at_Adrianople.jpg) |
 | omurtag | Unknown 12th-century illuminator (Madrid Skylitzes) | Public domain | [File:Bulgarian king Omurtag sends delegation to Byzantine emperor Michael II from the Chronicle of John Skylitzes.jpg](https://commons.wikimedia.org/wiki/File:Bulgarian_king_Omurtag_sends_delegation_to_Byzantine_emperor_Michael_II_from_the_Chronicle_of_John_Skylitzes.jpg) |
 | ongal | Nikolai Pavlovich | Public domain | [File:Аспарух преминава Дунава и се установява в Мизия Н. Павлович.jpg](https://commons.wikimedia.org/wiki/File:%D0%90%D1%81%D0%BF%D0%B0%D1%80%D1%83%D1%85_%D0%BF%D1%80%D0%B5%D0%BC%D0%B8%D0%BD%D0%B0%D0%B2%D0%B0_%D0%94%D1%83%D0%BD%D0%B0%D0%B2%D0%B0_%D0%B8_%D1%81%D0%B5_%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D1%8F%D0%B2%D0%B0_%D0%B2_%D0%9C%D0%B8%D0%B7%D0%B8%D1%8F_%D0%9D._%D0%9F%D0%B0%D0%B2%D0%BB%D0%BE%D0%B2%D0%B8%D1%87.jpg) |
@@ -96,6 +101,8 @@
 | romulus-solidus | ANS | CC0 | [File:Gold Solidus of Romulus Augustulus.jpg](https://commons.wikimedia.org/wiki/File:Gold_Solidus_of_Romulus_Augustulus.jpg) |
 | saedinenie | Nikolai Pavlovich | Public domain | [File:Syedinena Bylgaria - Litografia na N.Pavlovich.JPG](https://commons.wikimedia.org/wiki/File:Syedinena_Bylgaria_-_Litografia_na_N.Pavlovich.JPG) |
 | samuil | kallerna | CC BY-SA 4.0 | [File:Samuel's Fortress Ohrid 1.jpg](https://commons.wikimedia.org/wiki/File:Samuel's_Fortress_Ohrid_1.jpg) |
+| scorpion-macehead | Heidi Kontkanen | CC BY-SA 2.0 | [File:Mace-head of king Scorpion.jpg](https://commons.wikimedia.org/wiki/File:Mace-head_of_king_Scorpion.jpg) |
+| sennedjem-fields | Charles Wilkinson | CC0 | [File:Sennedjem and Iineferti in the Fields of Iaru MET DT11771.jpg](https://commons.wikimedia.org/wiki/File:Sennedjem_and_Iineferti_in_the_Fields_of_Iaru_MET_DT11771.jpg) |
 | serdica-ruins | Hans Birger Nilsen | CC BY-SA 2.0 | [File:Ancient Serdica Archaeological Complex (37705784811).jpg](https://commons.wikimedia.org/wiki/File:Ancient_Serdica_Archaeological_Complex_(37705784811).jpg) |
 | seuthes-iii-head | Ann Wuyts | CC BY 2.0 | [File:National Archaeological Museum Sofia - Bronze Head from the Golyama Kosmatka Tumulus near Shipka.jpg](https://commons.wikimedia.org/wiki/File:National_Archaeological_Museum_Sofia_-_Bronze_Head_from_the_Golyama_Kosmatka_Tumulus_near_Shipka.jpg) |
 | shengen | Gonzosft | CC BY 3.0 | [File:Most-druschba.jpg](https://commons.wikimedia.org/wiki/File:Most-druschba.jpg) |
@@ -118,6 +125,7 @@
 | tetrarchs | Nino Barbieri | Public domain | [File:Venice – The Tetrarchs 03.jpg](https://commons.wikimedia.org/wiki/File:Venice_–_The_Tetrarchs_03.jpg) |
 | theodosius-missorium | Italica Res | CC0 | [File:Disc of Theodosius.png](https://commons.wikimedia.org/wiki/File:Disc_of_Theodosius.png) |
 | thracian-horseman | Scroch | CC BY-SA 4.0 | [File:Marble votive tablet of a Thracian horseman.jpg](https://commons.wikimedia.org/wiki/File:Marble_votive_tablet_of_a_Thracian_horseman.jpg) |
+| tigris-hills | Dûrzan cîrano | CC BY-SA 3.0 | [File:Tigris 2015.jpg](https://commons.wikimedia.org/wiki/File:Tigris_2015.jpg) |
 | valens-solidus | ANS | CC0 | [File:Gold Solidus of Valens.jpg](https://commons.wikimedia.org/wiki/File:Gold_Solidus_of_Valens.jpg) |
 | varbitsa | Unknown 14th-century illuminator (Manasses Chronicle) | Public domain | [File:50-manasses-chronicle.jpg](https://commons.wikimedia.org/wiki/File:50-manasses-chronicle.jpg) |
 | varna-axes | Philip Kromer from Austin, TX, USA | CC BY-SA 2.0 | [File:201705 - Balkans - Stone Age king with Earliest Wrought-Gold Artifacts - 39 of 101 - Varna - Varna, May 25, 2017 (41675092201).jpg](https://commons.wikimedia.org/wiki/File:201705_-_Balkans_-_Stone_Age_king_with_Earliest_Wrought-Gold_Artifacts_-_39_of_101_-_Varna_-_Varna,_May_25,_2017_(41675092201).jpg) |
@@ -152,6 +160,7 @@
 | medieval-gate | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/medieval-gate.html |
 | open-book | Lorc | CC BY 3.0 | https://game-icons.net/1x1/lorc/open-book.html |
 | quill-ink | Lorc | CC BY 3.0 | https://game-icons.net/1x1/lorc/quill-ink.html |
+| river | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/river.html |
 | roman-shield | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/roman-shield.html |
 | sailboat | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/sailboat.html |
 | throne-king | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/throne-king.html |
