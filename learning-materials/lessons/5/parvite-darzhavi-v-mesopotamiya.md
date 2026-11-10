@@ -35,7 +35,7 @@ next: Започваме в южна Месопотамия, където сел
 ## Градовете на Шумер
 label: IV хил. пр.Хр.
 box: [43.2, 29.9, 48.2, 33.0]
-marks: [sumer]
+marks: [sumer, mesopotamia]
 photo: uruk-vase
 words:
   - хилядолетие: хиляда години
@@ -119,7 +119,7 @@ next: Обратно в Месопотамия племена от пустин�
 year: -1900
 approx: true
 box: [37.0, 30.4, 47.6, 35.6]
-marks: [babylon]
+marks: [babylon, assyria]
 path: [[38.6, 34.0], [40.4, 33.7], [42.2, 33.2], [43.6, 32.8], [44.3, 32.6]]
 photo: ishtar-gate
 words:

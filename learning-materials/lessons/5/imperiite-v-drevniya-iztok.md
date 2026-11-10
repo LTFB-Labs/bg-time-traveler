@@ -37,6 +37,7 @@ next: Започваме с един въпрос — кога царят ста
 year: -1750
 approx: true
 box: [38.0, 30.0, 48.5, 37.5]
+marks: [hammurabi]
 path: [[44.42, 32.54], [43.6, 33.3], [42.6, 34.0], [41.6, 34.4], [40.89, 34.55]]
 photo: rekhmire-tribute
 words:
@@ -155,6 +156,7 @@ next: Асирия пада, но на изток вече расте още п�
 ## Империята на Великия цар
 label: VI – IV век пр.Хр.
 box: [18.0, 22.0, 56.0, 44.0]
+marks: [babylon]
 borders: [persia-darius]
 photo: darius-audience
 words:
