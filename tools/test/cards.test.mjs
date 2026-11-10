@@ -44,7 +44,7 @@ test('rejectsIdNotMatchingFile', () => {
 });
 
 test('rejectsMissingFieldsBadCoordinatesAndYears', () => {
-    const card = parseCard('---\nat: [50, 40]\nyears: [10, 5]\n---\nКратко.\n', FILE);
+    const card = parseCard('---\nat: [60, 40]\nyears: [10, 5]\n---\nКратко.\n', FILE);
     const found = messages(card);
     assert.ok(['id', 'kind', 'title'].every((f) => found.some((m) => m.includes(`"${f}"`))));
     assert.ok(found.some((m) => m.includes('"at"')));

@@ -6,7 +6,7 @@ The file formats are described in the README section "Как се добавя �
 
 ## Stop and ask Martin first if
 
-- Most of the lesson happens outside the Balkans map (longitude 12 to 42, latitude 34 to 49.5). Examples: Egypt, Mesopotamia, early Rome.
+- Most of the lesson happens outside the map (longitude 12 to 56, latitude 22 to 49.5). Examples: India, China, western Europe.
 - The lesson needs something the player cannot show today. Lessons are content only. Ask before any code change.
 - The new lesson retells part of an existing lesson. Propose what to trim from the old one.
 - A page of the lesson is missing from the photos or cannot be read.
