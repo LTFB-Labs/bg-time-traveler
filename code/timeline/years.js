@@ -5,10 +5,17 @@ function roundTo(n, step) {
     return Math.round(n / step) * step;
 }
 
+// years this far back are told as years ago, since no one counts them from Christ
+export const isDeepYear = (year) => year <= -10000;
+
 function deepTime(year) {
     const ago = NOW - year;
-    return `преди ${roundTo(ago, ago > 100000 ? 10000 : 1000)} години`;
+    return `преди ${grouped(roundTo(ago, ago > 100000 ? 10000 : 1000))} години`;
 }
+
+// 45000 as "45 000", with a no-break space so the number never splits over two lines;
+// Bulgarian groups only numbers of five digits or more, so 5000 stays as it is
+export const grouped = (n) => (n < 10000 ? String(n) : String(n).replace(/\B(?=(\d{3})+$)/g, ' '));
 
 function plainYear(year) {
     if (year < 0) return `${-year} г. пр.Хр.`;
@@ -18,7 +25,7 @@ function plainYear(year) {
 
 export function fmtYear({ year, approx, label }) {
     if (label) return label;
-    if (year <= -10000) return deepTime(year);
+    if (isDeepYear(year)) return deepTime(year);
     const text = plainYear(year === 0 ? 1 : year);
     return approx ? `ок. ${text}` : text;
 }

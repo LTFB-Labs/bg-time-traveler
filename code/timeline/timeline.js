@@ -1,7 +1,11 @@
 // The lesson timeline under the map: era bands with a numbered stop per story part hanging from them and its year under
 // it, and under them the whole history as one thin line with the lesson's span framed.
 // Node imports this module for the pure helpers, so every DOM access stays inside a function.
-import { fmtYear } from './years.js';
+import {
+    fmtYear,
+    grouped,
+    isDeepYear,
+} from './years.js';
 
 export function createTimeline(rootEl, lesson, { onPick }) {
     const find = (id) => rootEl.querySelector(`#${id}`);
@@ -125,15 +129,24 @@ function interpolate(points, year) {
 // and between two stops far apart, how many years lie between them
 export function yearMarks(stops, span, at) {
     const isOneEra = span[0] >= 0 || span[1] <= 0;
+    const isNamedGap = namedGapTest(stops);
     return stops.flatMap((meta, i) => {
         const mark = { text: isOneEra ? shortYear(meta) : fmtYear(meta), left: at(meta.year), isGap: false };
         const next = stops[i + 1];
-        if (!next || next.year - meta.year < LONG_GAP) return [mark];
-        return [mark, { text: `← ${next.year - meta.year} години →`, left: (at(meta.year) + at(next.year)) / 2, isGap: true }];
+        if (!next || !isNamedGap(next.year - meta.year)) return [mark];
+        return [mark, { text: `← ${grouped(next.year - meta.year)} години →`, left: (at(meta.year) + at(next.year)) / 2, isGap: true }];
     });
 }
 
-const shortYear = ({ year, approx }) => `${approx ? 'ок. ' : ''}${Math.abs(year)}`;
+// a long gap is named only when it stands out among short ones; when every gap is long, as in prehistory, none is
+function namedGapTest(stops) {
+    const gaps = stops.slice(1).map((s, i) => s.year - stops[i].year);
+    const hasShortGap = gaps.some((gap) => gap < LONG_GAP);
+    return (gap) => hasShortGap && gap >= LONG_GAP;
+}
+
+// a deep year keeps its "преди N години": its number counts back from today, not from Christ
+const shortYear = (meta) => (isDeepYear(meta.year) ? fmtYear(meta) : `${meta.approx ? 'ок. ' : ''}${Math.abs(meta.year)}`);
 
 
 // a stop is a tag with the number of its waypoint on the trail (the summary is waypoint 0) and its year; its left edge is the year

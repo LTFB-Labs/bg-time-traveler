@@ -98,3 +98,14 @@ test('eraAtNoneOutsideAllEras', () => {
 test('eraAtLastEraHoldsItsEndYear', () => {
     assert.equal(eraAt(ERAS, -250), 'Севт III и наследниците му');
 });
+
+test('yearMarksKeepDeepYearsAsYearsAgo', () => {
+    const stops = [{ year: -250000 }, { year: -43000 }];
+    const marks = yearMarks(stops, [-300000, -10000], (y) => y);
+    assert.deepEqual(marks.map((m) => m.text), ['преди 250\u00a0000 години', 'преди 45\u00a0000 години']);
+});
+
+test('yearMarksNameNoGapWhenEveryGapIsLong', () => {
+    const stops = [{ year: -9000 }, { year: -8500 }, { year: -7000 }];
+    assert.equal(yearMarks(stops, [-10000, -5000], (y) => y).filter((m) => m.isGap).length, 0);
+});

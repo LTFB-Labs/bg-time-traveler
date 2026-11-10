@@ -69,6 +69,12 @@ test('rendersHtmlAndLinksTerms', () => {
     assert.equal(lesson.parts[1].html, undefined);
 });
 
+test('rendersAnEmptyBorderListForAPartWithoutBorders', () => {
+    const out = renderLesson(parseLesson(read('deep-time'), 'deep-time.md'), new Map());
+    assert.deepEqual(out.parts[1].meta.borders, []);
+    assert.deepEqual(out.parts[0].meta.borders, ['thrace-tribes', 'odrysae-peak']);
+});
+
 test('requiresCheckQuestions', () => {
     const problems = check(read('odrysae').replace(/<!-- part: check -->\nquestions:[\s\S]*$/, '<!-- part: check -->\n'));
     assert.equal(problems.length, 1);

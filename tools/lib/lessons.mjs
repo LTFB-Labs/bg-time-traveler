@@ -210,8 +210,13 @@ export function renderLesson(lesson, aliasIndex) {
     const render = (markdown) => linkTerms(renderMarkdown(markdown), aliasIndex);
     const parts = lesson.parts.map((part) => ({
         ...part,
+        meta: withBorderList(part),
         html: part.paragraphs.map(render).join('\n'),
         ...(part.fact === undefined ? {} : { factHtml: render(part.fact) }),
     }));
     return { ...lesson, parts };
 }
+
+// a part with no states on its map, as in prehistory, still hands the page a border list, so the map,
+// its legend and the check read an empty list instead of nothing
+const withBorderList = (part) => (part.type === 'check' ? part.meta : { borders: [], ...part.meta });

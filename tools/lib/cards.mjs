@@ -4,8 +4,8 @@ import { countWords } from './markdown.mjs';
 import { problem } from './problems.mjs';
 
 const KINDS = { person: 1, place: 1, object: 1, people: 1, idea: 1, event: 1, state: 1 };
-const LON = [12, 42];
-const LAT = [34, 49.5];
+const LON = [12, 56];
+const LAT = [22, 49.5];
 const WORDS = [50, 90];
 const ID_FORMAT = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
