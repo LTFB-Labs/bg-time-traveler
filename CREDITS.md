@@ -111,15 +111,18 @@
 | Рисунка | Автор | Лиценз | Източник |
 |---|---|---|---|
 | amphora | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/amphora.html |
+| anvil | Lorc | CC BY 3.0 | https://game-icons.net/1x1/lorc/anvil.html |
 | battle-axe | Lorc | CC BY 3.0 | https://game-icons.net/1x1/lorc/battle-axe.html |
 | broken-shield | Lorc | CC BY 3.0 | https://game-icons.net/1x1/lorc/broken-shield.html |
 | cavalry | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/cavalry.html |
+| cave-entrance | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/cave-entrance.html |
 | centurion-helmet | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/centurion-helmet.html |
 | church | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/church.html |
 | crown | Lorc | CC BY 3.0 | https://game-icons.net/1x1/lorc/crown.html |
 | galley | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/galley.html |
 | horse-head | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/horse-head.html |
 | laurel-crown | Lorc | CC BY 3.0 | https://game-icons.net/1x1/lorc/laurel-crown.html |
+| mammoth | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/mammoth.html |
 | medieval-gate | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/medieval-gate.html |
 | open-book | Lorc | CC BY 3.0 | https://game-icons.net/1x1/lorc/open-book.html |
 | quill-ink | Lorc | CC BY 3.0 | https://game-icons.net/1x1/lorc/quill-ink.html |
@@ -129,6 +132,7 @@
 | tower-flag | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/tower-flag.html |
 | trireme | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/trireme.html |
 | viking-shield | Delapouite | CC BY 3.0 | https://game-icons.net/1x1/delapouite/viking-shield.html |
+| wheat | Lorc | CC BY 3.0 | https://game-icons.net/1x1/lorc/wheat.html |
 
 ## Релеф
 
